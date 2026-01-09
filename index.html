@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Bot</title>
+  <link rel="icon" type="image/png" href="/Status%20Bot%20Logo.png">
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
+    <header>
+        <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo"><img src="Status Bot Logo.png" alt="Status Bot Logo"></div>
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="/commands">Commands</a></li>
+                <li><a href="/premium">Premium</a></li>
+                <li><a href="/support">Support</a></li>
+                <li><a href="https://discord.com/api/oauth2/authorize?client_id=1436123870158520411&permissions=8&scope=bot%20applications.commands">Invite</a></li>
+                <li><a href="/status">Status</a></li>
+            </ul>
+        </nav>
+        <div class="auth-container">
+            <button class="login-btn" id="loginBtn">Login</button>
+            <button class="notification-bell" id="notificationBell" style="display: none; background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span id="notificationBadge" style="position: absolute; top: -5px; right: -5px; background: #ff4444; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; display: none;"></span>
+            </button>
+            <div class="notification-popup" id="notificationPopup" style="position: absolute; top: calc(100% + 8px); right: 0; background-color: var(--bg-tertiary, #1a1a1a); border: 1px solid var(--border-color, #333); border-radius: 8px; min-width: 300px; max-width: 400px; max-height: 400px; display: none; flex-direction: column; z-index: 100; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); overflow-y: auto;">
+                <div style="padding: 12px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-weight: 700; font-size: 14px;">Notifications</div>
+                <div id="notificationsList" style="flex: 1; overflow-y: auto;"></div>
+            </div>
+            <div class="user-btn-wrapper" id="userBtnWrapper" style="display: none;">
+                <button class="user-btn" id="userBtn">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="userName"></span>
+                    <svg class="user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="/servers" class="dropdown-item">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="/settings" class="dropdown-item">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.14 12.94c.04-.3.06-.61.06-.94c0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.62l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41L9.25 5.35C8.66 5.59 8.12 5.92 7.63 6.29L5.24 5.33c-.22-.08-.47 0-.59.22L2.74 8.87C2.62 9.08 2.66 9.34 2.86 9.48l2.03 1.58C4.84 11.36 4.8 11.69 4.8 12s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.62l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.48-.12-.62l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6s3.6 1.62 3.6 3.6s-1.62 3.6-3.6 3.6z"/>
+                        </svg>
+                        Settings
+                    </a>
+                    <button class="dropdown-item logout" id="logoutBtn">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Status Bot</h1>
+            <p>Status Bot is a powerful discord bot with User Status Tracking, XP Systems, an economy, quest tracking, and more!</p>
+            <a href="https://discord.gg/Kd2MckVxED" class="discord-btn" target="_blank">
+                <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.3671a19.8062 19.8062 0 00-4.885-1.515.0741.0741 0 00-.0785.0371c-.211.3671-.445.847-.608 1.23a18.822 18.822 0 00-5.487 0c-.163-.38-.398-.863-.609-1.23a.077.077 0 00-.079-.037 19.7355 19.7355 0 00-4.885 1.515.0699.0699 0 00-.032.0277C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.0577c2.227 1.649 4.395 2.647 6.54 3.31.05.021.1.0018.129-.039.287-.468.544-.96.758-1.469.021-.037-.002-.077-.041-.088a13.201 13.201 0 01-1.881-.892.083.083 0 01-.008-.138c.126-.094.252-.192.372-.291a.084.084 0 01.088-.01c3.928 1.793 8.18 1.793 12.062 0a.084.084 0 01.088.009c.12.099.246.198.373.292a.083.083 0 01-.006.137c-.6.35-1.243.645-1.881.893a.083.083 0 00-.041.088c.215.509.472 1.001.759 1.468a.084.084 0 00.129.039c2.146-.663 4.314-1.661 6.541-3.31a.083.083 0 00.032-.0576c.503-4.761-.838-8.886-3.549-12.548a.061.061 0 00-.031-.028zM8.02 15.278c-1.063 0-1.936-.973-1.936-2.166 0-1.194.862-2.167 1.936-2.167 1.08 0 1.95.973 1.936 2.167 0 1.194-.862 2.166-1.936 2.166zm7.975 0c-1.063 0-1.936-.973-1.936-2.166 0-1.194.862-2.167 1.936-2.167 1.08 0 1.95.973 1.936 2.167 0 1.194-.862 2.166-1.936 2.166z"/>
+                </svg>
+                Discord
+            </a>
+            <div class="stats-container">
+                <div class="stats-divider"></div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">1.5k</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo"><img src="Status Bot Logo.png" alt="Status Bot Logo"></div>
+            <div class="footer-links">
+                <a href="/terms">Terms</a>
+                <span>|</span>
+                <a href="/privacy">Privacy Policy</a>
+                <span>|</span>
+                <a href="/support">Support</a>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Status-Bot.xyz. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+</html>
+

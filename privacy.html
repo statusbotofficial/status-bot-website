@@ -1,0 +1,182 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Bot | Privacy Policy</title>
+    <link rel="icon" type="image/png" href="Status Bot Logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="privacy.css">
+</head>
+
+<body>
+    <header>
+        <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo"><img src="Status Bot Logo.png" alt="Status Bot Logo"></div>
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/commands">Commands</a></li>
+                <li><a href="/premium">Premium</a></li>
+                <li><a href="/support">Support</a></li>
+                <li><a href="https://discord.com/api/oauth2/authorize?client_id=1436123870158520411&permissions=8&scope=bot%20applications.commands">Invite</a></li>
+                <li><a href="/status">Status</a></li>
+            </ul>
+        </nav>
+        <div class="auth-container">
+            <button class="login-btn" id="loginBtn">Login</button>
+            <div class="user-btn-wrapper" id="userBtnWrapper" style="display: none;">
+                <button class="user-btn" id="userBtn">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="userName"></span>
+                    <svg class="user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="/servers" class="dropdown-item">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="/settings" class="dropdown-item">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.14 12.94c.04-.3.06-.61.06-.94c0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.62l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41L9.25 5.35C8.66 5.59 8.12 5.92 7.63 6.29L5.24 5.33c-.22-.08-.47 0-.59.22L2.74 8.87C2.62 9.08 2.66 9.34 2.86 9.48l2.03 1.58C4.84 11.36 4.8 11.69 4.8 12s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.62l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.48-.12-.62l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6s3.6 1.62 3.6 3.6s-1.62 3.6-3.6 3.6z"/>
+                        </svg>
+                        Settings
+                    </a>
+                    <button class="dropdown-item logout" id="logoutBtn">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="terms-container">
+        <header class="terms-header">
+            <h1>Privacy Policy</h1>
+            <p>Last updated: 11/30/2025</p>
+            <hr>
+        </header>
+
+        <div class="terms-section">
+            <h2>Information We Collect</h2>
+            <p>Status Bot is committed to minimizing data collection. We only collect and store data strictly necessary
+                for the operation of our custom tracking and status system.</p>
+            <ul>
+                <li><strong>Discord Identifiers:</strong> We collect and store your Discord User ID, Guild (Server) IDs,
+                    and the IDs of any channels configured for status notifications. These are essential for associating
+                    tracking data with the correct user and delivering status updates to the correct location.</li>
+                <li><strong>Tracking Configuration Data:</strong> This includes the external URLs or identifiers you
+                    provide for the custom bots or services you wish to track. This data is used solely to perform the
+                    automated status checks.</li>
+                <li><strong>Transaction Data:</strong> For Premium and Custom Bot purchases, we collect non-personally
+                    identifiable transaction IDs and subscription status from third-party payment processors (e.g.,
+                    PayPal, Stripe, etc.) to manage your access to paid features. We do not store your full payment card
+                    details.</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2>How We Use Your Information</h2>
+            <p>The information collected is used exclusively for the following purposes related to the Status Bot
+                service:</p>
+            <ul>
+                <li><strong>Service Operation:</strong> To initiate and maintain the custom tracking system, perform
+                    automated status checks on provided URLs, and post status updates in configured Discord channels.
+                </li>
+                <li><strong>Feature Access:</strong> To verify and manage access to Premium features and to fulfill the
+                    terms of any Custom Bot development agreement.</li>
+                <li><strong>Improvement:</strong> To monitor bot performance, diagnose errors, and make operational
+                    improvements. Aggregated, anonymized data (e.g., total number of users, command usage statistics)
+                    may be used for internal analysis.</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2>Data Storage and Security</h2>
+            <p>Your data is stored securely in databases managed by the Status Bot team. We implement reasonable
+                administrative, technical, and physical safeguards designed to protect the information we collect.</p>
+            <ul>
+                <li><strong>Data Retention:</strong> We retain collected information only for as long as necessary to
+                    provide the service or as required by law. If you remove Status Bot from your server or request data
+                    deletion, all associated tracking configuration data will be purged.</li>
+                <li><strong>Access Control:</strong> Access to sensitive user data is restricted to core development and
+                    administrative personnel who require it to perform their duties.</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2>Data Sharing and Disclosure</h2>
+            <p>Status Bot will not sell, rent, or trade your information with any third parties. We only share or
+                disclose information under the following limited circumstances:</p>
+            <ul>
+                <li><strong>Service Providers:</strong> We may share minimal, necessary data with third-party hosting,
+                    database, and payment processing services solely for the purpose of running Status Bot. These third
+                    parties are contractually obligated to protect your information.</li>
+                <li><strong>Legal Requirements:</strong> If required to do so by law, or in the good faith belief that
+                    such action is necessary to comply with legal processes or protect the rights, property, or safety
+                    of Status Bot or the public.</li>
+                <li><strong>Discord's Policies:</strong> All data handling complies with the <a
+                        href="https://support-dev.discord.com/hc/en-us/articles/8562894815383-Discord-Developer-Terms-of-Service"
+                        target="_blank">Discord Developer Terms of Service</a> and <a
+                        href="https://support-dev.discord.com/hc/en-us/articles/8563934450327-Discord-Developer-Policy"
+                        target="_blank">Privacy Policy</a>.</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2>Your Rights and Controls</h2>
+            <p>You have the right to control the data Status Bot holds:</p>
+            <ul>
+                <li><strong>Access and Correction:</strong> You can typically view and modify all tracking
+                    configurations directly through our Discord commands or (if available) our dashboard.</li>
+                <li><strong>Data Deletion:</strong> If you wish to delete all data associated with your Discord account
+                    or a specific server, you must contact us via our official Support Discord server. Upon
+                    verification, we will permanently delete all stored data associated with your ID within 30 days.
+                </li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h2>Changes to This Policy</h2>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new
+                Privacy Policy on this page and updating the "Last updated" date at the top of the policy. You are
+                advised to review this Privacy Policy periodically for any changes. Continued use of Status Bot after
+                any change constitutes acceptance of the new Privacy Policy.</p>
+        </div>
+
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-logo"><img src="Status Bot Logo.png" alt="Status Bot Logo"></div>
+            <div class="footer-links">
+                <a href="/terms">Terms</a>
+                <span>|</span>
+                <a href="/privacy">Privacy Policy</a>
+                <span>|</span>
+                <a href="/support">Support</a>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Status Bot. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="privacy.js"></script>
+</body>
+
+</html>
+
