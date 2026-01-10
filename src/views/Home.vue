@@ -30,19 +30,19 @@
       <h2>Powerful Features</h2>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">📊</div>
+          <div class="feature-icon">🟢</div>
           <h3>Status Tracking</h3>
           <p>Track user statuses and activity across your Discord server.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">⭐</div>
           <h3>XP System</h3>
-          <p>Reward active members with an engaging experience point system.</p>
+          <p>Reward active members with an engaging experience system.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">💰</div>
+          <div class="feature-icon">🏦</div>
           <h3>Economy</h3>
-          <p>Create an in-game economy with custom currency and transactions.</p>
+          <p>Create a server economy with custom currency and mini-games.</p>
         </div>
       </div>
     </div>
