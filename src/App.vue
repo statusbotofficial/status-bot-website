@@ -7,7 +7,7 @@
         <span></span>
       </button>
       <div class="logo">
-        <img src="/Status Bot Logo.png" alt="Status Bot Logo">
+        <span class="logo-text">Status Bot</span>
       </div>
       <nav class="nav" :class="{ show: menuOpen }">
         <ul class="nav-menu">
@@ -45,7 +45,7 @@
     <footer class="footer">
       <div class="footer-container">
         <div class="footer-logo">
-          <img src="/Status Bot Logo.png" alt="Status Bot Logo">
+          <span class="logo-text">Status Bot</span>
         </div>
         <div class="footer-links">
           <router-link to="/terms">Terms</router-link>
@@ -136,6 +136,14 @@ onMounted(() => {
 .logo {
   height: 40px;
   width: auto;
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--primary-color);
 }
 
 .logo img {
@@ -340,6 +348,8 @@ main {
 .footer-logo {
   height: 40px;
   width: auto;
+  display: flex;
+  align-items: center;
 }
 
 .footer-logo img {
