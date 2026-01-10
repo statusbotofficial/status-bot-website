@@ -85,4 +85,4 @@ The `_redirects` file handles SPA routing automatically.
 
 ## Support
 
-For issues or questions, contact support@status-bot.xyz
+For issues or questions, contact us through our Discord server
