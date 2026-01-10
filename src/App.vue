@@ -1,15 +1,15 @@
 <template>
-  <div class="app">
-    <header>
-      <button class="hamburger" @click="toggleMenu" :class="{ active: menuOpen }">
+  <div id="app">
+    <header class="header">
+      <button class="hamburger" id="hamburger" @click="toggleMenu">
         <span></span>
         <span></span>
         <span></span>
       </button>
-      <router-link to="/" class="logo">
-        <img src="/Status%20Bot%20Logo.png" alt="Status Bot Logo">
-      </router-link>
-      <nav :class="{ active: menuOpen }">
+      <div class="logo">
+        <img src="/Status Bot Logo.png" alt="Status Bot Logo">
+      </div>
+      <nav class="nav" :class="{ show: menuOpen }">
         <ul class="nav-menu">
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/commands">Commands</router-link></li>
@@ -20,46 +20,20 @@
         </ul>
       </nav>
       <div class="auth-container">
-        <button v-if="!authStore.isLoggedIn" class="login-btn" @click="login">Login</button>
-        <div v-else class="user-section">
-          <button class="notification-bell" @click="toggleNotifications">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        <button v-if="!isLoggedIn" class="login-btn" @click="handleLogin">Login</button>
+        <div v-else class="user-btn-wrapper">
+          <button class="user-btn" @click="toggleDropdown">
+            <div class="user-avatar" :style="{ backgroundImage: `url('${userAvatar}')` }"></div>
+            <span>{{ userName }}</span>
+            <svg class="user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
-          <div v-if="showNotifications" class="notification-popup">
-            <div class="notification-header">Notifications</div>
-            <div class="notifications-list">
-              <p v-if="notifications.length === 0" class="empty">No notifications</p>
-            </div>
+          <div class="dropdown-menu" :class="{ show: dropdownOpen }">
+            <router-link to="/servers" class="dropdown-item">Dashboard</router-link>
+            <router-link to="/settings" class="dropdown-item">Settings</router-link>
+            <button class="dropdown-item logout" @click="handleLogout">Logout</button>
           </div>
-          <div class="user-btn-wrapper">
-            <button class="user-btn" @click="toggleUserMenu">
-              <div class="user-avatar"></div>
-              <span>User</span>
-              <svg class="user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div v-if="showUserMenu" class="dropdown-menu">
-              <router-link to="/servers" class="dropdown-item">Dashboard</router-link>
-              <router-link to="/settings" class="dropdown-item">Settings</router-link>
-              <button class="dropdown-item logout" @click="logout">Logout</button>
-            </div>
-          </div>
-        </div>
-        <div class="theme-switcher">
-          <button 
-            v-for="theme in availableThemes" 
-            :key="theme.id"
-            class="swatch"
-            :title="theme.name"
-            @click="themeStore.applyTheme(theme.id)"
-            :class="{ active: themeStore.currentTheme === theme.id }"
-          >
-            {{ theme.name.substring(0, 1) }}
-          </button>
         </div>
       </div>
     </header>
@@ -68,85 +42,88 @@
       <router-view />
     </main>
 
-    <footer>
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>Status Bot</h3>
-          <p>A powerful Discord bot with status tracking, XP systems, economy, and more.</p>
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-logo">
+          <img src="/Status Bot Logo.png" alt="Status Bot Logo">
         </div>
-        <div class="footer-section">
-          <h3>Links</h3>
-          <ul>
-            <li><router-link to="/privacy">Privacy Policy</router-link></li>
-            <li><router-link to="/terms">Terms of Service</router-link></li>
-            <li><a :href="DISCORD_SERVER_URL" target="_blank">Discord Server</a></li>
-          </ul>
+        <div class="footer-links">
+          <router-link to="/terms">Terms</router-link>
+          <span>|</span>
+          <router-link to="/privacy">Privacy Policy</router-link>
+          <span>|</span>
+          <router-link to="/support">Support</router-link>
         </div>
-        <div class="footer-section">
-          <h3>Legal</h3>
-          <p>&copy; 2026 Status Bot. All rights reserved.</p>
-        </div>
+      </div>
+      <div class="footer-copyright">
+        © 2025 Status-Bot.xyz. All rights reserved.
       </div>
     </footer>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from './stores/auth'
-import { useThemeStore } from './stores/theme'
-import { DISCORD_INVITE_URL, DISCORD_SERVER_URL } from './config'
+import { DISCORD_INVITE_URL } from './config'
 
 const authStore = useAuthStore()
-const themeStore = useThemeStore()
-const menuOpen = ref(false)
-const showNotifications = ref(false)
-const showUserMenu = ref(false)
-const notifications = ref([])
+const router = useRouter()
 
-const availableThemes = computed(() => themeStore.getAvailableThemes())
+const menuOpen = ref(false)
+const dropdownOpen = ref(false)
+
+const isLoggedIn = computed(() => authStore.isLoggedIn)
+const userName = computed(() => authStore.user?.username || '')
+const userAvatar = computed(() => {
+  if (authStore.user?.id && authStore.user?.avatar) {
+    return `https://cdn.discordapp.com/avatars/${authStore.user.id}/${authStore.user.avatar}.png?size=32`
+  }
+  return ''
+})
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
 }
 
-const toggleNotifications = () => {
-  showNotifications.value = !showNotifications.value
-  showUserMenu.value = false
+const toggleDropdown = () => {
+  dropdownOpen.value = !dropdownOpen.value
 }
 
-const toggleUserMenu = () => {
-  showUserMenu.value = !showUserMenu.value
-  showNotifications.value = false
+const handleLogin = () => {
+  authStore.initializeAuth()
 }
 
-const login = () => {
-  const scopes = ['identify', 'guilds'].join('+')
-  const redirectUri = new URL(window.location).origin
-  const authUrl = `https://discord.com/oauth2/authorize?client_id=${import.meta.env.VITE_DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`
-  window.location.href = authUrl
-}
-
-const logout = () => {
+const handleLogout = () => {
   authStore.logout()
-  showUserMenu.value = false
+  dropdownOpen.value = false
+  menuOpen.value = false
 }
 
 onMounted(() => {
   authStore.initializeAuth()
-  themeStore.initializeTheme()
-  
+
+  // Close menu when clicking outside
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.auth-container')) {
-      showNotifications.value = false
-      showUserMenu.value = false
+    if (!e.target.closest('header')) {
+      menuOpen.value = false
+      dropdownOpen.value = false
     }
+  })
+
+  // Close menu when a link is clicked
+  document.querySelectorAll('nav a, .dropdown-item').forEach(link => {
+    link.addEventListener('click', () => {
+      menuOpen.value = false
+      dropdownOpen.value = false
+    })
   })
 })
 </script>
 
 <style scoped>
-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -154,41 +131,11 @@ header {
   border-bottom: 1px solid var(--border-color);
   position: relative;
   z-index: 10;
-  background-color: var(--bg-primary);
-}
-
-.hamburger {
-  display: none;
-  flex-direction: column;
-  background: none;
-  border: none;
-  cursor: pointer;
-  gap: 6px;
-}
-
-.hamburger span {
-  width: 25px;
-  height: 3px;
-  background-color: var(--text-primary);
-  transition: all 0.3s ease;
-}
-
-.hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(10px, 10px);
-}
-
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -7px);
 }
 
 .logo {
   height: 40px;
-  display: flex;
-  align-items: center;
+  width: auto;
 }
 
 .logo img {
@@ -196,7 +143,7 @@ header {
   width: auto;
 }
 
-nav {
+.nav {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -213,53 +160,99 @@ nav {
   text-decoration: none;
   font-weight: 600;
   font-size: 16px;
-  padding: 8px 0;
-  border-bottom: 2px solid transparent;
-  transition: border-color 0.3s ease;
+  padding-bottom: 5px;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
-.nav-menu a:hover,
-.nav-menu a.router-link-active {
-  border-bottom-color: var(--primary-color);
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.nav-menu a:hover::after {
+  width: 100%;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 
 .auth-container {
   display: flex;
+  gap: 15px;
   align-items: center;
-  gap: 20px;
 }
 
 .login-btn {
-  background-color: var(--primary-color);
   color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 10px 25px;
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.user-btn {
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  height: 48px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
 }
 
 .user-btn-wrapper {
   position: relative;
-}
-
-.user-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: none;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.user-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: var(--bg-tertiary);
 }
 
 .dropdown-menu {
@@ -269,85 +262,131 @@ nav {
   background-color: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: 8px;
+  min-width: 200px;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
   z-index: 100;
-  min-width: 150px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
-.dropdown-item {
-  display: block;
-  padding: 12px 15px;
-  color: var(--text-primary);
-  text-decoration: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.dropdown-menu.show {
+  display: flex;
 }
 
-.dropdown-item:last-child {
-  border-bottom: none;
+.dropdown-item {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.2s ease;
+  border: none;
+  background: transparent;
+  text-align: left;
+  width: 100%;
 }
 
 .dropdown-item:hover {
-  background-color: var(--bg-secondary);
+  background-color: rgba(81, 112, 255, 0.2);
 }
 
-.theme-switcher {
-  display: flex;
-  gap: 8px;
+.dropdown-item.logout:hover {
+  background-color: rgba(255, 94, 94, 0.2);
+  color: #ff5e5e;
 }
 
-.swatch {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  background-color: var(--primary-color);
-  color: #fff;
-  font-weight: 600;
-  font-size: 12px;
-  cursor: pointer;
+.user-chevron {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
 }
 
-.swatch.active {
-  border-color: var(--text-primary);
+.user-btn.active .user-chevron {
+  transform: rotate(180deg);
 }
 
 main {
   flex: 1;
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 
-footer {
+.footer {
   background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
-  padding: 40px 50px;
-  margin-top: 60px;
+  padding: 50px 50px 40px;
+  margin-top: auto;
+  position: relative;
+  z-index: 10;
 }
 
-.footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: 50px;
+  padding: 0 50px;
 }
 
-.footer-section h3 {
-  font-size: 18px;
-  margin-bottom: 15px;
+.footer-logo {
+  height: 40px;
+  width: auto;
 }
 
-.footer-section a {
-  color: var(--primary-color);
+.footer-logo img {
+  height: 100%;
+  width: auto;
+}
+
+.footer-links {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.footer-links a {
+  color: var(--text-primary);
   text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--primary-color);
+}
+
+.footer-links span {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.footer-copyright {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 @media (max-width: 768px) {
-  header {
+  .header {
     padding: 15px 20px;
   }
 
@@ -355,46 +394,56 @@ footer {
     display: flex;
   }
 
-  nav {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
+  .logo {
     display: none;
-    z-index: 5;
   }
 
-  nav.active {
+  .nav {
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0;
+    transform: none;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 8px;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+  }
+
+  .nav.show {
     display: block;
   }
 
   .nav-menu {
+    gap: 6px;
     flex-direction: column;
-    gap: 0;
-    padding: 20px;
   }
 
   .nav-menu a {
-    padding: 12px 0;
-    border-bottom: none;
-    border-left: 3px solid transparent;
-    padding-left: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
   }
 
-  .nav-menu a:hover,
-  .nav-menu a.router-link-active {
-    border-left-color: var(--primary-color);
-    border-bottom: none;
+  .footer-container {
+    padding: 0 20px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
   }
 
-  footer {
-    padding: 30px 20px;
+  .footer {
+    padding: 35px 20px 25px;
   }
 
-  .footer-content {
-    grid-template-columns: 1fr;
+  .footer-links {
+    gap: 18px;
+    font-size: 12px;
+    justify-content: center;
   }
 }
 </style>

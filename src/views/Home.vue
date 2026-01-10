@@ -52,15 +52,6 @@
       </div>
     </div>
   </section>
-
-  <section class="cta">
-    <div class="container">
-      <h2>Ready to enhance your Discord server?</h2>
-      <p>Invite Status Bot today and unlock powerful features for your community.</p>
-      <router-link to="/commands" class="btn">Explore Commands</router-link>
-      <a :href="DISCORD_INVITE_URL" class="btn secondary" target="_blank">Invite Now</a>
-    </div>
-  </section>
 </template>
 
 <script setup>
@@ -101,7 +92,7 @@ const discordServerUrl = DISCORD_SERVER_URL
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background-color: #5865f2;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
   color: #fff;
   padding: 15px 30px;
   border-radius: 8px;
@@ -109,12 +100,13 @@ const discordServerUrl = DISCORD_SERVER_URL
   transition: all 0.3s ease;
   margin-bottom: 60px;
   text-decoration: none;
+  border: 2px solid;
+  border-image: linear-gradient(315deg, rgba(41, 52, 136, 0.5) 0%, rgba(81, 112, 255, 1) 100%) 1;
 }
 
 .discord-btn:hover {
-  background-color: #4752c4;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(88, 101, 242, 0.4);
+  box-shadow: 0 8px 24px rgba(81, 112, 255, 0.4);
 }
 
 .discord-icon {
@@ -156,7 +148,7 @@ const discordServerUrl = DISCORD_SERVER_URL
 
 .features {
   padding: 80px 50px;
-  background-color: var(--bg-secondary);
+  background-color: transparent;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
@@ -203,29 +195,6 @@ const discordServerUrl = DISCORD_SERVER_URL
 .feature-card p {
   color: var(--text-secondary);
   margin-bottom: 0;
-}
-
-.cta {
-  padding: 80px 50px;
-  text-align: center;
-  background-color: var(--bg-primary);
-}
-
-.cta h2 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.cta p {
-  font-size: 1.1rem;
-  margin-bottom: 40px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.cta .btn {
-  margin: 0 10px;
 }
 
 @media (max-width: 768px) {

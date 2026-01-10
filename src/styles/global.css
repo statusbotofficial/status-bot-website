@@ -136,6 +136,18 @@ p {
   background-color: rgba(81, 112, 255, 0.1);
 }
 
+.login-btn,
+.user-btn {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%) !important;
+  border: 2px solid;
+  border-image: linear-gradient(315deg, rgba(41, 52, 136, 0.5) 0%, rgba(81, 112, 255, 1) 100%) 1;
+}
+
+.login-btn:hover,
+.user-btn:hover {
+  box-shadow: 0 8px 24px rgba(81, 112, 255, 0.4) !important;
+}
+
 .card {
   background-color: var(--bg-tertiary);
   border: 1px solid var(--border-color);
