@@ -30,24 +30,31 @@
       <h2>Powerful Features</h2>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">📊</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+            </svg>
+          </div>
           <h3>Status Tracking</h3>
           <p>Track user statuses and activity across your Discord server.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">⭐</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
           <h3>XP System</h3>
           <p>Reward active members with an engaging experience point system.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">💰</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm2 7h-4v-2h4v2z"/>
+            </svg>
+          </div>
           <h3>Economy</h3>
           <p>Create an in-game economy with custom currency and transactions.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">✅</div>
-          <h3>Quest Tracking</h3>
-          <p>Set up quests and challenges for your community to complete.</p>
         </div>
       </div>
     </div>
@@ -76,7 +83,7 @@ const discordServerUrl = DISCORD_SERVER_URL
 .hero h1 {
   font-size: 4rem;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, #5170ff, #ff00ff);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -184,6 +191,17 @@ const discordServerUrl = DISCORD_SERVER_URL
 .feature-icon {
   font-size: 3rem;
   margin-bottom: 15px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.feature-icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .feature-card h3 {

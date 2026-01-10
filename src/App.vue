@@ -51,18 +51,15 @@
         <div class="footer-section footer-links-section">
           <h3>Links</h3>
           <div class="footer-links">
-            <router-link to="/commands">Commands</router-link>
-            <router-link to="/premium">Premium</router-link>
-            <router-link to="/support">Support</router-link>
-            <router-link to="/status">Status</router-link>
+            <router-link to="/terms">Terms</router-link>
+            <router-link to="/privacy">Privacy</router-link>
+            <a :href="DISCORD_SERVER_URL" target="_blank">Discord Server</a>
           </div>
         </div>
         <div class="footer-section footer-legal">
           <h3>Legal</h3>
           <div class="legal-content">
-            <router-link to="/terms">Terms</router-link>
-            <router-link to="/privacy">Privacy Policy</router-link>
-            <p class="copyright-text">status-bot.xyz. All rights reserved</p>
+            <p class="copyright-text">© Status-Bot.xyz. All rights reserved</p>
           </div>
         </div>
       </div>
@@ -338,7 +335,7 @@ main {
 .footer-content {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 60px;
+  gap: 100px;
   max-width: 1200px;
   margin: 0 auto;
   margin-bottom: 40px;
