@@ -1,0 +1,29 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from './views/Home.vue'
+import Commands from './views/Commands.vue'
+import Premium from './views/Premium.vue'
+import Support from './views/Support.vue'
+import Status from './views/Status.vue'
+import Servers from './views/Servers.vue'
+import Settings from './views/Settings.vue'
+import Privacy from './views/Privacy.vue'
+import Terms from './views/Terms.vue'
+
+const routes = [
+  { path: '/', component: Home },
+  { path: '/commands', component: Commands },
+  { path: '/premium', component: Premium },
+  { path: '/support', component: Support },
+  { path: '/status', component: Status },
+  { path: '/servers', component: Servers },
+  { path: '/settings', component: Settings },
+  { path: '/privacy', component: Privacy },
+  { path: '/terms', component: Terms },
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+
+export default router

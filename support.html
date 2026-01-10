@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Bot | Support</title>
+    <link rel="icon" type="image/png" href="Status Bot Logo.png" />
+    <link rel="stylesheet" href="support.css">
+</head>
+<body>
+    <header>
+        <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo"><img src="Status Bot Logo.png" alt="Status Bot Logo"></div>
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/commands">Commands</a></li>
+                <li><a href="/premium">Premium</a></li>
+                <li><a href="/support">Support</a></li>
+                <li><a href="https://discord.com/api/oauth2/authorize?client_id=1436123870158520411&permissions=8&scope=bot%20applications.commands">Invite</a></li>
+                <li><a href="/status">Status</a></li>
+            </ul>
+        </nav>
+        <div class="auth-container">
+            <button class="login-btn" id="loginBtn">Login</button>
+            <button class="notification-bell" id="notificationBell" style="display: none; background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span id="notificationBadge" style="position: absolute; top: -5px; right: -5px; background: #ff4444; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; display: none;"></span>
+            </button>
+            <div class="notification-popup" id="notificationPopup" style="position: absolute; top: calc(100% + 8px); right: 0; background-color: var(--bg-tertiary, #1a1a1a); border: 1px solid var(--border-color, #333); border-radius: 8px; min-width: 300px; max-width: 400px; max-height: 400px; display: none; flex-direction: column; z-index: 100; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); overflow-y: auto;">
+                <div style="padding: 12px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-weight: 700; font-size: 14px;">Notifications</div>
+                <div id="notificationsList" style="flex: 1; overflow-y: auto;"></div>
+            </div>
+            <div class="user-btn-wrapper" id="userBtnWrapper" style="display: none;">
+                <button class="user-btn" id="userBtn">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="userName"></span>
+                    <svg class="user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="/servers" class="dropdown-item">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="/settings" class="dropdown-item">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.14 12.94c.04-.3.06-.61.06-.94c0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.62l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41L9.25 5.35C8.66 5.59 8.12 5.92 7.63 6.29L5.24 5.33c-.22-.08-.47 0-.59.22L2.74 8.87C2.62 9.08 2.66 9.34 2.86 9.48l2.03 1.58C4.84 11.36 4.8 11.69 4.8 12s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.62l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.48-.12-.62l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6s3.6 1.62 3.6 3.6s-1.62 3.6-3.6 3.6z"/>
+                        </svg>
+                        Settings
+                    </a>
+                    <button class="dropdown-item logout" id="logoutBtn">
+                        <svg class="dropdown-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="support-container">
+            <div class="support-header">
+                <h1>Status Bot Support</h1>
+                <p>Ask our AI support for help, or get help from a staff member in the <a href="https://discord.gg/Kd2MckVxED" style="color: #5170ff; text-decoration: none; border-bottom: 1px solid #5170ff;">Status Bot Support Server</a></p>
+            </div>
+
+            <div class="support-chat-box">
+                <h2>What's on your mind?</h2>
+                
+                <div class="support-chat-area" id="chatArea"></div>
+
+                <div class="support-input-container">
+                    <textarea 
+                        class="support-input" 
+                        id="supportInput" 
+                        placeholder="Ask anything"
+                        rows="1"
+                    ></textarea>
+                    <button class="support-send-btn" id="sendBtn" title="Send message">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 100%; height: 100%;">
+                            <path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 C22.9702544,11.6889879 22.9702544,11.6889879 22.9702544,11.6889879 L4.13399899,1.1543831 C3.34915502,0.9051845 2.40734225,1.0122819 1.77946707,1.4835739 C0.994623095,2.10604706 0.837654326,3.0486314 1.15159189,3.99701575 L3.03521743,10.4380088 C3.03521743,10.5451061 3.19218622,10.7022035 3.50612381,10.7022035 L16.6915026,11.4876905 C16.6915026,11.4876905 17.1624089,11.4876905 17.1624089,11.4876905 C17.1624089,11.4876905 17.9268649,11.4876905 17.9268649,10.7024851 L17.9268649,12.6315722 C17.9268649,12.6315722 17.1624089,12.4744748 16.6915026,12.4744748 Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo"><img src="Status Bot Logo.png" alt="Status Bot Logo"></div>
+            <div class="footer-links">
+                <a href="/terms">Terms</a>
+                <span>|</span>
+                <a href="/privacy">Privacy Policy</a>
+                <span>|</span>
+                <a href="/support">Support</a>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Status-Bot.xyz. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="support.js"></script>
+</body>
+</html>
+
