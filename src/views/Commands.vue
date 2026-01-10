@@ -155,7 +155,7 @@ const filteredCommands = computed(() => {
   background-color: rgba(81, 112, 255, 0.1);
   border: 2px solid var(--primary-color);
   border-radius: 20px;
-  padding: 4px 12px;
+  padding: 2px 12px;
   max-width: 280px;
   transition: all 0.3s ease;
 }
