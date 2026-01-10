@@ -100,8 +100,7 @@ const discordServerUrl = DISCORD_SERVER_URL
   transition: all 0.3s ease;
   margin-bottom: 60px;
   text-decoration: none;
-  border: 2px solid;
-  border-image: linear-gradient(315deg, rgba(41, 52, 136, 0.5) 0%, rgba(81, 112, 255, 1) 100%) 1;
+  border: 2px solid rgba(81, 112, 255, 0.8);
 }
 
 .discord-btn:hover {

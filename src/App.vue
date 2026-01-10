@@ -44,23 +44,27 @@
 
     <footer class="footer">
       <div class="footer-content">
-        <div class="footer-section">
-          <div class="footer-logo">
-            <img src="/Status Bot Logo.png" alt="Status Bot Logo">
-          </div>
+        <div class="footer-section footer-brand">
+          <h3>Status Bot</h3>
+          <p>A powerful Discord bot with status tracking, XP systems, and more.</p>
         </div>
-        <div class="footer-section">
+        <div class="footer-section footer-links-section">
+          <h3>Links</h3>
           <div class="footer-links">
-            <router-link to="/terms">Terms</router-link>
-            <span>|</span>
-            <router-link to="/privacy">Privacy Policy</router-link>
-            <span>|</span>
+            <router-link to="/commands">Commands</router-link>
+            <router-link to="/premium">Premium</router-link>
             <router-link to="/support">Support</router-link>
+            <router-link to="/status">Status</router-link>
           </div>
         </div>
-      </div>
-      <div class="footer-copyright">
-        © 2025 Status-Bot.xyz. All rights reserved.
+        <div class="footer-section footer-legal">
+          <h3>Legal</h3>
+          <div class="legal-content">
+            <router-link to="/terms">Terms</router-link>
+            <router-link to="/privacy">Privacy Policy</router-link>
+            <p class="copyright-text">status-bot.xyz. All rights reserved</p>
+          </div>
+        </div>
       </div>
     </footer>
   </div>
@@ -332,61 +336,68 @@ main {
 }
 
 .footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
   max-width: 1200px;
   margin: 0 auto;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   padding: 0 50px;
 }
 
-.footer-section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.footer-logo {
-  height: 40px;
-  width: auto;
-}
-
-.footer-logo img {
-  height: 100%;
-  width: auto;
-}
-
-.footer-links {
-  display: flex;
-  gap: 30px;
-  align-items: center;
-}
-
-.footer-links a {
+.footer-section h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
   color: var(--text-primary);
+}
+
+.footer-brand p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 250px;
+}
+
+.footer-links-section .footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.footer-links-section .footer-links a {
+  color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 500;
-  font-size: 14px;
+  font-size: 0.95rem;
   transition: color 0.3s ease;
 }
 
-.footer-links a:hover {
+.footer-links-section .footer-links a:hover {
   color: var(--primary-color);
 }
 
-.footer-links span {
-  color: var(--text-primary);
-  font-size: 14px;
+.legal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.footer-copyright {
-  text-align: center;
+.legal-content a {
   color: var(--text-secondary);
-  font-size: 12px;
-  padding-top: 20px;
-  margin-top: 20px;
-  border-top: 1px solid var(--border-color);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.legal-content a:hover {
+  color: var(--primary-color);
+}
+
+.copyright-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 8px;
 }
 
 #app {
