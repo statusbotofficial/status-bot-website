@@ -419,8 +419,8 @@ main {
   .nav {
     position: absolute;
     top: 100%;
-    left: auto;
-    right: 0;
+    left: 0;
+    right: auto;
     transform: none;
     background-color: var(--bg-secondary);
     border: 1px solid var(--primary-color);
@@ -447,21 +447,30 @@ main {
     border-radius: 6px;
   }
 
-  .footer-container {
-    padding: 0 20px;
+  .footer-content {
+    display: flex;
     flex-direction: column;
-    gap: 20px;
-    align-items: center;
+    gap: 40px;
+    max-width: 100%;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    padding: 0 20px;
+  }
+
+  .footer-section h3 {
+    font-size: 1rem;
   }
 
   .footer {
     padding: 35px 20px 25px;
   }
 
-  .footer-links {
-    gap: 18px;
-    font-size: 12px;
-    justify-content: center;
+  .footer-links-section .footer-links {
+    gap: 12px;
+  }
+
+  .legal-content {
+    gap: 8px;
   }
 }
 </style>
