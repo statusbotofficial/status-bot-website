@@ -13,7 +13,7 @@
       <!-- Free Plan -->
       <div class="plan-card">
         <div class="plan-name">
-          Free<span>🎁</span>
+          Free<span></span>
         </div>
         <div class="plan-price">$0</div>
         <div class="plan-divider">Always free</div>
@@ -43,7 +43,7 @@
       <div class="plan-card premium-highlighted">
         <div class="plan-badge">Most Popular</div>
         <div class="plan-name">
-          Premium<span>💙</span>
+          Premium<span></span>
         </div>
         <div class="plan-price">$4.99</div>
         <div class="plan-divider">One time payment</div>
@@ -76,7 +76,7 @@
       <!-- Custom Bot Plan -->
       <div class="plan-card">
         <div class="plan-name">
-          Custom Bot<span>✨</span>
+          Custom Bot<span></span>
         </div>
         <div class="plan-price">$7.99</div>
         <div class="plan-divider">One time payment</div>
