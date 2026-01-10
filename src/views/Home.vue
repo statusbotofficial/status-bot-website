@@ -95,7 +95,7 @@ const discordServerUrl = DISCORD_SERVER_URL
   background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
   color: #fff;
   padding: 15px 30px;
-  border-radius: 8px;
+  border-radius: 20px;
   font-weight: 600;
   transition: all 0.3s ease;
   margin-bottom: 60px;

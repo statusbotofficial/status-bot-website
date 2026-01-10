@@ -7,7 +7,7 @@
         <span></span>
       </button>
       <div class="logo">
-        <span class="logo-text">Status Bot</span>
+        <img src="/Status Bot Logo.png" alt="Status Bot Logo">
       </div>
       <nav class="nav" :class="{ show: menuOpen }">
         <ul class="nav-menu">
@@ -43,16 +43,20 @@
     </main>
 
     <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-logo">
-          <span class="logo-text">Status Bot</span>
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <img src="/Status Bot Logo.png" alt="Status Bot Logo">
+          </div>
         </div>
-        <div class="footer-links">
-          <router-link to="/terms">Terms</router-link>
-          <span>|</span>
-          <router-link to="/privacy">Privacy Policy</router-link>
-          <span>|</span>
-          <router-link to="/support">Support</router-link>
+        <div class="footer-section">
+          <div class="footer-links">
+            <router-link to="/terms">Terms</router-link>
+            <span>|</span>
+            <router-link to="/privacy">Privacy Policy</router-link>
+            <span>|</span>
+            <router-link to="/support">Support</router-link>
+          </div>
         </div>
       </div>
       <div class="footer-copyright">
@@ -136,14 +140,6 @@ onMounted(() => {
 .logo {
   height: 40px;
   width: auto;
-  display: flex;
-  align-items: center;
-}
-
-.logo-text {
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--primary-color);
 }
 
 .logo img {
@@ -335,7 +331,7 @@ main {
   z-index: 10;
 }
 
-.footer-container {
+.footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -345,11 +341,15 @@ main {
   padding: 0 50px;
 }
 
+.footer-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
 .footer-logo {
   height: 40px;
   width: auto;
-  display: flex;
-  align-items: center;
 }
 
 .footer-logo img {
