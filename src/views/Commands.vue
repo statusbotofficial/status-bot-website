@@ -91,7 +91,7 @@ const filteredCommands = computed(() => {
   padding: 0 50px;
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin: 30px auto 0;
 }
 
 .commands-header {
@@ -155,15 +155,14 @@ const filteredCommands = computed(() => {
   background-color: rgba(81, 112, 255, 0.1);
   border: 2px solid var(--primary-color);
   border-radius: 20px;
-  padding: 10px 15px;
-  flex: 1;
-  min-width: 200px;
+  padding: 8px 12px;
+  max-width: 280px;
   transition: all 0.3s ease;
 }
 
 .search-icon {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   color: var(--primary-color);
   flex-shrink: 0;
 }
@@ -173,8 +172,8 @@ const filteredCommands = computed(() => {
   border: none;
   color: #fff;
   font-weight: 500;
-  font-size: 15px;
-  flex: 1;
+  font-size: 13px;
+  flex: 0;
   transition: all 0.3s ease;
 }
 
