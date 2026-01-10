@@ -1,35 +1,51 @@
 <template>
-  <div class="page-section">
-    <div class="container">
-      <h1>Support</h1>
-      <p>Get help with Status Bot or contact our support team.</p>
-      
-      <div class="support-content">
-        <div class="support-card">
-          <h3>Documentation</h3>
-          <p>Read our comprehensive documentation and guides.</p>
-          <a :href="DOCS_URL" target="_blank" class="btn secondary">View Docs</a>
-        </div>
-        <div class="support-card">
-          <h3>Discord Server</h3>
-          <p>Join our community Discord server for support and discussions.</p>
-          <a :href="DISCORD_SERVER_URL" target="_blank" class="btn secondary">Join Discord</a>
-        </div>
-        <div class="support-card">
-          <h3>Email Support</h3>
-          <p>Need direct assistance? Email us for priority support.</p>
-          <a :href="`mailto:${SUPPORT_EMAIL}`" class="btn secondary">Email Us</a>
+  <div class="support-wrapper">
+    <!-- Original Support Section -->
+    <div class="support-section-old">
+      <div class="support-container">
+        <div class="support-header">
+          <h1>Status Bot Support</h1>
+          <p>Ask our AI support for help, or get help from a staff member in the <a href="https://discord.gg/Kd2MckVxED" style="color: var(--primary-color); text-decoration: none; border-bottom: 1px solid var(--primary-color);">Status Bot Support Server</a></p>
         </div>
       </div>
+    </div>
 
-      <div class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-items">
-          <div class="faq-item" v-for="item in faqs" :key="item.id" @click="item.open = !item.open">
-            <h4>{{ item.question }}</h4>
-            <p v-if="item.open" class="answer">{{ item.answer }}</p>
-            <span class="toggle">{{ item.open ? '−' : '+' }}</span>
+    <!-- AI Chat Section -->
+    <div class="support-section-chat">
+      <div class="support-container">
+        <div class="chat-header">
+          <h2>AI Support Chat</h2>
+          <p v-if="!isLoggedIn" class="login-required">Please log in to use the support chat</p>
+        </div>
+
+        <div v-if="isLoggedIn" class="support-chat-box">
+          <div class="support-chat-area" id="chatArea">
+            <div v-if="messages.length === 0" class="chat-welcome">
+              <p>👋 Welcome to Status Bot Support! Ask me anything about Status Bot, and I'll help you out.</p>
+            </div>
+            <div v-for="(msg, idx) in messages" :key="idx" class="chat-message" :class="msg.sender">
+              <div class="message-content" :class="msg.sender" v-html="msg.text"></div>
+            </div>
           </div>
+
+          <div class="support-input-container">
+            <textarea 
+              v-model="inputMessage"
+              class="support-input" 
+              placeholder="Ask anything"
+              rows="1"
+              @keydown.enter.prevent="!$event.shiftKey && sendMessage()"
+            ></textarea>
+            <button class="support-send-btn" @click="sendMessage" :disabled="isLoading || !inputMessage.trim()" title="Send message">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width: 100%; height: 100%;">
+                <path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 C22.9702544,11.6889879 22.9702544,11.6889879 22.9702544,11.6889879 L4.13399899,1.1543831 C3.34915502,0.9051845 2.40734225,1.0122819 1.77946707,1.4835739 C0.994623095,2.10604706 0.837654326,3.0486314 1.15159189,3.99701575 L3.03521743,10.4380088 C3.03521743,10.5451061 3.19218622,10.7022035 3.50612381,10.7022035 L16.6915026,11.4876905 C16.6915026,11.4876905 17.1624089,11.4876905 17.1624089,11.4876905 C17.1624089,11.4876905 17.9268649,11.4876905 17.9268649,10.7024851 L17.9268649,12.6315722 C17.9268649,12.6315722 17.1624089,12.4744748 16.6915026,12.4744748 Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div v-else class="login-prompt">
+          <p>You must be logged in to use the support chat.</p>
         </div>
       </div>
     </div>
@@ -37,140 +53,450 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { DOCS_URL, DISCORD_SERVER_URL, SUPPORT_EMAIL } from '../config'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useAuthStore } from '../stores/auth'
 
-const faqs = ref([
-  {
-    id: 1,
-    question: 'How do I invite Status Bot to my server?',
-    answer: 'Click the "Invite" button on the navigation menu. You\'ll be taken to Discord\'s authorization page.',
-    open: false
-  },
-  {
-    id: 2,
-    question: 'Is Status Bot free?',
-    answer: 'Yes! Status Bot has a free tier with core features. We also offer a Premium plan.',
-    open: false
-  },
-  {
-    id: 3,
-    question: 'How do I report a bug?',
-    answer: 'Please report bugs in our Discord server or via email with details about the issue.',
-    open: false
+const authStore = useAuthStore()
+
+const isLoggedIn = computed(() => authStore.isLoggedIn)
+const messages = ref([])
+const inputMessage = ref('')
+const isLoading = ref(false)
+const chatAreaEl = ref(null)
+
+const BACKEND_URL = 'https://status-bot-backend.onrender.com'
+const CHAT_STORAGE_KEY = 'supportChatHistory'
+const CHAT_STORAGE_USER_KEY = (userId) => `${CHAT_STORAGE_KEY}_${userId}`
+
+// Load chat history
+const loadChatHistory = () => {
+  if (!isLoggedIn.value || !authStore.user) return
+  
+  const storageKey = CHAT_STORAGE_USER_KEY(authStore.user.id)
+  const saved = localStorage.getItem(storageKey)
+  
+  if (saved) {
+    try {
+      messages.value = JSON.parse(saved)
+      setTimeout(() => scrollChatToBottom(), 100)
+    } catch (e) {
+      console.error('Error loading chat history:', e)
+      messages.value = []
+    }
   }
-])
+}
+
+// Save chat history
+const saveChatHistory = () => {
+  if (!isLoggedIn.value || !authStore.user) return
+  
+  const storageKey = CHAT_STORAGE_USER_KEY(authStore.user.id)
+  localStorage.setItem(storageKey, JSON.stringify(messages.value))
+}
+
+// Scroll chat to bottom
+const scrollChatToBottom = () => {
+  const chatArea = document.getElementById('chatArea')
+  if (chatArea) {
+    chatArea.scrollTop = chatArea.scrollHeight
+  }
+}
+
+// Send message
+const sendMessage = async () => {
+  const text = inputMessage.value.trim()
+  if (!text || isLoading.value) return
+
+  // Add user message
+  messages.value.push({
+    text: text,
+    sender: 'user'
+  })
+  inputMessage.value = ''
+  isLoading.value = true
+  
+  setTimeout(() => scrollChatToBottom(), 50)
+  saveChatHistory()
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/support/ai`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
+    })
+
+    if (!response.ok) throw new Error('Failed to get response')
+
+    const data = await response.json()
+    const aiResponse = data.reply || 'Sorry, I encountered an error. Please try again or contact support at our Discord server.'
+    
+    messages.value.push({
+      text: aiResponse,
+      sender: 'ai'
+    })
+    saveChatHistory()
+  } catch (error) {
+    console.error('Error getting AI response:', error)
+    messages.value.push({
+      text: 'Sorry, I encountered an error. Please try again or contact support at our <a href="https://discord.gg/Kd2MckVxED" target="_blank">Discord server</a>.',
+      sender: 'ai'
+    })
+    saveChatHistory()
+  } finally {
+    isLoading.value = false
+    setTimeout(() => scrollChatToBottom(), 50)
+  }
+}
+
+// Load chat when logged in
+watch(() => isLoggedIn.value, (newVal) => {
+  if (newVal) {
+    loadChatHistory()
+  } else {
+    messages.value = []
+  }
+}, { immediate: true })
+
+onMounted(() => {
+  loadChatHistory()
+})
 </script>
 
 <style scoped>
-.page-section {
-  padding: 80px 50px;
-  min-height: calc(100vh - 200px);
+.support-wrapper {
+  width: 100%;
 }
 
-.container h1 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+.support-section-old {
+  padding: 60px 50px;
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
+  border-bottom: 1px solid rgba(81, 112, 255, 0.1);
 }
 
-.container > p {
-  font-size: 1.1rem;
-  margin-bottom: 60px;
-  max-width: 600px;
+.support-section-chat {
+  padding: 60px 50px;
+  min-height: calc(100vh - 400px);
 }
 
-.support-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  margin-bottom: 60px;
+.support-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
 }
 
-.support-card {
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  padding: 30px;
-  border-radius: 8px;
+.support-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   text-align: center;
-  transition: all 0.3s ease;
 }
 
-.support-card:hover {
-  border-color: var(--primary-color);
-  transform: translateY(-4px);
+.support-header h1 {
+  font-size: 56px;
+  font-weight: 900;
+  margin: 0;
 }
 
-.support-card h3 {
-  margin-bottom: 15px;
+.support-header p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
-.support-card p {
-  margin-bottom: 20px;
+.chat-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  width: 100%;
 }
 
-.faq-section {
-  max-width: 700px;
+.chat-header h2 {
+  font-size: 42px;
+  font-weight: 900;
+  margin: 0;
 }
 
-.faq-section h2 {
-  font-size: 2rem;
-  margin-bottom: 30px;
+.login-required {
+  font-size: 16px;
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: 600;
 }
 
-.faq-items {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.faq-item {
-  padding: 20px;
-  border-bottom: 1px solid var(--border-color);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  position: relative;
-}
-
-.faq-item:last-child {
-  border-bottom: none;
-}
-
-.faq-item:hover {
-  background-color: var(--bg-tertiary);
-}
-
-.faq-item h4 {
-  font-size: 1.1rem;
-  margin-bottom: 0;
-  color: var(--text-primary);
-}
-
-.faq-item .answer {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+.login-prompt {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
   color: var(--text-secondary);
 }
 
-.faq-item .toggle {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  font-size: 1.5rem;
+.support-chat-box {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(40, 50, 100, 0.6) 0%, rgba(60, 70, 140, 0.4) 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 16px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.support-chat-area {
+  width: 100%;
+  height: 320px;
+  background-color: transparent;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.chat-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.chat-message {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-message.user {
+  justify-content: flex-end;
+}
+
+.chat-message.ai {
+  justify-content: flex-start;
+}
+
+.message-content {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  word-wrap: break-word;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.message-content.user {
+  background-color: rgba(81, 112, 255, 0.4);
+  border: 1px solid var(--primary-color);
+  color: #fff;
+}
+
+.message-content.ai {
+  background-color: rgba(50, 50, 70, 0.6);
+  border: 1px solid #444;
+  color: #fff;
+}
+
+.message-content.ai a {
+  color: #8ec5ff;
+  text-decoration: underline;
+}
+
+.support-input-container {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.support-input {
+  flex: 1;
+  background-color: rgba(81, 112, 255, 0.1);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 12px 18px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  font-family: 'Fredoka', inherit;
+  resize: none;
+  max-height: 100px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.support-input::placeholder {
+  color: #888;
+}
+
+.support-input:focus {
+  outline: none;
+  background-color: rgba(81, 112, 255, 0.2);
+  box-shadow: 0 0 15px rgba(81, 112, 255, 0.6);
+}
+
+.support-send-btn {
+  background: none;
+  border: none;
   color: var(--primary-color);
+  cursor: pointer;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 28px;
+  height: 52px;
+  width: 52px;
+}
+
+.support-send-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  color: #fff;
+}
+
+.support-send-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.support-send-btn:disabled {
+  color: #555;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (max-width: 1024px) {
+  .support-section-old {
+    padding: 50px 30px;
+  }
+
+  .support-section-chat {
+    padding: 50px 30px;
+  }
+
+  .support-header h1 {
+    font-size: 44px;
+  }
+
+  .chat-header h2 {
+    font-size: 36px;
+  }
+
+  .support-chat-box {
+    padding: 30px;
+    gap: 25px;
+  }
+
+  .support-chat-area {
+    height: 280px;
+  }
 }
 
 @media (max-width: 768px) {
-  .page-section {
+  .support-section-old {
     padding: 40px 20px;
   }
 
-  .container h1 {
-    font-size: 2rem;
+  .support-section-chat {
+    padding: 40px 20px;
+    min-height: calc(100vh - 300px);
   }
 
-  .support-content {
-    grid-template-columns: 1fr;
+  .support-header h1 {
+    font-size: 32px;
+  }
+
+  .support-header p {
+    font-size: 14px;
+  }
+
+  .chat-header h2 {
+    font-size: 28px;
+  }
+
+  .support-chat-box {
+    padding: 25px;
+    gap: 20px;
+  }
+
+  .support-chat-area {
+    height: 240px;
+  }
+
+  .message-content {
+    max-width: 85%;
+    font-size: 13px;
+  }
+
+  .support-input {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+
+  .support-send-btn {
+    height: 48px;
+    width: 48px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .support-section-old {
+    padding: 30px 15px;
+  }
+
+  .support-section-chat {
+    padding: 30px 15px;
+  }
+
+  .support-header h1 {
+    font-size: 26px;
+  }
+
+  .support-header p {
+    font-size: 13px;
+  }
+
+  .chat-header h2 {
+    font-size: 22px;
+  }
+
+  .support-chat-box {
+    padding: 20px;
+    gap: 18px;
+  }
+
+  .support-chat-area {
+    height: 200px;
+  }
+
+  .message-content {
+    max-width: 90%;
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+
+  .support-input {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .support-send-btn {
+    height: 44px;
+    width: 44px;
+    font-size: 20px;
+  }
+
+  .login-prompt {
+    padding: 40px 15px;
   }
 }
 </style>
