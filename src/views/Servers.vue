@@ -662,6 +662,12 @@ const welcomePreview = computed(() => {
   return `<div class="message-preview">${escapeHtml(msg)}</div>`
 })
 
+const filteredMembers = computed(() => {
+  return guildMembers.value.filter(member =>
+    member.username.toLowerCase().includes(memberSearchQuery.value.toLowerCase())
+  )
+})
+
 // Methods
 const loadServers = async () => {
   if (!authStore.user || !authStore.token) return
