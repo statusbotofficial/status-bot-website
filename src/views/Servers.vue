@@ -130,7 +130,7 @@
                 }"
               >
                 <span v-if="!selectedServer?.icon">
-                  {{ selectedServer?.name.charAt(0).toUpperCase() }}
+                  {{ (selectedServer?.name || "").charAt(0).toUpperCase() }}
                 </span>
               </div>
               <div>
@@ -156,14 +156,40 @@
             <!-- Overview Section -->
             <div v-if="activeSection === 'overview'">
               <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 20px;">
-                Server Overview
+                Top Users
               </h2>
               <div v-if="loading" style="color: #999; text-align: center; padding: 40px;">
                 Loading...
               </div>
-              <div v-else style="color: #ccc;">
-                <p>Members: {{ selectedServer?.memberCount || 0 }}</p>
-                <p v-if="overviewLeaderboard.length > 0">Top {{ overviewLeaderboard.length }} users loaded</p>
+              <div v-else-if="overviewLeaderboard.length > 0">
+                <div v-for="(user, index) in overviewLeaderboard" :key="user.id" 
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    padding: 16px 20px;
+                    background: rgba(81, 112, 255, 0.05);
+                    border: 1px solid rgba(81, 112, 255, 0.15);
+                    border-radius: 8px;
+                    margin-bottom: 12px;
+                  "
+                >
+                  <div style="font-size: 20px; font-weight: 800; color: #5170ff; min-width: 40px;">
+                    #{{ index + 1 }}
+                  </div>
+                  <img v-if="user.avatar" :src="user.avatar" :alt="user.username" 
+                    style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;" />
+                  <div style="flex: 1;">
+                    <p style="margin: 0; font-weight: 600; color: #fff;">{{ user.username }}</p>
+                    <p style="margin: 0; font-size: 12px; color: #999;">Level {{ user.level || 0 }}</p>
+                  </div>
+                  <div style="text-align: right;">
+                    <p style="margin: 0; font-size: 14px; color: #fbbf24;">{{ user.xp || 0 }} XP</p>
+                  </div>
+                </div>
+              </div>
+              <div v-else style="color: #999; text-align: center; padding: 40px;">
+                No user data available
               </div>
             </div>
 
@@ -172,11 +198,50 @@
               <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 20px;">
                 Leaderboard
               </h2>
-              <div v-if="leaderboard.length > 0" style="color: #ccc;">
-                <p>{{ leaderboard.length }} users in leaderboard</p>
+              <div v-if="loading" style="color: #999; text-align: center; padding: 40px;">
+                Loading leaderboard...
+              </div>
+              <div v-else-if="leaderboard.length > 0">
+                <div v-for="(user, index) in leaderboard" :key="user.id" 
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    padding: 16px 20px;
+                    background: rgba(81, 112, 255, 0.05);
+                    border: 1px solid rgba(81, 112, 255, 0.15);
+                    border-radius: 8px;
+                    margin-bottom: 12px;
+                  "
+                  :style="{
+                    borderColor: index === 0 ? 'rgba(255, 215, 0, 0.3)' : index === 1 ? 'rgba(192, 192, 192, 0.3)' : index === 2 ? 'rgba(205, 127, 50, 0.3)' : 'rgba(81, 112, 255, 0.15)'
+                  }"
+                >
+                  <div style="font-size: 20px; font-weight: 800; min-width: 40px;" :style="{
+                    color: index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : index === 2 ? '#CD7F32' : '#5170ff'
+                  }">
+                    #{{ index + 1 }}
+                  </div>
+                  <img v-if="user.avatar" :src="user.avatar" :alt="user.username" 
+                    style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;" />
+                  <div style="flex: 1;">
+                    <p style="margin: 0; font-weight: 600; color: #fff;">{{ user.username }}</p>
+                    <p style="margin: 0; font-size: 12px; color: #999;">Level {{ user.level || 0 }}</p>
+                  </div>
+                  <div style="display: flex; gap: 24px; text-align: right;">
+                    <div>
+                      <p style="margin: 0; font-size: 11px; color: #999; text-transform: uppercase;">XP</p>
+                      <p style="margin: 0; font-size: 14px; color: #fbbf24; font-weight: 700;">{{ user.xp || 0 }}</p>
+                    </div>
+                    <div>
+                      <p style="margin: 0; font-size: 11px; color: #999; text-transform: uppercase;">Balance</p>
+                      <p style="margin: 0; font-size: 14px; color: #4ade80; font-weight: 700;">{{ user.balance || 0 }}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div v-else style="color: #999; text-align: center; padding: 40px;">
-                Loading leaderboard...
+                No leaderboard data available
               </div>
             </div>
 
