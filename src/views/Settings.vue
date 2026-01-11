@@ -450,12 +450,71 @@ const fetchUserServers = async () => {
 
   loadingServers.value = true
   try {
-    const response = await fetch(`${BACKEND_URL}/api/bot-guilds`, {
-      headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
+    const token = localStorage.getItem('discordToken')
+    if (!token) {
+      console.error('No Discord token found')
+      return
+    }
+
+    // Fetch user's guilds from Discord API
+    const response = await fetch('https://discord.com/api/users/@me/guilds', {
+      headers: { 'Authorization': `Bearer ${token}` }
     })
+
     if (response.ok) {
-      const data = await response.json()
-      userServers.value = data.guilds || []
+      const guilds = await response.json()
+      
+      // Fetch guild configs from our backend for each guild
+      const serversWithConfig = await Promise.all(
+        guilds.map(async (guild) => {
+          try {
+            // Get guild config (leveling, economy, welcome, status settings)
+            const configResponse = await fetch(`${BACKEND_URL}/api/guilds/${guild.id}/config`, {
+              headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
+            })
+            const config = configResponse.ok ? await configResponse.json() : {}
+
+            // Construct icon URL
+            const iconUrl = guild.icon 
+              ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
+              : 'https://discord.com/assets/default-avatar-default.png'
+
+            return {
+              id: guild.id,
+              name: guild.name,
+              icon: iconUrl,
+              memberCount: guild.approximate_member_count || 0,
+              systemsActive: !!(config.systems_active || config.leveling || config.economy || config.welcome),
+              leveling: config.leveling || false,
+              economy: config.economy || false,
+              welcome: config.welcome || false,
+              status: config.status || false
+            }
+          } catch (err) {
+            console.error(`Error fetching config for guild ${guild.id}:`, err)
+            // Return basic guild info if config fetch fails
+            const iconUrl = guild.icon 
+              ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
+              : 'https://discord.com/assets/default-avatar-default.png'
+            
+            return {
+              id: guild.id,
+              name: guild.name,
+              icon: iconUrl,
+              memberCount: guild.approximate_member_count || 0,
+              systemsActive: false,
+              leveling: false,
+              economy: false,
+              welcome: false,
+              status: false
+            }
+          }
+        })
+      )
+      
+      userServers.value = serversWithConfig
+    } else {
+      console.error('Failed to fetch guilds from Discord API')
     }
   } catch (err) {
     console.error('Error fetching servers:', err)
