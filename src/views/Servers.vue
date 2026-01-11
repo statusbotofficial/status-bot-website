@@ -32,10 +32,32 @@
           </div>
           <div class="server-name">{{ server.name || "Unnamed Server" }}</div>
           <button
-            class="server-button view"
+            v-if="server.buttonType === 'no-access'"
+            class="server-button no-access"
+            disabled
+          >
+            No Access
+          </button>
+          <button
+            v-else-if="server.buttonType === 'configure'"
+            class="server-button configure"
             @click.stop="selectServer(server)"
           >
             Configure
+          </button>
+          <button
+            v-else-if="server.buttonType === 'view'"
+            class="server-button view"
+            @click.stop="selectServer(server)"
+          >
+            View
+          </button>
+          <button
+            v-else-if="server.buttonType === 'invite-bot'"
+            class="server-button invite-bot"
+            @click.stop="inviteBot(server)"
+          >
+            Invite Bot
           </button>
         </div>
       </div>
@@ -320,25 +342,65 @@ const filteredServers = computed(() => {
 
 // Methods
 const loadServers = async () => {
-  if (!authStore.user) {
+  if (!authStore.user || !authStore.discordToken) {
     router.push("/");
     return;
   }
 
   loading.value = true;
   try {
-    const response = await fetch(`${BACKEND_URL}/api/bot-guilds`, {
-      headers: {
-        Authorization: `Bearer ${authStore.discordToken}`,
-      },
+    // Fetch user's guilds from Discord
+    const userGuildsResponse = await fetch("https://discord.com/api/v10/users/@me/guilds", {
+      headers: { Authorization: `Bearer ${authStore.discordToken}` },
     });
 
-    if (!response.ok) throw new Error("Failed to load servers");
+    if (!userGuildsResponse.ok) throw new Error("Failed to fetch user guilds");
 
-    const data = await response.json();
-    servers.value = data.guilds || [];
+    const userGuilds = await userGuildsResponse.json();
+
+    // Fetch bot's guilds from backend
+    const botGuildsResponse = await fetch(`${BACKEND_URL}/api/bot-guilds`);
+    const botData = await botGuildsResponse.json();
+    const botGuildIds = new Set((botData.guilds || []).map(g => g.id));
+
+    // Map user guilds with icon URLs and permissions
+    const MANAGE_GUILD = BigInt(0x20);
+    const mappedServers = userGuilds
+      .map((guild) => {
+        const permissions = BigInt(guild.permissions || 0);
+        const hasManagePermission = (permissions & MANAGE_GUILD) === MANAGE_GUILD;
+        const isBotInGuild = botGuildIds.has(guild.id);
+        
+        // Construct Discord CDN icon URL
+        const iconUrl = guild.icon
+          ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256`
+          : "";
+
+        // Determine button type
+        let buttonType = "no-access";
+        if (hasManagePermission && isBotInGuild) buttonType = "configure";
+        else if (!hasManagePermission && isBotInGuild) buttonType = "view";
+        else if (hasManagePermission && !isBotInGuild) buttonType = "invite-bot";
+
+        return {
+          id: guild.id,
+          name: guild.name,
+          icon: iconUrl,
+          permissions: hasManagePermission,
+          botPresent: isBotInGuild,
+          buttonType,
+          priority: 
+            buttonType === "configure" ? 1 :
+            buttonType === "view" ? 2 :
+            buttonType === "invite-bot" ? 3 : 4,
+        };
+      })
+      .sort((a, b) => a.priority - b.priority);
+
+    servers.value = mappedServers;
   } catch (error) {
     console.error("Error loading servers:", error);
+    servers.value = [];
   } finally {
     loading.value = false;
   }
@@ -353,6 +415,13 @@ const selectServer = async (server) => {
     loadServerOverview(server.id),
     loadLeaderboard(server.id),
   ]);
+};
+
+const inviteBot = (server) => {
+  const DISCORD_CLIENT_ID = "1436123870158520411";
+  const REDIRECT_URI = "https://status-bot.xyz/servers";
+  const BOT_INVITE_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&permissions=8&scope=bot%20applications.commands`;
+  window.open(`${BOT_INVITE_URL}&guild_id=${server.id}`, "_blank");
 };
 
 const loadServerOverview = async (guildId) => {
@@ -511,8 +580,52 @@ onMounted(() => {
   color: #fff;
 }
 
-.server-button:hover {
+.server-button:hover:not(:disabled) {
   background: rgba(81, 112, 255, 0.35);
+}
+
+.server-button.configure {
+  background: rgba(59, 91, 219, 0.2);
+  border-color: #3b5bdb;
+  color: #fff;
+}
+
+.server-button.configure:hover {
+  background: rgba(59, 91, 219, 0.35);
+  box-shadow: 0 4px 12px rgba(59, 91, 219, 0.3);
+}
+
+.server-button.view {
+  background: rgba(128, 128, 128, 0.2);
+  border-color: #808080;
+  color: #fff;
+}
+
+.server-button.view:hover {
+  background: rgba(128, 128, 128, 0.35);
+  box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
+}
+
+.server-button.no-access {
+  background: rgba(220, 53, 69, 0.2);
+  border-color: #dc3545;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.server-button.no-access:hover {
+  background: rgba(220, 53, 69, 0.2);
+}
+
+.server-button.invite-bot {
+  background: rgba(92, 184, 92, 0.2);
+  border-color: #5cb85c;
+  color: #fff;
+}
+
+.server-button.invite-bot:hover {
+  background: rgba(92, 184, 92, 0.35);
+  box-shadow: 0 4px 12px rgba(92, 184, 92, 0.3);
 }
 
 .config-nav-link.active {
