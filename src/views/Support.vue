@@ -538,8 +538,19 @@ onMounted(() => {
 }
 
 .message-content.ai a {
-  color: #8ec5ff;
-  text-decoration: underline;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.message-content.ai a:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
+  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.3);
 }
 
 .support-input-container {

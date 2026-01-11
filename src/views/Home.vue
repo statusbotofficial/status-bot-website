@@ -165,10 +165,10 @@ const discordServerUrl = DISCORD_SERVER_URL
 }
 
 .feature-card {
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-color);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
+  border: 2px solid var(--primary-color);
   padding: 30px;
-  border-radius: 12px;
+  border-radius: 16px;
   text-align: center;
   transition: all 0.3s ease;
 }
