@@ -37,15 +37,15 @@
         <main class="docs-content">
       <div class="docs-section" id="what-is">
         <h2>What is Status Bot?</h2>
-        <p><strong>Status Bot</strong> is a powerful Discord bot designed to help you monitor and track the status of your bots, services, and projects. Whether you're running custom bots, web services, or third-party integrations, Status Bot provides real-time monitoring and automated status updates to your Discord server.</p>
+        <p><strong>Status Bot</strong> is a comprehensive Discord bot designed to enhance your server with user status tracking, member leveling systems, economy mechanics, welcome automation, and powerful server management tools.</p>
         <p>With Status Bot, you can:</p>
         <ul>
-          <li>Monitor multiple bots or services simultaneously</li>
-          <li>Receive instant notifications when status changes occur</li>
-          <li>Track uptime and performance metrics</li>
-          <li>Access comprehensive status history and analytics</li>
-          <li>Customize notifications and update frequency</li>
-          <li>Integrate with your existing Discord workflow</li>
+          <li>Track user statuses (Online, Idle, DND, Offline) with instant notifications</li>
+          <li>Implement a complete leveling system with titles and rewards</li>
+          <li>Create a server economy with custom currency and mini-games</li>
+          <li>Automate welcome messages with customizable embeds</li>
+          <li>Manage multiple servers with per-guild configuration</li>
+          <li>Earn premium features for enhanced capabilities</li>
         </ul>
       </div>
 
@@ -53,10 +53,10 @@
         <h2>Getting Started</h2>
         <p>Follow these steps to set up Status Bot in your Discord server:</p>
         <ul>
-          <li><strong>Invite the Bot:</strong> Click the <code>Invite</code> button on our home page to add Status Bot to your server. You'll need administrator or manage server permissions.</li>
-          <li><strong>Configure Tracking:</strong> Use the available commands to set up which bots or services you want to monitor.</li>
-          <li><strong>Set Notifications:</strong> Choose which channel should receive status updates.</li>
-          <li><strong>Verify Setup:</strong> Run a test command to ensure everything is configured correctly.</li>
+          <li><strong>Invite the Bot:</strong> Use the invite button on our website to add Status Bot to your server. You need administrator or manage server permissions.</li>
+          <li><strong>Enable Systems:</strong> Configure which features you want to use (Status Tracking, Leveling, Economy, Welcome Messages).</li>
+          <li><strong>Customize Settings:</strong> Use slash commands to set up notifications channels, XP rates, currency symbols, and more.</li>
+          <li><strong>Test It Out:</strong> Run commands to verify everything is working correctly for your server.</li>
         </ul>
       </div>
 
@@ -64,196 +64,239 @@
         <h2>Core Features</h2>
         <ul>
           <li>
-            <strong>Real-Time Monitoring:</strong> Status Bot continuously monitors your tracked services and updates status every 30 seconds. Get instant alerts when services go down or come back online.
+            <strong>User Status Tracking:</strong> Monitor user statuses (Online, Idle, DND, Offline) with real-time updates. Get notified instantly when users change status.
           </li>
           <li>
-            <strong>Multi-Service Support:</strong> Track unlimited bots and services with a single Status Bot instance. Perfect for developers managing multiple projects.
+            <strong>XP & Leveling System:</strong> Members earn XP through messages and voice chat. Automatic leveling with custom titles (Newbie, Rookie, Hunter, Assassin, Elite, Apex, Emperor, Omniscient).
           </li>
           <li>
-            <strong>Customizable Alerts:</strong> Configure custom notification channels, mention roles or users, and set alert preferences per service.
+            <strong>Economy System:</strong> Create a server economy with custom currency. Includes daily rewards, streaks, mini-games (Coinflip, Lootbox, Clicker), and per-message earnings.
           </li>
           <li>
-            <strong>Status Dashboard:</strong> Visit our website to see a real-time status overview of all tracked services with detailed metrics.
+            <strong>Welcome Messages:</strong> Customize welcome embeds for new members with images, titles, descriptions, and member goal tracking.
           </li>
           <li>
-            <strong>History Tracking:</strong> Status Bot maintains detailed logs of all incidents and status changes for compliance and analysis.
+            <strong>Server Management:</strong> Per-guild configuration for all features. Enable/disable systems as needed, customize channels and settings.
           </li>
           <li>
-            <strong>Premium Features:</strong> Unlock faster updates, priority processing, and advanced analytics with a Premium subscription.
+            <strong>Premium System:</strong> Unlock exclusive features with premium memberships including enhanced limits and priority support.
           </li>
         </ul>
       </div>
 
       <div class="docs-section" id="command-reference">
+        <h2>Command Reference</h2>
         <p>Status Bot uses slash commands for easy interaction. Here are the main command categories:</p>
         <ul>
           <li>
-            <strong>/track add</strong> - Add a new service or bot to monitor
+            <strong>/status track</strong> - Track a user's status
             <ul>
-              <li>Usage: <code>/track add [name] [url/id]</code></li>
-              <li>Example: <code>/track add "My Bot" https://api.example.com/status</code></li>
+              <li>Usage: <code>/status track [user]</code></li>
+              <li>Get notified when the user changes status</li>
             </ul>
           </li>
           <li>
-            <strong>/track remove</strong> - Remove a service from monitoring
+            <strong>/leveling set</strong> - Configure XP settings
             <ul>
-              <li>Usage: <code>/track remove [service-name]</code></li>
-              <li>Example: <code>/track remove "My Bot"</code></li>
+              <li>Set XP per message and voice time</li>
+              <li>Configure allowed channels</li>
+              <li>Enable/disable for your server</li>
             </ul>
           </li>
           <li>
-            <strong>/track list</strong> - Display all tracked services
+            <strong>/economy set</strong> - Configure economy settings
             <ul>
-              <li>Shows service name, current status, and uptime</li>
+              <li>Set per-message earnings</li>
+              <li>Configure currency symbol</li>
+              <li>Enable/disable mini-games</li>
             </ul>
           </li>
           <li>
-            <strong>/notify channel</strong> - Set the notification channel
+            <strong>/balance</strong> - Check your server currency balance
             <ul>
-              <li>Usage: <code>/notify channel [#channel]</code></li>
-              <li>Status updates will be sent to this channel</li>
+              <li>Usage: <code>/balance [@user]</code></li>
+              <li>View your or another user's balance</li>
             </ul>
           </li>
           <li>
-            <strong>/notify role</strong> - Set a role to mention in notifications
+            <strong>/daily</strong> - Claim daily currency reward
             <ul>
-              <li>Usage: <code>/notify role [role-name]</code></li>
-              <li>The role will be mentioned when status changes occur</li>
+              <li>Claim once per day for currency</li>
+              <li>Streak rewards for consecutive days</li>
             </ul>
           </li>
           <li>
-            <strong>/stats</strong> - View monitoring statistics
+            <strong>/coinflip</strong> - Flip a coin for currency
             <ul>
-              <li>Shows uptime percentage, incident count, and average response time</li>
+              <li>Usage: <code>/coinflip [amount]</code></li>
+              <li>Double or lose your bet</li>
+            </ul>
+          </li>
+          <li>
+            <strong>/welcome set</strong> - Configure welcome messages
+            <ul>
+              <li>Set title, description, and images</li>
+              <li>Configure notification channel</li>
+              <li>Track member goals</li>
             </ul>
           </li>
           <li>
             <strong>/help</strong> - Display command help
             <ul>
-              <li>Shows all available commands and their usage</li>
+              <li>Shows all available commands and usage</li>
             </ul>
           </li>
         </ul>
       </div>
 
       <div class="docs-section" id="setup-monitoring">
-        <p><strong>Step 1: Add a Service</strong></p>
-        <p>Use the <code>/track add</code> command to add a service you want to monitor. You'll need to provide:</p>
+        <h2>Setting Up Systems</h2>
+        <p><strong>Step 1: Enable Leveling System</strong></p>
         <ul>
-          <li>A descriptive name for the service</li>
-          <li>The URL or identifier to monitor (HTTP endpoint, API, or bot ID)</li>
+          <li>Use <code>/leveling set enabled true</code></li>
+          <li>Set XP per message with <code>/leveling set xp_per_message [amount]</code></li>
+          <li>Optionally restrict to specific channels with <code>/leveling set allowed_channels [#channel]</code></li>
         </ul>
-        <p><strong>Step 2: Configure Notifications</strong></p>
-        <p>Set up where and how you want to receive status updates:</p>
+        <p><strong>Step 2: Set Up Economy</strong></p>
         <ul>
-          <li>Use <code>/notify channel</code> to specify a dedicated status channel</li>
-          <li>Use <code>/notify role</code> to mention specific roles during incidents</li>
+          <li>Use <code>/economy set enabled true</code></li>
+          <li>Configure per-message earnings with <code>/economy set per_message [amount]</code></li>
+          <li>Set currency symbol with <code>/economy set currency [symbol]</code></li>
         </ul>
-        <p><strong>Step 3: Verify Configuration</strong></p>
-        <p>Run <code>/track list</code> to see all monitored services and <code>/stats</code> to verify everything is working correctly.</p>
+        <p><strong>Step 3: Configure Welcome Messages</strong></p>
+        <ul>
+          <li>Use <code>/welcome set enabled true</code></li>
+          <li>Set notification channel with <code>/welcome set channel [#channel]</code></li>
+          <li>Customize message with title, description, and images</li>
+        </ul>
+        <p><strong>Step 4: Start Tracking Status</strong></p>
+        <ul>
+          <li>Use <code>/status track [user]</code> to monitor specific users</li>
+          <li>Bot will notify when they change status</li>
+        </ul>
       </div>
 
       <div class="docs-section" id="status-updates">
-        <p>Status Bot provides detailed status information for each monitored service:</p>
+        <h2>Leveling & Progression</h2>
+        <p>The leveling system is designed to reward active members in your server:</p>
         <ul>
-          <li><strong>Online:</strong> Service is running and responding normally</li>
-          <li><strong>Offline:</strong> Service is not responding or is down</li>
-          <li><strong>Degraded:</strong> Service is responding slowly or with errors</li>
-          <li><strong>Maintenance:</strong> Service is in planned maintenance (if supported)</li>
-        </ul>
-        <p>Each status update includes:</p>
-        <ul>
-          <li>Current service status with timestamp</li>
-          <li>Uptime percentage for the past 24 hours</li>
-          <li>Average response time</li>
-          <li>Last change timestamp</li>
+          <li><strong>XP Earn Rate:</strong> Default 10 XP per message, configurable per server</li>
+          <li><strong>Voice Chat:</strong> Members earn XP while in voice channels</li>
+          <li><strong>Premium Multiplier:</strong> Premium members earn 2x XP</li>
+          <li><strong>Automatic Titles:</strong> Users receive titles based on level:
+            <ul>
+              <li>Levels 1-9: NEWBIE</li>
+              <li>Levels 10-24: ROOKIE</li>
+              <li>Levels 25-49: HUNTER</li>
+              <li>Levels 50-99: ASSASSIN</li>
+              <li>Levels 100-149: ELITE</li>
+              <li>Levels 150-249: APEX</li>
+              <li>Levels 250-349: EMPEROR</li>
+              <li>Level 350+: OMNISCIENT</li>
+            </ul>
+          </li>
+          <li><strong>Role Rewards:</strong> Optionally assign roles at certain levels</li>
         </ul>
       </div>
 
       <div class="docs-section" id="premium">
-        <p>Upgrade to a Premium plan to unlock advanced monitoring capabilities:</p>
+        <h2>Premium Features</h2>
+        <p>Upgrade to a Premium membership to unlock advanced features:</p>
         <ul>
-          <li><strong>Faster Updates:</strong> Get status updates every 15 seconds instead of 30 (Premium plan)</li>
-          <li><strong>Priority Processing:</strong> Your services are checked first in the rotation</li>
-          <li><strong>Advanced Analytics:</strong> Detailed charts and analytics for uptime trends</li>
-          <li><strong>Unlimited Services:</strong> Monitor as many services as you need</li>
-          <li><strong>Custom Bot Development:</strong> Get a custom bot tailored to your specific needs</li>
-          <li><strong>Priority Support:</strong> Get faster responses to support tickets</li>
+          <li><strong>2x XP Multiplier:</strong> Earn double XP on messages and voice chat</li>
+          <li><strong>Economy Perks:</strong> Increased daily rewards and bonus mini-game earnings</li>
+          <li><strong>Exclusive Items:</strong> Access to premium-only items and cosmetics</li>
+          <li><strong>Priority Support:</strong> Get faster responses to questions and issues</li>
+          <li><strong>Enhanced Limits:</strong> Increase limits on tracked users and settings</li>
+          <li><strong>Custom Prefix:</strong> Set a custom command prefix for your server (Premium servers)</li>
         </ul>
-        <p>See the <router-link to="/premium">Premium page</router-link> for pricing and plan details.</p>
+        <p>See the <router-link to="/premium">Premium page</router-link> for pricing and membership tiers.</p>
       </div>
 
       <div class="docs-section" id="troubleshooting">
+        <h2>Troubleshooting</h2>
         <p><strong>Bot not responding to commands?</strong></p>
         <ul>
           <li>Ensure Status Bot has permission to send messages in the channel</li>
-          <li>Check that you're using the correct slash command syntax</li>
+          <li>Check that you're using the correct slash command syntax (start with <code>/</code>)</li>
           <li>Verify the bot is online by checking your server member list</li>
         </ul>
-        <p><strong>Services showing as offline when they're actually online?</strong></p>
+        <p><strong>Not earning XP or currency?</strong></p>
         <ul>
-          <li>Verify the URL or identifier is correct and publicly accessible</li>
-          <li>Check firewall rules aren't blocking the monitoring requests</li>
-          <li>Ensure your service has the correct CORS headers if applicable</li>
+          <li>Check if the system is enabled: <code>/leveling set enabled</code> or <code>/economy set enabled</code></li>
+          <li>Verify you're not in a cooldown period (60 second XP cooldown)</li>
+          <li>Ensure the channel isn't excluded from earning (if restrictions are set)</li>
         </ul>
-        <p><strong>Not receiving notifications?</strong></p>
+        <p><strong>Welcome messages not showing?</strong></p>
         <ul>
-          <li>Verify the notification channel is set correctly with <code>/notify channel</code></li>
-          <li>Check that Status Bot has send message permissions in that channel</li>
-          <li>Ensure notifications are enabled for the service with <code>/track list</code></li>
+          <li>Verify the welcome system is enabled with <code>/welcome set enabled</code></li>
+          <li>Check the notification channel is set and bot has permissions</li>
+          <li>Ensure new member join events are being registered</li>
+        </ul>
+        <p><strong>Status tracking not working?</strong></p>
+        <ul>
+          <li>Verify the user is actually in the server</li>
+          <li>Check bot has proper permissions in the channel</li>
+          <li>Make sure notifications channel is configured</li>
         </ul>
         <p><strong>Need more help?</strong></p>
         <p>Visit our <router-link to="/support">Support page</router-link> to get in touch with our team or check the FAQ.</p>
       </div>
 
       <div class="docs-section" id="best-practices">
+        <h2>Best Practices</h2>
         <ul>
-          <li><strong>Use Descriptive Names:</strong> Give your services clear, easy-to-understand names for quick identification</li>
-          <li><strong>Dedicate a Status Channel:</strong> Create a separate channel just for status updates to keep them organized</li>
-          <li><strong>Test Your Setup:</strong> After configuration, manually trigger a test to ensure everything works</li>
-          <li><strong>Monitor Critical Services First:</strong> Start with your most important services and expand gradually</li>
-          <li><strong>Set Appropriate Thresholds:</strong> Configure response time thresholds that match your service expectations</li>
-          <li><strong>Regular Reviews:</strong> Periodically review your monitoring configuration to ensure it still meets your needs</li>
-          <li><strong>Enable Backups:</strong> Consider Premium for critical services to get more frequent status checks</li>
+          <li><strong>Enable Systems Gradually:</strong> Start with one system (e.g., leveling) and expand as you get comfortable with configuration</li>
+          <li><strong>Customize for Your Community:</strong> Adjust XP rates, currency earnings, and messages to fit your server's size and culture</li>
+          <li><strong>Use Dedicated Channels:</strong> Create separate channels for welcome messages and notifications to keep the server organized</li>
+          <li><strong>Test Commands:</strong> After configuration, test commands in a private channel to ensure everything works</li>
+          <li><strong>Set Reasonable XP Rates:</strong> Higher rates can cause members to level up too quickly; find the right balance</li>
+          <li><strong>Regular Configuration Reviews:</strong> Periodically review your settings to ensure they still meet your server's needs</li>
+          <li><strong>Communicate Changes:</strong> Let members know when you enable new systems or change rates</li>
+          <li><strong>Consider Premium:</strong> Use Premium for enhanced features if you want to reward your most active members</li>
         </ul>
       </div>
 
       <div class="docs-section" id="api">
-        <p>For developers interested in building integrations, Status Bot exposes a REST API for programmatic access to status data:</p>
+        <h2>API Information</h2>
+        <p>Status Bot exposes a REST API for integration with other services and monitoring platforms:</p>
         <ul>
           <li><strong>Base URL:</strong> <code>https://status-bot-backend.onrender.com/api</code></li>
-          <li><strong>Status Endpoint:</strong> <code>GET /api/bot-stats</code> - Returns current bot statistics</li>
-          <li><strong>Response Format:</strong> JSON with status, uptime, and performance metrics</li>
+          <li><strong>Bot Stats Endpoint:</strong> <code>GET /api/bot-stats</code> - Returns bot uptime and status information</li>
+          <li><strong>Response Format:</strong> JSON with status, uptime percentage, and last update timestamp</li>
+          <li><strong>Authentication:</strong> Available with authorization headers for verified requests</li>
         </ul>
-        <p>For custom integrations or API documentation, contact us via the <router-link to="/support">Support page</router-link>.</p>
+        <p>For custom integrations, webhooks, or detailed API documentation, contact us via the <router-link to="/support">Support page</router-link>.</p>
       </div>
 
       <div class="docs-section" id="faq">
-        <p><strong>Q: How often does Status Bot check services?</strong></p>
-        <p>A: By default, services are checked every 30 seconds. With Premium, this can be reduced to 15 seconds for faster updates.</p>
+        <h2>FAQ</h2>
+        <p><strong>Q: How much XP do I earn per message?</strong></p>
+        <p>A: The default is 10 XP per message, but server admins can customize this. Premium members earn 2x XP.</p>
         
-        <p><strong>Q: Can I monitor services outside of Discord?</strong></p>
-        <p>A: Status Bot integrates with Discord, so notifications are sent to your Discord server. However, you can access the status dashboard on our website anytime.</p>
+        <p><strong>Q: How do I check my level and XP?</strong></p>
+        <p>A: Use the <code>/leaderboard</code> command to see server rankings or check your profile for personal stats.</p>
         
-        <p><strong>Q: Is there a limit to how many services I can monitor?</strong></p>
-        <p>A: Free plan includes monitoring for multiple services. Premium plans offer unlimited service monitoring.</p>
+        <p><strong>Q: Can I earn currency while AFK?</strong></p>
+        <p>A: The bot requires actual message activity to earn currency. Just being in a voice channel earns voice XP but not economy rewards.</p>
         
-        <p><strong>Q: What happens if my service is down?</strong></p>
-        <p>A: Status Bot will immediately send a notification to your configured channel and mark the service as offline in the status dashboard.</p>
+        <p><strong>Q: What can I do with my currency?</strong></p>
+        <p>A: Use currency for mini-games like Coinflip, Lootbox, and Clicker. Premium members have access to additional cosmetics and items.</p>
         
-        <p><strong>Q: Can I track historical uptime data?</strong></p>
-        <p>A: Yes, Status Bot maintains 30 days of historical data. Premium plans include extended history retention.</p>
+        <p><strong>Q: Do I lose XP or currency if I leave the server?</strong></p>
+        <p>A: Your data is stored per-guild. If you leave and rejoin, your progress will be there if the data hasn't been purged.</p>
         
-        <p><strong>Q: Do I need to configure anything on my service to be monitored?</strong></p>
-        <p>A: For HTTP endpoints, Status Bot checks if the URL responds with a 2xx status code. For other integrations, specific configuration may be needed.</p>
+        <p><strong>Q: How do status notifications work?</strong></p>
+        <p>A: When you track a user, the bot monitors their status. Any change (online, idle, DND, offline) triggers a notification in your configured channel.</p>
       </div>
 
       <div class="docs-section" id="contact">
-        <p>Need help or have questions? We're here to help!</p>
+        <h2>Contact & Support</h2>
+        <p>Need help, have questions, or want to report a bug? We're here to help!</p>
         <ul>
-          <li>Visit our <router-link to="/support">Support page</router-link> for live chat support</li>
-          <li>Join our <a href="https://discord.gg/statusbot" target="_blank">Discord server</a> for community help</li>
-          <li>Check out the <router-link to="/commands">Commands page</router-link> for detailed command documentation</li>
+          <li>Visit our <router-link to="/support">Support page</router-link> for live chat and AI assistance</li>
+          <li>Join our <a href="https://discord.gg/statusbot" target="_blank">Discord server</a> for community help and updates</li>
+          <li>Check the <router-link to="/commands">Commands page</router-link> for detailed command documentation</li>
           <li>Review our <router-link to="/privacy">Privacy Policy</router-link> and <router-link to="/terms">Terms of Service</router-link></li>
         </ul>
       </div>
