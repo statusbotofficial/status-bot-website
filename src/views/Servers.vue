@@ -788,22 +788,56 @@ const loadAllSettings = async (guildId) => {
 
     if (levelingRes.ok) {
       const data = await levelingRes.json()
-      Object.assign(levelingSettings, data.settings || {})
+      // Convert snake_case from backend to camelCase for frontend
+      Object.assign(levelingSettings, {
+        enabled: data.enabled || false,
+        xpPerMessage: data.xp_per_message || 10,
+        voiceXp: data.vc_xp_per_minute || 2,
+        levelUpMessage: data.level_up_message || "🎉 {user} reached level {level}!",
+        levelUpChannel: data.level_up_channel || '',
+        allowedChannels: Array.isArray(data.allowed_xp_channels) ? data.allowed_xp_channels.join(', ') : ''
+      })
     }
     
     if (economyRes.ok) {
       const data = await economyRes.json()
-      Object.assign(economySettings, data.settings || {})
+      // Convert snake_case from backend to camelCase for frontend
+      Object.assign(economySettings, {
+        enabled: data.enabled || false,
+        currencyPerMessage: data.per_message || 5,
+        currencySymbol: data.currency_symbol || '💰',
+        startingAmount: data.start || 500
+      })
     }
     
     if (statusRes.ok) {
       const data = await statusRes.json()
-      Object.assign(statusSettings, data.settings || {})
+      // Convert snake_case from backend to camelCase for frontend
+      Object.assign(statusSettings, {
+        enabled: data.enabled || false,
+        userToTrack: data.user_id || '',
+        trackingChannel: data.channel_id || '',
+        delay: data.delay_seconds || 0,
+        useEmbed: data.use_embed || false,
+        offlineMessage: data.offline_message || 'User is offline'
+      })
     }
     
     if (welcomeRes.ok) {
       const data = await welcomeRes.json()
-      Object.assign(welcomeSettings, data.settings || {})
+      // Convert snake_case from backend to camelCase for frontend
+      Object.assign(welcomeSettings, {
+        enabled: data.enabled || false,
+        useEmbed: data.use_embed || false,
+        welcomeChannel: data.welcome_channel || '',
+        messageText: data.message_text || 'Welcome to {server}, {user}!',
+        embedTitle: data.embed_title || 'Welcome!',
+        embedDescription: data.embed_description || 'Welcome to {server}! We\'re glad to have you here.',
+        embedFooter: data.embed_footer || 'Thanks for joining!',
+        embedThumbnail: data.embed_thumbnail || '',
+        embedColor: data.embed_color || '#5170ff',
+        embedAuthor: data.embed_author || ''
+      })
     }
   } catch (error) {
     // Silently fail - use default values
