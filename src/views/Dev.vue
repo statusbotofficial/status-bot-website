@@ -137,6 +137,9 @@ const notificationMessage = ref('')
 const sendNotificationToAll = ref(false)
 const sendingNotification = ref(false)
 
+// Billing state
+const billingHistory = ref([])
+
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
 })
