@@ -324,6 +324,23 @@ onMounted(() => {
   scroll-behavior: smooth;
 }
 
+.support-chat-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.support-chat-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.support-chat-area::-webkit-scrollbar-thumb {
+  background: rgba(81, 112, 255, 0.6);
+  border-radius: 4px;
+}
+
+.support-chat-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(81, 112, 255, 0.8);
+}
+
 .chat-welcome {
   display: flex;
   align-items: center;
