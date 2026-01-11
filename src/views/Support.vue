@@ -18,9 +18,12 @@
           <p v-if="!isLoggedIn" class="login-required">Please log in to use the support chat</p>
         </div>
 
-        <div v-if="isLoggedIn" class="support-chat-box">
+        <div class="support-chat-box">
           <div class="support-chat-area" id="chatArea">
-            <div v-if="messages.length === 0" class="chat-welcome">
+            <div v-if="!isLoggedIn" class="chat-login-message">
+              <p>👤 Please log in to start chatting with our AI support</p>
+            </div>
+            <div v-else-if="messages.length === 0" class="chat-welcome">
               <p>👋 Welcome to Status Bot Support! Ask me anything about Status Bot, and I'll help you out.</p>
             </div>
             <div v-for="(msg, idx) in messages" :key="idx" class="chat-message" :class="msg.sender">
@@ -31,12 +34,14 @@
           <div class="support-input-container">
             <textarea 
               v-model="inputMessage"
-              class="support-input" 
+              class="support-input"
+              :class="{ disabled: !isLoggedIn }"
               placeholder="Ask anything"
               rows="1"
-              @keydown.enter.prevent="!$event.shiftKey && sendMessage()"
+              :disabled="!isLoggedIn"
+              @keydown.enter.prevent="!$event.shiftKey && isLoggedIn && sendMessage()"
             ></textarea>
-            <button class="support-send-btn" @click="sendMessage" :disabled="isLoading || !inputMessage.trim()" title="Send message">
+            <button class="support-send-btn" @click="sendMessage" :disabled="!isLoggedIn || isLoading || !inputMessage.trim()" title="Send message">
               <svg viewBox="0 0 24 24" fill="currentColor" style="width: 100%; height: 100%;">
                 <path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 C22.9702544,11.6889879 22.9702544,11.6889879 22.9702544,11.6889879 L4.13399899,1.1543831 C3.34915502,0.9051845 2.40734225,1.0122819 1.77946707,1.4835739 C0.994623095,2.10604706 0.837654326,3.0486314 1.15159189,3.99701575 L3.03521743,10.4380088 C3.03521743,10.5451061 3.19218622,10.7022035 3.50612381,10.7022035 L16.6915026,11.4876905 C16.6915026,11.4876905 17.1624089,11.4876905 17.1624089,11.4876905 C17.1624089,11.4876905 17.9268649,11.4876905 17.9268649,10.7024851 L17.9268649,12.6315722 C17.9268649,12.6315722 17.1624089,12.4744748 16.6915026,12.4744748 Z"/>
               </svg>
@@ -44,8 +49,37 @@
           </div>
         </div>
 
-        <div v-else class="login-prompt">
-          <p>You must be logged in to use the support chat.</p>
+        <!-- Support Links -->
+        <div class="support-links-section">
+          <div class="support-links-grid">
+            <div class="support-link-card">
+              <h3>💬 Discord Server</h3>
+              <p>Join our community Discord server for support and discussions.</p>
+              <a href="https://discord.gg/Kd2MckVxED" target="_blank" class="link-btn">Join Discord</a>
+            </div>
+            <div class="support-link-card">
+              <h3>📧 Email Support</h3>
+              <p>Need direct assistance? Email us for priority support.</p>
+              <a href="mailto:support@status-bot.xyz" class="link-btn">Email Us</a>
+            </div>
+            <div class="support-link-card">
+              <h3>📚 Documentation</h3>
+              <p>Read our comprehensive documentation and guides.</p>
+              <a href="https://docs.status-bot.xyz" target="_blank" class="link-btn">View Docs</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+          <h2>Frequently Asked Questions</h2>
+          <div class="faq-items">
+            <div class="faq-item" v-for="item in faqs" :key="item.id" @click="item.open = !item.open">
+              <h4>{{ item.question }}</h4>
+              <p v-if="item.open" class="answer">{{ item.answer }}</p>
+              <span class="toggle">{{ item.open ? '−' : '+' }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -63,6 +97,33 @@ const messages = ref([])
 const inputMessage = ref('')
 const isLoading = ref(false)
 const chatAreaEl = ref(null)
+
+const faqs = ref([
+  {
+    id: 1,
+    question: 'How do I invite Status Bot to my server?',
+    answer: 'Click the "Invite" button on the navigation menu. You\'ll be taken to Discord\'s authorization page where you can select which server to add the bot to.',
+    open: false
+  },
+  {
+    id: 2,
+    question: 'Is Status Bot free?',
+    answer: 'Yes! Status Bot has a free tier with core features including status tracking, leveling system, and economy commands. We also offer a Premium plan for additional features and perks.',
+    open: false
+  },
+  {
+    id: 3,
+    question: 'How do I report a bug?',
+    answer: 'Please report bugs in our Discord server or via the support chat. Include as much detail as possible about what happened and how to reproduce the issue.',
+    open: false
+  },
+  {
+    id: 4,
+    question: 'How do I get help with a command?',
+    answer: 'You can use the /help command in your Discord server to view all available commands. You can also check our documentation or ask in the support chat.',
+    open: false
+  }
+])
 
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 const CHAT_STORAGE_KEY = 'supportChatHistory'
@@ -104,6 +165,8 @@ const scrollChatToBottom = () => {
 
 // Send message
 const sendMessage = async () => {
+  if (!isLoggedIn.value) return
+  
   const text = inputMessage.value.trim()
   if (!text || isLoading.value) return
 
@@ -239,7 +302,7 @@ onMounted(() => {
 
 .support-chat-box {
   width: 100%;
-  background: linear-gradient(135deg, rgba(40, 50, 100, 0.6) 0%, rgba(60, 70, 140, 0.4) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
   border: 2px solid var(--primary-color);
   border-radius: 16px;
   padding: 40px;
@@ -269,6 +332,158 @@ onMounted(() => {
   text-align: center;
   color: var(--text-secondary);
   font-size: 16px;
+}
+
+.chat-login-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.support-links-section {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.support-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  width: 100%;
+}
+
+.support-link-card {
+  background-color: rgba(81, 112, 255, 0.05);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.support-link-card:hover {
+  background-color: rgba(81, 112, 255, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(81, 112, 255, 0.15);
+}
+
+.support-link-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.support-link-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.link-btn {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+  border: 2px solid var(--primary-color);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.link-btn:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
+  box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
+}
+
+.faq-section {
+  width: 100%;
+  margin-top: 60px;
+}
+
+.faq-section h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+.faq-items {
+  display: grid;
+  gap: 15px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background-color: rgba(81, 112, 255, 0.05);
+  border: 2px solid var(--primary-color);
+  padding: 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.faq-item:hover {
+  background-color: rgba(81, 112, 255, 0.1);
+}
+
+.faq-item h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+.faq-item .toggle {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 18px;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.faq-item .answer {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(81, 112, 255, 0.3);
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.support-input {
+  flex: 1;
+  background-color: rgba(81, 112, 255, 0.1);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 12px 18px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  font-family: 'Fredoka', inherit;
+  resize: none;
+  max-height: 100px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.support-input.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .chat-message {
@@ -398,6 +613,14 @@ onMounted(() => {
   .support-chat-area {
     height: 280px;
   }
+
+  .support-links-grid {
+    gap: 20px;
+  }
+
+  .faq-section h2 {
+    font-size: 28px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -445,6 +668,43 @@ onMounted(() => {
     height: 48px;
     width: 48px;
     font-size: 22px;
+  }
+
+  .support-links-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .support-link-card {
+    padding: 20px;
+  }
+
+  .faq-section {
+    margin-top: 40px;
+  }
+
+  .faq-section h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .faq-item {
+    padding: 18px;
+  }
+
+  .faq-item h4 {
+    font-size: 15px;
+  }
+
+  .faq-item .toggle {
+    right: 15px;
+    top: 15px;
+  }
+
+  .faq-item .answer {
+    font-size: 13px;
+    margin-top: 12px;
+    padding-top: 12px;
   }
 }
 
@@ -497,6 +757,60 @@ onMounted(() => {
 
   .login-prompt {
     padding: 40px 15px;
+  }
+
+  .support-links-grid {
+    gap: 15px;
+  }
+
+  .support-link-card {
+    padding: 18px;
+  }
+
+  .support-link-card h3 {
+    font-size: 16px;
+  }
+
+  .support-link-card p {
+    font-size: 13px;
+  }
+
+  .link-btn {
+    padding: 9px 18px;
+    font-size: 13px;
+  }
+
+  .faq-section {
+    margin-top: 30px;
+  }
+
+  .faq-section h2 {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+
+  .faq-items {
+    gap: 12px;
+  }
+
+  .faq-item {
+    padding: 16px;
+  }
+
+  .faq-item h4 {
+    font-size: 14px;
+  }
+
+  .faq-item .toggle {
+    right: 12px;
+    top: 12px;
+    font-size: 16px;
+  }
+
+  .faq-item .answer {
+    font-size: 12px;
+    margin-top: 10px;
+    padding-top: 10px;
   }
 }
 </style>
