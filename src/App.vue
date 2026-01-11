@@ -127,8 +127,6 @@ const toggleNotifications = () => {
   if (showNotifications.value) {
     // Refresh notifications when panel opens
     loadNotifications()
-    // Mark all notifications as read
-    markNotificationsAsRead()
   }
 }
 
@@ -202,9 +200,16 @@ const loadNotifications = async () => {
         const data = await response.json()
         notifications.value = (data.notifications || []).map(n => ({
           ...n,
-          timestamp: new Date(n.createdAt)
+          timestamp: new Date(n.createdAt),
+          read: false  // Initially unread from backend
         }))
         saveNotifications()
+        
+        // Now mark them as read since user opened the panel
+        setTimeout(() => {
+          markNotificationsAsRead()
+        }, 100)
+        
         return
       }
     }
@@ -221,6 +226,11 @@ const loadNotifications = async () => {
         ...n,
         timestamp: new Date(n.timestamp)
       }))
+      
+      // Mark as read after loading
+      setTimeout(() => {
+        markNotificationsAsRead()
+      }, 100)
     }
   } catch (err) {
     console.error('Error loading notifications from localStorage:', err)
