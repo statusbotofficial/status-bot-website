@@ -68,7 +68,7 @@
     <!-- Server Config View -->
     <div v-else class="server-config-view">
       <div class="config-header">
-        <button class="back-btn" @click="selectedServer = null">Back</button>
+        <button class="back-btn" @click="selectedServer = null">← Back</button>
         <h2 class="config-title">{{ selectedServer.name }}</h2>
       </div>
 
@@ -143,25 +143,170 @@
           <!-- Leveling -->
           <section v-else-if="activeSection === 'leveling'" class="config-section">
             <h3>Leveling Settings</h3>
-            <p class="placeholder">Leveling configuration coming soon...</p>
+            <div class="settings-panel">
+              <div class="setting-group">
+                <div class="setting-label">
+                  <label>Enable Leveling</label>
+                  <toggle-switch v-model="levelingSettings.enabled" />
+                </div>
+                <p class="setting-desc">Turn the leveling system on or off.</p>
+              </div>
+
+              <div class="setting-group">
+                <label>XP per message</label>
+                <input v-model.number="levelingSettings.xpPerMessage" type="number" min="1" class="input-field" />
+                <p class="setting-desc">XP is earned every 30 seconds.</p>
+              </div>
+
+              <div class="setting-group">
+                <label>Voice chat XP</label>
+                <input v-model.number="levelingSettings.voiceXp" type="number" min="1" class="input-field" />
+                <p class="setting-desc">XP earned after leaving voice chat.</p>
+              </div>
+
+              <div class="setting-group">
+                <label>Level up message</label>
+                <textarea v-model="levelingSettings.levelUpMessage" class="input-field" placeholder="e.g., 🎉 {user} has reached Level {level}!" />
+                <p class="setting-desc">Message sent when user levels up. Use {user} and {level} as variables.</p>
+              </div>
+
+              <div class="button-group">
+                <button @click="saveLevelingSettings" class="save-btn">Save</button>
+                <button @click="resetLevelingSettings" class="reset-btn">Reset</button>
+              </div>
+            </div>
           </section>
 
           <!-- Economy -->
           <section v-else-if="activeSection === 'economy'" class="config-section">
-            <h3>Economy Settings</h3>
-            <p class="placeholder">Economy configuration coming soon...</p>
+            <h3>Economy System</h3>
+            <div class="settings-panel">
+              <div class="setting-group">
+                <div class="setting-label">
+                  <label>Enable Economy</label>
+                  <toggle-switch v-model="economySettings.enabled" />
+                </div>
+                <p class="setting-desc">Turn the economy system on or off.</p>
+              </div>
+
+              <div class="setting-group">
+                <label>Currency gained per message</label>
+                <input v-model.number="economySettings.currencyPerMessage" type="number" min="1" class="input-field" />
+                <p class="setting-desc">Amount of currency users gain for sending a message.</p>
+              </div>
+
+              <div class="setting-group">
+                <label>Currency symbol</label>
+                <input v-model="economySettings.currencySymbol" type="text" class="input-field" placeholder="e.g., 💰" />
+                <p class="setting-desc">Symbol or emoji to represent your currency.</p>
+              </div>
+
+              <div class="setting-group">
+                <label>Starting amount</label>
+                <input v-model.number="economySettings.startingAmount" type="number" min="0" class="input-field" />
+                <p class="setting-desc">Initial currency amount new users receive.</p>
+              </div>
+
+              <div class="button-group">
+                <button @click="saveEconomySettings" class="save-btn">Save</button>
+                <button @click="resetEconomyButton" class="reset-btn">Reset All Balances</button>
+              </div>
+            </div>
           </section>
 
           <!-- Status Tracking -->
           <section v-else-if="activeSection === 'status-tracking'" class="config-section">
             <h3>Status Tracking</h3>
-            <p class="placeholder">Status tracking configuration coming soon...</p>
+            <div class="settings-panel">
+              <div class="setting-group">
+                <div class="setting-label">
+                  <label>Enable Status Tracking</label>
+                  <toggle-switch v-model="statusSettings.enabled" />
+                </div>
+                <p class="setting-desc">Turn status tracking on or off.</p>
+              </div>
+
+              <div class="setting-group">
+                <label>Delay (seconds)</label>
+                <input v-model.number="statusSettings.delay" type="number" min="1" class="input-field" />
+                <p class="setting-desc">How often to check and update the status message.</p>
+              </div>
+
+              <div class="setting-group">
+                <label>Default offline message</label>
+                <input v-model="statusSettings.offlineMessage" type="text" class="input-field" placeholder="User is currently offline" />
+                <p class="setting-desc">Message displayed when the tracked user is offline.</p>
+              </div>
+
+              <div class="setting-group">
+                <div class="setting-label">
+                  <label>Automatic updates</label>
+                  <toggle-switch v-model="statusSettings.automatic" />
+                </div>
+                <p class="setting-desc">Automatically update the status message.</p>
+              </div>
+
+              <div class="setting-group">
+                <div class="setting-label">
+                  <label>Use embed format</label>
+                  <toggle-switch v-model="statusSettings.useEmbed" />
+                </div>
+                <p class="setting-desc">Show status in embed format (fancier) or plain text.</p>
+              </div>
+
+              <div class="button-group">
+                <button @click="saveStatusSettings" class="save-btn">Save</button>
+                <button @click="resetStatusSettings" class="reset-btn">Reset</button>
+              </div>
+            </div>
           </section>
 
           <!-- Welcome -->
           <section v-else-if="activeSection === 'welcome'" class="config-section">
-            <h3>Welcome Settings</h3>
-            <p class="placeholder">Welcome message configuration coming soon...</p>
+            <h3>Welcome Messages</h3>
+            <div class="settings-panel">
+              <div class="setting-group">
+                <div class="setting-label">
+                  <label>Enable Welcome Messages</label>
+                  <toggle-switch v-model="welcomeSettings.enabled" />
+                </div>
+                <p class="setting-desc">Turn welcome messages on or off.</p>
+              </div>
+
+              <div class="setting-group">
+                <div class="setting-label">
+                  <label>Use embed format</label>
+                  <toggle-switch v-model="welcomeSettings.useEmbed" />
+                </div>
+                <p class="setting-desc">Send as an embed or plain text message.</p>
+              </div>
+
+              <div v-if="!welcomeSettings.useEmbed" class="setting-group">
+                <label>Message text</label>
+                <textarea v-model="welcomeSettings.messageText" class="input-field" placeholder="Welcome to {server}, {user}!" />
+                <p class="setting-desc">Message sent to new members. Use {user} and {server} as variables.</p>
+              </div>
+
+              <div v-if="welcomeSettings.useEmbed" class="setting-group">
+                <label>Embed title</label>
+                <input v-model="welcomeSettings.embedTitle" type="text" class="input-field" placeholder="Welcome!" />
+              </div>
+
+              <div v-if="welcomeSettings.useEmbed" class="setting-group">
+                <label>Description</label>
+                <textarea v-model="welcomeSettings.embedDescription" class="input-field" placeholder="Welcome to {server}! We're glad to have you here." />
+              </div>
+
+              <div v-if="welcomeSettings.useEmbed" class="setting-group">
+                <label>Footer text</label>
+                <input v-model="welcomeSettings.embedFooter" type="text" class="input-field" placeholder="Thanks for joining!" />
+              </div>
+
+              <div class="button-group">
+                <button @click="saveWelcomeSettings" class="save-btn">Save</button>
+                <button @click="resetWelcomeSettings" class="reset-btn">Reset</button>
+              </div>
+            </div>
           </section>
         </main>
       </div>
@@ -170,9 +315,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import ToggleSwitch from '../components/ToggleSwitch.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -198,6 +344,38 @@ const sections = [
   { id: 'status-tracking', label: 'Status Tracking' },
   { id: 'welcome', label: 'Welcome' },
 ]
+
+// Settings state
+const levelingSettings = reactive({
+  enabled: true,
+  xpPerMessage: 10,
+  voiceXp: 10,
+  levelUpMessage: '🎉 {user} has reached Level {level}!',
+})
+
+const economySettings = reactive({
+  enabled: true,
+  currencyPerMessage: 10,
+  currencySymbol: '💰',
+  startingAmount: 500,
+})
+
+const statusSettings = reactive({
+  enabled: true,
+  delay: 60,
+  offlineMessage: 'User is currently offline',
+  automatic: true,
+  useEmbed: false,
+})
+
+const welcomeSettings = reactive({
+  enabled: true,
+  useEmbed: false,
+  messageText: 'Welcome to {server}, {user}!',
+  embedTitle: 'Welcome!',
+  embedDescription: 'Welcome to {server}! We\'re glad to have you here.',
+  embedFooter: 'Thanks for joining!',
+})
 
 // Computed
 const filteredServers = computed(() => {
@@ -271,7 +449,8 @@ const selectServer = async (server) => {
   activeSection.value = 'overview'
   await Promise.all([
     loadOverviewData(server.id),
-    loadLeaderboardData(server.id)
+    loadLeaderboardData(server.id),
+    loadSettings(server.id),
   ])
 }
 
@@ -307,6 +486,168 @@ const loadLeaderboardData = async (guildId) => {
   } finally {
     leaderboardLoading.value = false
   }
+}
+
+const loadSettings = async (guildId) => {
+  try {
+    const [levelingRes, economyRes, statusRes, welcomeRes] = await Promise.all([
+      fetch(`${BACKEND_URL}/api/leveling/${guildId}/settings`, {
+        headers: { Authorization: `Bearer ${authStore.token}` }
+      }),
+      fetch(`${BACKEND_URL}/api/economy/${guildId}/settings`, {
+        headers: { Authorization: `Bearer ${authStore.token}` }
+      }),
+      fetch(`${BACKEND_URL}/api/status/${guildId}/settings`, {
+        headers: { Authorization: `Bearer ${authStore.token}` }
+      }),
+      fetch(`${BACKEND_URL}/api/welcome/${guildId}/settings`, {
+        headers: { Authorization: `Bearer ${authStore.token}` }
+      }),
+    ])
+
+    if (levelingRes.ok) {
+      const data = await levelingRes.json()
+      Object.assign(levelingSettings, data.settings || {})
+    }
+    if (economyRes.ok) {
+      const data = await economyRes.json()
+      Object.assign(economySettings, data.settings || {})
+    }
+    if (statusRes.ok) {
+      const data = await statusRes.json()
+      Object.assign(statusSettings, data.settings || {})
+    }
+    if (welcomeRes.ok) {
+      const data = await welcomeRes.json()
+      Object.assign(welcomeSettings, data.settings || {})
+    }
+  } catch (error) {
+    console.error('Error loading settings:', error)
+  }
+}
+
+const saveLevelingSettings = async () => {
+  if (!selectedServer.value) return
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/leveling/${selectedServer.value.id}/settings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify(levelingSettings)
+    })
+    if (response.ok) {
+      alert('Leveling settings saved!')
+    } else {
+      alert('Failed to save settings')
+    }
+  } catch (error) {
+    console.error('Error saving settings:', error)
+    alert('Error saving settings')
+  }
+}
+
+const saveEconomySettings = async () => {
+  if (!selectedServer.value) return
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/economy/${selectedServer.value.id}/settings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify(economySettings)
+    })
+    if (response.ok) {
+      alert('Economy settings saved!')
+    } else {
+      alert('Failed to save settings')
+    }
+  } catch (error) {
+    console.error('Error saving settings:', error)
+    alert('Error saving settings')
+  }
+}
+
+const saveStatusSettings = async () => {
+  if (!selectedServer.value) return
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify(statusSettings)
+    })
+    if (response.ok) {
+      alert('Status tracking settings saved!')
+    } else {
+      alert('Failed to save settings')
+    }
+  } catch (error) {
+    console.error('Error saving settings:', error)
+    alert('Error saving settings')
+  }
+}
+
+const saveWelcomeSettings = async () => {
+  if (!selectedServer.value) return
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/settings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify(welcomeSettings)
+    })
+    if (response.ok) {
+      alert('Welcome settings saved!')
+    } else {
+      alert('Failed to save settings')
+    }
+  } catch (error) {
+    console.error('Error saving settings:', error)
+    alert('Error saving settings')
+  }
+}
+
+const resetLevelingSettings = () => {
+  Object.assign(levelingSettings, {
+    enabled: true,
+    xpPerMessage: 10,
+    voiceXp: 10,
+    levelUpMessage: '🎉 {user} has reached Level {level}!',
+  })
+}
+
+const resetEconomyButton = () => {
+  if (confirm('Reset all users\' balances to the starting amount?')) {
+    // Call reset API
+  }
+}
+
+const resetStatusSettings = () => {
+  Object.assign(statusSettings, {
+    enabled: true,
+    delay: 60,
+    offlineMessage: 'User is currently offline',
+    automatic: true,
+    useEmbed: false,
+  })
+}
+
+const resetWelcomeSettings = () => {
+  Object.assign(welcomeSettings, {
+    enabled: true,
+    useEmbed: false,
+    messageText: 'Welcome to {server}, {user}!',
+    embedTitle: 'Welcome!',
+    embedDescription: 'Welcome to {server}! We\'re glad to have you here.',
+    embedFooter: 'Thanks for joining!',
+  })
 }
 
 const inviteBot = (server) => {
@@ -586,8 +927,19 @@ onMounted(() => {
 .config-section h3 {
   font-size: 20px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.config-section h3::before {
+  content: '';
+  width: 4px;
+  height: 24px;
+  background: #5170ff;
+  border-radius: 2px;
 }
 
 .loading,
@@ -595,11 +947,6 @@ onMounted(() => {
   text-align: center;
   color: #999;
   padding: 40px;
-}
-
-.placeholder {
-  color: #999;
-  font-style: italic;
 }
 
 .user-list,
@@ -692,5 +1039,111 @@ onMounted(() => {
 
 .balance-stat .value {
   color: #4ade80;
+}
+
+/* Settings Panel */
+.settings-panel {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.setting-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.setting-label label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+}
+
+.setting-group label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+}
+
+.setting-desc {
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+  margin: 0;
+}
+
+.input-field {
+  padding: 10px 12px;
+  background: rgba(81, 112, 255, 0.2);
+  border: 2px solid #5170ff;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-field:hover {
+  background: rgba(81, 112, 255, 0.3);
+}
+
+.input-field:focus {
+  box-shadow: 0 0 12px rgba(81, 112, 255, 0.4);
+}
+
+.input-field::placeholder {
+  color: #666;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(81, 112, 255, 0.2);
+}
+
+.save-btn {
+  flex: 1;
+  padding: 12px 20px;
+  background: rgba(81, 112, 255, 0.2);
+  border: 2px solid #5170ff;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-btn:hover {
+  background: rgba(81, 112, 255, 0.35);
+}
+
+.reset-btn {
+  padding: 12px 20px;
+  background: rgba(220, 53, 69, 0.2);
+  border: 2px solid #dc3545;
+  border-radius: 8px;
+  color: #dc3545;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+  background: rgba(220, 53, 69, 0.35);
 }
 </style>
