@@ -465,6 +465,7 @@ const fetchUserServers = async () => {
       const guilds = await response.json()
       
       // Fetch guild configs from our backend for each guild
+      // Only include guilds where the bot has a config (meaning bot is in the guild)
       const serversWithConfig = await Promise.all(
         guilds.map(async (guild) => {
           try {
@@ -472,7 +473,13 @@ const fetchUserServers = async () => {
             const configResponse = await fetch(`${BACKEND_URL}/api/guilds/${guild.id}/config`, {
               headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
             })
-            const config = configResponse.ok ? await configResponse.json() : {}
+            
+            // Only return guild if we have a config (bot is in the guild)
+            if (!configResponse.ok) {
+              return null
+            }
+            
+            const config = await configResponse.json()
 
             // Construct icon URL
             const iconUrl = guild.icon 
@@ -492,27 +499,14 @@ const fetchUserServers = async () => {
             }
           } catch (err) {
             console.error(`Error fetching config for guild ${guild.id}:`, err)
-            // Return basic guild info if config fetch fails
-            const iconUrl = guild.icon 
-              ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
-              : 'https://discord.com/assets/default-avatar-default.png'
-            
-            return {
-              id: guild.id,
-              name: guild.name,
-              icon: iconUrl,
-              memberCount: guild.approximate_member_count || 0,
-              systemsActive: false,
-              leveling: false,
-              economy: false,
-              welcome: false,
-              status: false
-            }
+            // Return null if config fetch fails - guild doesn't have bot
+            return null
           }
         })
       )
       
-      userServers.value = serversWithConfig
+      // Filter out null values (guilds without bot)
+      userServers.value = serversWithConfig.filter(s => s !== null)
     } else {
       console.error('Failed to fetch guilds from Discord API')
     }

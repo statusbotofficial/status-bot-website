@@ -1744,6 +1744,43 @@ app.get("/api/user/:userId/gifts", (req, res) => {
     }
 });
 
+// Claim a gift
+app.post("/api/gifts/claim", (req, res) => {
+    const SECRET_KEY = process.env.BOT_STATS_SECRET || "status-bot-stats-secret-key";
+    const authHeader = req.headers['authorization'] || '';
+    
+    if (authHeader !== `Bearer ${SECRET_KEY}`) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    try {
+        const { userId, giftId } = req.body;
+        
+        if (!userId || !giftId) {
+            return res.status(400).json({ error: "userId and giftId are required" });
+        }
+        
+        // Find and mark the gift as claimed
+        const userNotifications = notificationsData[userId];
+        if (userNotifications && userNotifications.gifts) {
+            const gift = userNotifications.gifts.find(g => g.id === giftId);
+            if (gift) {
+                gift.claimed = true;
+                gift.claimedAt = Date.now();
+                saveNotifications();
+                res.json({ success: true, message: "Gift claimed successfully", gift });
+            } else {
+                res.status(404).json({ error: "Gift not found" });
+            }
+        } else {
+            res.status(404).json({ error: "No gifts found for this user" });
+        }
+    } catch (err) {
+        console.error('Error claiming gift:', err);
+        res.status(500).json({ error: "Failed to claim gift", details: err.message });
+    }
+});
+
 // Send a notification to users
 app.post("/api/notifications/send", (req, res) => {
     const SECRET_KEY = process.env.BOT_STATS_SECRET || "status-bot-stats-secret-key";

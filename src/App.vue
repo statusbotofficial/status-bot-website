@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from './stores/auth'
 import { DISCORD_INVITE_URL } from './config'
@@ -124,6 +124,10 @@ const toggleDropdown = () => {
 
 const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value
+  if (showNotifications.value) {
+    // Refresh notifications when panel opens
+    loadNotifications()
+  }
 }
 
 const handleLogin = () => {
@@ -162,6 +166,29 @@ const formatTime = (timestamp) => {
 
 const loadNotifications = async () => {
   try {
+    // First try to load from backend
+    const authStore = useAuthStore()
+    if (authStore.user?.id) {
+      const SECRET_KEY = 'status-bot-stats-secret-key'
+      const response = await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications`, {
+        headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
+      })
+      if (response.ok) {
+        const data = await response.json()
+        notifications.value = (data.notifications || []).map(n => ({
+          ...n,
+          timestamp: new Date(n.createdAt)
+        }))
+        saveNotifications()
+        return
+      }
+    }
+  } catch (err) {
+    console.error('Error loading notifications from backend:', err)
+  }
+  
+  // Fall back to localStorage
+  try {
     const storedNotifs = localStorage.getItem('siteNotifications')
     if (storedNotifs) {
       const notifs = JSON.parse(storedNotifs)
@@ -171,7 +198,7 @@ const loadNotifications = async () => {
       }))
     }
   } catch (err) {
-    console.error('Error loading notifications:', err)
+    console.error('Error loading notifications from localStorage:', err)
   }
 }
 
@@ -182,6 +209,13 @@ const saveNotifications = () => {
 onMounted(() => {
   authStore.initializeAuth()
   loadNotifications()
+
+  // Reload notifications when user logs in
+  watch(() => authStore.isLoggedIn, (newVal) => {
+    if (newVal) {
+      loadNotifications()
+    }
+  })
 
   // Close menu when clicking outside
   document.addEventListener('click', (e) => {
