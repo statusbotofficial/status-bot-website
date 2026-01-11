@@ -536,6 +536,7 @@ onMounted(async () => {
   
   await fetchDiscordUser()
   await fetchPremiumStatus()
+  await loadGifts()
   
   const savedTheme = localStorage.getItem('site_theme') || 'default'
   currentTheme.value = savedTheme
