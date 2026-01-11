@@ -1012,9 +1012,16 @@ const resetEconomyBalances = async () => {
       method: 'POST',
       headers: { Authorization: `Bearer ${authStore.token}` }
     })
-    if (response.ok) alert('Economy balances reset!')
+    const data = await response.json()
+    console.log('Reset response:', response.status, data)
+    if (response.ok) {
+      alert(`Economy balances reset! ${data.usersReset} users reset to ${data.startingAmount}`)
+    } else {
+      alert(`Error: ${data.error || 'Unknown error'}`)
+    }
   } catch (error) {
     console.error('Error resetting balances:', error)
+    alert(`Error: ${error.message}`)
   }
 }
 
