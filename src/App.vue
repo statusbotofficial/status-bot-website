@@ -127,6 +127,25 @@ const toggleNotifications = () => {
   if (showNotifications.value) {
     // Refresh notifications when panel opens
     loadNotifications()
+    // Mark all notifications as read when opening the panel
+    setTimeout(() => {
+      notifications.value = notifications.value.map(n => ({ ...n, read: true }))
+      saveNotifications()
+      
+      // Sync with backend
+      try {
+        const authStore = useAuthStore()
+        if (authStore.user?.id) {
+          const SECRET_KEY = 'status-bot-stats-secret-key'
+          fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
+          }).catch(err => console.error('Error marking as read:', err))
+        }
+      } catch (err) {
+        console.error('Error syncing read status:', err)
+      }
+    }, 50)
   }
 }
 
@@ -198,29 +217,32 @@ const loadNotifications = async () => {
       })
       if (response.ok) {
         const data = await response.json()
-        notifications.value = (data.notifications || []).map(n => ({
+        const backendNotifs = (data.notifications || []).map(n => ({
           ...n,
           timestamp: new Date(n.createdAt),
           read: false
         }))
-        saveNotifications()
         
-        // Mark as read in background (removes badge but keeps notifications visible)
-        setTimeout(async () => {
+        // Merge with localStorage notifications (don't lose locally saved ones)
+        const storedNotifs = localStorage.getItem('siteNotifications')
+        let allNotifs = backendNotifs
+        
+        if (storedNotifs) {
           try {
-            const SECRET_KEY = 'status-bot-stats-secret-key'
-            await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
-            })
-          } catch (err) {
-            console.error('Error marking as read:', err)
+            const parsed = JSON.parse(storedNotifs)
+            // Keep stored notifications that aren't already in backend
+            allNotifs = [
+              ...backendNotifs,
+              ...parsed.filter(stored => !backendNotifs.find(backend => backend.id === stored.id))
+            ]
+          } catch (e) {
+            // If localStorage is corrupted, just use backend
+            allNotifs = backendNotifs
           }
-          
-          // Mark locally as read to hide badge
-          notifications.value = notifications.value.map(n => ({ ...n, read: true }))
-        }, 100)
+        }
         
+        notifications.value = allNotifs
+        saveNotifications()
         return
       }
     }
@@ -237,11 +259,6 @@ const loadNotifications = async () => {
         ...n,
         timestamp: new Date(n.timestamp)
       }))
-      
-      // Mark as read to hide badge
-      setTimeout(() => {
-        notifications.value = notifications.value.map(n => ({ ...n, read: true }))
-      }, 100)
     }
   } catch (err) {
     console.error('Error loading notifications from localStorage:', err)
