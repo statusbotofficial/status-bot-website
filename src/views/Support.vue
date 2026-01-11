@@ -193,9 +193,9 @@ const sendMessage = async () => {
     const data = await response.json()
     let aiResponse = data.reply || 'Sorry, I encountered an error. Please try again or contact support at our Discord server.'
     
-    // Style all links with gradient text
+    // Style all links with gradient text - no background
     aiResponse = aiResponse.replace(/<a\s+([^>]*?)href=["']([^"']*)["']([^>]*?)>/gi, 
-      '<a href="$2" style="background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; font-weight: 600;" $1 $3>')
+      '<a href="$2" style="background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; font-weight: 600;" $1 $3>')
     
     messages.value.push({
       text: aiResponse,
@@ -205,7 +205,7 @@ const sendMessage = async () => {
   } catch (error) {
     console.error('Error getting AI response:', error)
     messages.value.push({
-      text: 'Sorry, I encountered an error. Please try again or contact support at our <a href="https://discord.gg/Kd2MckVxED" target="_blank" style="background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; font-weight: 600;">Discord server</a>.',
+      text: 'Sorry, I encountered an error. Please try again or contact support at our <a href="https://discord.gg/Kd2MckVxED" target="_blank" style="background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; font-weight: 600;">Discord server</a>.',
       sender: 'ai'
     })
     saveChatHistory()
