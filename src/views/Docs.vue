@@ -10,20 +10,18 @@
       <div class="docs-main">
         <aside class="docs-sidebar">
           <nav class="sidebar-nav">
-            <div class="sidebar-title">Sections</div>
+            <div class="sidebar-title">Navigation</div>
+            <input 
+              v-model="searchQuery" 
+              type="text" 
+              placeholder="Search sections..." 
+              class="sidebar-search"
+              @input="filterSections"
+            >
             <ul>
-              <li><a href="#what-is" @click.prevent="scrollToSection('what-is')">What is Status Bot?</a></li>
-              <li><a href="#getting-started" @click.prevent="scrollToSection('getting-started')">Getting Started</a></li>
-              <li><a href="#core-features" @click.prevent="scrollToSection('core-features')">Core Features</a></li>
-              <li><a href="#command-reference" @click.prevent="scrollToSection('command-reference')">Command Reference</a></li>
-              <li><a href="#setup-monitoring" @click.prevent="scrollToSection('setup-monitoring')">Setting Up Monitoring</a></li>
-              <li><a href="#status-updates" @click.prevent="scrollToSection('status-updates')">Understanding Status Updates</a></li>
-              <li><a href="#premium" @click.prevent="scrollToSection('premium')">Premium Features</a></li>
-              <li><a href="#troubleshooting" @click.prevent="scrollToSection('troubleshooting')">Troubleshooting</a></li>
-              <li><a href="#best-practices" @click.prevent="scrollToSection('best-practices')">Best Practices</a></li>
-              <li><a href="#api" @click.prevent="scrollToSection('api')">API Information</a></li>
-              <li><a href="#faq" @click.prevent="scrollToSection('faq')">FAQ</a></li>
-              <li><a href="#contact" @click.prevent="scrollToSection('contact')">Contact & Support</a></li>
+              <li v-for="section in filteredSections" :key="section.id">
+                <a :href="`#${section.id}`" @click.prevent="scrollToSection(section.id)">{{ section.label }}</a>
+              </li>
             </ul>
           </nav>
         </aside>
@@ -44,6 +42,7 @@
       </div>
 
       <div class="docs-section" id="getting-started">
+        <h2>Getting Started</h2>
         <p>Follow these steps to set up Status Bot in your Discord server:</p>
         <ul>
           <li><strong>Invite the Bot:</strong> Click the <code>Invite</code> button on our home page to add Status Bot to your server. You'll need administrator or manage server permissions.</li>
@@ -54,6 +53,7 @@
       </div>
 
       <div class="docs-section" id="core-features">
+        <h2>Core Features</h2>
         <ul>
           <li>
             <strong>Real-Time Monitoring:</strong> Status Bot continuously monitors your tracked services and updates status every 30 seconds. Get instant alerts when services go down or come back online.
@@ -256,10 +256,40 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
+const searchQuery = ref('')
+
+const sections = [
+  { id: 'what-is', label: 'What is Status Bot?' },
+  { id: 'getting-started', label: 'Getting Started' },
+  { id: 'core-features', label: 'Core Features' },
+  { id: 'command-reference', label: 'Command Reference' },
+  { id: 'setup-monitoring', label: 'Setting Up Monitoring' },
+  { id: 'status-updates', label: 'Understanding Status Updates' },
+  { id: 'premium', label: 'Premium Features' },
+  { id: 'troubleshooting', label: 'Troubleshooting' },
+  { id: 'best-practices', label: 'Best Practices' },
+  { id: 'api', label: 'API Information' },
+  { id: 'faq', label: 'FAQ' },
+  { id: 'contact', label: 'Contact & Support' },
+]
+
+const filteredSections = computed(() => {
+  if (!searchQuery.value.trim()) {
+    return sections
+  }
+  const query = searchQuery.value.toLowerCase()
+  return sections.filter(section => 
+    section.label.toLowerCase().includes(query)
+  )
+})
+
+const filterSections = () => {
+  // Computed property handles filtering automatically
+}
 
 const scrollToSection = (sectionId) => {
   const element = document.getElementById(sectionId)
@@ -326,6 +356,30 @@ onMounted(() => {
   color: #5170ff;
   margin-bottom: 15px;
   letter-spacing: 0.5px;
+}
+
+.sidebar-search {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(81, 112, 255, 0.08);
+  border: 1px solid rgba(81, 112, 255, 0.3);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 13px;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-search::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.sidebar-search:focus {
+  outline: none;
+  border-color: #5170ff;
+  background: rgba(81, 112, 255, 0.12);
+  box-shadow: 0 0 0 2px rgba(81, 112, 255, 0.1);
 }
 
 .sidebar-nav ul {
