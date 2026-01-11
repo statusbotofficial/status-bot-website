@@ -231,7 +231,7 @@ const loadServers = async () => {
 
     const botResponse = await fetch(`${BACKEND_URL}/api/bot-guilds`)
     const botData = await botResponse.json()
-    const botGuildIds = new Set(botData.guilds?.map(g => g.id) || [])
+    const botGuildIds = new Set(botData.guilds || [])
 
     const MANAGE_GUILD = BigInt(0x20)
     const processedServers = userGuilds.map(guild => {
