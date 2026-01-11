@@ -489,7 +489,7 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 
@@ -585,6 +585,15 @@ const filteredSections = computed(() => {
   }
   // Admin can see all sections
   return sections
+})
+
+// Watch activeSection to prevent accessing forbidden sections
+watch(activeSection, (newSection) => {
+  if (selectedServer.value?.buttonType === 'view') {
+    if (!['overview', 'leaderboard'].includes(newSection)) {
+      activeSection.value = 'overview'
+    }
+  }
 })
 
 const getMedalClass = (index) => {
@@ -694,12 +703,16 @@ const loadServers = async () => {
 
 const selectServer = async (server) => {
   selectedServer.value = server
-  // Default to overview, or keep current section if allowed
-  if (server.buttonType === 'view' && !['overview', 'leaderboard'].includes(activeSection.value)) {
+  
+  // Reset active section based on permissions
+  if (server.buttonType === 'view') {
+    // Non-admin: only allow overview and leaderboard
     activeSection.value = 'overview'
-  } else if (activeSection.value === '') {
+  } else if (server.buttonType === 'configure') {
+    // Admin: allow all sections, default to overview
     activeSection.value = 'overview'
   }
+  
   await Promise.all([
     loadOverviewData(server.id),
     loadLeaderboardData(server.id),
