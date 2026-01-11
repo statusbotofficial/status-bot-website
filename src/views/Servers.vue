@@ -215,7 +215,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveLevelingSettings" class="save-btn">Save</button>
+                <button @click="saveLevelingSettings" class="save-btn" :class="{ 'save-success': levelingSaveSuccess }">
+                  {{ levelingSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                </button>
                 <button @click="resetLevelingSettings" class="reset-btn">Reset</button>
               </div>
             </div>
@@ -246,7 +248,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveEconomySettings" class="save-btn">Save</button>
+                <button @click="saveEconomySettings" class="save-btn" :class="{ 'save-success': economySaveSuccess }">
+                  {{ economySaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                </button>
                 <button @click="showResetEconomyModal" class="reset-btn">Reset All Balances</button>
               </div>
             </div>
@@ -315,7 +319,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveStatusSettings" class="save-btn">Save</button>
+                <button @click="saveStatusSettings" class="save-btn" :class="{ 'save-success': statusSaveSuccess }">
+                  {{ statusSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                </button>
                 <button @click="resetStatusSettings" class="reset-btn">Reset</button>
               </div>
             </div>
@@ -419,7 +425,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveWelcomeSettings" class="save-btn">Save</button>
+                <button @click="saveWelcomeSettings" class="save-btn" :class="{ 'save-success': welcomeSaveSuccess }">
+                  {{ welcomeSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                </button>
                 <button @click="resetWelcomeSettings" class="reset-btn">Reset</button>
               </div>
             </div>
@@ -505,6 +513,12 @@ const searchQuery = ref('')
 const activeSection = ref('overview')
 const overviewData = ref([])
 const leaderboardData = ref([])
+
+// Save states for button feedback
+const levelingSaveSuccess = ref(false)
+const economySaveSuccess = ref(false)
+const statusSaveSuccess = ref(false)
+const welcomeSaveSuccess = ref(false)
 
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 
@@ -862,10 +876,14 @@ const saveLevelingSettings = async () => {
       },
       body: JSON.stringify(levelingSettings)
     })
-    if (response.ok) alert('Leveling settings saved!')
+    if (response.ok) {
+      levelingSaveSuccess.value = true
+      setTimeout(() => {
+        levelingSaveSuccess.value = false
+      }, 2000)
+    }
   } catch (error) {
     console.error('Error saving settings:', error)
-    alert('Error saving settings')
   }
 }
 
@@ -880,10 +898,14 @@ const saveEconomySettings = async () => {
       },
       body: JSON.stringify(economySettings)
     })
-    if (response.ok) alert('Economy settings saved!')
+    if (response.ok) {
+      economySaveSuccess.value = true
+      setTimeout(() => {
+        economySaveSuccess.value = false
+      }, 2000)
+    }
   } catch (error) {
     console.error('Error saving settings:', error)
-    alert('Error saving settings')
   }
 }
 
@@ -898,10 +920,14 @@ const saveStatusSettings = async () => {
       },
       body: JSON.stringify(statusSettings)
     })
-    if (response.ok) alert('Status tracking settings saved!')
+    if (response.ok) {
+      statusSaveSuccess.value = true
+      setTimeout(() => {
+        statusSaveSuccess.value = false
+      }, 2000)
+    }
   } catch (error) {
     console.error('Error saving settings:', error)
-    alert('Error saving settings')
   }
 }
 
@@ -916,10 +942,14 @@ const saveWelcomeSettings = async () => {
       },
       body: JSON.stringify(welcomeSettings)
     })
-    if (response.ok) alert('Welcome settings saved!')
+    if (response.ok) {
+      welcomeSaveSuccess.value = true
+      setTimeout(() => {
+        welcomeSaveSuccess.value = false
+      }, 2000)
+    }
   } catch (error) {
     console.error('Error saving settings:', error)
-    alert('Error saving settings')
   }
 }
 
@@ -1712,6 +1742,12 @@ onMounted(() => {
 
 .save-btn:hover {
   background: rgba(81, 112, 255, 0.35);
+}
+
+.save-btn.save-success {
+  background: rgba(74, 222, 128, 0.2);
+  border-color: #4ade80;
+  color: #4ade80;
 }
 
 .reset-btn {
