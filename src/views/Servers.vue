@@ -744,32 +744,24 @@ const loadAllSettings = async (guildId) => {
     if (levelingRes.ok) {
       const data = await levelingRes.json()
       Object.assign(levelingSettings, data.settings || {})
-    } else {
-      console.error('Leveling settings error:', levelingRes.status)
     }
     
     if (economyRes.ok) {
       const data = await economyRes.json()
       Object.assign(economySettings, data.settings || {})
-    } else {
-      console.error('Economy settings error:', economyRes.status)
     }
     
     if (statusRes.ok) {
       const data = await statusRes.json()
       Object.assign(statusSettings, data.settings || {})
-    } else {
-      console.error('Status settings error:', statusRes.status)
     }
     
     if (welcomeRes.ok) {
       const data = await welcomeRes.json()
       Object.assign(welcomeSettings, data.settings || {})
-    } else {
-      console.error('Welcome settings error:', welcomeRes.status)
     }
   } catch (error) {
-    console.error('Error loading settings:', error)
+    // Silently fail - use default values
   }
 }
 
@@ -784,13 +776,9 @@ const loadGuildChannels = async (guildId) => {
         id: c.id,
         name: c.name || 'Unknown Channel'
       }))
-    } else {
-      console.error('Channels error:', response.status)
-      guildChannels.value = []
     }
   } catch (error) {
-    console.error('Error loading channels:', error)
-    guildChannels.value = []
+    // Silently fail - user can still use the component
   }
 }
 
@@ -807,8 +795,7 @@ const loadGuildMembers = async (guildId) => {
         avatar: m.avatar
       }))
     } else {
-      console.warn('Members endpoint returned:', response.status)
-      // If members endpoint doesn't exist, populate from leaderboard
+      // Fallback to leaderboard data
       guildMembers.value = leaderboardData.value.map(u => ({
         id: u.id,
         username: u.username,
@@ -816,7 +803,6 @@ const loadGuildMembers = async (guildId) => {
       }))
     }
   } catch (error) {
-    console.error('Error loading members:', error)
     // Fallback to leaderboard data
     guildMembers.value = leaderboardData.value.map(u => ({
       id: u.id,

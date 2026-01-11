@@ -48,7 +48,7 @@ defineEmits(['update:modelValue'])
   border-radius: 12px;
   position: absolute;
   left: 2px;
-  top: 0px;
+  top: 1px;
   transition: left 0.3s ease;
 }
 
