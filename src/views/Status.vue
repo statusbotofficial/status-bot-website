@@ -34,7 +34,7 @@
         <h2>Incidents</h2>
         <div class="incidents-list">
           <div v-if="incidents.length === 0" class="no-incidents">
-            <p>✅ No incidents recorded. Status Bot is running smoothly!</p>
+            <p>No incidents recorded. Status Bot is running smoothly!</p>
           </div>
           <div v-else class="incidents-items">
             <div v-for="incident in incidents" :key="incident.id" class="incident-item">
