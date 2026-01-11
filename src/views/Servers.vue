@@ -1,11 +1,9 @@
 <template>
   <div class="servers-page">
-    <!-- Login Required Message -->
+    <!-- Login Required -->
     <div v-if="!authStore.user || !authStore.token" class="login-required">
-      <div>
-        <h2>Login Required</h2>
-        <p>You need to be logged in to access this page.</p>
-      </div>
+      <h2>Login Required</h2>
+      <p>You need to be logged in to access this page.</p>
     </div>
 
     <!-- Servers List View -->
@@ -17,69 +15,59 @@
         class="search-box"
         placeholder="Search servers..."
       />
-      <div v-if="loading" class="loading-container">
-        <p>Loading servers...</p>
-      </div>
-      <div v-else-if="servers.length === 0" class="empty-state">
-        <p>No servers found.</p>
-      </div>
+      <div v-if="loading" class="loading-container">Loading servers...</div>
+      <div v-else-if="servers.length === 0" class="empty-state">No servers found.</div>
       <div v-else class="servers-grid">
         <div v-for="server in filteredServers" :key="server.id" class="server-card">
-          <div class="server-icon-wrapper">
-            <div
-              class="server-icon"
-              :style="{ backgroundImage: server.icon ? `url(${server.icon})` : 'none' }"
-            >
-              <span v-if="!server.icon" class="server-initial">
-                {{ server.name.charAt(0).toUpperCase() }}
-              </span>
-            </div>
+          <div
+            class="server-icon"
+            :style="{ backgroundImage: server.icon ? `url(${server.icon})` : 'none' }"
+          >
+            <span v-if="!server.icon">{{ server.name.charAt(0).toUpperCase() }}</span>
           </div>
           <h3 class="server-name">{{ server.name }}</h3>
           
           <button
             v-if="server.buttonType === 'configure'"
-            class="btn btn-configure"
+            class="server-button configure"
             @click="selectServer(server)"
           >
             Configure
           </button>
           <button
             v-else-if="server.buttonType === 'view'"
-            class="btn btn-view"
+            class="server-button view"
             @click="selectServer(server)"
           >
             View
           </button>
           <button
             v-else-if="server.buttonType === 'invite-bot'"
-            class="btn btn-invite"
+            class="server-button invite-bot"
             @click="inviteBot(server)"
           >
             Invite Bot
           </button>
-          <button v-else class="btn btn-no-access" disabled>
-            No Access
-          </button>
+          <button v-else class="server-button no-access" disabled>No Access</button>
         </div>
       </div>
     </div>
 
     <!-- Server Config View -->
-    <div v-else class="server-config-view">
+    <div v-else class="config-view">
       <div class="config-header">
         <button class="back-btn" @click="selectedServer = null">← Back</button>
-        <h2 class="config-title">{{ selectedServer.name }}</h2>
+        <h2>{{ selectedServer.name }}</h2>
       </div>
 
-      <div class="config-content">
-        <!-- Sidebar Navigation -->
+      <div class="config-container">
+        <!-- Sidebar -->
         <aside class="config-sidebar">
           <nav class="config-nav">
             <button
               v-for="section in sections"
               :key="section.id"
-              class="nav-item"
+              class="nav-btn"
               :class="{ active: activeSection === section.id }"
               @click="activeSection = section.id"
             >
@@ -92,82 +80,126 @@
         <main class="config-main">
           <!-- Overview -->
           <section v-if="activeSection === 'overview'" class="config-section">
-            <h3>Top Users</h3>
-            <div v-if="overviewLoading" class="loading">Loading...</div>
-            <div v-else-if="overviewData.length > 0" class="user-list">
-              <div v-for="(user, index) in overviewData" :key="user.id" class="user-item">
-                <span class="rank">#{{ index + 1 }}</span>
-                <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
-                <div class="user-info">
-                  <p class="username">{{ user.username }}</p>
-                  <p class="level">Level {{ user.level || 0 }}</p>
-                </div>
-                <div class="stats">
-                  <div class="stat">
-                    <span class="label">XP</span>
-                    <span class="value">{{ user.xp || 0 }}</span>
+            <div class="overview-grid">
+              <!-- Top Users -->
+              <div class="overview-panel">
+                <h3>Top Users</h3>
+                <div v-if="overviewLoading" class="loading">Loading...</div>
+                <div v-else-if="overviewData.length > 0" class="user-list">
+                  <div v-for="(user, idx) in overviewData" :key="user.id" class="user-row">
+                    <span class="rank">#{{ idx + 1 }}</span>
+                    <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
+                    <div class="user-info">
+                      <p class="username">{{ user.username }}</p>
+                      <p class="level">Level {{ user.level || 0 }}</p>
+                    </div>
+                    <div class="stat">{{ user.xp || 0 }} XP</div>
                   </div>
                 </div>
+                <div v-else class="empty">No data</div>
               </div>
-            </div>
-            <div v-else class="empty">No user data available</div>
-          </section>
 
-          <!-- Leaderboard -->
-          <section v-else-if="activeSection === 'leaderboard'" class="config-section">
-            <h3>Leaderboard</h3>
-            <div v-if="leaderboardLoading" class="loading">Loading...</div>
-            <div v-else-if="leaderboardData.length > 0" class="leaderboard">
-              <div v-for="(user, index) in leaderboardData" :key="user.id" class="leaderboard-item" :class="getMedalClass(index)">
-                <span class="rank">#{{ index + 1 }}</span>
-                <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
-                <div class="user-info">
-                  <p class="username">{{ user.username }}</p>
-                  <p class="level">Level {{ user.level || 0 }}</p>
-                </div>
-                <div class="stats">
-                  <div class="stat xp-stat">
-                    <span class="label">XP</span>
-                    <span class="value">{{ user.xp || 0 }}</span>
+              <!-- Leaderboard -->
+              <div class="overview-panel">
+                <h3>Leaderboard</h3>
+                <div v-if="leaderboardLoading" class="loading">Loading...</div>
+                <div v-else-if="leaderboardData.length > 0" class="leaderboard">
+                  <div
+                    v-for="(user, idx) in leaderboardData"
+                    :key="user.id"
+                    class="leaderboard-item"
+                    :class="getMedalClass(idx)"
+                  >
+                    <span class="rank">#{{ idx + 1 }}</span>
+                    <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
+                    <div class="user-info">
+                      <p class="username">{{ user.username }}</p>
+                      <p class="level">Level {{ user.level || 0 }}</p>
+                    </div>
+                    <div class="stats">
+                      <div class="stat-item">
+                        <span class="label">XP</span>
+                        <span class="value xp-color">{{ user.xp || 0 }}</span>
+                      </div>
+                      <div class="stat-item">
+                        <span class="label">Balance</span>
+                        <span class="value balance-color">{{ user.balance || 0 }}</span>
+                      </div>
+                      <div class="stat-item">
+                        <span class="label">Voice</span>
+                        <span class="value voice-color">{{ user.voiceTime || 0 }}m</span>
+                      </div>
+                      <div class="stat-item">
+                        <span class="label">Msgs</span>
+                        <span class="value msg-color">{{ user.messages || 0 }}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="stat balance-stat">
-                    <span class="label">Balance</span>
-                    <span class="value">{{ user.balance || 0 }}</span>
-                  </div>
                 </div>
+                <div v-else class="empty">No data</div>
               </div>
             </div>
-            <div v-else class="empty">No leaderboard data</div>
           </section>
 
           <!-- Leveling -->
           <section v-else-if="activeSection === 'leveling'" class="config-section">
             <h3>Leveling Settings</h3>
-            <div class="settings-panel">
-              <div class="setting-group">
-                <div class="setting-label">
-                  <label>Enable Leveling</label>
-                  <toggle-switch v-model="levelingSettings.enabled" />
-                </div>
-                <p class="setting-desc">Turn the leveling system on or off.</p>
+            <div class="settings-box">
+              <div class="setting-item">
+                <label>Enable Leveling</label>
+                <toggle-switch v-model="levelingSettings.enabled" />
               </div>
 
-              <div class="setting-group">
+              <div class="setting-item">
                 <label>XP per message</label>
                 <input v-model.number="levelingSettings.xpPerMessage" type="number" min="1" class="input-field" />
-                <p class="setting-desc">XP is earned every 30 seconds.</p>
               </div>
 
-              <div class="setting-group">
+              <div class="setting-item">
                 <label>Voice chat XP</label>
                 <input v-model.number="levelingSettings.voiceXp" type="number" min="1" class="input-field" />
-                <p class="setting-desc">XP earned after leaving voice chat.</p>
               </div>
 
-              <div class="setting-group">
+              <div class="setting-item">
+                <label>Level up channel</label>
+                <div class="channel-selector">
+                  <input
+                    v-model="levelingSettings.levelUpChannel"
+                    type="text"
+                    placeholder="None selected"
+                    disabled
+                    class="input-field"
+                  />
+                  <button @click="openChannelSelector('levelingSettings', 'levelUpChannel')" class="select-btn">+</button>
+                </div>
+              </div>
+
+              <div class="setting-item">
                 <label>Level up message</label>
-                <textarea v-model="levelingSettings.levelUpMessage" class="input-field" placeholder="e.g., 🎉 {user} has reached Level {level}!" />
-                <p class="setting-desc">Message sent when user levels up. Use {user} and {level} as variables.</p>
+                <textarea
+                  v-model="levelingSettings.levelUpMessage"
+                  class="input-field textarea"
+                  placeholder="🎉 {user} has reached Level {level}!"
+                  @input="updateLevelUpPreview"
+                />
+                <div class="preview-box">
+                  <div class="preview-title">Preview</div>
+                  <div class="preview-content" v-html="levelUpPreview"></div>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <label>Allowed XP channels</label>
+                <div class="channel-selector">
+                  <input
+                    v-model="levelingSettings.allowedChannels"
+                    type="text"
+                    placeholder="All channels"
+                    disabled
+                    class="input-field"
+                  />
+                  <button @click="openChannelSelector('levelingSettings', 'allowedChannels')" class="select-btn">+</button>
+                </div>
               </div>
 
               <div class="button-group">
@@ -180,36 +212,30 @@
           <!-- Economy -->
           <section v-else-if="activeSection === 'economy'" class="config-section">
             <h3>Economy System</h3>
-            <div class="settings-panel">
-              <div class="setting-group">
-                <div class="setting-label">
-                  <label>Enable Economy</label>
-                  <toggle-switch v-model="economySettings.enabled" />
-                </div>
-                <p class="setting-desc">Turn the economy system on or off.</p>
+            <div class="settings-box">
+              <div class="setting-item">
+                <label>Enable Economy</label>
+                <toggle-switch v-model="economySettings.enabled" />
               </div>
 
-              <div class="setting-group">
+              <div class="setting-item">
                 <label>Currency gained per message</label>
                 <input v-model.number="economySettings.currencyPerMessage" type="number" min="1" class="input-field" />
-                <p class="setting-desc">Amount of currency users gain for sending a message.</p>
               </div>
 
-              <div class="setting-group">
+              <div class="setting-item">
                 <label>Currency symbol</label>
-                <input v-model="economySettings.currencySymbol" type="text" class="input-field" placeholder="e.g., 💰" />
-                <p class="setting-desc">Symbol or emoji to represent your currency.</p>
+                <input v-model="economySettings.currencySymbol" type="text" class="input-field" placeholder="💰" />
               </div>
 
-              <div class="setting-group">
+              <div class="setting-item">
                 <label>Starting amount</label>
                 <input v-model.number="economySettings.startingAmount" type="number" min="0" class="input-field" />
-                <p class="setting-desc">Initial currency amount new users receive.</p>
               </div>
 
               <div class="button-group">
                 <button @click="saveEconomySettings" class="save-btn">Save</button>
-                <button @click="resetEconomyButton" class="reset-btn">Reset All Balances</button>
+                <button @click="showResetEconomyModal" class="reset-btn">Reset All Balances</button>
               </div>
             </div>
           </section>
@@ -217,41 +243,69 @@
           <!-- Status Tracking -->
           <section v-else-if="activeSection === 'status-tracking'" class="config-section">
             <h3>Status Tracking</h3>
-            <div class="settings-panel">
-              <div class="setting-group">
-                <div class="setting-label">
-                  <label>Enable Status Tracking</label>
-                  <toggle-switch v-model="statusSettings.enabled" />
-                </div>
-                <p class="setting-desc">Turn status tracking on or off.</p>
+            <div class="settings-box">
+              <div class="setting-item">
+                <label>Enable Status Tracking</label>
+                <toggle-switch v-model="statusSettings.enabled" />
               </div>
 
-              <div class="setting-group">
+              <div class="setting-item">
+                <label>User to track</label>
+                <div class="channel-selector">
+                  <input
+                    v-model="statusSettings.userToTrack"
+                    type="text"
+                    placeholder="None selected"
+                    disabled
+                    class="input-field"
+                  />
+                  <button @click="openMemberSelector" class="select-btn">+</button>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <label>Channel to post in</label>
+                <div class="channel-selector">
+                  <input
+                    v-model="statusSettings.trackingChannel"
+                    type="text"
+                    placeholder="None selected"
+                    disabled
+                    class="input-field"
+                  />
+                  <button @click="openChannelSelector('statusSettings', 'trackingChannel')" class="select-btn">+</button>
+                </div>
+              </div>
+
+              <div class="setting-item">
                 <label>Delay (seconds)</label>
                 <input v-model.number="statusSettings.delay" type="number" min="1" class="input-field" />
-                <p class="setting-desc">How often to check and update the status message.</p>
               </div>
 
-              <div class="setting-group">
+              <div class="setting-item">
+                <label>Automatic updates</label>
+                <toggle-switch v-model="statusSettings.automatic" />
+              </div>
+
+              <div class="setting-item">
+                <label>Use embed format</label>
+                <toggle-switch v-model="statusSettings.useEmbed" />
+              </div>
+
+              <div class="setting-item">
                 <label>Default offline message</label>
-                <input v-model="statusSettings.offlineMessage" type="text" class="input-field" placeholder="User is currently offline" />
-                <p class="setting-desc">Message displayed when the tracked user is offline.</p>
+                <input
+                  v-model="statusSettings.offlineMessage"
+                  type="text"
+                  class="input-field"
+                  placeholder="User is currently offline"
+                  @input="updateStatusPreview"
+                />
               </div>
 
-              <div class="setting-group">
-                <div class="setting-label">
-                  <label>Automatic updates</label>
-                  <toggle-switch v-model="statusSettings.automatic" />
-                </div>
-                <p class="setting-desc">Automatically update the status message.</p>
-              </div>
-
-              <div class="setting-group">
-                <div class="setting-label">
-                  <label>Use embed format</label>
-                  <toggle-switch v-model="statusSettings.useEmbed" />
-                </div>
-                <p class="setting-desc">Show status in embed format (fancier) or plain text.</p>
+              <div class="preview-box">
+                <div class="preview-title">Preview</div>
+                <div class="preview-content" v-html="statusPreview"></div>
               </div>
 
               <div class="button-group">
@@ -264,42 +318,76 @@
           <!-- Welcome -->
           <section v-else-if="activeSection === 'welcome'" class="config-section">
             <h3>Welcome Messages</h3>
-            <div class="settings-panel">
-              <div class="setting-group">
-                <div class="setting-label">
-                  <label>Enable Welcome Messages</label>
-                  <toggle-switch v-model="welcomeSettings.enabled" />
-                </div>
-                <p class="setting-desc">Turn welcome messages on or off.</p>
+            <div class="settings-box">
+              <div class="setting-item">
+                <label>Enable Welcome Messages</label>
+                <toggle-switch v-model="welcomeSettings.enabled" />
               </div>
 
-              <div class="setting-group">
-                <div class="setting-label">
-                  <label>Use embed format</label>
-                  <toggle-switch v-model="welcomeSettings.useEmbed" />
+              <div class="setting-item">
+                <label>Welcome channel</label>
+                <div class="channel-selector">
+                  <input
+                    v-model="welcomeSettings.welcomeChannel"
+                    type="text"
+                    placeholder="None selected"
+                    disabled
+                    class="input-field"
+                  />
+                  <button @click="openChannelSelector('welcomeSettings', 'welcomeChannel')" class="select-btn">+</button>
                 </div>
-                <p class="setting-desc">Send as an embed or plain text message.</p>
               </div>
 
-              <div v-if="!welcomeSettings.useEmbed" class="setting-group">
+              <div class="setting-item">
+                <label>Use embed format</label>
+                <toggle-switch v-model="welcomeSettings.useEmbed" />
+              </div>
+
+              <div v-if="!welcomeSettings.useEmbed" class="setting-item">
                 <label>Message text</label>
-                <textarea v-model="welcomeSettings.messageText" class="input-field" placeholder="Welcome to {server}, {user}!" />
-                <p class="setting-desc">Message sent to new members. Use {user} and {server} as variables.</p>
+                <textarea
+                  v-model="welcomeSettings.messageText"
+                  class="input-field textarea"
+                  placeholder="Welcome to {server}, {user}!"
+                  @input="updateWelcomePreview"
+                />
               </div>
 
-              <div v-if="welcomeSettings.useEmbed" class="setting-group">
+              <div v-if="welcomeSettings.useEmbed" class="setting-item">
                 <label>Embed title</label>
-                <input v-model="welcomeSettings.embedTitle" type="text" class="input-field" placeholder="Welcome!" />
+                <input
+                  v-model="welcomeSettings.embedTitle"
+                  type="text"
+                  class="input-field"
+                  placeholder="Welcome!"
+                  @input="updateWelcomePreview"
+                />
               </div>
 
-              <div v-if="welcomeSettings.useEmbed" class="setting-group">
+              <div v-if="welcomeSettings.useEmbed" class="setting-item">
                 <label>Description</label>
-                <textarea v-model="welcomeSettings.embedDescription" class="input-field" placeholder="Welcome to {server}! We're glad to have you here." />
+                <textarea
+                  v-model="welcomeSettings.embedDescription"
+                  class="input-field textarea"
+                  placeholder="Welcome to {server}! We're glad to have you here."
+                  @input="updateWelcomePreview"
+                />
               </div>
 
-              <div v-if="welcomeSettings.useEmbed" class="setting-group">
+              <div v-if="welcomeSettings.useEmbed" class="setting-item">
                 <label>Footer text</label>
-                <input v-model="welcomeSettings.embedFooter" type="text" class="input-field" placeholder="Thanks for joining!" />
+                <input
+                  v-model="welcomeSettings.embedFooter"
+                  type="text"
+                  class="input-field"
+                  placeholder="Thanks for joining!"
+                  @input="updateWelcomePreview"
+                />
+              </div>
+
+              <div class="preview-box">
+                <div class="preview-title">Preview</div>
+                <div class="preview-content" v-html="welcomePreview"></div>
               </div>
 
               <div class="button-group">
@@ -311,16 +399,72 @@
         </main>
       </div>
     </div>
+
+    <!-- Modals -->
+    <div v-if="showChannelModal" class="modal-overlay" @click="closeChannelModal">
+      <div class="modal-content" @click.stop>
+        <h3>Select Channels</h3>
+        <div class="channel-list">
+          <label v-for="channel in guildChannels" :key="channel.id" class="channel-option">
+            <input
+              type="checkbox"
+              :value="channel.id"
+              v-model="selectedChannelIds"
+            />
+            <span>{{ channel.name }}</span>
+          </label>
+        </div>
+        <div class="modal-buttons">
+          <button @click="confirmChannelSelection" class="confirm-btn">Select</button>
+          <button @click="closeChannelModal" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showMemberModal" class="modal-overlay" @click="closeMemberModal">
+      <div class="modal-content" @click.stop>
+        <h3>Select User</h3>
+        <input
+          v-model="memberSearchQuery"
+          type="text"
+          placeholder="Search members..."
+          class="input-field"
+        />
+        <div class="member-list">
+          <button
+            v-for="member in filteredMembers"
+            :key="member.id"
+            @click="selectMember(member)"
+            class="member-option"
+          >
+            <img v-if="member.avatar" :src="member.avatar" :alt="member.username" class="avatar-small" />
+            <span>{{ member.username }}</span>
+          </button>
+        </div>
+        <div class="modal-buttons">
+          <button @click="closeMemberModal" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showResetModal" class="modal-overlay" @click="closeResetModal">
+      <div class="modal-content" @click.stop>
+        <h3>{{ resetModalTitle }}</h3>
+        <p>{{ resetModalMessage }}</p>
+        <div class="modal-buttons">
+          <button @click="confirmReset" class="confirm-btn">Confirm</button>
+          <button @click="closeResetModal" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 
-const router = useRouter()
 const authStore = useAuthStore()
 
 // State
@@ -345,12 +489,14 @@ const sections = [
   { id: 'welcome', label: 'Welcome' },
 ]
 
-// Settings state
+// Settings
 const levelingSettings = reactive({
   enabled: true,
   xpPerMessage: 10,
   voiceXp: 10,
   levelUpMessage: '🎉 {user} has reached Level {level}!',
+  levelUpChannel: '',
+  allowedChannels: '',
 })
 
 const economySettings = reactive({
@@ -362,25 +508,48 @@ const economySettings = reactive({
 
 const statusSettings = reactive({
   enabled: true,
+  userToTrack: '',
+  trackingChannel: '',
   delay: 60,
-  offlineMessage: 'User is currently offline',
   automatic: true,
   useEmbed: false,
+  offlineMessage: 'User is currently offline',
 })
 
 const welcomeSettings = reactive({
   enabled: true,
   useEmbed: false,
+  welcomeChannel: '',
   messageText: 'Welcome to {server}, {user}!',
   embedTitle: 'Welcome!',
   embedDescription: 'Welcome to {server}! We\'re glad to have you here.',
   embedFooter: 'Thanks for joining!',
 })
 
+// Modal state
+const showChannelModal = ref(false)
+const showMemberModal = ref(false)
+const showResetModal = ref(false)
+const guildChannels = ref([])
+const guildMembers = ref([])
+const selectedChannelIds = ref([])
+const memberSearchQuery = ref('')
+const currentChannelField = ref(null)
+const currentSettingsObject = ref(null)
+const resetModalTitle = ref('')
+const resetModalMessage = ref('')
+const resetType = ref(null)
+
 // Computed
 const filteredServers = computed(() => {
   return servers.value.filter(server =>
     server.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
+
+const filteredMembers = computed(() => {
+  return guildMembers.value.filter(member =>
+    member.username.toLowerCase().includes(memberSearchQuery.value.toLowerCase())
   )
 })
 
@@ -391,8 +560,42 @@ const getMedalClass = (index) => {
   return ''
 }
 
+// Preview computed properties
+const levelUpPreview = computed(() => {
+  let msg = levelingSettings.levelUpMessage
+    .replace('{user}', 'Blake')
+    .replace('{level}', '3')
+  return `<div class="message-preview">${escapeHtml(msg)}</div>`
+})
+
+const statusPreview = computed(() => {
+  if (statusSettings.useEmbed) {
+    return `<div class="embed-preview">
+      <div class="embed-title">User Status</div>
+      <div class="embed-field">${escapeHtml(statusSettings.offlineMessage)}</div>
+    </div>`
+  }
+  return `<div class="message-preview">${escapeHtml(statusSettings.offlineMessage)}</div>`
+})
+
+const welcomePreview = computed(() => {
+  if (welcomeSettings.useEmbed) {
+    return `<div class="embed-preview">
+      <div class="embed-title">${escapeHtml(welcomeSettings.embedTitle)}</div>
+      <div class="embed-field">${escapeHtml(welcomeSettings.embedDescription).replace('{user}', 'Blake').replace('{server}', selectedServer.value.name)}</div>
+      <div class="embed-footer">${escapeHtml(welcomeSettings.embedFooter)}</div>
+    </div>`
+  }
+  let msg = welcomeSettings.messageText
+    .replace('{user}', 'Blake')
+    .replace('{server}', selectedServer.value.name)
+  return `<div class="message-preview">${escapeHtml(msg)}</div>`
+})
+
 // Methods
 const loadServers = async () => {
+  if (!authStore.user || !authStore.token) return
+
   loading.value = true
   try {
     const userResponse = await fetch('https://discord.com/api/v10/users/@me/guilds', {
@@ -400,13 +603,11 @@ const loadServers = async () => {
     })
 
     if (!userResponse.ok) {
-      console.error('Failed to fetch user guilds')
       servers.value = []
       return
     }
 
     const userGuilds = await userResponse.json()
-
     const botResponse = await fetch(`${BACKEND_URL}/api/bot-guilds`)
     const botData = await botResponse.json()
     const botGuildIds = new Set(botData.guilds || [])
@@ -450,7 +651,9 @@ const selectServer = async (server) => {
   await Promise.all([
     loadOverviewData(server.id),
     loadLeaderboardData(server.id),
-    loadSettings(server.id),
+    loadAllSettings(server.id),
+    loadGuildChannels(server.id),
+    loadGuildMembers(server.id),
   ])
 }
 
@@ -488,7 +691,7 @@ const loadLeaderboardData = async (guildId) => {
   }
 }
 
-const loadSettings = async (guildId) => {
+const loadAllSettings = async (guildId) => {
   try {
     const [levelingRes, economyRes, statusRes, welcomeRes] = await Promise.all([
       fetch(`${BACKEND_URL}/api/leveling/${guildId}/settings`, {
@@ -526,6 +729,72 @@ const loadSettings = async (guildId) => {
   }
 }
 
+const loadGuildChannels = async (guildId) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/channels/${guildId}`, {
+      headers: { Authorization: `Bearer ${authStore.token}` }
+    })
+    if (response.ok) {
+      const data = await response.json()
+      guildChannels.value = data.channels || []
+    }
+  } catch (error) {
+    console.error('Error loading channels:', error)
+  }
+}
+
+const loadGuildMembers = async (guildId) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/members/${guildId}`, {
+      headers: { Authorization: `Bearer ${authStore.token}` }
+    })
+    if (response.ok) {
+      const data = await response.json()
+      guildMembers.value = data.members || []
+    }
+  } catch (error) {
+    console.error('Error loading members:', error)
+  }
+}
+
+const openChannelSelector = (settingsObject, fieldName) => {
+  currentSettingsObject.value = settingsObject
+  currentChannelField.value = fieldName
+  selectedChannelIds.value = []
+  showChannelModal.value = true
+}
+
+const confirmChannelSelection = () => {
+  if (currentSettingsObject.value && currentChannelField.value) {
+    const settings = eval(currentSettingsObject.value)
+    settings[currentChannelField.value] = selectedChannelIds.value
+      .map(id => guildChannels.value.find(c => c.id === id)?.name)
+      .filter(Boolean)
+      .join(', ')
+  }
+  closeChannelModal()
+}
+
+const closeChannelModal = () => {
+  showChannelModal.value = false
+  selectedChannelIds.value = []
+}
+
+const openMemberSelector = () => {
+  memberSearchQuery.value = ''
+  showMemberModal.value = true
+}
+
+const selectMember = (member) => {
+  statusSettings.userToTrack = member.username
+  closeMemberModal()
+}
+
+const closeMemberModal = () => {
+  showMemberModal.value = false
+  memberSearchQuery.value = ''
+}
+
 const saveLevelingSettings = async () => {
   if (!selectedServer.value) return
   try {
@@ -537,11 +806,7 @@ const saveLevelingSettings = async () => {
       },
       body: JSON.stringify(levelingSettings)
     })
-    if (response.ok) {
-      alert('Leveling settings saved!')
-    } else {
-      alert('Failed to save settings')
-    }
+    if (response.ok) alert('Leveling settings saved!')
   } catch (error) {
     console.error('Error saving settings:', error)
     alert('Error saving settings')
@@ -559,11 +824,7 @@ const saveEconomySettings = async () => {
       },
       body: JSON.stringify(economySettings)
     })
-    if (response.ok) {
-      alert('Economy settings saved!')
-    } else {
-      alert('Failed to save settings')
-    }
+    if (response.ok) alert('Economy settings saved!')
   } catch (error) {
     console.error('Error saving settings:', error)
     alert('Error saving settings')
@@ -581,11 +842,7 @@ const saveStatusSettings = async () => {
       },
       body: JSON.stringify(statusSettings)
     })
-    if (response.ok) {
-      alert('Status tracking settings saved!')
-    } else {
-      alert('Failed to save settings')
-    }
+    if (response.ok) alert('Status tracking settings saved!')
   } catch (error) {
     console.error('Error saving settings:', error)
     alert('Error saving settings')
@@ -603,15 +860,18 @@ const saveWelcomeSettings = async () => {
       },
       body: JSON.stringify(welcomeSettings)
     })
-    if (response.ok) {
-      alert('Welcome settings saved!')
-    } else {
-      alert('Failed to save settings')
-    }
+    if (response.ok) alert('Welcome settings saved!')
   } catch (error) {
     console.error('Error saving settings:', error)
     alert('Error saving settings')
   }
+}
+
+const showResetEconomyModal = () => {
+  resetModalTitle.value = 'Reset Economy'
+  resetModalMessage.value = 'Are you sure you want to reset all users\' balances?'
+  resetType.value = 'economy'
+  showResetModal.value = true
 }
 
 const resetLevelingSettings = () => {
@@ -620,22 +880,33 @@ const resetLevelingSettings = () => {
     xpPerMessage: 10,
     voiceXp: 10,
     levelUpMessage: '🎉 {user} has reached Level {level}!',
+    levelUpChannel: '',
+    allowedChannels: '',
   })
 }
 
-const resetEconomyButton = () => {
-  if (confirm('Reset all users\' balances to the starting amount?')) {
-    // Call reset API
+const resetEconomyBalances = async () => {
+  if (!selectedServer.value) return
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/economy/${selectedServer.value.id}/reset-balances`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${authStore.token}` }
+    })
+    if (response.ok) alert('Economy balances reset!')
+  } catch (error) {
+    console.error('Error resetting balances:', error)
   }
 }
 
 const resetStatusSettings = () => {
   Object.assign(statusSettings, {
     enabled: true,
+    userToTrack: '',
+    trackingChannel: '',
     delay: 60,
-    offlineMessage: 'User is currently offline',
     automatic: true,
     useEmbed: false,
+    offlineMessage: 'User is currently offline',
   })
 }
 
@@ -643,6 +914,7 @@ const resetWelcomeSettings = () => {
   Object.assign(welcomeSettings, {
     enabled: true,
     useEmbed: false,
+    welcomeChannel: '',
     messageText: 'Welcome to {server}, {user}!',
     embedTitle: 'Welcome!',
     embedDescription: 'Welcome to {server}! We\'re glad to have you here.',
@@ -650,11 +922,46 @@ const resetWelcomeSettings = () => {
   })
 }
 
+const confirmReset = () => {
+  if (resetType.value === 'economy') {
+    resetEconomyBalances()
+  }
+  closeResetModal()
+}
+
+const closeResetModal = () => {
+  showResetModal.value = false
+  resetType.value = null
+}
+
+const updateLevelUpPreview = () => {
+  // Computed property handles this
+}
+
+const updateStatusPreview = () => {
+  // Computed property handles this
+}
+
+const updateWelcomePreview = () => {
+  // Computed property handles this
+}
+
 const inviteBot = (server) => {
   const DISCORD_CLIENT_ID = '1436123870158520411'
   const REDIRECT_URI = 'https://status-bot.xyz/servers'
   const BOT_INVITE_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&permissions=8&scope=bot%20applications.commands`
   window.open(`${BOT_INVITE_URL}&guild_id=${server.id}`, '_blank')
+}
+
+const escapeHtml = (text) => {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  }
+  return text.replace(/[&<>"']/g, m => map[m])
 }
 
 onMounted(() => {
@@ -671,28 +978,23 @@ onMounted(() => {
 }
 
 .login-required {
-  width: 100%;
-  height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.login-required div {
+  height: 100%;
   text-align: center;
 }
 
 .login-required h2 {
   font-size: 32px;
-  font-weight: 700;
   color: #fff;
-  margin: 0 0 16px 0;
+  margin-bottom: 16px;
 }
 
 .login-required p {
-  font-size: 16px;
   color: #999;
-  margin: 0;
+  font-size: 16px;
 }
 
 .servers-list-view {
@@ -711,43 +1013,40 @@ onMounted(() => {
 }
 
 .search-box {
+  width: 100%;
   max-width: 500px;
-  padding: 14px 20px;
+  padding: 12px 16px;
   background: rgba(81, 112, 255, 0.1);
-  border: 2px solid rgba(81, 112, 255, 0.3);
-  border-radius: 12px;
+  border: 2px solid #5170ff;
+  border-radius: 8px;
   color: #fff;
-  font-weight: 500;
-  font-size: 15px;
-  margin-bottom: 40px;
-  transition: all 0.3s ease;
+  margin-bottom: 30px;
 }
 
 .search-box:focus {
   outline: none;
   background: rgba(81, 112, 255, 0.15);
-  border-color: rgba(81, 112, 255, 0.6);
-  box-shadow: 0 0 20px rgba(81, 112, 255, 0.3);
+  box-shadow: 0 0 15px rgba(81, 112, 255, 0.3);
 }
 
 .loading-container,
 .empty-state {
   text-align: center;
-  padding: 60px 20px;
   color: #999;
+  padding: 60px 20px;
 }
 
 .servers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 28px;
+  gap: 24px;
 }
 
 .server-card {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.15) 0%, rgba(81, 112, 255, 0.1) 100%);
-  border: 1px solid rgba(81, 112, 255, 0.2);
-  border-radius: 14px;
+  border: 2px solid #5170ff;
+  border-radius: 12px;
   padding: 24px;
+  background: rgba(81, 112, 255, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -756,88 +1055,77 @@ onMounted(() => {
 }
 
 .server-card:hover {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2) 0%, rgba(81, 112, 255, 0.15) 100%);
-  border-color: rgba(81, 112, 255, 0.4);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(81, 112, 255, 0.2);
+  background: rgba(81, 112, 255, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(81, 112, 255, 0.2);
 }
 
 .server-icon {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: 12px;
   background-size: cover;
   background-position: center;
   background-color: #5170ff;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(81, 112, 255, 0.3);
-}
-
-.server-initial {
-  font-size: 32px;
   font-weight: 700;
+  font-size: 24px;
   color: #fff;
 }
 
 .server-name {
   font-size: 18px;
   font-weight: 700;
+  margin-bottom: 20px;
   color: #fff;
-  margin: 16px 0 20px;
 }
 
-.btn {
+.server-button {
   width: 100%;
   padding: 12px 20px;
-  border-radius: 8px;
   border: 2px solid;
-  font-weight: 600;
-  font-size: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
-.btn-configure {
-  background: rgba(59, 91, 219, 0.2);
+.server-button.configure {
+  background: linear-gradient(135deg, rgba(59, 91, 219, 0.8), rgba(59, 91, 219, 0.5));
   border-color: #3b5bdb;
   color: #fff;
 }
 
-.btn-configure:hover {
-  background: rgba(59, 91, 219, 0.35);
-}
-
-.btn-view {
-  background: rgba(128, 128, 128, 0.2);
+.server-button.view {
+  background: linear-gradient(135deg, rgba(128, 128, 128, 0.8), rgba(128, 128, 128, 0.5));
   border-color: #808080;
   color: #fff;
 }
 
-.btn-view:hover {
-  background: rgba(128, 128, 128, 0.35);
-}
-
-.btn-invite {
-  background: rgba(92, 184, 92, 0.2);
+.server-button.invite-bot {
+  background: linear-gradient(135deg, rgba(92, 184, 92, 0.8), rgba(92, 184, 92, 0.5));
   border-color: #5cb85c;
   color: #fff;
 }
 
-.btn-invite:hover {
-  background: rgba(92, 184, 92, 0.35);
-}
-
-.btn-no-access {
-  background: rgba(220, 53, 69, 0.2);
+.server-button.no-access {
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.5));
   border-color: #dc3545;
-  color: #999;
+  color: #fff;
   cursor: not-allowed;
 }
 
-/* Server Config View */
-.server-config-view {
+.server-button:hover:not(.no-access) {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* Config View */
+.config-view {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -845,7 +1133,7 @@ onMounted(() => {
 
 .config-header {
   padding: 30px 50px;
-  border-bottom: 1px solid rgba(81, 112, 255, 0.2);
+  border-bottom: 1px solid #333;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -866,13 +1154,13 @@ onMounted(() => {
   background: rgba(81, 112, 255, 0.35);
 }
 
-.config-title {
+.config-header h2 {
   font-size: 28px;
   font-weight: 700;
   color: #fff;
 }
 
-.config-content {
+.config-container {
   display: flex;
   flex: 1;
   overflow: hidden;
@@ -880,7 +1168,7 @@ onMounted(() => {
 
 .config-sidebar {
   width: 250px;
-  border-right: 1px solid rgba(81, 112, 255, 0.2);
+  border-right: 1px solid #333;
   padding: 20px 0;
   overflow-y: auto;
 }
@@ -888,10 +1176,9 @@ onMounted(() => {
 .config-nav {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
-.nav-item {
+.nav-btn {
   padding: 12px 20px;
   background: transparent;
   border: none;
@@ -902,12 +1189,12 @@ onMounted(() => {
   font-weight: 500;
 }
 
-.nav-item:hover {
+.nav-btn:hover {
   background: rgba(81, 112, 255, 0.1);
   color: #5170ff;
 }
 
-.nav-item.active {
+.nav-btn.active {
   background: rgba(81, 112, 255, 0.1);
   color: #5170ff;
   border-left: 3px solid #5170ff;
@@ -921,7 +1208,7 @@ onMounted(() => {
 }
 
 .config-section {
-  max-width: 900px;
+  max-width: 1000px;
 }
 
 .config-section h3 {
@@ -942,11 +1229,28 @@ onMounted(() => {
   border-radius: 2px;
 }
 
-.loading,
-.empty {
-  text-align: center;
-  color: #999;
-  padding: 40px;
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.overview-panel {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.overview-panel h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.overview-panel h3::before {
+  display: none;
 }
 
 .user-list,
@@ -956,22 +1260,36 @@ onMounted(() => {
   gap: 12px;
 }
 
-.user-item,
+.user-row,
 .leaderboard-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
+  gap: 12px;
+  padding: 12px 16px;
   background: rgba(81, 112, 255, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.15);
   border-radius: 8px;
+}
+
+.leaderboard-item.gold {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-item.silver {
+  background: rgba(192, 192, 192, 0.1);
+  border-color: rgba(192, 192, 192, 0.3);
+}
+
+.leaderboard-item.bronze {
+  background: rgba(205, 127, 50, 0.1);
+  border-color: rgba(205, 127, 50, 0.3);
 }
 
 .rank {
   font-weight: 800;
   color: #5170ff;
   min-width: 40px;
-  text-align: center;
 }
 
 .leaderboard-item.gold .rank {
@@ -987,8 +1305,15 @@ onMounted(() => {
 }
 
 .avatar {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-small {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -1005,82 +1330,87 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 14px;
 }
 
 .level {
   font-size: 12px;
-  color: #999;
-  margin: 4px 0 0 0;
+  color: #888;
+  margin: 0;
+}
+
+.stat {
+  font-weight: 700;
+  color: #fbbf24;
+  font-size: 14px;
 }
 
 .stats {
   display: flex;
-  gap: 20px;
+  gap: 16px;
+  margin-left: auto;
 }
 
-.stat {
+.stat-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+  font-size: 12px;
 }
 
-.stat .label {
-  font-size: 11px;
-  color: #999;
+.stat-item .label {
+  color: #888;
   text-transform: uppercase;
 }
 
-.stat .value {
-  font-size: 14px;
+.stat-item .value {
   font-weight: 700;
+}
+
+.xp-color {
   color: #fbbf24;
 }
 
-.balance-stat .value {
+.balance-color {
   color: #4ade80;
 }
 
-/* Settings Panel */
-.settings-panel {
+.voice-color {
+  color: #38bdf8;
+}
+
+.msg-color {
+  color: #c084fc;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  color: #999;
+  padding: 30px;
+}
+
+.settings-box {
   background: rgba(81, 112, 255, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
 }
 
-.setting-group {
+.setting-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.setting-label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.setting-label label {
+.setting-item label {
   font-weight: 600;
-  font-size: 15px;
   color: #fff;
-}
-
-.setting-group label {
-  font-weight: 600;
   font-size: 15px;
-  color: #fff;
-}
-
-.setting-desc {
-  font-size: 13px;
-  color: #888;
-  font-style: italic;
-  margin: 0;
 }
 
 .input-field {
@@ -1103,8 +1433,85 @@ onMounted(() => {
   box-shadow: 0 0 12px rgba(81, 112, 255, 0.4);
 }
 
-.input-field::placeholder {
+.input-field.textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.input-field:disabled {
   color: #666;
+}
+
+.channel-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.channel-selector .input-field {
+  flex: 1;
+}
+
+.select-btn {
+  width: 50px;
+  padding: 10px 12px;
+  background: rgba(81, 112, 255, 0.2);
+  border: 2px solid #5170ff;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-btn:hover {
+  background: rgba(81, 112, 255, 0.35);
+}
+
+.preview-box {
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 4px solid #5170ff;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+.preview-title {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.preview-content {
+  color: #ddd;
+  font-size: 14px;
+}
+
+.message-preview {
+  word-break: break-word;
+}
+
+.embed-preview {
+  background: #2a2a2a;
+  border-left: 4px solid #5170ff;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.embed-title {
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.embed-field {
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+.embed-footer {
+  font-size: 12px;
+  color: #999;
 }
 
 .button-group {
@@ -1122,7 +1529,6 @@ onMounted(() => {
   border-radius: 8px;
   color: #fff;
   font-weight: 600;
-  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1138,12 +1544,124 @@ onMounted(() => {
   border-radius: 8px;
   color: #dc3545;
   font-weight: 600;
-  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .reset-btn:hover {
   background: rgba(220, 53, 69, 0.35);
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #1a1a1a;
+  border: 2px solid #5170ff;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0 30px rgba(81, 112, 255, 0.3);
+}
+
+.modal-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.modal-content p {
+  color: #ccc;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.channel-list,
+.member-list {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.channel-option,
+.member-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  color: #fff;
+}
+
+.channel-option:hover,
+.member-option:hover {
+  background: rgba(81, 112, 255, 0.1);
+}
+
+.channel-option input {
+  cursor: pointer;
+}
+
+.member-option {
+  border: none;
+  background: transparent;
+  padding: 8px 0;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.confirm-btn,
+.cancel-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirm-btn {
+  background: rgba(81, 112, 255, 0.2);
+  border-color: #5170ff;
+  color: #fff;
+}
+
+.confirm-btn:hover {
+  background: rgba(81, 112, 255, 0.35);
+}
+
+.cancel-btn {
+  background: rgba(128, 128, 128, 0.2);
+  border-color: #808080;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background: rgba(128, 128, 128, 0.35);
 }
 </style>
