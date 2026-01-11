@@ -58,7 +58,6 @@ import { useAuthStore } from '../stores/auth'
 const authStore = useAuthStore()
 
 onMounted(() => {
-  // Check if user is already logged in
   const storedUser = localStorage.getItem('discordUser')
   if (storedUser) {
     const user = JSON.parse(storedUser)
@@ -120,9 +119,6 @@ onMounted(() => {
   font-weight: 700;
   color: #fff;
   margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .terms-section p {
@@ -165,16 +161,7 @@ onMounted(() => {
   font-weight: 600;
 }
 
-/* ========== RESPONSIVE DESIGN ========== */
-
-/* Extra Large Screens (1440px+) */
-@media (min-width: 1440px) {
-  .terms-wrapper {
-    padding: 60px 60px;
-  }
-}
-
-/* Large Screens (1024px - 1439px) */
+/* Responsive Design */
 @media (max-width: 1439px) and (min-width: 1024px) {
   .terms-header h1 {
     font-size: 44px;
@@ -190,14 +177,9 @@ onMounted(() => {
   }
 }
 
-/* Tablets (768px - 1023px) */
 @media (max-width: 1023px) and (min-width: 768px) {
   .terms-wrapper {
     padding: 50px 30px;
-  }
-
-  .terms-container {
-    max-width: 100%;
   }
 
   .terms-header {
@@ -206,10 +188,6 @@ onMounted(() => {
 
   .terms-header h1 {
     font-size: 38px;
-  }
-
-  .terms-header hr {
-    max-width: 350px;
   }
 
   .terms-section {
@@ -229,14 +207,9 @@ onMounted(() => {
   }
 }
 
-/* Small Tablets & Large Phones (480px - 767px) */
 @media (max-width: 767px) and (min-width: 480px) {
   .terms-wrapper {
     padding: 35px 20px;
-  }
-
-  .terms-container {
-    max-width: 100%;
   }
 
   .terms-header {
@@ -246,10 +219,6 @@ onMounted(() => {
   .terms-header h1 {
     font-size: 32px;
     line-height: 1.2;
-  }
-
-  .terms-header hr {
-    max-width: 280px;
   }
 
   .terms-section {
@@ -269,14 +238,9 @@ onMounted(() => {
   }
 }
 
-/* Small Phones (320px - 479px) */
 @media (max-width: 479px) {
   .terms-wrapper {
     padding: 20px 15px;
-  }
-
-  .terms-container {
-    max-width: 100%;
   }
 
   .terms-header {
@@ -289,10 +253,6 @@ onMounted(() => {
     word-break: break-word;
   }
 
-  .terms-header hr {
-    max-width: 200px;
-  }
-
   .terms-section {
     margin-bottom: 25px;
   }
@@ -300,7 +260,6 @@ onMounted(() => {
   .terms-section h2 {
     font-size: 18px;
     margin-bottom: 10px;
-    gap: 8px;
   }
 
   .terms-section p,
@@ -314,71 +273,4 @@ onMounted(() => {
     padding-left: 22px;
   }
 }
-</style>.page-section {
-  padding: 80px 50px;
-  min-height: calc(100vh - 200px);
-}
-
-.container h1 {
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-}
-
-.policy-content {
-  max-width: 800px;
-  line-height: 1.8;
-}
-
-.policy-content h2 {
-  font-size: 1.5rem;
-  margin-top: 40px;
-  margin-bottom: 15px;
-  color: var(--text-primary);
-}
-
-.policy-content h2:first-of-type {
-  margin-top: 0;
-}
-
-.policy-content p {
-  margin-bottom: 15px;
-  color: var(--text-secondary);
-}
-
-.policy-content ul {
-  list-style: none;
-  margin-bottom: 20px;
-  padding-left: 20px;
-}
-
-.policy-content ul li {
-  margin-bottom: 10px;
-  color: var(--text-secondary);
-}
-
-.policy-content ul li:before {
-  content: '•';
-  color: var(--primary-color);
-  font-weight: bold;
-  display: inline-block;
-  width: 1em;
-  margin-left: -1em;
-  margin-right: 0.5em;
-}
-
-.last-updated {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-color);
-}
-
-@media (max-width: 768px) {
-  .page-section {
-    padding: 40px 20px;
-  }
-
-  .terms-section li {
-    padding-left: 22px;
 </style>
