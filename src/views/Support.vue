@@ -191,7 +191,11 @@ const sendMessage = async () => {
     if (!response.ok) throw new Error('Failed to get response')
 
     const data = await response.json()
-    const aiResponse = data.reply || 'Sorry, I encountered an error. Please try again or contact support at our Discord server.'
+    let aiResponse = data.reply || 'Sorry, I encountered an error. Please try again or contact support at our Discord server.'
+    
+    // Style all links with inline styles to ensure they're visible
+    aiResponse = aiResponse.replace(/<a\s+([^>]*?)href=["']([^"']*)["']([^>]*?)>/gi, 
+      '<a href="$2" style="background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5)); color: #fff; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; display: inline-block;" $1 $3>')
     
     messages.value.push({
       text: aiResponse,
@@ -201,7 +205,7 @@ const sendMessage = async () => {
   } catch (error) {
     console.error('Error getting AI response:', error)
     messages.value.push({
-      text: 'Sorry, I encountered an error. Please try again or contact support at our <a href="https://discord.gg/Kd2MckVxED" target="_blank">Discord server</a>.',
+      text: 'Sorry, I encountered an error. Please try again or contact support at our <a href="https://discord.gg/Kd2MckVxED" target="_blank" style="background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5)); color: #fff; padding: 4px 8px; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">Discord server</a>.',
       sender: 'ai'
     })
     saveChatHistory()
