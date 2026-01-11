@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { AUTH_STORAGE_KEY } from '../config'
+import { AUTH_STORAGE_KEY, DISCORD_CLIENT_ID } from '../config'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
@@ -8,12 +8,13 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isLoggedIn = computed(() => !!user.value)
 
-  const initializeAuth = () => {
-    const storedUser = localStorage.getItem(AUTH_STORAGE_KEY)
-    if (storedUser) {
-      user.value = JSON.parse(storedUser)
-    }
+  const getOAuthURL = () => {
+    const redirectUri = typeof window !== 'undefined' ? window.location.origin : 'https://status-bot.xyz'
+    const scopes = ['identify', 'guilds'].join('+')
+    return `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`
+  }
 
+  const handleOAuthCallback = () => {
     const hash = window.location.hash
     if (hash) {
       const params = new URLSearchParams(hash.substring(1))
@@ -24,6 +25,25 @@ export const useAuthStore = defineStore('auth', () => {
         window.history.replaceState({}, document.title, window.location.pathname)
       }
     }
+  }
+
+  const initializeAuth = () => {
+    // Check if user is already logged in
+    const storedUser = localStorage.getItem(AUTH_STORAGE_KEY)
+    if (storedUser) {
+      try {
+        user.value = JSON.parse(storedUser)
+      } catch (e) {
+        localStorage.removeItem(AUTH_STORAGE_KEY)
+      }
+    }
+
+    // Check for OAuth callback
+    handleOAuthCallback()
+  }
+
+  const login = () => {
+    window.location.href = getOAuthURL()
   }
 
   const fetchUserData = async (accessToken) => {
@@ -52,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
     token,
     isLoggedIn,
     initializeAuth,
+    login,
     logout,
     fetchUserData
   }

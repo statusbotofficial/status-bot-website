@@ -97,7 +97,7 @@ const toggleDropdown = () => {
 }
 
 const handleLogin = () => {
-  authStore.initializeAuth()
+  authStore.login()
 }
 
 const handleLogout = () => {
