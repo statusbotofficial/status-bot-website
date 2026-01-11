@@ -464,49 +464,44 @@ const fetchUserServers = async () => {
     if (response.ok) {
       const guilds = await response.json()
       
-      // Fetch guild configs from our backend for each guild
-      // Only include guilds where the bot has a config (meaning bot is in the guild)
+      // Map guilds to server format
+      // Try to fetch guild configs, but don't fail if they don't exist
       const serversWithConfig = await Promise.all(
         guilds.map(async (guild) => {
+          let config = {}
           try {
-            // Get guild config (leveling, economy, welcome, status settings)
+            // Try to get guild config (leveling, economy, welcome, status settings)
             const configResponse = await fetch(`${BACKEND_URL}/api/guilds/${guild.id}/config`, {
               headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
             })
-            
-            // Only return guild if we have a config (bot is in the guild)
-            if (!configResponse.ok) {
-              return null
-            }
-            
-            const config = await configResponse.json()
-
-            // Construct icon URL
-            const iconUrl = guild.icon 
-              ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
-              : 'https://discord.com/assets/default-avatar-default.png'
-
-            return {
-              id: guild.id,
-              name: guild.name,
-              icon: iconUrl,
-              memberCount: guild.approximate_member_count || 0,
-              systemsActive: !!(config.systems_active || config.leveling || config.economy || config.welcome),
-              leveling: config.leveling || false,
-              economy: config.economy || false,
-              welcome: config.welcome || false,
-              status: config.status || false
+            if (configResponse.ok) {
+              config = await configResponse.json()
             }
           } catch (err) {
-            console.error(`Error fetching config for guild ${guild.id}:`, err)
-            // Return null if config fetch fails - guild doesn't have bot
-            return null
+            // Config endpoint might not exist, that's ok - just use defaults
+            console.log(`No config for guild ${guild.id}, using defaults`)
+          }
+
+          // Construct icon URL
+          const iconUrl = guild.icon 
+            ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
+            : 'https://discord.com/assets/default-avatar-default.png'
+
+          return {
+            id: guild.id,
+            name: guild.name,
+            icon: iconUrl,
+            memberCount: guild.approximate_member_count || 0,
+            systemsActive: !!(config.systems_active || config.leveling || config.economy || config.welcome),
+            leveling: config.leveling || false,
+            economy: config.economy || false,
+            welcome: config.welcome || false,
+            status: config.status || false
           }
         })
       )
       
-      // Filter out null values (guilds without bot)
-      userServers.value = serversWithConfig.filter(s => s !== null)
+      userServers.value = serversWithConfig
     } else {
       console.error('Failed to fetch guilds from Discord API')
     }

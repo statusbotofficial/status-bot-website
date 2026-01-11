@@ -87,38 +87,6 @@
         </div>
       </div>
 
-      <!-- Gifts Section -->
-      <section class="dev-section">
-        <h2>Gifts & Rewards</h2>
-        <div v-if="loadingGifts" class="loading-state">
-          <div class="spinner"></div>
-          <p>Loading gifts...</p>
-        </div>
-
-        <div v-else-if="gifts.length > 0" class="gifts-container">
-          <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
-            <div class="gift-icon-container">🎁</div>
-            <div class="gift-details">
-              <div class="gift-name">{{ gift.name }}</div>
-              <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
-              <div v-if="gift.expiresAt" class="gift-expiry">Expires: {{ formatDate(gift.expiresAt) }}</div>
-            </div>
-            <button
-              :disabled="gift.claimed"
-              :class="{ 'claimed': gift.claimed }"
-              class="claim-btn"
-              @click="claimGift(gift.id)"
-            >
-              {{ gift.claimed ? 'Claimed' : 'Claim' }}
-            </button>
-          </div>
-        </div>
-
-        <div v-else class="empty-state">
-          <p>No gifts available</p>
-        </div>
-      </section>
-
       <!-- Billing Section -->
       <section class="dev-section">
         <h2>Billing History</h2>
@@ -163,11 +131,6 @@ const notificationTitle = ref('')
 const notificationMessage = ref('')
 const sendNotificationToAll = ref(false)
 const sendingNotification = ref(false)
-
-// Gifts & Billing state
-const gifts = ref([])
-const loadingGifts = ref(false)
-const billingHistory = ref([])
 
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
@@ -271,59 +234,8 @@ const sendNotification = async () => {
   }
 }
 
-const loadGifts = async () => {
-  if (!authStore.user?.id) return
-
-  loadingGifts.value = true
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/user/${authStore.user.id}/gifts`, {
-      headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
-    })
-    if (response.ok) {
-      const data = await response.json()
-      gifts.value = data.gifts || []
-    }
-  } catch (err) {
-    console.error('Error loading gifts:', err)
-  } finally {
-    loadingGifts.value = false
-  }
-}
-
-const claimGift = async (giftId) => {
-  if (!authStore.user?.id) return
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/gifts/claim`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${SECRET_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userId: authStore.user.id,
-        giftId
-      })
-    })
-
-    if (response.ok) {
-      alert('✓ Gift claimed successfully')
-      await loadGifts()
-    }
-  } catch (err) {
-    console.error('Error claiming gift:', err)
-    alert('Error claiming gift')
-  }
-}
-
 onMounted(async () => {
   document.title = 'Developer Tools | Status Bot'
-  
-  if (!isAuthorized.value) {
-    return
-  }
-
-  await loadGifts()
 })
 </script>
 
