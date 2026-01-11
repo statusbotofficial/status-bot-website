@@ -65,13 +65,16 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { useThemeStore } from '@/stores/theme'
+import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
-const themeStore = useThemeStore()
 
 onMounted(() => {
+  const storedUser = localStorage.getItem('discordUser')
+  if (storedUser) {
+    const user = JSON.parse(storedUser)
+    authStore.setUser(user)
+  }
   document.title = 'Privacy Policy | Status Bot'
 })
 </script>
