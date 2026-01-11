@@ -249,7 +249,7 @@ const configSections = [
 // Computed
 const filteredServers = computed(() => {
   return servers.value.filter((server) =>
-    server.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    (server.name || "").toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
 
