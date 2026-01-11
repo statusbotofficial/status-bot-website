@@ -464,6 +464,9 @@ onMounted(() => {
 
 .user-btn-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .notification-bell {
