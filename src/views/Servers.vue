@@ -69,7 +69,7 @@
         <aside class="config-sidebar">
           <nav class="config-nav">
             <button
-              v-for="section in sections"
+              v-for="section in filteredSections"
               :key="section.id"
               class="nav-btn"
               :class="{ active: activeSection === section.id }"
@@ -578,10 +578,13 @@ const filteredServers = computed(() => {
   )
 })
 
-const filteredMembers = computed(() => {
-  return guildMembers.value.filter(member =>
-    member.username.toLowerCase().includes(memberSearchQuery.value.toLowerCase())
-  )
+const filteredSections = computed(() => {
+  // If user only has view permission, only show overview and leaderboard
+  if (selectedServer.value?.buttonType === 'view') {
+    return sections.filter(s => ['overview', 'leaderboard'].includes(s.id))
+  }
+  // Admin can see all sections
+  return sections
 })
 
 const getMedalClass = (index) => {
@@ -691,7 +694,12 @@ const loadServers = async () => {
 
 const selectServer = async (server) => {
   selectedServer.value = server
-  activeSection.value = 'overview'
+  // Default to overview, or keep current section if allowed
+  if (server.buttonType === 'view' && !['overview', 'leaderboard'].includes(activeSection.value)) {
+    activeSection.value = 'overview'
+  } else if (activeSection.value === '') {
+    activeSection.value = 'overview'
+  }
   await Promise.all([
     loadOverviewData(server.id),
     loadLeaderboardData(server.id),
