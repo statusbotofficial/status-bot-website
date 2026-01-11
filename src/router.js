@@ -8,6 +8,7 @@ import Servers from './views/Servers.vue'
 import Settings from './views/Settings.vue'
 import Privacy from './views/Privacy.vue'
 import Terms from './views/Terms.vue'
+import Docs from './views/Docs.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -19,6 +20,7 @@ const routes = [
   { path: '/settings', component: Settings },
   { path: '/privacy', component: Privacy },
   { path: '/terms', component: Terms },
+  { path: '/docs', component: Docs },
 ]
 
 const router = createRouter({
