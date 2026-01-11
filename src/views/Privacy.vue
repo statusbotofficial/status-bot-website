@@ -81,45 +81,50 @@ onMounted(() => {
 
 <style scoped>
 .privacy-wrapper {
+  width: 100%;
+  padding: 60px 50px;
   min-height: calc(100vh - 200px);
-  padding: 60px 20px;
 }
 
 .privacy-container {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .privacy-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   text-align: center;
   margin-bottom: 60px;
 }
 
 .privacy-header h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
-  background: linear-gradient(135deg, #5170ff, #8a9fff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 56px;
+  font-weight: 900;
+  margin: 0;
+  color: #fff;
 }
 
 .privacy-header p {
+  font-size: 14px;
   color: var(--text-secondary);
-  font-size: 1rem;
-  margin-bottom: 20px;
+  margin: 0;
 }
 
 .privacy-header hr {
-  border: none;
+  width: 100px;
   height: 2px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
-  margin: 20px 0;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  border: none;
+  margin-top: 20px;
 }
 
 .privacy-section {
   margin-bottom: 50px;
-  padding: 0 20px;
+  padding: 0;
 }
 
 .privacy-section h2 {
@@ -166,72 +171,116 @@ onMounted(() => {
   color: #8a9fff;
 }
 
-@media (max-width: 1024px) {
-  .privacy-wrapper {
-    padding: 50px 15px;
-  }
-
+/* Responsive Design */
+@media (max-width: 1439px) and (min-width: 1024px) {
   .privacy-header h1 {
-    font-size: 2.5rem;
+    font-size: 44px;
   }
 
   .privacy-section h2 {
-    font-size: 1.6rem;
+    font-size: 26px;
+  }
+
+  .privacy-section p,
+  .privacy-section li {
+    font-size: 15px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) and (min-width: 768px) {
   .privacy-wrapper {
-    padding: 40px 15px;
+    padding: 50px 30px;
   }
 
   .privacy-header {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
 
   .privacy-header h1 {
-    font-size: 2rem;
+    font-size: 38px;
   }
 
   .privacy-section {
-    margin-bottom: 35px;
-    padding: 0 10px;
+    margin-bottom: 40px;
   }
 
   .privacy-section h2 {
-    font-size: 1.4rem;
+    font-size: 24px;
+    margin-bottom: 12px;
   }
 
-  .privacy-section p {
-    font-size: 0.95rem;
+  .privacy-section p,
+  .privacy-section li {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 16px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 767px) and (min-width: 480px) {
   .privacy-wrapper {
-    padding: 30px 10px;
+    padding: 35px 20px;
+  }
+
+  .privacy-header {
+    margin-bottom: 30px;
   }
 
   .privacy-header h1 {
-    font-size: 1.6rem;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .privacy-section {
+    margin-bottom: 30px;
+  }
+
+  .privacy-section h2 {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .privacy-section p,
+  .privacy-section li {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 479px) {
+  .privacy-wrapper {
+    padding: 20px 15px;
+  }
+
+  .privacy-header {
+    margin-bottom: 25px;
+  }
+
+  .privacy-header h1 {
+    font-size: 26px;
+    line-height: 1.2;
+    word-break: break-word;
   }
 
   .privacy-section {
     margin-bottom: 25px;
-    padding: 0;
   }
 
   .privacy-section h2 {
-    font-size: 1.2rem;
+    font-size: 18px;
+    margin-bottom: 10px;
   }
 
-  .privacy-section p {
-    font-size: 0.9rem;
+  .privacy-section p,
+  .privacy-section li {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 12px;
   }
 
   .privacy-section li {
-    font-size: 0.9rem;
-    margin-bottom: 12px;
+    padding-left: 22px;
   }
 }
 </style>
