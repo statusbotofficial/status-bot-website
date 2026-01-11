@@ -105,7 +105,12 @@
     </div>
   </div>
   <div v-else class="unauthorized">
-    <p>Access Denied</p>
+    <div>
+      <h2>Access Denied</h2>
+      <p>You do not have permission to access this page.</p>
+      <p v-if="authStore.user">Your User ID: {{ authStore.user.id }}</p>
+      <p v-else>Please log in to continue.</p>
+    </div>
   </div>
 </template>
 
@@ -594,8 +599,22 @@ onMounted(async () => {
   align-items: center;
   min-height: calc(100vh - 200px);
   padding: 60px 50px;
-  font-size: 24px;
   color: var(--text-secondary);
+}
+
+.unauthorized div {
+  text-align: center;
+}
+
+.unauthorized h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.unauthorized p {
+  margin: 10px 0;
+  font-size: 14px;
 }
 
 @media (max-width: 1023px) {
