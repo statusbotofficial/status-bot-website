@@ -195,19 +195,28 @@ const addNotification = (title, message) => {
 }
 
 const formatTime = (timestamp) => {
-  // Ensure timestamp is a Date object
-  const ts = timestamp instanceof Date ? timestamp : new Date(timestamp)
-  if (isNaN(ts.getTime())) return 'Recently'
-  
-  const now = new Date()
-  const diff = now - ts
-  const minutes = Math.floor(diff / 60000)
-  const hours = Math.floor(diff / 3600000)
-  
-  if (minutes < 1) return 'Just now'
-  if (minutes < 60) return `${minutes}m ago`
-  if (hours < 24) return `${hours}h ago`
-  return ts.toLocaleDateString()
+  try {
+    // Ensure timestamp is a Date object
+    let ts = timestamp
+    if (!ts) ts = new Date()
+    if (typeof ts === 'string') ts = new Date(ts)
+    if (!(ts instanceof Date)) ts = new Date(ts)
+    
+    // Validate the date
+    if (isNaN(ts.getTime())) return 'Recently'
+    
+    const now = new Date()
+    const diff = now - ts
+    const minutes = Math.floor(diff / 60000)
+    const hours = Math.floor(diff / 3600000)
+    
+    if (minutes < 1) return 'Just now'
+    if (minutes < 60) return `${minutes}m ago`
+    if (hours < 24) return `${hours}h ago`
+    return ts.toLocaleDateString()
+  } catch (e) {
+    return 'Recently'
+  }
 }
 
 const loadNotifications = async () => {
@@ -273,7 +282,12 @@ const loadNotifications = async () => {
 }
 
 const saveNotifications = () => {
-  localStorage.setItem('siteNotifications', JSON.stringify(notifications.value))
+  // Convert timestamps to ISO strings for JSON serialization
+  const notificationsToSave = notifications.value.map(n => ({
+    ...n,
+    timestamp: n.timestamp instanceof Date ? n.timestamp.toISOString() : n.timestamp
+  }))
+  localStorage.setItem('siteNotifications', JSON.stringify(notificationsToSave))
 }
 
 onMounted(() => {
