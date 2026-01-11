@@ -80,37 +80,44 @@
         <main class="config-main">
           <!-- Overview -->
           <section v-if="activeSection === 'overview'" class="config-section">
-            <div class="overview-grid">
-              <!-- Top Users -->
-              <div class="overview-panel">
-                <h3>Top Users</h3>
-                <div v-if="overviewLoading" class="loading">Loading...</div>
-                <div v-else-if="overviewData.length > 0" class="user-list">
-                  <div v-for="(user, idx) in overviewData" :key="user.id" class="user-row">
-                    <span class="rank">#{{ idx + 1 }}</span>
-                    <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
-                    <div class="user-info">
-                      <p class="username">{{ user.username }}</p>
-                      <p class="level">Level {{ user.level || 0 }}</p>
-                    </div>
-                    <div class="stat">{{ user.xp || 0 }} XP</div>
+            <div class="overview-container">
+              <!-- Server Stats -->
+              <div class="stats-grid">
+                <div class="stat-box">
+                  <div class="stat-icon xp-icon">⭐</div>
+                  <div class="stat-content">
+                    <div class="stat-label">Total XP</div>
+                    <div class="stat-value">{{ totalStats.totalXp }}</div>
                   </div>
                 </div>
-                <div v-else class="empty">No data</div>
+                <div class="stat-box">
+                  <div class="stat-icon balance-icon">💰</div>
+                  <div class="stat-content">
+                    <div class="stat-label">Total Currency</div>
+                    <div class="stat-value">{{ totalStats.totalBalance }}</div>
+                  </div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-icon members-icon">👥</div>
+                  <div class="stat-content">
+                    <div class="stat-label">Members Tracked</div>
+                    <div class="stat-value">{{ totalStats.membersTracked }}</div>
+                  </div>
+                </div>
               </div>
 
               <!-- Leaderboard -->
-              <div class="overview-panel">
+              <div class="overview-panel full-width">
                 <h3>Leaderboard</h3>
-                <div v-if="leaderboardLoading" class="loading">Loading...</div>
+                <div v-if="leaderboardLoading" class="loading">Loading leaderboard...</div>
                 <div v-else-if="leaderboardData.length > 0" class="leaderboard">
                   <div
-                    v-for="(user, idx) in leaderboardData"
+                    v-for="(user, idx) in leaderboardData.slice(0, 10)"
                     :key="user.id"
                     class="leaderboard-item"
                     :class="getMedalClass(idx)"
                   >
-                    <span class="rank">#{{ idx + 1 }}</span>
+                    <span class="rank" :class="getMedalClass(idx)">{{ idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '#' + (idx + 1) }}</span>
                     <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
                     <div class="user-info">
                       <p class="username">{{ user.username }}</p>
@@ -119,11 +126,11 @@
                     <div class="stats">
                       <div class="stat-item">
                         <span class="label">XP</span>
-                        <span class="value xp-color">{{ user.xp || 0 }}</span>
+                        <span class="value xp-color">{{ (user.xp || 0).toLocaleString() }}</span>
                       </div>
                       <div class="stat-item">
                         <span class="label">Balance</span>
-                        <span class="value balance-color">{{ user.balance || 0 }}</span>
+                        <span class="value balance-color">{{ (user.balance || 0).toLocaleString() }}</span>
                       </div>
                       <div class="stat-item">
                         <span class="label">Voice</span>
@@ -131,12 +138,12 @@
                       </div>
                       <div class="stat-item">
                         <span class="label">Msgs</span>
-                        <span class="value msg-color">{{ user.messages || 0 }}</span>
+                        <span class="value msg-color">{{ (user.messages || 0).toLocaleString() }}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div v-else class="empty">No data</div>
+                <div v-else class="empty">No leaderboard data available. Users will appear here once they start earning XP!</div>
               </div>
             </div>
           </section>
@@ -299,13 +306,7 @@
                   type="text"
                   class="input-field"
                   placeholder="User is currently offline"
-                  @input="updateStatusPreview"
                 />
-              </div>
-
-              <div class="preview-box">
-                <div class="preview-title">Preview</div>
-                <div class="preview-content" v-html="statusPreview"></div>
               </div>
 
               <div class="button-group">
@@ -375,12 +376,34 @@
               </div>
 
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
-                <label>Footer text</label>
+                <label>Thumbnail URL</label>
                 <input
-                  v-model="welcomeSettings.embedFooter"
+                  v-model="welcomeSettings.embedThumbnail"
                   type="text"
                   class="input-field"
-                  placeholder="Thanks for joining!"
+                  placeholder="https://example.com/image.png"
+                  @input="updateWelcomePreview"
+                />
+              </div>
+
+              <div v-if="welcomeSettings.useEmbed" class="setting-item">
+                <label>Embed color (hex)</label>
+                <input
+                  v-model="welcomeSettings.embedColor"
+                  type="text"
+                  class="input-field"
+                  placeholder="#5170ff"
+                  @input="updateWelcomePreview"
+                />
+              </div>
+
+              <div v-if="welcomeSettings.useEmbed" class="setting-item">
+                <label>Author name</label>
+                <input
+                  v-model="welcomeSettings.embedAuthor"
+                  type="text"
+                  class="input-field"
+                  placeholder="Welcome to our server!"
                   @input="updateWelcomePreview"
                 />
               </div>
@@ -524,6 +547,9 @@ const welcomeSettings = reactive({
   embedTitle: 'Welcome!',
   embedDescription: 'Welcome to {server}! We\'re glad to have you here.',
   embedFooter: 'Thanks for joining!',
+  embedThumbnail: '',
+  embedColor: '#5170ff',
+  embedAuthor: '',
 })
 
 // Modal state
@@ -560,6 +586,14 @@ const getMedalClass = (index) => {
   return ''
 }
 
+const totalStats = computed(() => {
+  return {
+    totalXp: leaderboardData.value.reduce((sum, u) => sum + (u.xp || 0), 0).toLocaleString(),
+    totalBalance: leaderboardData.value.reduce((sum, u) => sum + (u.balance || 0), 0).toLocaleString(),
+    membersTracked: leaderboardData.value.length
+  }
+})
+
 // Preview computed properties
 const levelUpPreview = computed(() => {
   let msg = levelingSettings.levelUpMessage
@@ -580,9 +614,14 @@ const statusPreview = computed(() => {
 
 const welcomePreview = computed(() => {
   if (welcomeSettings.useEmbed) {
-    return `<div class="embed-preview">
+    const desc = welcomeSettings.embedDescription
+      .replace('{user}', 'Blake')
+      .replace('{server}', selectedServer.value.name)
+    return `<div class="embed-preview" style="border-left: 4px solid ${welcomeSettings.embedColor}">
+      ${welcomeSettings.embedAuthor ? `<div class="embed-author">${escapeHtml(welcomeSettings.embedAuthor)}</div>` : ''}
       <div class="embed-title">${escapeHtml(welcomeSettings.embedTitle)}</div>
-      <div class="embed-field">${escapeHtml(welcomeSettings.embedDescription).replace('{user}', 'Blake').replace('{server}', selectedServer.value.name)}</div>
+      <div class="embed-description">${escapeHtml(desc)}</div>
+      ${welcomeSettings.embedThumbnail ? `<img src="${welcomeSettings.embedThumbnail}" alt="embed" class="embed-thumbnail" />` : ''}
       <div class="embed-footer">${escapeHtml(welcomeSettings.embedFooter)}</div>
     </div>`
   }
@@ -693,36 +732,41 @@ const loadLeaderboardData = async (guildId) => {
 
 const loadAllSettings = async (guildId) => {
   try {
+    const headers = { Authorization: `Bearer ${authStore.token}` }
+    
     const [levelingRes, economyRes, statusRes, welcomeRes] = await Promise.all([
-      fetch(`${BACKEND_URL}/api/leveling/${guildId}/settings`, {
-        headers: { Authorization: `Bearer ${authStore.token}` }
-      }),
-      fetch(`${BACKEND_URL}/api/economy/${guildId}/settings`, {
-        headers: { Authorization: `Bearer ${authStore.token}` }
-      }),
-      fetch(`${BACKEND_URL}/api/status/${guildId}/settings`, {
-        headers: { Authorization: `Bearer ${authStore.token}` }
-      }),
-      fetch(`${BACKEND_URL}/api/welcome/${guildId}/settings`, {
-        headers: { Authorization: `Bearer ${authStore.token}` }
-      }),
+      fetch(`${BACKEND_URL}/api/leveling/${guildId}/settings`, { headers }),
+      fetch(`${BACKEND_URL}/api/economy/${guildId}/settings`, { headers }),
+      fetch(`${BACKEND_URL}/api/status/${guildId}/settings`, { headers }),
+      fetch(`${BACKEND_URL}/api/welcome/${guildId}/settings`, { headers }),
     ])
 
     if (levelingRes.ok) {
       const data = await levelingRes.json()
       Object.assign(levelingSettings, data.settings || {})
+    } else {
+      console.error('Leveling settings error:', levelingRes.status)
     }
+    
     if (economyRes.ok) {
       const data = await economyRes.json()
       Object.assign(economySettings, data.settings || {})
+    } else {
+      console.error('Economy settings error:', economyRes.status)
     }
+    
     if (statusRes.ok) {
       const data = await statusRes.json()
       Object.assign(statusSettings, data.settings || {})
+    } else {
+      console.error('Status settings error:', statusRes.status)
     }
+    
     if (welcomeRes.ok) {
       const data = await welcomeRes.json()
       Object.assign(welcomeSettings, data.settings || {})
+    } else {
+      console.error('Welcome settings error:', welcomeRes.status)
     }
   } catch (error) {
     console.error('Error loading settings:', error)
@@ -736,10 +780,17 @@ const loadGuildChannels = async (guildId) => {
     })
     if (response.ok) {
       const data = await response.json()
-      guildChannels.value = data.channels || []
+      guildChannels.value = (data.channels || []).map(c => ({
+        id: c.id,
+        name: c.name || 'Unknown Channel'
+      }))
+    } else {
+      console.error('Channels error:', response.status)
+      guildChannels.value = []
     }
   } catch (error) {
     console.error('Error loading channels:', error)
+    guildChannels.value = []
   }
 }
 
@@ -750,10 +801,28 @@ const loadGuildMembers = async (guildId) => {
     })
     if (response.ok) {
       const data = await response.json()
-      guildMembers.value = data.members || []
+      guildMembers.value = (data.members || []).map(m => ({
+        id: m.id,
+        username: m.username || 'Unknown User',
+        avatar: m.avatar
+      }))
+    } else {
+      console.warn('Members endpoint returned:', response.status)
+      // If members endpoint doesn't exist, populate from leaderboard
+      guildMembers.value = leaderboardData.value.map(u => ({
+        id: u.id,
+        username: u.username,
+        avatar: u.avatar
+      }))
     }
   } catch (error) {
     console.error('Error loading members:', error)
+    // Fallback to leaderboard data
+    guildMembers.value = leaderboardData.value.map(u => ({
+      id: u.id,
+      username: u.username,
+      avatar: u.avatar
+    }))
   }
 }
 
@@ -919,6 +988,9 @@ const resetWelcomeSettings = () => {
     embedTitle: 'Welcome!',
     embedDescription: 'Welcome to {server}! We\'re glad to have you here.',
     embedFooter: 'Thanks for joining!',
+    embedThumbnail: '',
+    embedColor: '#5170ff',
+    embedAuthor: '',
   })
 }
 
@@ -939,7 +1011,7 @@ const updateLevelUpPreview = () => {
 }
 
 const updateStatusPreview = () => {
-  // Computed property handles this
+  // Removed - no preview in status section
 }
 
 const updateWelcomePreview = () => {
@@ -1242,6 +1314,10 @@ onMounted(() => {
   padding: 24px;
 }
 
+.overview-panel.full-width {
+  grid-column: 1 / -1;
+}
+
 .overview-panel h3 {
   font-size: 16px;
   font-weight: 700;
@@ -1391,6 +1467,59 @@ onMounted(() => {
   padding: 30px;
 }
 
+.overview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.stat-box {
+  background: rgba(81, 112, 255, 0.1);
+  border: 2px solid rgba(81, 112, 255, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+  background: rgba(81, 112, 255, 0.15);
+  border-color: rgba(81, 112, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  font-size: 32px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+}
+
 .settings-box {
   background: rgba(81, 112, 255, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
@@ -1494,18 +1623,34 @@ onMounted(() => {
 .embed-preview {
   background: #2a2a2a;
   border-left: 4px solid #5170ff;
-  padding: 12px;
+  padding: 16px;
   border-radius: 4px;
+}
+
+.embed-author {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 4px;
 }
 
 .embed-title {
   font-weight: 700;
   color: #fff;
   margin-bottom: 8px;
+  font-size: 14px;
 }
 
-.embed-field {
-  color: #ccc;
+.embed-description {
+  color: #ddd;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.embed-thumbnail {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 4px;
   margin-bottom: 8px;
 }
 
