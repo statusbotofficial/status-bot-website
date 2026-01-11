@@ -8,12 +8,12 @@
       </div>
 
       <div class="terms-section">
-        <h2>✅ Acceptance of Terms</h2>
+        <h2>Acceptance of Terms</h2>
         <p>By inviting or using <strong>Status Bot</strong>, accessing our website, or purchasing any premium or custom services, you agree to be bound by these Terms of Service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing our services. These terms may be updated at any time without prior notice.</p>
       </div>
 
       <div class="terms-section">
-        <h2>📋 Service Description and Usage</h2>
+        <h2>Service Description and Usage</h2>
         <p><strong>Status Bot</strong> is a Discord bot designed to provide a custom tracking system for Discord users' personal bots or other projects. The core functionality is intended for monitoring and status reporting.</p>
         <ul>
           <li><strong>Prohibited Use:</strong> You agree not to use the Bot for any illegal, abusive, harmful, or unauthorized purposes, including but not limited to spamming, harassment, distributing malicious content, or violating Discord's Terms of Service.</li>
@@ -23,7 +23,7 @@
       </div>
 
       <div class="terms-section">
-        <h2>💳 Premium and Custom Services</h2>
+        <h2>Premium and Custom Services</h2>
         <p>We offer paid services to enhance your experience with Status Bot:</p>
         <ul>
           <li><strong>Premium Plans:</strong> Purchasing a Premium plan grants access to specific locked features and provides a higher priority processing queue, resulting in <strong>faster responses</strong> from the Bot. Premium features are subject to change, addition, or removal at our discretion, though we will provide notice for significant changes.</li>
@@ -39,12 +39,12 @@
       </div>
 
       <div class="terms-section">
-        <h2>⚖️ Limitation of Liability</h2>
+        <h2>Limitation of Liability</h2>
         <p>In no event shall <strong>Status Bot or its suppliers</strong> be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the Bot or its services, even if Status Bot or a Status Bot authorized representative has been notified orally or in writing of the possibility of such damage. Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.</p>
       </div>
 
       <div class="terms-section">
-        <h2>🏛️ Governing Law</h2>
+        <h2>Governing Law</h2>
         <p>These terms and conditions are governed by and construed in accordance with the laws of the State of Georgia, United States and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.</p>
       </div>
     </div>
