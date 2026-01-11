@@ -302,7 +302,7 @@ onMounted(() => {
 
 .support-chat-box {
   width: 100%;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
   border: 2px solid var(--primary-color);
   border-radius: 16px;
   padding: 40px;
