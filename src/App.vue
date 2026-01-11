@@ -400,8 +400,8 @@ onMounted(() => {
 
 .notification-badge {
   position: absolute;
-  bottom: -8px;
-  left: -8px;
+  top: -4px;
+  right: -4px;
   background: linear-gradient(135deg, #ff5e5e, #ff4444);
   color: #fff;
   border-radius: 50%;
