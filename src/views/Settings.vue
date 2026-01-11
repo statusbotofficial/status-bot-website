@@ -259,24 +259,22 @@
               <p>Loading gifts...</p>
             </div>
 
-            <div v-else-if="gifts.length > 0" class="section-panel">
-              <div class="gifts-container">
-                <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
-                  <div class="gift-icon-container">🎁</div>
-                  <div class="gift-details">
-                    <div class="gift-name">{{ gift.name }}</div>
-                    <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
-                    <div v-if="gift.expiresAt" class="gift-expiry">Expires: {{ formatDate(gift.expiresAt) }}</div>
-                  </div>
-                  <button
-                    :disabled="gift.claimed"
-                    :class="{ 'claimed': gift.claimed }"
-                    class="claim-btn"
-                    @click="claimGift(gift.id)"
-                  >
-                    {{ gift.claimed ? 'Claimed' : 'Claim' }}
-                  </button>
+            <div v-else-if="gifts.length > 0" class="section-panel gifts-container">
+              <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
+                <div class="gift-icon-container">🎁</div>
+                <div class="gift-details">
+                  <div class="gift-name">{{ gift.name }}</div>
+                  <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
+                  <div v-if="gift.expiresAt" class="gift-expiry">Expires: {{ formatDate(gift.expiresAt) }}</div>
                 </div>
+                <button
+                  :disabled="gift.claimed"
+                  :class="{ 'claimed': gift.claimed }"
+                  class="claim-btn"
+                  @click="claimGift(gift.id)"
+                >
+                  {{ gift.claimed ? 'Claimed' : 'Claim' }}
+                </button>
               </div>
             </div>
 
@@ -1218,10 +1216,6 @@ onMounted(async () => {
 }
 
 .gifts-container {
-  background: rgba(81, 112, 255, 0.05);
-  border: 1px solid rgba(81, 112, 255, 0.2);
-  border-radius: 12px;
-  padding: 25px;
   display: flex;
   flex-direction: column;
   gap: 15px;
