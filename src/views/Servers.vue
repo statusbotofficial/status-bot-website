@@ -75,7 +75,7 @@
               :class="{ active: activeSection === section.id }"
               @click="activeSection = section.id"
             >
-              <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor" v-html="section.svgIcon"></svg>
+              <span class="nav-icon">{{ section.icon }}</span>
               <span>{{ section.label }}</span>
             </button>
           </nav>
@@ -509,36 +509,12 @@ const leaderboardData = ref([])
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 
 const sections = [
-  { 
-    id: 'overview', 
-    label: 'Overview', 
-    svgIcon: '<path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>'
-  },
-  { 
-    id: 'leaderboard', 
-    label: 'Leaderboard', 
-    svgIcon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-10 19H4v-5h6v5zm0-7H4v-5h6v5zm0-7H4V4h6v3zm10 14h-6v-5h6v5zm0-7h-6v-5h6v5zm0-7h-6V4h6v3z"/>'
-  },
-  { 
-    id: 'leveling', 
-    label: 'Leveling', 
-    svgIcon: '<path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2s-2-.69-2-2c0-2.52 1.17-4.68 2.85-5.99C2.02 10.42 1 8.3 1 6c0-3.87 3.13-7 7-7s7 3.13 7 7c0 2.3-1.02 4.42-2.85 5.99C20.83 12.32 22 14.48 22 17c0 1.31-1.16 2-2 2s-2-.69-2-2c0-1.66-1.34-3-3-3H7zm5-2c1.66-1.66 2.7-3.95 2.7-6.5 0-2.33-.93-4.45-2.45-6C11.88 1.55 10.04 1 8 1c-3.59 0-6.5 2.91-6.5 6.5 0 2.55 1.05 4.84 2.7 6.5h4.6z"/>'
-  },
-  { 
-    id: 'economy', 
-    label: 'Economy', 
-    svgIcon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>'
-  },
-  { 
-    id: 'status-tracking', 
-    label: 'Status Tracking', 
-    svgIcon: '<circle cx="12" cy="12" r="10"/>'
-  },
-  { 
-    id: 'welcome', 
-    label: 'Welcome', 
-    svgIcon: '<path d="M20 10c-1.1 0-2-.9-2-2V4h-2v4c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2V4H8v4c0 1.1-.9 2-2 2s-2-.9-2-2V4c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4v4c0 1.1-.9 2-2 2zm0 2H4c-2.21 0-4 1.79-4 4v4c0 2.21 1.79 4 4 4h16c2.21 0 4-1.79 4-4v-4c0-2.21-1.79-4-4-4zm0 8H4v-4h16v4z"/>'
-  },
+  { id: 'overview', label: 'Overview', icon: '📊' },
+  { id: 'leaderboard', label: 'Leaderboard', icon: '🏆' },
+  { id: 'leveling', label: 'Leveling', icon: '⬆️' },
+  { id: 'economy', label: 'Economy', icon: '💰' },
+  { id: 'status-tracking', label: 'Status Tracking', icon: '🟢' },
+  { id: 'welcome', label: 'Welcome', icon: '👋' },
 ]
 
 // Settings
@@ -1300,11 +1276,6 @@ onMounted(() => {
   font-size: 18px;
   min-width: 24px;
   text-align: center;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .config-main {
