@@ -68,7 +68,7 @@
     <!-- Server Config View -->
     <div v-else class="server-config-view">
       <div class="config-header">
-        <button class="back-btn" @click="selectedServer = null">← Back</button>
+        <button class="back-btn" @click="selectedServer = null">Back</button>
         <h2 class="config-title">{{ selectedServer.name }}</h2>
       </div>
 
@@ -231,7 +231,7 @@ const loadServers = async () => {
 
     const botResponse = await fetch(`${BACKEND_URL}/api/bot-guilds`)
     const botData = await botResponse.json()
-    const botGuildIds = new Set(botData.guilds?.map(g => g.id) || [])
+    const botGuildIds = new Set(botData.guilds || [])
 
     const MANAGE_GUILD = BigInt(0x20)
     const processedServers = userGuilds.map(guild => {
