@@ -375,8 +375,8 @@ onMounted(() => {
 
 .notification-badge {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  bottom: -8px;
+  left: -8px;
   background: linear-gradient(135deg, #ff5e5e, #ff4444);
   color: #fff;
   border-radius: 50%;
@@ -387,6 +387,7 @@ onMounted(() => {
   justify-content: center;
   font-size: 11px;
   font-weight: 700;
+  line-height: 1;
   border: 2px solid var(--bg-primary);
   box-shadow: 0 4px 12px rgba(255, 94, 94, 0.4);
   animation: pulse 2s infinite;
