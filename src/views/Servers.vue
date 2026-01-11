@@ -27,10 +27,10 @@
             }"
           >
             <span v-if="!server.icon" style="font-size: 24px; font-weight: 700;">
-              {{ server.name.charAt(0).toUpperCase() }}
+              {{ (server.name || "").charAt(0).toUpperCase() }}
             </span>
           </div>
-          <div class="server-name">{{ server.name }}</div>
+          <div class="server-name">{{ server.name || "Unnamed Server" }}</div>
           <button
             class="server-button view"
             @click.stop="selectServer(server)"
