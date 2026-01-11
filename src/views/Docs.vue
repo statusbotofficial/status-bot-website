@@ -7,7 +7,29 @@
         <hr>
       </div>
 
-      <div class="docs-section">
+      <div class="docs-main">
+        <aside class="docs-sidebar">
+          <nav class="sidebar-nav">
+            <div class="sidebar-title">Sections</div>
+            <ul>
+              <li><a href="#what-is" @click.prevent="scrollToSection('what-is')">What is Status Bot?</a></li>
+              <li><a href="#getting-started" @click.prevent="scrollToSection('getting-started')">Getting Started</a></li>
+              <li><a href="#core-features" @click.prevent="scrollToSection('core-features')">Core Features</a></li>
+              <li><a href="#command-reference" @click.prevent="scrollToSection('command-reference')">Command Reference</a></li>
+              <li><a href="#setup-monitoring" @click.prevent="scrollToSection('setup-monitoring')">Setting Up Monitoring</a></li>
+              <li><a href="#status-updates" @click.prevent="scrollToSection('status-updates')">Understanding Status Updates</a></li>
+              <li><a href="#premium" @click.prevent="scrollToSection('premium')">Premium Features</a></li>
+              <li><a href="#troubleshooting" @click.prevent="scrollToSection('troubleshooting')">Troubleshooting</a></li>
+              <li><a href="#best-practices" @click.prevent="scrollToSection('best-practices')">Best Practices</a></li>
+              <li><a href="#api" @click.prevent="scrollToSection('api')">API Information</a></li>
+              <li><a href="#faq" @click.prevent="scrollToSection('faq')">FAQ</a></li>
+              <li><a href="#contact" @click.prevent="scrollToSection('contact')">Contact & Support</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <main class="docs-content">
+      <div class="docs-section" id="what-is">
         <h2>What is Status Bot?</h2>
         <p><strong>Status Bot</strong> is a powerful Discord bot designed to help you monitor and track the status of your bots, services, and projects. Whether you're running custom bots, web services, or third-party integrations, Status Bot provides real-time monitoring and automated status updates to your Discord server.</p>
         <p>With Status Bot, you can:</p>
@@ -21,8 +43,7 @@
         </ul>
       </div>
 
-      <div class="docs-section">
-        <h2>Getting Started</h2>
+      <div class="docs-section" id="getting-started">
         <p>Follow these steps to set up Status Bot in your Discord server:</p>
         <ul>
           <li><strong>Invite the Bot:</strong> Click the <code>Invite</code> button on our home page to add Status Bot to your server. You'll need administrator or manage server permissions.</li>
@@ -32,8 +53,7 @@
         </ul>
       </div>
 
-      <div class="docs-section">
-        <h2>Core Features</h2>
+      <div class="docs-section" id="core-features">
         <ul>
           <li>
             <strong>Real-Time Monitoring:</strong> Status Bot continuously monitors your tracked services and updates status every 30 seconds. Get instant alerts when services go down or come back online.
@@ -56,8 +76,7 @@
         </ul>
       </div>
 
-      <div class="docs-section">
-        <h2>Command Reference</h2>
+      <div class="docs-section" id="command-reference">
         <p>Status Bot uses slash commands for easy interaction. Here are the main command categories:</p>
         <ul>
           <li>
@@ -109,8 +128,7 @@
         </ul>
       </div>
 
-      <div class="docs-section">
-        <h2>Setting Up Monitoring</h2>
+      <div class="docs-section" id="setup-monitoring">
         <p><strong>Step 1: Add a Service</strong></p>
         <p>Use the <code>/track add</code> command to add a service you want to monitor. You'll need to provide:</p>
         <ul>
@@ -127,8 +145,7 @@
         <p>Run <code>/track list</code> to see all monitored services and <code>/stats</code> to verify everything is working correctly.</p>
       </div>
 
-      <div class="docs-section">
-        <h2>Understanding Status Updates</h2>
+      <div class="docs-section" id="status-updates">
         <p>Status Bot provides detailed status information for each monitored service:</p>
         <ul>
           <li><strong>Online:</strong> Service is running and responding normally</li>
@@ -145,8 +162,7 @@
         </ul>
       </div>
 
-      <div class="docs-section">
-        <h2>Premium Features</h2>
+      <div class="docs-section" id="premium">
         <p>Upgrade to a Premium plan to unlock advanced monitoring capabilities:</p>
         <ul>
           <li><strong>Faster Updates:</strong> Get status updates every 15 seconds instead of 30 (Premium plan)</li>
@@ -159,8 +175,7 @@
         <p>See the <router-link to="/premium">Premium page</router-link> for pricing and plan details.</p>
       </div>
 
-      <div class="docs-section">
-        <h2>Troubleshooting</h2>
+      <div class="docs-section" id="troubleshooting">
         <p><strong>Bot not responding to commands?</strong></p>
         <ul>
           <li>Ensure Status Bot has permission to send messages in the channel</li>
@@ -183,8 +198,7 @@
         <p>Visit our <router-link to="/support">Support page</router-link> to get in touch with our team or check the FAQ.</p>
       </div>
 
-      <div class="docs-section">
-        <h2>Best Practices</h2>
+      <div class="docs-section" id="best-practices">
         <ul>
           <li><strong>Use Descriptive Names:</strong> Give your services clear, easy-to-understand names for quick identification</li>
           <li><strong>Dedicate a Status Channel:</strong> Create a separate channel just for status updates to keep them organized</li>
@@ -196,8 +210,7 @@
         </ul>
       </div>
 
-      <div class="docs-section">
-        <h2>API Information</h2>
+      <div class="docs-section" id="api">
         <p>For developers interested in building integrations, Status Bot exposes a REST API for programmatic access to status data:</p>
         <ul>
           <li><strong>Base URL:</strong> <code>https://status-bot-backend.onrender.com/api</code></li>
@@ -207,8 +220,7 @@
         <p>For custom integrations or API documentation, contact us via the <router-link to="/support">Support page</router-link>.</p>
       </div>
 
-      <div class="docs-section">
-        <h2>FAQ</h2>
+      <div class="docs-section" id="faq">
         <p><strong>Q: How often does Status Bot check services?</strong></p>
         <p>A: By default, services are checked every 30 seconds. With Premium, this can be reduced to 15 seconds for faster updates.</p>
         
@@ -228,8 +240,7 @@
         <p>A: For HTTP endpoints, Status Bot checks if the URL responds with a 2xx status code. For other integrations, specific configuration may be needed.</p>
       </div>
 
-      <div class="docs-section">
-        <h2>Contact & Support</h2>
+      <div class="docs-section" id="contact">
         <p>Need help or have questions? We're here to help!</p>
         <ul>
           <li>Visit our <router-link to="/support">Support page</router-link> for live chat support</li>
@@ -237,6 +248,8 @@
           <li>Check out the <router-link to="/commands">Commands page</router-link> for detailed command documentation</li>
           <li>Review our <router-link to="/privacy">Privacy Policy</router-link> and <router-link to="/terms">Terms of Service</router-link></li>
         </ul>
+      </div>
+        </main>
       </div>
     </div>
   </div>
@@ -247,6 +260,13 @@ import { onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
+
+const scrollToSection = (sectionId) => {
+  const element = document.getElementById(sectionId)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 
 onMounted(() => {
   const storedUser = localStorage.getItem('discordUser')
@@ -278,6 +298,65 @@ onMounted(() => {
   gap: 10px;
   text-align: center;
   margin-bottom: 60px;
+}
+
+.docs-main {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 40px;
+}
+
+.docs-sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.sidebar-nav {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.sidebar-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #5170ff;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 0;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 10px 15px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  margin-bottom: 3px;
+}
+
+.sidebar-nav a:hover {
+  background: rgba(81, 112, 255, 0.1);
+  color: #5170ff;
+  transform: translateX(4px);
+}
+
+.docs-content {
+  width: 100%;
 }
 
 .docs-header h1 {
@@ -401,6 +480,20 @@ onMounted(() => {
     font-size: 38px;
   }
 
+  .docs-main {
+    grid-template-columns: 220px 1fr;
+    gap: 30px;
+  }
+
+  .sidebar-nav {
+    padding: 15px;
+  }
+
+  .sidebar-nav a {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
   .docs-section {
     margin-bottom: 40px;
   }
@@ -430,6 +523,14 @@ onMounted(() => {
   .docs-header h1 {
     font-size: 32px;
     line-height: 1.2;
+  }
+
+  .docs-main {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-sidebar {
+    position: static;
   }
 
   .docs-section {
@@ -462,6 +563,24 @@ onMounted(() => {
     font-size: 26px;
     line-height: 1.2;
     word-break: break-word;
+  }
+
+  .docs-main {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-sidebar {
+    position: static;
+  }
+
+  .sidebar-nav {
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+
+  .sidebar-nav a {
+    padding: 8px 10px;
+    font-size: 12px;
   }
 
   .docs-section {
