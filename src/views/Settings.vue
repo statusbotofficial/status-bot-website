@@ -33,15 +33,6 @@
               <li>
                 <button
                   class="nav-link"
-                  :class="{ active: activeSection === 'servers' }"
-                  @click="activeSection = 'servers'"
-                >
-                  Servers
-                </button>
-              </li>
-              <li>
-                <button
-                  class="nav-link"
                   :class="{ active: activeSection === 'notifications' }"
                   @click="activeSection = 'notifications'"
                 >
@@ -177,54 +168,6 @@
             </div>
           </section>
 
-          <!-- Servers Section -->
-          <section v-show="activeSection === 'servers'" class="settings-section">
-            <h2>Servers</h2>
-            <p class="section-subtitle">Manage Status Bot across your servers</p>
-
-            <div v-if="loadingServers" class="loading-state">
-              <div class="spinner"></div>
-              <p>Loading your servers...</p>
-            </div>
-
-            <div v-else-if="userServers.length > 0" class="servers-grid">
-              <div v-for="server in userServers" :key="server.id" class="server-card">
-                <div class="server-header">
-                  <div class="server-icon" v-if="server.icon">
-                    <img :src="server.icon" :alt="server.name">
-                  </div>
-                  <div class="server-name">{{ server.name }}</div>
-                  <router-link :to="`/servers/${server.id}`" class="btn btn-small btn-primary">Manage</router-link>
-                </div>
-                <div class="server-stats">
-                  <div class="stat">
-                    <span class="label">Members:</span>
-                    <span class="value">{{ server.memberCount || 0 }}</span>
-                  </div>
-                  <div class="stat">
-                    <span class="label">Bot Status:</span>
-                    <span class="value" :class="{ 'online': server.systemsActive, 'offline': !server.systemsActive }">
-                      {{ server.systemsActive ? '✓ Active' : '✗ Inactive' }}
-                    </span>
-                  </div>
-                </div>
-                <div class="server-features">
-                  <span v-if="server.leveling" class="feature-tag">📊 Leveling</span>
-                  <span v-if="server.economy" class="feature-tag">💰 Economy</span>
-                  <span v-if="server.welcome" class="feature-tag">👋 Welcome</span>
-                  <span v-if="server.status" class="feature-tag">📍 Status</span>
-                </div>
-              </div>
-            </div>
-
-            <div v-else class="empty-state">
-              <div class="empty-icon">🖥️</div>
-              <p>No servers found</p>
-              <p class="empty-hint">Invite Status Bot to your server to manage it here</p>
-              <a href="https://discord.com/api/oauth2/authorize?client_id=1436123870158520411&permissions=8&scope=bot%20applications.commands" target="_blank" class="btn btn-primary">Invite Bot to Server</a>
-            </div>
-          </section>
-
           <!-- Notification Preferences Section -->
           <section v-show="activeSection === 'notifications'" class="settings-section">
             <h2>Notification Preferences</h2>
@@ -356,8 +299,6 @@ const activeSection = ref('account')
 const discordUser = ref(null)
 const hasPremium = ref(false)
 const premiumExpiryDate = ref(null)
-const userServers = ref([])
-const loadingServers = ref(false)
 const loadingGifts = ref(false)
 const gifts = ref([])
 const currentTheme = ref('default')
@@ -407,10 +348,6 @@ const daysUntilExpiry = computed(() => {
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 })
 
-const totalMembersAcrossServers = computed(() => {
-  return userServers.value.reduce((sum, server) => sum + (server.memberCount || 0), 0)
-})
-
 // Methods
 const fetchDiscordUser = async () => {
   const token = localStorage.getItem('discordToken')
@@ -442,73 +379,6 @@ const fetchPremiumStatus = async () => {
     }
   } catch (err) {
     console.error('Error fetching premium status:', err)
-  }
-}
-
-const fetchUserServers = async () => {
-  if (!discordUser.value?.id) return
-
-  loadingServers.value = true
-  try {
-    const token = localStorage.getItem('discordToken')
-    if (!token) {
-      console.error('No Discord token found')
-      return
-    }
-
-    // Fetch user's guilds from Discord API
-    const response = await fetch('https://discord.com/api/users/@me/guilds', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-
-    if (response.ok) {
-      const guilds = await response.json()
-      
-      // Map guilds to server format
-      // Try to fetch guild configs, but don't fail if they don't exist
-      const serversWithConfig = await Promise.all(
-        guilds.map(async (guild) => {
-          let config = {}
-          try {
-            // Try to get guild config (leveling, economy, welcome, status settings)
-            const configResponse = await fetch(`${BACKEND_URL}/api/guilds/${guild.id}/config`, {
-              headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
-            })
-            if (configResponse.ok) {
-              config = await configResponse.json()
-            }
-          } catch (err) {
-            // Config endpoint might not exist, that's ok - just use defaults
-            console.log(`No config for guild ${guild.id}, using defaults`)
-          }
-
-          // Construct icon URL
-          const iconUrl = guild.icon 
-            ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`
-            : 'https://discord.com/assets/default-avatar-default.png'
-
-          return {
-            id: guild.id,
-            name: guild.name,
-            icon: iconUrl,
-            memberCount: guild.approximate_member_count || 0,
-            systemsActive: !!(config.systems_active || config.leveling || config.economy || config.welcome),
-            leveling: config.leveling || false,
-            economy: config.economy || false,
-            welcome: config.welcome || false,
-            status: config.status || false
-          }
-        })
-      )
-      
-      userServers.value = serversWithConfig
-    } else {
-      console.error('Failed to fetch guilds from Discord API')
-    }
-  } catch (err) {
-    console.error('Error fetching servers:', err)
-  } finally {
-    loadingServers.value = false
   }
 }
 
@@ -666,7 +536,6 @@ onMounted(async () => {
   
   await fetchDiscordUser()
   await fetchPremiumStatus()
-  await fetchUserServers()
   
   const savedTheme = localStorage.getItem('site_theme') || 'default'
   currentTheme.value = savedTheme
