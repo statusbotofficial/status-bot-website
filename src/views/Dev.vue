@@ -2,55 +2,138 @@
   <div v-if="isAuthorized" class="dev-wrapper">
     <div class="dev-container">
       <div class="dev-header">
-        <h1>Developer Tools</h1>
-        <p>Internal testing and debugging tools</p>
+        <h1>User Management</h1>
+        <p>Send trials and notifications to users</p>
         <hr>
       </div>
 
-      <div class="dev-content">
-        <section class="dev-section">
-          <h2>Gifts Testing</h2>
-          <div v-if="loadingGifts" class="loading-state">
-            <div class="spinner"></div>
-            <p>Loading gifts...</p>
+      <div class="dev-panels">
+        <!-- Left Panel: Trial Sending -->
+        <div class="dev-sub-panel">
+          <h2>Who to send trial to</h2>
+          <div class="input-group">
+            <label>User ID</label>
+            <input 
+              v-model="trialUserId" 
+              type="text" 
+              placeholder="e.g. 1362553254117904496"
+              class="dev-input"
+            >
+          </div>
+          <div class="checkbox-group">
+            <input v-model="sendTrialToAll" type="checkbox" id="trialToAll">
+            <label for="trialToAll">Send to all users</label>
           </div>
 
-          <div v-else-if="gifts.length > 0" class="gifts-list">
-            <div v-for="gift in gifts" :key="gift.id" class="gift-item">
-              <div class="gift-header">
-                <span class="gift-name">{{ gift.name }}</span>
-                <span class="gift-code">{{ gift.code }}</span>
-              </div>
-              <div class="gift-details">
-                <p><strong>ID:</strong> {{ gift.id }}</p>
-                <p><strong>Expires:</strong> {{ formatDate(gift.expiresAt) }}</p>
-                <p><strong>Claimed:</strong> {{ gift.claimed ? 'Yes' : 'No' }}</p>
-              </div>
+          <h2 style="margin-top: 30px;">How long should it last</h2>
+          <div class="input-group">
+            <label>Duration (days)</label>
+            <input 
+              v-model.number="trialDuration" 
+              type="number" 
+              placeholder="e.g. 7 days"
+              min="1"
+              class="dev-input"
+            >
+          </div>
+
+          <button @click="sendTrial" :disabled="sendingTrial" class="dev-btn trial-btn">
+            {{ sendingTrial ? 'Sending...' : 'Send Trial' }}
+          </button>
+        </div>
+
+        <!-- Right Panel: Notification Sending -->
+        <div class="dev-sub-panel">
+          <h2>Send Site Notification</h2>
+          <div class="type-buttons">
+            <button 
+              v-for="type in ['Update', 'Trial']"
+              :key="type"
+              @click="selectedNotificationType = type"
+              :class="{ active: selectedNotificationType === type }"
+              class="type-btn"
+            >
+              {{ type }}
+            </button>
+          </div>
+
+          <div class="input-group">
+            <label>Title</label>
+            <input 
+              v-model="notificationTitle" 
+              type="text" 
+              placeholder="Notification title..."
+              class="dev-input"
+            >
+          </div>
+
+          <div class="input-group">
+            <label>Message</label>
+            <textarea 
+              v-model="notificationMessage" 
+              placeholder="Send as a custom message..."
+              class="dev-input dev-textarea"
+            ></textarea>
+          </div>
+
+          <div class="checkbox-group">
+            <input v-model="sendNotificationToAll" type="checkbox" id="notifToAll">
+            <label for="notifToAll">Send to all users</label>
+          </div>
+
+          <button @click="sendNotification" :disabled="sendingNotification" class="dev-btn notify-btn">
+            {{ sendingNotification ? 'Sending...' : 'Send Notification' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Gifts Section -->
+      <section class="dev-section">
+        <h2>Gifts & Rewards</h2>
+        <div v-if="loadingGifts" class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading gifts...</p>
+        </div>
+
+        <div v-else-if="gifts.length > 0" class="gifts-container">
+          <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
+            <div class="gift-icon-container">🎁</div>
+            <div class="gift-details">
+              <div class="gift-name">{{ gift.name }}</div>
+              <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
+              <div v-if="gift.expiresAt" class="gift-expiry">Expires: {{ formatDate(gift.expiresAt) }}</div>
+            </div>
+            <button
+              :disabled="gift.claimed"
+              :class="{ 'claimed': gift.claimed }"
+              class="claim-btn"
+              @click="claimGift(gift.id)"
+            >
+              {{ gift.claimed ? 'Claimed' : 'Claim' }}
+            </button>
+          </div>
+        </div>
+
+        <div v-else class="empty-state">
+          <p>No gifts available</p>
+        </div>
+      </section>
+
+      <!-- Billing Section -->
+      <section class="dev-section">
+        <h2>Billing History</h2>
+        <div class="billing-panel">
+          <div v-if="billingHistory.length > 0" class="billing-list">
+            <div v-for="entry in billingHistory" :key="entry.id" class="billing-entry">
+              <span>{{ entry.description }}</span>
+              <span>${{ entry.amount }}</span>
             </div>
           </div>
-
           <div v-else class="empty-state">
-            <p>No gifts found</p>
+            <p>No billing history yet</p>
           </div>
-        </section>
-
-        <section class="dev-section">
-          <h2>User Information</h2>
-          <div class="user-info">
-            <p><strong>ID:</strong> {{ userId }}</p>
-            <p><strong>Premium:</strong> {{ hasPremium ? 'Yes' : 'No' }}</p>
-            <p><strong>Expiry:</strong> {{ premiumExpiryDate || 'N/A' }}</p>
-          </div>
-        </section>
-
-        <section class="dev-section">
-          <h2>API Tests</h2>
-          <button class="btn btn-primary" @click="testAPIs">Test All APIs</button>
-          <div v-if="apiTestResults" class="test-results">
-            <pre>{{ apiTestResults }}</pre>
-          </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   </div>
   <div v-else class="unauthorized">
@@ -60,33 +143,140 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
-const router = useRouter()
 
 const AUTHORIZED_USER_ID = '1362553254117904496'
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 const SECRET_KEY = 'status-bot-stats-secret-key'
 
-const userId = ref(null)
+// Trial state
+const trialUserId = ref('')
+const trialDuration = ref(7)
+const sendTrialToAll = ref(false)
+const sendingTrial = ref(false)
+
+// Notification state
+const selectedNotificationType = ref('Update')
+const notificationTitle = ref('')
+const notificationMessage = ref('')
+const sendNotificationToAll = ref(false)
+const sendingNotification = ref(false)
+
+// Gifts & Billing state
 const gifts = ref([])
 const loadingGifts = ref(false)
-const hasPremium = ref(false)
-const premiumExpiryDate = ref(null)
-const apiTestResults = ref(null)
+const billingHistory = ref([])
 
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
 })
 
-const loadGifts = async () => {
-  if (!userId.value) return
+const formatDate = (timestamp) => {
+  if (!timestamp) return 'N/A'
+  return new Date(timestamp).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+}
+
+const sendTrial = async () => {
+  const userId = trialUserId.value.trim()
   
+  if (!sendTrialToAll.value && !userId) {
+    alert('Please enter a User ID or check "Send to all users"')
+    return
+  }
+
+  if (trialDuration.value < 1) {
+    alert('Duration must be at least 1 day')
+    return
+  }
+
+  sendingTrial.value = true
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/trials/send`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: authStore.user.id,
+        durationDays: trialDuration.value,
+        targetUsers: sendTrialToAll.value ? [] : [userId],
+        sendToAll: sendTrialToAll.value
+      })
+    })
+
+    const data = await response.json()
+    if (response.ok) {
+      alert('✓ Trial sent successfully')
+      trialUserId.value = ''
+      trialDuration.value = 7
+      sendTrialToAll.value = false
+    } else {
+      alert(`❌ Error: ${data.message || 'Failed to send trial'}`)
+    }
+  } catch (err) {
+    alert(`❌ Error: ${err.message}`)
+  } finally {
+    sendingTrial.value = false
+  }
+}
+
+const sendNotification = async () => {
+  const title = notificationTitle.value.trim()
+  const message = notificationMessage.value.trim()
+
+  if (!title || !message) {
+    alert('Please fill in both title and message')
+    return
+  }
+
+  sendingNotification.value = true
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/notifications/send`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title,
+        message,
+        type: selectedNotificationType.value,
+        targetUsers: sendNotificationToAll.value ? [] : [],
+        sendToAll: sendNotificationToAll.value
+      })
+    })
+
+    const data = await response.json()
+    if (response.ok) {
+      alert('✓ Notification sent successfully')
+      notificationTitle.value = ''
+      notificationMessage.value = ''
+      sendNotificationToAll.value = false
+    } else {
+      alert(`❌ Error: ${data.message || 'Failed to send notification'}`)
+    }
+  } catch (err) {
+    alert(`❌ Error: ${err.message}`)
+  } finally {
+    sendingNotification.value = false
+  }
+}
+
+const loadGifts = async () => {
+  if (!authStore.user?.id) return
+
   loadingGifts.value = true
   try {
-    const response = await fetch(`${BACKEND_URL}/api/user/${userId.value}/gifts`, {
+    const response = await fetch(`${BACKEND_URL}/api/user/${authStore.user.id}/gifts`, {
       headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
     })
     if (response.ok) {
@@ -100,65 +290,29 @@ const loadGifts = async () => {
   }
 }
 
-const formatDate = (timestamp) => {
-  if (!timestamp) return 'N/A'
-  return new Date(timestamp).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
-}
+const claimGift = async (giftId) => {
+  if (!authStore.user?.id) return
 
-const testAPIs = async () => {
   try {
-    const results = {
-      timestamp: new Date().toISOString(),
-      userId: userId.value,
-      tests: {}
-    }
-
-    const endpoints = [
-      {
-        name: 'User Premium Status',
-        url: `${BACKEND_URL}/api/user-premium/${userId.value}`,
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
+    const response = await fetch(`${BACKEND_URL}/api/gifts/claim`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
       },
-      {
-        name: 'User Gifts',
-        url: `${BACKEND_URL}/api/user/${userId.value}/gifts`,
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
-      },
-      {
-        name: 'Bot Guilds',
-        url: `${BACKEND_URL}/api/bot-guilds`,
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
-      }
-    ]
+      body: JSON.stringify({
+        userId: authStore.user.id,
+        giftId
+      })
+    })
 
-    for (const endpoint of endpoints) {
-      try {
-        const response = await fetch(endpoint.url, {
-          method: endpoint.method,
-          headers: endpoint.headers
-        })
-        results.tests[endpoint.name] = {
-          status: response.status,
-          statusText: response.statusText,
-          success: response.ok
-        }
-      } catch (err) {
-        results.tests[endpoint.name] = {
-          error: err.message
-        }
-      }
+    if (response.ok) {
+      alert('✓ Gift claimed successfully')
+      await loadGifts()
     }
-
-    apiTestResults.value = JSON.stringify(results, null, 2)
   } catch (err) {
-    console.error('Error testing APIs:', err)
+    console.error('Error claiming gift:', err)
+    alert('Error claiming gift')
   }
 }
 
@@ -167,21 +321,6 @@ onMounted(async () => {
   
   if (!isAuthorized.value) {
     return
-  }
-
-  userId.value = authStore.user?.id
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/user-premium/${userId.value}`)
-    if (response.ok) {
-      const data = await response.json()
-      hasPremium.value = data.hasPremium || false
-      if (data.expiryDate) {
-        premiumExpiryDate.value = data.expiryDate
-      }
-    }
-  } catch (err) {
-    console.error('Error fetching premium status:', err)
   }
 
   await loadGifts()
@@ -197,7 +336,7 @@ onMounted(async () => {
 
 .dev-container {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -231,101 +370,287 @@ onMounted(async () => {
   margin-top: 20px;
 }
 
-.dev-content {
+.dev-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.dev-sub-panel {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.dev-sub-panel h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.input-group {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dev-input {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.dev-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(81, 112, 255, 0.3);
+}
+
+.dev-textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.checkbox-group input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.type-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.type-btn {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.type-btn.active {
+  background: rgba(81, 112, 255, 0.2);
+  border-color: #5170ff;
+}
+
+.type-btn:hover {
+  background: rgba(81, 112, 255, 0.1);
+  border-color: rgba(81, 112, 255, 0.4);
+}
+
+.dev-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  color: white;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.trial-btn {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.8), rgba(74, 222, 128, 0.5));
+  border: 2px solid #4ade80;
+}
+
+.trial-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 1), rgba(74, 222, 128, 0.8));
+  box-shadow: 0 8px 20px rgba(74, 222, 128, 0.3);
+}
+
+.notify-btn {
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.5));
+  border: 2px solid #dc3545;
+}
+
+.notify-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(220, 53, 69, 1), rgba(220, 53, 69, 0.8));
+  box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+}
+
+.dev-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .dev-section {
+  margin-bottom: 60px;
+}
+
+.dev-section h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.billing-panel,
+.gifts-container {
   background: rgba(81, 112, 255, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
   padding: 25px;
 }
 
-.dev-section h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 20px;
-}
-
-.gifts-list {
+.gifts-container {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.gift-item {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 15px;
-}
-
-.gift-header {
+.gift-entry {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  gap: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 15px;
+  gap: 15px;
 }
 
-.gift-name {
-  font-weight: 600;
-  color: #fff;
-  font-size: 16px;
+.gift-entry:hover {
+  background: rgba(81, 112, 255, 0.08);
 }
 
-.gift-code {
-  font-family: monospace;
-  font-size: 12px;
-  color: #5170ff;
-  background: rgba(81, 112, 255, 0.1);
-  padding: 4px 8px;
-  border-radius: 4px;
+.gift-icon-container {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  flex-shrink: 0;
+  font-size: 32px;
 }
 
 .gift-details {
-  font-size: 13px;
-  color: var(--text-secondary);
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  flex: 1;
 }
 
-.gift-details p {
-  margin: 0;
+.gift-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4bffb7;
+  margin-bottom: 4px;
 }
 
-.user-info {
+.gift-code {
   font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.gift-code span {
+  font-weight: 600;
   color: #fff;
+  font-family: monospace;
+}
+
+.gift-expiry {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.claim-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+  border: 2px solid #5170ff;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.claim-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
+  box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
+}
+
+.claim-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.claim-btn.claimed {
+  background: #444;
+  color: #bbb;
+  border: none;
+  cursor: default;
+}
+
+.billing-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
-.user-info p {
-  margin: 0;
-}
-
-.test-results {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
+.billing-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 15px;
-  margin-top: 15px;
-  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background 0.2s ease;
 }
 
-.test-results pre {
-  margin: 0;
-  font-family: monospace;
-  font-size: 12px;
-  color: #4ade80;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+.billing-entry:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
 }
 
 .loading-state {
@@ -351,12 +676,6 @@ onMounted(async () => {
   100% { transform: rotate(360deg); }
 }
 
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-secondary);
-}
-
 .unauthorized {
   display: flex;
   justify-content: center;
@@ -367,28 +686,13 @@ onMounted(async () => {
   color: var(--text-secondary);
 }
 
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-primary {
-  background: #5170ff;
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background: #3d55dd;
-  transform: translateY(-2px);
-}
-
 @media (max-width: 1023px) {
   .dev-wrapper {
     padding: 40px 30px;
+  }
+
+  .dev-panels {
+    grid-template-columns: 1fr;
   }
 
   .dev-header h1 {
@@ -405,8 +709,16 @@ onMounted(async () => {
     font-size: 32px;
   }
 
-  .dev-section {
-    padding: 15px;
+  .dev-sub-panel {
+    padding: 20px;
+  }
+
+  .gift-entry {
+    flex-direction: column;
+  }
+
+  .claim-btn {
+    width: 100%;
   }
 }
 </style>
