@@ -260,8 +260,9 @@
             </div>
 
             <div v-else-if="gifts.length > 0" class="section-panel">
-              <div v-for="gift in gifts" :key="gift.id" class="gift-item">
-                <div class="gift-info">
+              <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
+                <div class="gift-icon-container">🎁</div>
+                <div class="gift-details">
                   <div class="gift-name">{{ gift.name }}</div>
                   <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
                   <div v-if="gift.expiresAt" class="gift-expiry">Expires: {{ formatDate(gift.expiresAt) }}</div>
@@ -269,7 +270,7 @@
                 <button
                   :disabled="gift.claimed"
                   :class="{ 'claimed': gift.claimed }"
-                  class="btn btn-small"
+                  class="claim-btn"
                   @click="claimGift(gift.id)"
                 >
                   {{ gift.claimed ? 'Claimed' : 'Claim' }}
@@ -1214,17 +1215,30 @@ onMounted(async () => {
   text-align: center;
 }
 
-.gift-item {
+.gift-entry {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 15px;
   padding: 15px;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 8px;
   margin-bottom: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
 }
 
-.gift-info {
+.gift-entry:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.gift-icon-container {
+  font-size: 28px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.gift-details {
   flex: 1;
 }
 
@@ -1248,6 +1262,33 @@ onMounted(async () => {
 .gift-expiry {
   font-size: 11px;
   color: #ff9d4d;
+}
+
+.claim-btn {
+  margin-left: auto;
+  padding: 6px 16px;
+  background-color: #5865f2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.claim-btn:hover:not(:disabled) {
+  background-color: #4752c4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(88, 101, 242, 0.3);
+}
+
+.claim-btn:disabled,
+.claim-btn.claimed {
+  background-color: #72767d;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .privacy-item {
