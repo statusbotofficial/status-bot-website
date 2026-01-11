@@ -260,21 +260,23 @@
             </div>
 
             <div v-else-if="gifts.length > 0" class="section-panel">
-              <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
-                <div class="gift-icon-container">🎁</div>
-                <div class="gift-details">
-                  <div class="gift-name">{{ gift.name }}</div>
-                  <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
-                  <div v-if="gift.expiresAt" class="gift-expiry">Expires: {{ formatDate(gift.expiresAt) }}</div>
+              <div class="gifts-container">
+                <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
+                  <div class="gift-icon-container">🎁</div>
+                  <div class="gift-details">
+                    <div class="gift-name">{{ gift.name }}</div>
+                    <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
+                    <div v-if="gift.expiresAt" class="gift-expiry">Expires: {{ formatDate(gift.expiresAt) }}</div>
+                  </div>
+                  <button
+                    :disabled="gift.claimed"
+                    :class="{ 'claimed': gift.claimed }"
+                    class="claim-btn"
+                    @click="claimGift(gift.id)"
+                  >
+                    {{ gift.claimed ? 'Claimed' : 'Claim' }}
+                  </button>
                 </div>
-                <button
-                  :disabled="gift.claimed"
-                  :class="{ 'claimed': gift.claimed }"
-                  class="claim-btn"
-                  @click="claimGift(gift.id)"
-                >
-                  {{ gift.claimed ? 'Claimed' : 'Claim' }}
-                </button>
               </div>
             </div>
 
@@ -1215,27 +1217,45 @@ onMounted(async () => {
   text-align: center;
 }
 
+.gifts-container {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .gift-entry {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 15px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
-  margin-bottom: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.2s ease;
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 15px;
+  gap: 15px;
+  transition: all 0.3s ease;
 }
 
 .gift-entry:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(81, 112, 255, 0.08);
+  border-color: rgba(81, 112, 255, 0.4);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.15);
 }
 
 .gift-icon-container {
-  font-size: 28px;
-  min-width: 50px;
-  text-align: center;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  flex-shrink: 0;
+  font-size: 32px;
+  border: 1px solid rgba(81, 112, 255, 0.2);
 }
 
 .gift-details {
@@ -1243,52 +1263,55 @@ onMounted(async () => {
 }
 
 .gift-name {
-  font-weight: 600;
-  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  color: #4bffb7;
   margin-bottom: 4px;
 }
 
 .gift-code {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
 .gift-code span {
+  font-weight: 600;
+  color: #fff;
   font-family: monospace;
-  color: #8a9fff;
 }
 
 .gift-expiry {
-  font-size: 11px;
-  color: #ff9d4d;
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 .claim-btn {
-  margin-left: auto;
-  padding: 6px 16px;
-  background-color: #5865f2;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
   color: white;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid rgba(81, 112, 255, 0.5);
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
   white-space: nowrap;
 }
 
 .claim-btn:hover:not(:disabled) {
-  background-color: #4752c4;
+  background: linear-gradient(135deg, #5170ff, #3d5dd4);
+  border-color: rgba(81, 112, 255, 0.8);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(88, 101, 242, 0.3);
+  box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
 }
 
 .claim-btn:disabled,
 .claim-btn.claimed {
-  background-color: #72767d;
+  background: linear-gradient(135deg, rgba(114, 118, 125, 0.6), rgba(114, 118, 125, 0.4));
+  border-color: rgba(114, 118, 125, 0.3);
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .privacy-item {
