@@ -21,6 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
       const accessToken = params.get('access_token')
       if (accessToken) {
         token.value = accessToken
+        localStorage.setItem('discordToken', accessToken)
         fetchUserData(accessToken)
         window.history.replaceState({}, document.title, window.location.pathname)
       }
@@ -36,6 +37,12 @@ export const useAuthStore = defineStore('auth', () => {
       } catch (e) {
         localStorage.removeItem(AUTH_STORAGE_KEY)
       }
+    }
+
+    // Check if token is stored
+    const storedToken = localStorage.getItem('discordToken')
+    if (storedToken) {
+      token.value = storedToken
     }
 
     // Check for OAuth callback
@@ -65,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
     token.value = null
     localStorage.removeItem(AUTH_STORAGE_KEY)
+    localStorage.removeItem('discordToken')
   }
 
   return {
