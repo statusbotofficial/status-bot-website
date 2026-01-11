@@ -8,33 +8,22 @@
       </div>
 
       <!-- Status Indicator -->
-      <div class="status-indicator-section">
-        <div class="status-badge" :class="botStatus">
-          <span class="status-dot"></span>
-          <span class="status-text">{{ botStatus === 'online' ? '🟢 Online' : '🔴 Offline' }}</span>
-        </div>
-        <p class="status-description">
-          {{ botStatus === 'online' 
-            ? 'Status Bot is running normally' 
-            : 'Status Bot is currently offline' 
-          }}
-        </p>
+      <div class="status-badge" :class="botStatus">
+        <span class="status-dot"></span>
+        <span class="status-text">{{ botStatus === 'online' ? 'Online' : 'Offline' }}</span>
       </div>
 
       <!-- Stats Cards -->
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-icon">⏱️</div>
           <h3>Uptime</h3>
           <p class="stat-value">{{ uptime }}</p>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">📡</div>
           <h3>Ping</h3>
           <p class="stat-value">{{ ping }}ms</p>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">🖥️</div>
           <h3>Servers</h3>
           <p class="stat-value">{{ servers }}</p>
         </div>
@@ -244,10 +233,7 @@ onUnmounted(() => {
   font-size: 56px;
   font-weight: 900;
   margin: 0;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #fff;
 }
 
 .status-header p {
@@ -272,13 +258,15 @@ onUnmounted(() => {
 .status-badge {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
-  padding: 12px 24px;
-  border-radius: 12px;
-  background: rgba(81, 112, 255, 0.2);
+  padding: 20px 40px;
+  border-radius: 16px;
   border: 2px solid var(--primary-color);
+  width: 100%;
+  max-width: 280px;
 }
 
 .status-badge.online {
@@ -346,9 +334,9 @@ onUnmounted(() => {
 }
 
 .stat-card {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
   border: 2px solid var(--primary-color);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -359,9 +347,9 @@ onUnmounted(() => {
 }
 
 .stat-card:hover {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.1) 0%, rgba(81, 112, 255, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(81, 112, 255, 0.15);
+  box-shadow: 0 12px 24px rgba(81, 112, 255, 0.3);
 }
 
 .stat-icon {
@@ -404,8 +392,8 @@ onUnmounted(() => {
 }
 
 .no-incidents {
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.05) 0%, rgba(74, 222, 128, 0.02) 100%);
-  border: 2px solid #4ade80;
+  background: rgba(100, 100, 120, 0.3);
+  border: 1px solid rgba(150, 150, 180, 0.4);
   border-radius: 12px;
   padding: 25px;
   text-align: center;
@@ -413,25 +401,30 @@ onUnmounted(() => {
 
 .no-incidents p {
   font-size: 16px;
-  color: #4ade80;
+  color: #aaa;
   margin: 0;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .incidents-items {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
 .incident-item {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
-  border: 2px solid var(--primary-color);
-  border-radius: 12px;
-  padding: 20px;
+  background: rgba(100, 100, 120, 0.25);
+  border: 1px solid rgba(150, 150, 180, 0.4);
+  border-radius: 10px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.incident-item:hover {
+  background: rgba(100, 100, 120, 0.35);
 }
 
 .incident-header {
@@ -442,22 +435,22 @@ onUnmounted(() => {
 }
 
 .incident-type {
-  background: rgba(255, 68, 68, 0.2);
-  color: #ff4444;
-  padding: 6px 12px;
-  border-radius: 8px;
+  background: rgba(255, 68, 68, 0.3);
+  color: #ff8888;
+  padding: 5px 10px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .incident-time {
-  font-size: 13px;
-  color: var(--text-secondary);
+  font-size: 12px;
+  color: #999;
 }
 
 .incident-details {
-  font-size: 14px;
-  color: var(--text-secondary);
+  font-size: 13px;
+  color: #aaa;
 }
 
 .incident-details p {
