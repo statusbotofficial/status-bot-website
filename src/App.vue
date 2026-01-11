@@ -103,7 +103,7 @@ const menuOpen = ref(false)
 const dropdownOpen = ref(false)
 const showNotifications = ref(false)
 const notifications = ref([])
-const notificationCount = computed(() => notifications.value.length)
+const notificationCount = computed(() => notifications.value.filter(n => !n.read).length)
 
 const isLoggedIn = computed(() => authStore.isLoggedIn)
 const userName = computed(() => authStore.user?.username || '')
@@ -127,6 +127,31 @@ const toggleNotifications = () => {
   if (showNotifications.value) {
     // Refresh notifications when panel opens
     loadNotifications()
+    // Mark all notifications as read
+    markNotificationsAsRead()
+  }
+}
+
+const markNotificationsAsRead = async () => {
+  // Update all notifications to be read
+  notifications.value = notifications.value.map(n => ({
+    ...n,
+    read: true
+  }))
+  saveNotifications()
+  
+  // Try to sync with backend
+  try {
+    const authStore = useAuthStore()
+    if (authStore.user?.id) {
+      const SECRET_KEY = 'status-bot-stats-secret-key'
+      await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
+      })
+    }
+  } catch (err) {
+    console.error('Error marking notifications as read:', err)
   }
 }
 

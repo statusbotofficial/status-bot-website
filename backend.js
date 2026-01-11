@@ -1939,6 +1939,40 @@ app.get("/api/user/:userId/notifications", (req, res) => {
     }
 });
 
+// Mark all user notifications as read
+app.post("/api/user/:userId/notifications/read", (req, res) => {
+    const SECRET_KEY = process.env.BOT_STATS_SECRET || "status-bot-stats-secret-key";
+    const authHeader = req.headers['authorization'] || '';
+    
+    if (authHeader !== `Bearer ${SECRET_KEY}`) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    try {
+        const { userId } = req.params;
+        
+        // Mark all user-specific notifications as read
+        if (notificationsData[String(userId)] && notificationsData[String(userId)].notifications) {
+            notificationsData[String(userId)].notifications.forEach(n => {
+                n.read = true;
+            });
+        }
+        
+        // Mark all global notifications as read for this user
+        globalNotifications.forEach(n => {
+            if (!n.readBy) n.readBy = [];
+            n.readBy.push(String(userId));
+        });
+        
+        saveNotifications();
+        
+        res.json({ success: true, message: "All notifications marked as read" });
+    } catch (err) {
+        console.error('Error marking notifications as read:', err);
+        res.status(500).json({ error: "Failed to mark notifications as read" });
+    }
+});
+
 // Mark notification as read
 app.post("/api/notifications/:notificationId/read", (req, res) => {
     const SECRET_KEY = process.env.BOT_STATS_SECRET || "status-bot-stats-secret-key";
