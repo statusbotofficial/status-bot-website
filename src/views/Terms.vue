@@ -379,12 +379,6 @@ onMounted(() => {
     padding: 40px 20px;
   }
 
-  .container h1 {
-    font-size: 2rem;
-  }
-
-  .policy-content h2 {
-    font-size: 1.25rem;
-  }
-}
+  .terms-section li {
+    padding-left: 22px;
 </style>
