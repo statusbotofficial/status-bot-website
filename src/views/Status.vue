@@ -66,7 +66,6 @@ const uptime = ref('Calculating...')
 const ping = ref(0)
 const servers = ref(0)
 const incidents = ref([])
-const botStartTime = ref(null)
 let pollInterval = null
 
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
@@ -83,6 +82,22 @@ const fetchBotStats = async () => {
     // Update basic stats
     ping.value = data.ping || 0
     servers.value = data.servers || 0
+    
+    // Update uptime from backend (sent in seconds)
+    if (data.uptime) {
+      const uptimeMs = data.uptime * 1000
+      const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24))
+      const hours = Math.floor((uptimeMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      const minutes = Math.floor((uptimeMs % (1000 * 60 * 60)) / (1000 * 60))
+      
+      if (days > 0) {
+        uptime.value = `${days}d ${hours}h ${minutes}m`
+      } else if (hours > 0) {
+        uptime.value = `${hours}h ${minutes}m`
+      } else {
+        uptime.value = `${minutes}m`
+      }
+    }
     
     // Check if bot is online or offline
     if (data.lastUpdated) {
@@ -103,11 +118,6 @@ const fetchBotStats = async () => {
           resolveLastIncident()
         }
         botStatus.value = 'online'
-      }
-      
-      // Store start time if this is first update
-      if (!botStartTime.value) {
-        botStartTime.value = Date.parse(data.lastUpdated) - (data.uptime || 0)
       }
     }
   } catch (error) {
@@ -161,42 +171,14 @@ const formatDuration = (startTime, endTime) => {
   }
 }
 
-// Calculate uptime display
-const calculateUptime = () => {
-  if (!botStartTime.value) {
-    uptime.value = 'Calculating...'
-    return
-  }
-  
-  const uptimeMs = Date.now() - botStartTime.value
-  const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24))
-  const hours = Math.floor((uptimeMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-  const minutes = Math.floor((uptimeMs % (1000 * 60 * 60)) / (1000 * 60))
-  
-  if (days > 0) {
-    uptime.value = `${days}d ${hours}h ${minutes}m`
-  } else if (hours > 0) {
-    uptime.value = `${hours}h ${minutes}m`
-  } else {
-    uptime.value = `${minutes}m`
-  }
-}
-
 onMounted(() => {
   // Initial fetch
   fetchBotStats()
-  calculateUptime()
   
   // Poll every 30 seconds
   pollInterval = setInterval(() => {
     fetchBotStats()
-    calculateUptime()
   }, 30000)
-  
-  // Update uptime calculation every minute
-  setInterval(() => {
-    calculateUptime()
-  }, 60000)
 })
 
 onUnmounted(() => {
