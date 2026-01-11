@@ -308,6 +308,7 @@ onUnmounted(() => {
 
 .status-text {
   display: none;
+  transform: translateY(-2px);
 }
 
 .status-badge.online .status-text {
