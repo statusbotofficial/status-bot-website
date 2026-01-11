@@ -201,13 +201,24 @@ const loadNotifications = async () => {
         notifications.value = (data.notifications || []).map(n => ({
           ...n,
           timestamp: new Date(n.createdAt),
-          read: false  // Initially unread from backend
+          read: false
         }))
         saveNotifications()
         
-        // Now mark them as read since user opened the panel
-        setTimeout(() => {
-          markNotificationsAsRead()
+        // Mark as read in background (removes badge but keeps notifications visible)
+        setTimeout(async () => {
+          try {
+            const SECRET_KEY = 'status-bot-stats-secret-key'
+            await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
+            })
+          } catch (err) {
+            console.error('Error marking as read:', err)
+          }
+          
+          // Mark locally as read to hide badge
+          notifications.value = notifications.value.map(n => ({ ...n, read: true }))
         }, 100)
         
         return
@@ -227,9 +238,9 @@ const loadNotifications = async () => {
         timestamp: new Date(n.timestamp)
       }))
       
-      // Mark as read after loading
+      // Mark as read to hide badge
       setTimeout(() => {
-        markNotificationsAsRead()
+        notifications.value = notifications.value.map(n => ({ ...n, read: true }))
       }, 100)
     }
   } catch (err) {
