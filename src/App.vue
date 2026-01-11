@@ -195,15 +195,19 @@ const addNotification = (title, message) => {
 }
 
 const formatTime = (timestamp) => {
+  // Ensure timestamp is a Date object
+  const ts = timestamp instanceof Date ? timestamp : new Date(timestamp)
+  if (isNaN(ts.getTime())) return 'Recently'
+  
   const now = new Date()
-  const diff = now - timestamp
+  const diff = now - ts
   const minutes = Math.floor(diff / 60000)
   const hours = Math.floor(diff / 3600000)
   
   if (minutes < 1) return 'Just now'
   if (minutes < 60) return `${minutes}m ago`
   if (hours < 24) return `${hours}h ago`
-  return timestamp.toLocaleDateString()
+  return ts.toLocaleDateString()
 }
 
 const loadNotifications = async () => {
@@ -219,7 +223,7 @@ const loadNotifications = async () => {
         const data = await response.json()
         const backendNotifs = (data.notifications || []).map(n => ({
           ...n,
-          timestamp: new Date(n.createdAt),
+          timestamp: new Date(n.createdAt || Date.now()),
           read: false
         }))
         
@@ -233,7 +237,10 @@ const loadNotifications = async () => {
             // Keep stored notifications that aren't already in backend
             allNotifs = [
               ...backendNotifs,
-              ...parsed.filter(stored => !backendNotifs.find(backend => backend.id === stored.id))
+              ...parsed.filter(stored => !backendNotifs.find(backend => backend.id === stored.id)).map(n => ({
+                ...n,
+                timestamp: n.timestamp instanceof Date ? n.timestamp : new Date(n.timestamp || Date.now())
+              }))
             ]
           } catch (e) {
             // If localStorage is corrupted, just use backend
@@ -257,7 +264,7 @@ const loadNotifications = async () => {
       const notifs = JSON.parse(storedNotifs)
       notifications.value = notifs.map(n => ({
         ...n,
-        timestamp: new Date(n.timestamp)
+        timestamp: n.timestamp instanceof Date ? n.timestamp : new Date(n.timestamp || Date.now())
       }))
     }
   } catch (err) {
