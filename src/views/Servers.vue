@@ -56,8 +56,12 @@
     <!-- Server Config View -->
     <div v-else class="config-view">
       <div class="config-header">
-        <button class="back-btn" @click="selectedServer = null">← Back</button>
-        <h2>{{ selectedServer.name }}</h2>
+        <button class="back-btn" @click="selectedServer = null">Back</button>
+        <div class="header-content">
+          <img v-if="selectedServer.icon" :src="selectedServer.icon" :alt="selectedServer.name" class="server-icon-header" />
+          <div v-else class="server-icon-header-placeholder">{{ selectedServer.name.charAt(0).toUpperCase() }}</div>
+          <h2>{{ selectedServer.name }}</h2>
+        </div>
       </div>
 
       <div class="config-container">
@@ -71,7 +75,8 @@
               :class="{ active: activeSection === section.id }"
               @click="activeSection = section.id"
             >
-              {{ section.label }}
+              <span class="nav-icon">{{ section.icon }}</span>
+              <span>{{ section.label }}</span>
             </button>
           </nav>
         </aside>
@@ -504,12 +509,12 @@ const leaderboardData = ref([])
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 
 const sections = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'leaderboard', label: 'Leaderboard' },
-  { id: 'leveling', label: 'Leveling' },
-  { id: 'economy', label: 'Economy' },
-  { id: 'status-tracking', label: 'Status Tracking' },
-  { id: 'welcome', label: 'Welcome' },
+  { id: 'overview', label: 'Overview', icon: '📊' },
+  { id: 'leaderboard', label: 'Leaderboard', icon: '🏆' },
+  { id: 'leveling', label: 'Leveling', icon: '⬆️' },
+  { id: 'economy', label: 'Economy', icon: '💰' },
+  { id: 'status-tracking', label: 'Status Tracking', icon: '🔴' },
+  { id: 'welcome', label: 'Welcome', icon: '👋' },
 ]
 
 // Settings
@@ -1170,6 +1175,38 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 20px;
+  position: relative;
+}
+
+.header-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+}
+
+.server-icon-header,
+.server-icon-header-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  background: #5170ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  object-fit: cover;
+}
+
+.config-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
 }
 
 .back-btn {
@@ -1181,16 +1218,14 @@ onMounted(() => {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s ease;
+  position: absolute;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .back-btn:hover {
   background: rgba(81, 112, 255, 0.35);
-}
-
-.config-header h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #fff;
 }
 
 .config-container {
@@ -1220,6 +1255,9 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .nav-btn:hover {
@@ -1232,6 +1270,12 @@ onMounted(() => {
   color: #5170ff;
   border-left: 3px solid #5170ff;
   padding-left: 17px;
+}
+
+.nav-icon {
+  font-size: 18px;
+  min-width: 24px;
+  text-align: center;
 }
 
 .config-main {
@@ -1586,6 +1630,9 @@ onMounted(() => {
   border-left: 4px solid #5170ff;
   padding: 16px;
   border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .embed-author {
@@ -1597,27 +1644,30 @@ onMounted(() => {
 .embed-title {
   font-weight: 700;
   color: #fff;
-  margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
 }
 
 .embed-description {
   color: #ddd;
-  margin-bottom: 8px;
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
 }
-
 .embed-thumbnail {
   max-width: 100%;
   max-height: 200px;
   border-radius: 4px;
-  margin-bottom: 8px;
 }
 
 .embed-footer {
   font-size: 12px;
   color: #999;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .button-group {
