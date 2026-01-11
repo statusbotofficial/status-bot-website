@@ -18,8 +18,7 @@
                   :class="{ active: activeSection === 'account' }"
                   @click="activeSection = 'account'"
                 >
-                  <i class="icon">👤</i>
-                  Account & Security
+                  Account Info
                 </button>
               </li>
               <li>
@@ -28,18 +27,7 @@
                   :class="{ active: activeSection === 'premium' }"
                   @click="activeSection = 'premium'"
                 >
-                  <i class="icon">⭐</i>
                   Premium
-                </button>
-              </li>
-              <li>
-                <button
-                  class="nav-link"
-                  :class="{ active: activeSection === 'activity' }"
-                  @click="activeSection = 'activity'"
-                >
-                  <i class="icon">📊</i>
-                  Activity & Stats
                 </button>
               </li>
               <li>
@@ -48,7 +36,6 @@
                   :class="{ active: activeSection === 'servers' }"
                   @click="activeSection = 'servers'"
                 >
-                  <i class="icon">🖥️</i>
                   Servers
                 </button>
               </li>
@@ -58,7 +45,6 @@
                   :class="{ active: activeSection === 'notifications' }"
                   @click="activeSection = 'notifications'"
                 >
-                  <i class="icon">🔔</i>
                   Notifications
                 </button>
               </li>
@@ -68,7 +54,6 @@
                   :class="{ active: activeSection === 'appearance' }"
                   @click="activeSection = 'appearance'"
                 >
-                  <i class="icon">🎨</i>
                   Appearance
                 </button>
               </li>
@@ -78,18 +63,7 @@
                   :class="{ active: activeSection === 'gifts' }"
                   @click="activeSection = 'gifts'"
                 >
-                  <i class="icon">🎁</i>
                   Gifts & Rewards
-                </button>
-              </li>
-              <li>
-                <button
-                  class="nav-link"
-                  :class="{ active: activeSection === 'privacy' }"
-                  @click="activeSection = 'privacy'"
-                >
-                  <i class="icon">🔒</i>
-                  Data & Privacy
                 </button>
               </li>
             </ul>
@@ -97,9 +71,9 @@
         </aside>
 
         <main class="settings-content">
-          <!-- Account & Security Section -->
+          <!-- Account Info Section -->
           <section v-show="activeSection === 'account'" class="settings-section">
-            <h2>Account & Security</h2>
+            <h2>Account Info</h2>
             <p class="section-subtitle">Manage your Discord account information and security settings</p>
 
             <div class="section-panel">
@@ -137,14 +111,6 @@
                   </div>
                   <div class="session-badge">Active</div>
                 </div>
-              </div>
-            </div>
-
-            <div class="section-panel danger-panel">
-              <div class="panel-header">Danger Zone</div>
-              <div class="danger-content">
-                <p>Deleting your account is permanent and cannot be undone.</p>
-                <button class="btn btn-danger" @click="showDeleteModal = true">Delete Account</button>
               </div>
             </div>
           </section>
@@ -207,46 +173,6 @@
                   <div class="feature-name">Enhanced Limits</div>
                   <div class="feature-desc">Higher limits on tracked users and settings</div>
                 </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Activity & Statistics Section -->
-          <section v-show="activeSection === 'activity'" class="settings-section">
-            <h2>Activity & Statistics</h2>
-            <p class="section-subtitle">Your Status Bot activity overview</p>
-
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-icon">📅</div>
-                <div class="stat-label">Member Since</div>
-                <div class="stat-value">{{ memberSinceDate }}</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-icon">🔐</div>
-                <div class="stat-label">Last Login</div>
-                <div class="stat-value">{{ lastLoginDate }}</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-icon">🖥️</div>
-                <div class="stat-label">Servers Using Bot</div>
-                <div class="stat-value">{{ userServers.length }}</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-icon">🌍</div>
-                <div class="stat-label">Total Members (all servers)</div>
-                <div class="stat-value">{{ totalMembersAcrossServers }}</div>
-              </div>
-            </div>
-
-            <div class="section-panel">
-              <div class="panel-header">Login History</div>
-              <div class="history-list">
-                <div class="history-item">
-                  <div class="history-time">Just now</div>
-                  <div class="history-details">Current session started</div>
-                </div>
-                <p class="history-note">Detailed login history will be available in future updates</p>
               </div>
             </div>
           </section>
@@ -411,78 +337,7 @@
               <p class="empty-hint">Check back later or claim gifts from special events</p>
             </div>
           </section>
-
-          <!-- Data & Privacy Section -->
-          <section v-show="activeSection === 'privacy'" class="settings-section">
-            <h2>Data & Privacy</h2>
-            <p class="section-subtitle">Manage your data and privacy settings</p>
-
-            <div class="section-panel">
-              <div class="panel-header">Your Data</div>
-              <p style="margin-bottom: 20px; color: var(--text-secondary)">
-                Status Bot stores minimal data to function properly. Your Discord ID and basic profile information are kept
-                to personalize your experience.
-              </p>
-              <button class="btn btn-secondary">📥 Download My Data</button>
-            </div>
-
-            <div class="section-panel">
-              <div class="panel-header">Privacy Controls</div>
-              <div class="privacy-item">
-                <div class="privacy-info">
-                  <div class="privacy-name">Data Collection</div>
-                  <div class="privacy-desc">We only collect data necessary for the bot to function</div>
-                </div>
-              </div>
-              <div class="privacy-item">
-                <div class="privacy-info">
-                  <div class="privacy-name">Third-party Sharing</div>
-                  <div class="privacy-desc">Your data is never shared with third parties</div>
-                </div>
-              </div>
-              <div class="privacy-item">
-                <div class="privacy-info">
-                  <div class="privacy-name">Retention Policy</div>
-                  <div class="privacy-desc">Data is retained for as long as your account is active</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="section-panel">
-              <div class="panel-header">Policies</div>
-              <div class="policy-links">
-                <router-link to="/privacy" class="policy-link">📋 Privacy Policy</router-link>
-                <router-link to="/terms" class="policy-link">📜 Terms of Service</router-link>
-              </div>
-            </div>
-          </section>
         </main>
-      </div>
-    </div>
-
-    <!-- Delete Account Modal -->
-    <div v-if="showDeleteModal" class="modal-overlay" @click.self="showDeleteModal = false">
-      <div class="modal">
-        <div class="modal-header">Delete Account</div>
-        <div class="modal-content">
-          <p>⚠️ This action is <strong>permanent</strong> and cannot be undone.</p>
-          <p>All your data will be permanently deleted. This includes:</p>
-          <ul style="margin-left: 20px; margin-top: 10px">
-            <li>Profile information</li>
-            <li>Premium status</li>
-            <li>Server data</li>
-          </ul>
-          <div style="margin-top: 20px">
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px">
-              <input v-model="confirmDelete" type="checkbox">
-              I understand this is permanent
-            </label>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" @click="showDeleteModal = false">Cancel</button>
-          <button :disabled="!confirmDelete" class="btn btn-danger" @click="deleteAccount">Delete Account</button>
-        </div>
       </div>
     </div>
   </div>
@@ -502,8 +357,6 @@ const userServers = ref([])
 const loadingServers = ref(false)
 const loadingGifts = ref(false)
 const gifts = ref([])
-const showDeleteModal = ref(false)
-const confirmDelete = ref(false)
 const currentTheme = ref('default')
 
 const notificationPrefs = ref({
@@ -537,15 +390,6 @@ const accountCreatedDate = computed(() => {
   const timestamp = BigInt(discordUser.value.id)
   const createdAt = new Date((Number(timestamp >> BigInt(22)) + 1420070400000))
   return createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-})
-
-const memberSinceDate = computed(() => {
-  const now = new Date()
-  return now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-})
-
-const lastLoginDate = computed(() => {
-  return 'Just now'
 })
 
 const currentSessionTime = computed(() => {
@@ -680,17 +524,6 @@ const formatDate = (timestamp) => {
     month: 'short',
     day: 'numeric'
   })
-}
-
-const deleteAccount = async () => {
-  if (!confirmDelete.value) return
-
-  try {
-    alert('Account deletion feature coming soon')
-    showDeleteModal.value = false
-  } catch (err) {
-    console.error('Error deleting account:', err)
-  }
 }
 
 onMounted(async () => {
