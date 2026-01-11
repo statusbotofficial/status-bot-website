@@ -21,10 +21,10 @@
         <div class="support-chat-box">
           <div class="support-chat-area" id="chatArea">
             <div v-if="!isLoggedIn" class="chat-login-message">
-              <p>👤 Please log in to start chatting with our AI support</p>
+              <p>Please log in to start chatting with our AI support</p>
             </div>
             <div v-else-if="messages.length === 0" class="chat-welcome">
-              <p>👋 Welcome to Status Bot Support! Ask me anything about Status Bot, and I'll help you out.</p>
+              <p>Welcome to Status Bot Support! Ask me anything about Status Bot, and I'll help you out.</p>
             </div>
             <div v-for="(msg, idx) in messages" :key="idx" class="chat-message" :class="msg.sender">
               <div class="message-content" :class="msg.sender" v-html="msg.text"></div>
@@ -53,19 +53,19 @@
         <div class="support-links-section">
           <div class="support-links-grid">
             <div class="support-link-card">
-              <h3>💬 Discord Server</h3>
+              <h3>Discord Server</h3>
               <p>Join our community Discord server for support and discussions.</p>
               <a href="https://discord.gg/Kd2MckVxED" target="_blank" class="link-btn">Join Discord</a>
             </div>
             <div class="support-link-card">
-              <h3>📧 Email Support</h3>
+              <h3>Email Support</h3>
               <p>Need direct assistance? Email us for priority support.</p>
-              <a href="mailto:support@status-bot.xyz" class="link-btn">Email Us</a>
+              <a href="mailto:statusbotofficial@gmail.com" class="link-btn">Email Us</a>
             </div>
             <div class="support-link-card">
-              <h3>📚 Documentation</h3>
+              <h3>Documentation</h3>
               <p>Read our comprehensive documentation and guides.</p>
-              <a href="https://docs.status-bot.xyz" target="_blank" class="link-btn">View Docs</a>
+              <a href="https://status-bot.xyz/docs" target="_blank" class="link-btn">View Docs</a>
             </div>
           </div>
         </div>
