@@ -692,8 +692,13 @@ const selectServer = async (server) => {
     loadLeaderboardData(server.id),
     loadAllSettings(server.id),
     loadGuildChannels(server.id),
-    loadGuildMembers(server.id),
   ])
+  // Populate members from leaderboard data
+  guildMembers.value = leaderboardData.value.map(u => ({
+    id: u.id,
+    username: u.username,
+    avatar: u.avatar
+  }))
 }
 
 const loadOverviewData = async (guildId) => {
@@ -779,36 +784,6 @@ const loadGuildChannels = async (guildId) => {
     }
   } catch (error) {
     // Silently fail - user can still use the component
-  }
-}
-
-const loadGuildMembers = async (guildId) => {
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/members/${guildId}`, {
-      headers: { Authorization: `Bearer ${authStore.token}` }
-    })
-    if (response.ok) {
-      const data = await response.json()
-      guildMembers.value = (data.members || []).map(m => ({
-        id: m.id,
-        username: m.username || 'Unknown User',
-        avatar: m.avatar
-      }))
-    } else {
-      // Fallback to leaderboard data
-      guildMembers.value = leaderboardData.value.map(u => ({
-        id: u.id,
-        username: u.username,
-        avatar: u.avatar
-      }))
-    }
-  } catch (error) {
-    // Fallback to leaderboard data
-    guildMembers.value = leaderboardData.value.map(u => ({
-      id: u.id,
-      username: u.username,
-      avatar: u.avatar
-    }))
   }
 }
 
