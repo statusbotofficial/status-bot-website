@@ -553,6 +553,22 @@ onMounted(() => {
   box-shadow: 0 4px 12px rgba(81, 112, 255, 0.3) !important;
 }
 
+:deep(.message-content.ai a) {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5)) !important;
+  color: #fff !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  display: inline-block !important;
+}
+
+:deep(.message-content.ai a:hover) {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8)) !important;
+  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.3) !important;
+}
+
 .support-input-container {
   display: flex;
   gap: 12px;
