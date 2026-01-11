@@ -342,7 +342,7 @@ const filteredServers = computed(() => {
 
 // Methods
 const loadServers = async () => {
-  if (!authStore.user || !authStore.discordToken) {
+  if (!authStore.user || !authStore.token) {
     router.push("/");
     return;
   }
@@ -351,7 +351,7 @@ const loadServers = async () => {
   try {
     // Fetch user's guilds from Discord
     const userGuildsResponse = await fetch("https://discord.com/api/v10/users/@me/guilds", {
-      headers: { Authorization: `Bearer ${authStore.discordToken}` },
+      headers: { Authorization: `Bearer ${authStore.token}` },
     });
 
     if (!userGuildsResponse.ok) throw new Error("Failed to fetch user guilds");
@@ -430,7 +430,7 @@ const loadServerOverview = async (guildId) => {
       `${BACKEND_URL}/api/server-overview/${guildId}`,
       {
         headers: {
-          Authorization: `Bearer ${authStore.discordToken}`,
+          Authorization: `Bearer ${authStore.token}`,
         },
       }
     );
@@ -453,7 +453,7 @@ const loadLeaderboard = async (guildId) => {
       `${BACKEND_URL}/api/server-leaderboard/${guildId}`,
       {
         headers: {
-          Authorization: `Bearer ${authStore.discordToken}`,
+          Authorization: `Bearer ${authStore.token}`,
         },
       }
     );
