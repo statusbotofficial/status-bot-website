@@ -22,6 +22,29 @@
       <div class="auth-container">
         <button v-if="!isLoggedIn" class="login-btn" @click="handleLogin">Login</button>
         <div v-else class="user-btn-wrapper">
+          <button class="notification-bell" :class="{ 'has-notification': notificationCount > 0 }" @click="toggleNotifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span v-if="notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
+          </button>
+          <div v-if="showNotifications" class="notifications-panel">
+            <div class="notifications-header">
+              <h3>Notifications</h3>
+              <button @click="toggleNotifications" class="close-btn">✕</button>
+            </div>
+            <div v-if="notifications.length > 0" class="notifications-list">
+              <div v-for="(notif, index) in notifications" :key="index" class="notification-item">
+                <div class="notif-title">{{ notif.title }}</div>
+                <div class="notif-message">{{ notif.message }}</div>
+                <div class="notif-time">{{ formatTime(notif.timestamp) }}</div>
+              </div>
+            </div>
+            <div v-else class="empty-notifications">
+              <p>No notifications</p>
+            </div>
+          </div>
           <button class="user-btn" @click="toggleDropdown">
             <div class="user-avatar" :style="{ backgroundImage: `url('${userAvatar}')` }"></div>
             <span>{{ userName }}</span>
@@ -78,6 +101,9 @@ const router = useRouter()
 
 const menuOpen = ref(false)
 const dropdownOpen = ref(false)
+const showNotifications = ref(false)
+const notifications = ref([])
+const notificationCount = computed(() => notifications.value.length)
 
 const isLoggedIn = computed(() => authStore.isLoggedIn)
 const userName = computed(() => authStore.user?.username || '')
@@ -96,6 +122,10 @@ const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value
 }
 
+const toggleNotifications = () => {
+  showNotifications.value = !showNotifications.value
+}
+
 const handleLogin = () => {
   authStore.login()
 }
@@ -106,14 +136,59 @@ const handleLogout = () => {
   menuOpen.value = false
 }
 
+const addNotification = (title, message) => {
+  notifications.value.unshift({
+    title,
+    message,
+    timestamp: new Date()
+  })
+  
+  if (notifications.value.length > 10) {
+    notifications.value.pop()
+  }
+}
+
+const formatTime = (timestamp) => {
+  const now = new Date()
+  const diff = now - timestamp
+  const minutes = Math.floor(diff / 60000)
+  const hours = Math.floor(diff / 3600000)
+  
+  if (minutes < 1) return 'Just now'
+  if (minutes < 60) return `${minutes}m ago`
+  if (hours < 24) return `${hours}h ago`
+  return timestamp.toLocaleDateString()
+}
+
+const loadNotifications = async () => {
+  try {
+    const storedNotifs = localStorage.getItem('siteNotifications')
+    if (storedNotifs) {
+      const notifs = JSON.parse(storedNotifs)
+      notifications.value = notifs.map(n => ({
+        ...n,
+        timestamp: new Date(n.timestamp)
+      }))
+    }
+  } catch (err) {
+    console.error('Error loading notifications:', err)
+  }
+}
+
+const saveNotifications = () => {
+  localStorage.setItem('siteNotifications', JSON.stringify(notifications.value))
+}
+
 onMounted(() => {
   authStore.initializeAuth()
+  loadNotifications()
 
   // Close menu when clicking outside
   document.addEventListener('click', (e) => {
     if (!e.target.closest('header')) {
       menuOpen.value = false
       dropdownOpen.value = false
+      showNotifications.value = false
     }
   })
 
@@ -124,6 +199,9 @@ onMounted(() => {
       dropdownOpen.value = false
     })
   })
+
+  // Save notifications when they change
+  window.addEventListener('beforeunload', saveNotifications)
 })
 </script>
 
@@ -219,6 +297,134 @@ onMounted(() => {
   display: flex;
   gap: 15px;
   align-items: center;
+}
+
+.notification-bell {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.notification-bell:hover {
+  background: rgba(81, 112, 255, 0.1);
+  color: #5170ff;
+}
+
+.notification-bell svg {
+  width: 24px;
+  height: 24px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff5e5e;
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  border: 2px solid var(--bg-primary);
+}
+
+.notifications-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  width: 350px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-tertiary);
+}
+
+.notifications-header h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:hover {
+  background-color: rgba(81, 112, 255, 0.1);
+}
+
+.notif-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.notif-message {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.notif-time {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.empty-notifications {
+  padding: 30px 16px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 .login-btn {

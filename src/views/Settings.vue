@@ -135,7 +135,7 @@
                 </div>
                 <div class="info-item">
                   <label>Expiry Date</label>
-                  <div class="info-value">{{ premiumExpiryDate }}</div>
+                  <div class="info-value">{{ formatExpiryDate(premiumExpiryDate) }}</div>
                 </div>
                 <div class="info-item">
                   <label>Days Remaining</label>
@@ -190,26 +190,29 @@
             <div v-else-if="userServers.length > 0" class="servers-grid">
               <div v-for="server in userServers" :key="server.id" class="server-card">
                 <div class="server-header">
+                  <div class="server-icon" v-if="server.icon">
+                    <img :src="server.icon" :alt="server.name">
+                  </div>
                   <div class="server-name">{{ server.name }}</div>
                   <router-link :to="`/servers/${server.id}`" class="btn btn-small btn-primary">Manage</router-link>
                 </div>
                 <div class="server-stats">
                   <div class="stat">
                     <span class="label">Members:</span>
-                    <span class="value">{{ server.memberCount || 'N/A' }}</span>
+                    <span class="value">{{ server.memberCount || 0 }}</span>
                   </div>
                   <div class="stat">
                     <span class="label">Bot Status:</span>
-                    <span class="value" :class="{ 'online': server.botActive, 'offline': !server.botActive }">
-                      {{ server.botActive ? '✓ Active' : '✗ Inactive' }}
+                    <span class="value" :class="{ 'online': server.systemsActive, 'offline': !server.systemsActive }">
+                      {{ server.systemsActive ? '✓ Active' : '✗ Inactive' }}
                     </span>
                   </div>
                 </div>
                 <div class="server-features">
-                  <span v-if="server.hasLeveling" class="feature-tag">📊 Leveling</span>
-                  <span v-if="server.hasEconomy" class="feature-tag">💰 Economy</span>
-                  <span v-if="server.hasWelcome" class="feature-tag">👋 Welcome</span>
-                  <span v-if="server.hasStatus" class="feature-tag">📍 Status</span>
+                  <span v-if="server.leveling" class="feature-tag">📊 Leveling</span>
+                  <span v-if="server.economy" class="feature-tag">💰 Economy</span>
+                  <span v-if="server.welcome" class="feature-tag">👋 Welcome</span>
+                  <span v-if="server.status" class="feature-tag">📍 Status</span>
                 </div>
               </div>
             </div>
@@ -502,14 +505,84 @@ const claimGift = async (giftId) => {
   }
 }
 
-const saveNotificationPrefs = () => {
+const saveNotificationPrefs = async () => {
   localStorage.setItem('notificationPrefs', JSON.stringify(notificationPrefs.value))
-  alert('✓ Notification preferences saved')
+  
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/user/${discordUser.value.id}/notifications`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(notificationPrefs.value)
+    })
+    
+    if (response.ok) {
+      alert('✓ Notification preferences saved')
+      
+      if (notificationPrefs.value.updates || notificationPrefs.value.gifts || notificationPrefs.value.trials || notificationPrefs.value.community) {
+        requestNotificationPermission()
+      }
+    }
+  } catch (err) {
+    console.error('Error saving notification preferences:', err)
+    alert('Error saving preferences')
+  }
+}
+
+const requestNotificationPermission = async () => {
+  if (!('Notification' in window)) {
+    console.log('This browser does not support notifications')
+    return
+  }
+  
+  if (Notification.permission === 'granted') {
+    new Notification('Status Bot', {
+      body: 'Notifications enabled for Status Bot!',
+      icon: '/Status Bot Logo.png'
+    })
+    return
+  }
+  
+  if (Notification.permission !== 'denied') {
+    const permission = await Notification.requestPermission()
+    if (permission === 'granted') {
+      new Notification('Status Bot', {
+        body: 'Notifications enabled for Status Bot!',
+        icon: '/Status Bot Logo.png'
+      })
+    }
+  }
 }
 
 const selectTheme = (themeName) => {
   currentTheme.value = themeName
   localStorage.setItem('site_theme', themeName)
+  applyTheme(themeName)
+}
+
+const applyTheme = (themeName) => {
+  const theme = themes[themeName]
+  if (!theme) return
+  
+  const root = document.documentElement
+  const colors = {
+    default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' },
+    dark: { primary: '#4d4d4d', bg: '#000000', text: '#cccccc' },
+    light: { primary: '#0066cc', bg: '#ffffff', text: '#000000' },
+    sunset: { primary: '#ff7f50', bg: '#1a0f0a', text: '#fff5e6' },
+    obsidian: { primary: '#708090', bg: '#0b0b0b', text: '#e8e8e8' },
+    saphire: { primary: '#0b3cff', bg: '#0a0a1a', text: '#e0e8ff' },
+    parrot: { primary: '#00bcd4', bg: '#0a1a1a', text: '#e0fff5' },
+    icicle: { primary: '#00bfff', bg: '#0f1a2e', text: '#e0f7ff' },
+    lime: { primary: '#7be35a', bg: '#0a1a00', text: '#e8ffe0' }
+  }
+  
+  const themeColors = colors[themeName] || colors.default
+  root.style.setProperty('--primary-color', themeColors.primary)
+  root.style.setProperty('--bg-primary', themeColors.bg)
+  root.style.setProperty('--text-primary', themeColors.text)
 }
 
 const copyToClipboard = (text) => {
@@ -522,6 +595,15 @@ const formatDate = (timestamp) => {
   return new Date(timestamp).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
+    day: 'numeric'
+  })
+}
+
+const formatExpiryDate = (dateString) => {
+  if (!dateString) return 'N/A'
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
     day: 'numeric'
   })
 }
@@ -540,6 +622,7 @@ onMounted(async () => {
   
   const savedTheme = localStorage.getItem('site_theme') || 'default'
   currentTheme.value = savedTheme
+  applyTheme(savedTheme)
   
   const savedPrefs = localStorage.getItem('notificationPrefs')
   if (savedPrefs) {
@@ -1010,6 +1093,20 @@ onMounted(async () => {
   color: #fff;
   flex: 1;
   word-break: break-word;
+}
+
+.server-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.server-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .server-stats {

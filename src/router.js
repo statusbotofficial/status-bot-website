@@ -9,6 +9,7 @@ import Settings from './views/Settings.vue'
 import Privacy from './views/Privacy.vue'
 import Terms from './views/Terms.vue'
 import Docs from './views/Docs.vue'
+import Dev from './views/Dev.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -21,6 +22,7 @@ const routes = [
   { path: '/privacy', component: Privacy },
   { path: '/terms', component: Terms },
   { path: '/docs', component: Docs },
+  { path: '/dev', component: Dev },
 ]
 
 const router = createRouter({
