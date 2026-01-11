@@ -27,7 +27,6 @@
               <li><a href="#premium" @click.prevent="scrollToSection('premium')">Premium Features</a></li>
               <li><a href="#troubleshooting" @click.prevent="scrollToSection('troubleshooting')">Troubleshooting</a></li>
               <li><a href="#best-practices" @click.prevent="scrollToSection('best-practices')">Best Practices</a></li>
-              <li><a href="#api" @click.prevent="scrollToSection('api')">API Information</a></li>
               <li><a href="#faq" @click.prevent="scrollToSection('faq')">FAQ</a></li>
               <li><a href="#contact" @click.prevent="scrollToSection('contact')">Contact & Support</a></li>
             </ul>
@@ -255,18 +254,6 @@
           <li><strong>Communicate Changes:</strong> Let members know when you enable new systems or change rates</li>
           <li><strong>Consider Premium:</strong> Use Premium for enhanced features if you want to reward your most active members</li>
         </ul>
-      </div>
-
-      <div class="docs-section" id="api">
-        <h2>API Information</h2>
-        <p>Status Bot exposes a REST API for integration with other services and monitoring platforms:</p>
-        <ul>
-          <li><strong>Base URL:</strong> <code>https://status-bot-backend.onrender.com/api</code></li>
-          <li><strong>Bot Stats Endpoint:</strong> <code>GET /api/bot-stats</code> - Returns bot uptime and status information</li>
-          <li><strong>Response Format:</strong> JSON with status, uptime percentage, and last update timestamp</li>
-          <li><strong>Authentication:</strong> Available with authorization headers for verified requests</li>
-        </ul>
-        <p>For custom integrations, webhooks, or detailed API documentation, contact us via the <router-link to="/support">Support page</router-link>.</p>
       </div>
 
       <div class="docs-section" id="faq">
