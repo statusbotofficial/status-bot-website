@@ -1,47 +1,67 @@
 <template>
-  <div class="page-section">
-    <div class="container">
-      <h1>Bot Status</h1>
-      <p>Monitor the real-time status and uptime of Status Bot.</p>
-      
-      <div class="status-overview">
-        <div class="status-card" :class="{ operational: isOperational }">
-          <h3>Overall Status</h3>
-          <p class="status-text" :class="{ operational: isOperational }">
-            {{ isOperational ? '✓ Operational' : '✗ Issues Detected' }}
-          </p>
-          <p class="uptime">Uptime: {{ uptime }}%</p>
-        </div>
+  <div class="status-wrapper">
+    <div class="status-container">
+      <!-- Status Header -->
+      <div class="status-header">
+        <h1>System Status</h1>
+        <p>We strive to keep all of our systems online 24/7 just for you!</p>
+      </div>
 
-        <div class="status-card">
-          <h3>API Status</h3>
-          <p class="status-indicator operational">✓ Online</p>
-          <p class="status-detail">Response time: {{ responseTime }}ms</p>
+      <!-- Status Indicator -->
+      <div class="status-indicator-section">
+        <div class="status-badge" :class="botStatus">
+          <span class="status-dot"></span>
+          <span class="status-text">{{ botStatus === 'online' ? '🟢 Online' : '🔴 Offline' }}</span>
         </div>
+        <p class="status-description">
+          {{ botStatus === 'online' 
+            ? 'Status Bot is running normally' 
+            : 'Status Bot is currently offline' 
+          }}
+        </p>
+      </div>
 
-        <div class="status-card">
-          <h3>Database</h3>
-          <p class="status-indicator operational">✓ Online</p>
-          <p class="status-detail">Last checked: 2 min ago</p>
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">⏱️</div>
+          <h3>Uptime</h3>
+          <p class="stat-value">{{ uptime }}</p>
         </div>
-
-        <div class="status-card">
-          <h3>Services</h3>
-          <p class="status-indicator operational">✓ All Systems</p>
-          <p class="status-detail">No known issues</p>
+        <div class="stat-card">
+          <div class="stat-icon">📡</div>
+          <h3>Ping</h3>
+          <p class="stat-value">{{ ping }}ms</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🖥️</div>
+          <h3>Servers</h3>
+          <p class="stat-value">{{ servers }}</p>
         </div>
       </div>
 
+      <!-- Incidents Section -->
       <div class="incidents-section">
-        <h2>Recent Incidents</h2>
-        <div v-if="incidents.length === 0" class="no-incidents">
-          <p>No recent incidents reported.</p>
-        </div>
-        <div v-else class="incidents-list">
-          <div v-for="incident in incidents" :key="incident.id" class="incident-item">
-            <h4>{{ incident.title }}</h4>
-            <p>{{ incident.description }}</p>
-            <p class="incident-date">{{ incident.date }}</p>
+        <h2>Incidents</h2>
+        <div class="incidents-list">
+          <div v-if="incidents.length === 0" class="no-incidents">
+            <p>✅ No incidents recorded. Status Bot is running smoothly!</p>
+          </div>
+          <div v-else class="incidents-items">
+            <div v-for="incident in incidents" :key="incident.id" class="incident-item">
+              <div class="incident-header">
+                <span class="incident-type">{{ incident.type }}</span>
+                <span class="incident-time">{{ formatIncidentTime(incident.startTime) }}</span>
+              </div>
+              <div class="incident-details">
+                <p v-if="incident.resolved">
+                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, incident.endTime) }}
+                </p>
+                <p v-else>
+                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, Date.now()) }} (ongoing)
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -50,137 +70,528 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
-const isOperational = ref(true)
-const uptime = ref(99.9)
-const responseTime = ref(45)
+const botStatus = ref('online')
+const uptime = ref('Calculating...')
+const ping = ref(0)
+const servers = ref(0)
 const incidents = ref([])
+const botStartTime = ref(null)
+let pollInterval = null
+
+const BACKEND_URL = 'https://status-bot-backend.onrender.com'
+const OFFLINE_THRESHOLD = 5 * 60 * 1000 // 5 minutes
+
+// Fetch bot stats from backend
+const fetchBotStats = async () => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/bot-stats`)
+    if (!response.ok) throw new Error('Failed to fetch stats')
+    
+    const data = await response.json()
+    
+    // Update basic stats
+    ping.value = data.ping || 0
+    servers.value = data.servers || 0
+    
+    // Check if bot is online or offline
+    if (data.lastUpdated) {
+      const lastUpdateTime = new Date(data.lastUpdated).getTime()
+      const timeSinceUpdate = Date.now() - lastUpdateTime
+      
+      if (timeSinceUpdate > OFFLINE_THRESHOLD) {
+        // Bot is offline
+        if (botStatus.value === 'online') {
+          // Just went offline - add incident
+          addIncident('Downtime Detected', Date.now())
+        }
+        botStatus.value = 'offline'
+      } else {
+        // Bot is online
+        if (botStatus.value === 'offline') {
+          // Just came back online - resolve last incident
+          resolveLastIncident()
+        }
+        botStatus.value = 'online'
+      }
+      
+      // Store start time if this is first update
+      if (!botStartTime.value) {
+        botStartTime.value = Date.parse(data.lastUpdated) - (data.uptime || 0)
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching bot stats:', error)
+    botStatus.value = 'offline'
+  }
+}
+
+// Add incident to list
+const addIncident = (type, startTime) => {
+  const existingIncident = incidents.value.find(inc => !inc.resolved)
+  if (existingIncident) return // Don't add duplicate
+  
+  incidents.value.unshift({
+    id: Date.now(),
+    type,
+    startTime,
+    endTime: null,
+    resolved: false
+  })
+}
+
+// Resolve last incident
+const resolveLastIncident = () => {
+  const lastIncident = incidents.value.find(inc => !inc.resolved)
+  if (lastIncident) {
+    lastIncident.resolved = true
+    lastIncident.endTime = Date.now()
+  }
+}
+
+// Format incident time
+const formatIncidentTime = (timestamp) => {
+  const date = new Date(timestamp)
+  return date.toLocaleString()
+}
+
+// Format duration
+const formatDuration = (startTime, endTime) => {
+  const duration = endTime - startTime
+  const hours = Math.floor(duration / (1000 * 60 * 60))
+  const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((duration % (1000 * 60)) / 1000)
+  
+  if (hours > 0) {
+    return `${hours}h ${minutes}m ${seconds}s`
+  } else if (minutes > 0) {
+    return `${minutes}m ${seconds}s`
+  } else {
+    return `${seconds}s`
+  }
+}
+
+// Calculate uptime display
+const calculateUptime = () => {
+  if (!botStartTime.value) {
+    uptime.value = 'Calculating...'
+    return
+  }
+  
+  const uptimeMs = Date.now() - botStartTime.value
+  const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((uptimeMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  const minutes = Math.floor((uptimeMs % (1000 * 60 * 60)) / (1000 * 60))
+  
+  if (days > 0) {
+    uptime.value = `${days}d ${hours}h ${minutes}m`
+  } else if (hours > 0) {
+    uptime.value = `${hours}h ${minutes}m`
+  } else {
+    uptime.value = `${minutes}m`
+  }
+}
+
+onMounted(() => {
+  // Initial fetch
+  fetchBotStats()
+  calculateUptime()
+  
+  // Poll every 30 seconds
+  pollInterval = setInterval(() => {
+    fetchBotStats()
+    calculateUptime()
+  }, 30000)
+  
+  // Update uptime calculation every minute
+  setInterval(() => {
+    calculateUptime()
+  }, 60000)
+})
+
+onUnmounted(() => {
+  if (pollInterval) clearInterval(pollInterval)
+})
 </script>
 
 <style scoped>
-.page-section {
-  padding: 80px 50px;
+.status-wrapper {
+  width: 100%;
+  padding: 60px 50px;
   min-height: calc(100vh - 200px);
 }
 
-.container h1 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+.status-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
 }
 
-.container > p {
-  font-size: 1.1rem;
-  margin-bottom: 60px;
-  max-width: 600px;
+.status-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
 }
 
-.status-overview {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 60px;
+.status-header h1 {
+  font-size: 56px;
+  font-weight: 900;
+  margin: 0;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.status-card {
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-left: 4px solid #ff6b6b;
-  padding: 25px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+.status-header p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
-.status-card.operational {
-  border-left-color: #51cf66;
+.status-indicator-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 30px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.1) 0%, rgba(81, 112, 255, 0.05) 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
 }
 
-.status-card h3 {
-  margin-bottom: 15px;
-  font-size: 1.1rem;
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: rgba(81, 112, 255, 0.2);
+  border: 2px solid var(--primary-color);
+}
+
+.status-badge.online {
+  color: #4ade80;
+  border-color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.status-badge.offline {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.status-badge.online .status-dot {
+  background: #4ade80;
+}
+
+.status-badge.offline .status-dot {
+  background: #ff4444;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .status-text {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #ff6b6b;
+  display: none;
 }
 
-.status-text.operational {
-  color: #51cf66;
+.status-badge.online .status-text {
+  display: inline;
 }
 
-.status-indicator {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 10px;
+.status-badge.offline .status-text {
+  display: inline;
 }
 
-.status-indicator.operational {
-  color: #51cf66;
-}
-
-.status-detail, .uptime {
+.status-description {
+  font-size: 14px;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  margin: 0;
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 16px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.stat-card:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.1) 0%, rgba(81, 112, 255, 0.05) 100%);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(81, 112, 255, 0.15);
+}
+
+.stat-icon {
+  font-size: 36px;
+}
+
+.stat-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 900;
+  margin: 0;
+  color: #fff;
 }
 
 .incidents-section {
-  max-width: 700px;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .incidents-section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 30px;
-}
-
-.no-incidents {
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  padding: 30px;
-  border-radius: 8px;
+  font-size: 36px;
+  font-weight: 900;
+  margin: 0;
   text-align: center;
-  color: var(--text-secondary);
 }
 
 .incidents-list {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.no-incidents {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.05) 0%, rgba(74, 222, 128, 0.02) 100%);
+  border: 2px solid #4ade80;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+}
+
+.no-incidents p {
+  font-size: 16px;
+  color: #4ade80;
+  margin: 0;
+  font-weight: 600;
+}
+
+.incidents-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .incident-item {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
   padding: 20px;
-  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.incident-item:last-child {
-  border-bottom: none;
+.incident-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
 }
 
-.incident-item h4 {
-  color: #ff6b6b;
-  margin-bottom: 10px;
+.incident-type {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff4444;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
 }
 
-.incident-date {
+.incident-time {
+  font-size: 13px;
   color: var(--text-secondary);
-  font-size: 0.85rem;
-  margin-top: 10px;
+}
+
+.incident-details {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.incident-details p {
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .status-wrapper {
+    padding: 50px 30px;
+  }
+
+  .status-header h1 {
+    font-size: 44px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+  }
+
+  .stat-card {
+    padding: 25px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+  }
+
+  .incidents-section h2 {
+    font-size: 32px;
+  }
 }
 
 @media (max-width: 768px) {
-  .page-section {
+  .status-wrapper {
     padding: 40px 20px;
   }
 
-  .container h1 {
-    font-size: 2rem;
+  .status-header h1 {
+    font-size: 32px;
   }
 
-  .status-overview {
+  .status-header p {
+    font-size: 14px;
+  }
+
+  .status-indicator-section {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .stats-grid {
     grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  .stat-icon {
+    font-size: 32px;
+  }
+
+  .stat-card h3 {
+    font-size: 14px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .incidents-section h2 {
+    font-size: 24px;
+  }
+
+  .incident-item {
+    padding: 15px;
+  }
+
+  .incident-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .status-wrapper {
+    padding: 30px 15px;
+  }
+
+  .status-header h1 {
+    font-size: 24px;
+  }
+
+  .status-header p {
+    font-size: 13px;
+  }
+
+  .stats-grid {
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .stat-icon {
+    font-size: 28px;
+  }
+
+  .stat-card h3 {
+    font-size: 12px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .incidents-section h2 {
+    font-size: 20px;
+  }
+
+  .incident-item {
+    padding: 12px;
+  }
+
+  .incident-time {
+    font-size: 12px;
+  }
+
+  .incident-details {
+    font-size: 13px;
   }
 }
 </style>
