@@ -2608,18 +2608,15 @@ onMounted(() => {
 }
 
 .mobile-hamburger span.open:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 10px);
-  width: 24px;
+  transform: rotate(45deg) translateY(11px);
 }
 
 .mobile-hamburger span.open:nth-child(2) {
   opacity: 0;
-  width: 24px;
 }
 
 .mobile-hamburger span.open:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -10px);
-  width: 24px;
+  transform: rotate(-45deg) translateY(-11px);
 }
 
 /* Responsive Design */
