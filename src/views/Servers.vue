@@ -2293,14 +2293,7 @@ onMounted(() => {
   margin-top: 8px;
 }
 
-.info-box {
-  padding: 12px;
-  background: rgba(81, 112, 255, 0.1);
-  border-left: 4px solid #5170ff;
-  border-radius: 4px;
-  margin-top: 8px;
-  font-size: 13px;
-}
+
 
 .preview-title {
   font-size: 12px;
