@@ -899,9 +899,8 @@ const openMemberSelector = async () => {
   // Fetch guild members if not already loaded
   if (guildMembers.value.length === 0 && selectedServer.value) {
     try {
-      const headers = { Authorization: `Bearer ${authStore.token}` }
       const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
-        headers
+        headers: { Authorization: 'Bearer status-bot-stats-secret-key' }
       })
       if (response.ok) {
         const data = await response.json()
