@@ -1016,13 +1016,7 @@ const postStatusMessage = async () => {
     console.warn('Missing required fields for posting status message')
     return
   }
-  
-  // Only post a new message if one doesn't already exist
-  if (statusSettings.messageId) {
-    console.log('Message already exists, skipping new post')
-    return
-  }
-  
+
   try {
     const payload = {
       user_id: statusSettings.userToTrackId,
@@ -1039,12 +1033,12 @@ const postStatusMessage = async () => {
       body: JSON.stringify(payload)
     })
     if (!response.ok) {
-      console.error('Failed to post status message:', response.status, response.statusText)
+      console.error('Failed to queue status message:', response.status, response.statusText)
     } else {
-      console.log('Status message posted successfully')
+      console.log('Status message queued for posting/updating')
     }
   } catch (error) {
-    console.error('Error posting status message:', error)
+    console.error('Error queuing status message:', error)
   }
 }
 
