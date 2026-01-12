@@ -251,8 +251,7 @@
                 <div class="gift-icon-container">🎁</div>
                 <div class="gift-details">
                   <div class="gift-name">{{ gift.name }}</div>
-                  <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
-                  <div v-if="gift.expiresAt" class="gift-expiry">Expires: {{ formatDate(gift.expiresAt) }}</div>
+                  <div class="gift-expiry" v-if="gift.dashboardExpiresAt || gift.expiresAt">Expires: {{ formatDate(gift.dashboardExpiresAt || gift.expiresAt) }}</div>
                 </div>
                 <button
                   :disabled="gift.claimed"
