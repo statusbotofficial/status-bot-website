@@ -411,6 +411,16 @@
               </div>
 
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
+                <label>Footer</label>
+                <input
+                  v-model="welcomeSettings.embedFooter"
+                  type="text"
+                  class="input-field"
+                  placeholder="Thanks for joining!"
+                />
+              </div>
+
+              <div v-if="welcomeSettings.useEmbed" class="setting-item">
                 <label>Custom field (optional)</label>
                 <div style="display: flex; gap: 8px;">
                   <input
