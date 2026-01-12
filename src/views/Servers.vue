@@ -1073,6 +1073,29 @@ const saveStatusSettings = async () => {
     if (response.ok) {
       console.log('Settings saved, posting message...')
       await postStatusMessage()
+      
+      // Wait a moment for the bot to process and store the message_id, then reload settings
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      // Reload settings from backend to get the message_id
+      const reloadRes = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
+        headers: { Authorization: `Bearer ${authStore.token}` }
+      })
+      if (reloadRes.ok) {
+        const data = await reloadRes.json()
+        Object.assign(statusSettings, {
+          enabled: data.enabled || false,
+          userToTrack: data.user_id ? `User ${data.user_id}` : '',
+          userToTrackId: data.user_id || '',
+          trackingChannel: data.channel_id || '',
+          delay: data.delay_seconds || 0,
+          useEmbed: data.use_embed || false,
+          offlineMessage: data.offline_message || 'User is offline',
+          messageId: data.message_id || null
+        })
+        console.log('Settings reloaded with messageId:', data.message_id)
+      }
+      
       statusSaveSuccess.value = true
       setTimeout(() => {
         statusSaveSuccess.value = false
