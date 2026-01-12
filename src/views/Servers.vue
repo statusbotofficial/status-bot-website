@@ -105,7 +105,7 @@
                 <div class="stat-box">
                   <div class="stat-icon members-icon">👥</div>
                   <div class="stat-content">
-                    <div class="stat-label">Members Tracked</div>
+                    <div class="stat-label">Members</div>
                     <div class="stat-value">{{ totalStats.membersTracked }}</div>
                   </div>
                 </div>
@@ -223,7 +223,7 @@
               </div>
 
               <!-- Right Sidebar: Info Box + Rank Card -->
-              <div style="display: flex; flex-direction: column; gap: 20px;">
+              <div style="display: flex; flex-direction: column; gap: 40px;">
                 <!-- How XP Works Info Box -->
                 <div class="info-box">
                   <h3>How XP works</h3>
@@ -2051,7 +2051,7 @@ onMounted(() => {
 .info-box {
   background: rgba(81, 112, 255, 0.15);
   border: 2px solid rgba(81, 112, 255, 0.4);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 24px;
   position: sticky;
   top: 30px;
