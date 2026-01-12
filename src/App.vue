@@ -221,7 +221,22 @@ const removeExpiredNotifications = (notifs) => {
 
 const loadNotifications = async () => {
   try {
-    // First try to load from backend
+    // Load stored read state first
+    const storedNotifs = localStorage.getItem('siteNotifications')
+    const readStateMap = new Map()
+    
+    if (storedNotifs) {
+      try {
+        const parsed = JSON.parse(storedNotifs)
+        parsed.forEach(n => {
+          if (n.id) readStateMap.set(n.id, n.read === true)
+        })
+      } catch (e) {
+        console.error('Error parsing stored notifications for read state:', e)
+      }
+    }
+    
+    // Then load from backend
     const authStore = useAuthStore()
     if (authStore.user?.id) {
       const SECRET_KEY = 'status-bot-stats-secret-key'
@@ -233,28 +248,28 @@ const loadNotifications = async () => {
         const backendNotifs = (data.notifications || []).map(n => ({
           ...n,
           timestamp: new Date(n.createdAt || Date.now()),
-          read: false
+          // Preserve read state from localStorage if it exists, otherwise new notifications are unread
+          read: readStateMap.has(n.id) ? readStateMap.get(n.id) : false
         }))
         
-        // Merge with localStorage notifications (don't lose locally saved ones)
-        const storedNotifs = localStorage.getItem('siteNotifications')
-        let allNotifs = backendNotifs
+        // Merge with stored notifications to keep any locally stored ones
+        let allNotifs = [...backendNotifs]
         
         if (storedNotifs) {
           try {
             const parsed = JSON.parse(storedNotifs)
-            // Keep stored notifications that aren't already in backend
-            allNotifs = [
-              ...backendNotifs,
-              ...parsed.filter(stored => !backendNotifs.find(backend => backend.id === stored.id)).map(n => ({
-                ...n,
-                read: n.read !== undefined ? n.read : false,
-                timestamp: n.timestamp instanceof Date ? n.timestamp : new Date(n.timestamp || Date.now())
-              }))
-            ]
+            // Add back any stored notifications that aren't in backend (in case they expired on backend but are still local)
+            parsed.forEach(stored => {
+              if (!backendNotifs.find(b => b.id === stored.id)) {
+                allNotifs.push({
+                  ...stored,
+                  read: stored.read !== undefined ? stored.read : false,
+                  timestamp: stored.timestamp instanceof Date ? stored.timestamp : new Date(stored.timestamp || Date.now())
+                })
+              }
+            })
           } catch (e) {
             // If localStorage is corrupted, just use backend
-            allNotifs = backendNotifs
           }
         }
         
