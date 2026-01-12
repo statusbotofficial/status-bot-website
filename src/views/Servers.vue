@@ -877,9 +877,9 @@ const loadAllSettings = async (guildId) => {
       const data = await welcomeRes.json()
       // Convert snake_case from backend to camelCase for frontend
       Object.assign(welcomeSettings, {
-        enabled: data.enabled || false,
-        useEmbed: data.use_embed || false,
-        welcomeChannel: data.welcome_channel || '',
+        enabled: data.enabled === true,
+        useEmbed: data.use_embed === true,
+        welcomeChannel: data.channel_id || '',
         messageText: data.message_text || 'Welcome to {server}, {user}!',
         embedTitle: data.embed_title || 'Welcome!',
         embedDescription: data.embed_description || 'Welcome to {server}! We\'re glad to have you here.',
