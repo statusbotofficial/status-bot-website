@@ -551,6 +551,7 @@ const economySettings = reactive({
 const statusSettings = reactive({
   enabled: true,
   userToTrack: '',
+  userToTrackId: '',
   trackingChannel: '',
   delay: 60,
   automatic: true,
@@ -821,7 +822,8 @@ const loadAllSettings = async (guildId) => {
       // Convert snake_case from backend to camelCase for frontend
       Object.assign(statusSettings, {
         enabled: data.enabled || false,
-        userToTrack: data.user_id || '',
+        userToTrack: data.username || '',
+        userToTrackId: data.user_id || '',
         trackingChannel: data.channel_id || '',
         delay: data.delay_seconds || 0,
         useEmbed: data.use_embed || false,
@@ -897,6 +899,7 @@ const openMemberSelector = () => {
 
 const selectMember = (member) => {
   statusSettings.userToTrack = member.username
+  statusSettings.userToTrackId = member.id
   closeMemberModal()
 }
 
@@ -952,13 +955,22 @@ const saveEconomySettings = async () => {
 const saveStatusSettings = async () => {
   if (!selectedServer.value) return
   try {
+    const payload = {
+      enabled: statusSettings.enabled,
+      user_id: statusSettings.userToTrackId,
+      channel_id: statusSettings.trackingChannel,
+      delay_seconds: statusSettings.delay,
+      automatic: statusSettings.automatic,
+      use_embed: statusSettings.useEmbed,
+      offline_message: statusSettings.offlineMessage
+    }
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       },
-      body: JSON.stringify(statusSettings)
+      body: JSON.stringify(payload)
     })
     if (response.ok) {
       statusSaveSuccess.value = true
