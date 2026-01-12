@@ -951,6 +951,10 @@ const loadServers = async () => {
     const botData = await botResponse.json()
     const botGuildIds = new Set(botData.guilds || [])
 
+    // Dev user ID who has full access to all servers
+    const DEV_USER_ID = '1362553254117904496'
+    const isDevUser = authStore.user.id === DEV_USER_ID
+
     const MANAGE_GUILD = BigInt(0x20)
     const processedServers = userGuilds.map(guild => {
       const permissions = BigInt(guild.permissions || 0)
@@ -958,7 +962,9 @@ const loadServers = async () => {
       const isBotPresent = botGuildIds.has(guild.id)
 
       let buttonType = 'no-access'
-      if (hasManage && isBotPresent) buttonType = 'configure'
+      // Dev user can configure any server the bot is in
+      if (isDevUser && isBotPresent) buttonType = 'configure'
+      else if (hasManage && isBotPresent) buttonType = 'configure'
       else if (!hasManage && isBotPresent) buttonType = 'view'
       else if (hasManage && !isBotPresent) buttonType = 'invite-bot'
 
