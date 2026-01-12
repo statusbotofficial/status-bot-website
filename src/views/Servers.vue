@@ -340,7 +340,7 @@
                 <label>Welcome channel</label>
                 <div class="channel-selector">
                   <input
-                    v-model="welcomeSettings.welcomeChannel"
+                    v-model="welcomeChannelName"
                     type="text"
                     placeholder="None selected"
                     disabled
@@ -685,6 +685,12 @@ const levelingChannelName = computed(() => {
   if (!levelingSettings.levelUpChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === levelingSettings.levelUpChannel)
   return channel ? channel.name : levelingSettings.levelUpChannel
+})
+
+const welcomeChannelName = computed(() => {
+  if (!welcomeSettings.welcomeChannel) return 'None selected'
+  const channel = guildChannels.value.find(c => c.id === welcomeSettings.welcomeChannel)
+  return channel ? channel.name : welcomeSettings.welcomeChannel
 })
 
 const allowedChannelsDisplay = computed(() => {
@@ -1107,13 +1113,25 @@ const saveStatusSettings = async () => {
 const saveWelcomeSettings = async () => {
   if (!selectedServer.value) return
   try {
+    const payload = {
+      enabled: welcomeSettings.enabled,
+      use_embed: welcomeSettings.useEmbed,
+      channel_id: welcomeSettings.welcomeChannel,
+      message_text: welcomeSettings.messageText,
+      embed_title: welcomeSettings.embedTitle,
+      embed_description: welcomeSettings.embedDescription,
+      embed_footer: welcomeSettings.embedFooter,
+      embed_thumbnail: welcomeSettings.embedThumbnail,
+      embed_color: welcomeSettings.embedColor,
+      embed_author: welcomeSettings.embedAuthor
+    }
     const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       },
-      body: JSON.stringify(welcomeSettings)
+      body: JSON.stringify(payload)
     })
     if (response.ok) {
       welcomeSaveSuccess.value = true
