@@ -1163,6 +1163,7 @@ const saveWelcomeSettings = async () => {
       embed_field_name: welcomeSettings.embedFieldName,
       embed_field_value: welcomeSettings.embedFieldValue
     }
+    console.log('Saving welcome settings with payload:', payload)
     const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
@@ -1172,6 +1173,8 @@ const saveWelcomeSettings = async () => {
       body: JSON.stringify(payload)
     })
     if (response.ok) {
+      const data = await response.json()
+      console.log('Welcome settings saved successfully:', data)
       welcomeSaveSuccess.value = true
       setTimeout(() => {
         welcomeSaveSuccess.value = false
