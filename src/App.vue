@@ -219,6 +219,16 @@ const formatTime = (timestamp) => {
   }
 }
 
+const removeExpiredNotifications = (notifs) => {
+  const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000
+  const now = new Date().getTime()
+  
+  return notifs.filter(notif => {
+    const notifTime = notif.timestamp instanceof Date ? notif.timestamp.getTime() : new Date(notif.timestamp).getTime()
+    return (now - notifTime) < SEVEN_DAYS_MS
+  })
+}
+
 const loadNotifications = async () => {
   try {
     // First try to load from backend
