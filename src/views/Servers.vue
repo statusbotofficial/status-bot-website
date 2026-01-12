@@ -111,13 +111,84 @@
                 </div>
               </div>
 
-              <!-- Leaderboard -->
-              <div class="overview-panel full-width">
+              <!-- Leaderboard with sidebar -->
+              <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start;">
+                <!-- Left: Leaderboard -->
+                <div class="overview-panel">
+                  <h3>Leaderboard</h3>
+                  <div v-if="leaderboardLoading" class="loading">Loading leaderboard...</div>
+                  <div v-else-if="leaderboardData.length > 0" class="leaderboard">
+                    <div
+                      v-for="(user, idx) in leaderboardData.slice(0, 10)"
+                      :key="user.id"
+                      class="leaderboard-item"
+                      :class="getMedalClass(idx)"
+                    >
+                      <span class="rank" :class="getMedalClass(idx)">{{ idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '#' + (idx + 1) }}</span>
+                      <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
+                      <div class="user-info">
+                        <p class="username">{{ user.username }}</p>
+                        <p class="level">Level {{ user.level || 0 }}</p>
+                      </div>
+                      <div class="stats">
+                        <div class="stat-item">
+                          <span class="label">XP</span>
+                          <span class="value xp-color">{{ (user.xp || 0).toLocaleString() }}</span>
+                        </div>
+                        <div class="stat-item">
+                          <span class="label">Balance</span>
+                          <span class="value balance-color">{{ (user.balance || 0).toLocaleString() }}</span>
+                        </div>
+                        <div class="stat-item">
+                          <span class="label">Voice</span>
+                          <span class="value voice-color">{{ user.voiceTime || 0 }}m</span>
+                        </div>
+                        <div class="stat-item">
+                          <span class="label">Msgs</span>
+                          <span class="value msg-color">{{ (user.messages || 0).toLocaleString() }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else class="empty">No leaderboard data available. Users will appear here once they start earning XP!</div>
+                </div>
+
+                <!-- Right: Info Box + Rank Card -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                  <!-- How XP Works Info Box -->
+                  <div class="info-box">
+                    <h3>How XP works</h3>
+                    <p>First to enable the XP system go to the <strong>Leveling</strong> section, use the toggle button, or use <strong>/xp toggle</strong> in discord. Then set up your preferences for the XP rewards. Then, when a user sends a message, or spends time in a voice chat, they earn XP.</p>
+                  </div>
+
+                  <!-- Your Rank Card -->
+                  <div class="rank-card">
+                    <h3>Your Rank</h3>
+                    <div class="rank-avatar" :style="{ backgroundImage: userRankData.avatarUrl ? `url('${userRankData.avatarUrl}')` : 'none' }">
+                      {{ !userRankData.avatarUrl ? (authStore.user?.username?.charAt(0) || 'U').toUpperCase() : '' }}
+                    </div>
+                    <div class="rank-number">#{{ userRankData.rank || '-' }}</div>
+                    <div class="rank-xp">{{ userRankData.xp?.toLocaleString() || 0 }}/{{ userRankData.nextLevelXp?.toLocaleString() || '-' }} XP</div>
+                    <div class="rank-level">Level: <span>{{ userRankData.level || '-' }}</span></div>
+                    <div class="rank-bar">
+                      <div class="rank-bar-fill" :style="{ width: userRankData.progressPercent + '%' }"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Leaderboard Page -->
+          <section v-else-if="activeSection === 'leaderboard'" class="config-section">
+            <div style="display: grid; grid-template-columns: 1fr 500px; gap: 40px; align-items: start;">
+              <!-- Main Leaderboard -->
+              <div>
                 <h3>Leaderboard</h3>
                 <div v-if="leaderboardLoading" class="loading">Loading leaderboard...</div>
-                <div v-else-if="leaderboardData.length > 0" class="leaderboard">
+                <div v-else-if="leaderboardData.length > 0" class="leaderboard leaderboard-full">
                   <div
-                    v-for="(user, idx) in leaderboardData.slice(0, 10)"
+                    v-for="(user, idx) in leaderboardData"
                     :key="user.id"
                     class="leaderboard-item"
                     :class="getMedalClass(idx)"
@@ -149,6 +220,29 @@
                   </div>
                 </div>
                 <div v-else class="empty">No leaderboard data available. Users will appear here once they start earning XP!</div>
+              </div>
+
+              <!-- Right Sidebar: Info Box + Rank Card -->
+              <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- How XP Works Info Box -->
+                <div class="info-box">
+                  <h3>How XP works</h3>
+                  <p>First to enable the XP system go to the <strong>Leveling</strong> section, use the toggle button, or use <strong>/xp toggle</strong> in discord. Then set up your preferences for the XP rewards. Then, when a user sends a message, or spends time in a voice chat, they earn XP.</p>
+                </div>
+
+                <!-- Your Rank Card -->
+                <div class="rank-card">
+                  <h3>Your Rank</h3>
+                  <div class="rank-avatar" :style="{ backgroundImage: userRankData.avatarUrl ? `url('${userRankData.avatarUrl}')` : 'none' }">
+                    {{ !userRankData.avatarUrl ? (authStore.user?.username?.charAt(0) || 'U').toUpperCase() : '' }}
+                  </div>
+                  <div class="rank-number">#{{ userRankData.rank || '-' }}</div>
+                  <div class="rank-xp">{{ userRankData.xp?.toLocaleString() || 0 }}/{{ userRankData.nextLevelXp?.toLocaleString() || '-' }} XP</div>
+                  <div class="rank-level">Level: <span>{{ userRankData.level || '-' }}</span></div>
+                  <div class="rank-bar">
+                    <div class="rank-bar-fill" :style="{ width: userRankData.progressPercent + '%' }"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -599,6 +693,15 @@ const activeSection = ref('overview')
 const overviewData = ref([])
 const leaderboardData = ref([])
 
+const userRankData = reactive({
+  rank: null,
+  level: null,
+  xp: 0,
+  nextLevelXp: 0,
+  progressPercent: 0,
+  avatarUrl: null
+})
+
 // Save states for button feedback
 const levelingSaveSuccess = ref(false)
 const economySaveSuccess = ref(false)
@@ -923,12 +1026,68 @@ const loadLeaderboardData = async (guildId) => {
     })
     if (response.ok) {
       const data = await response.json()
-      leaderboardData.value = data.leaderboard || []
+      leaderboardData.value = data.leaderboard || data.allUsers || []
+      // Load user rank after leaderboard data is loaded
+      await loadUserRankData(guildId)
     }
   } catch (error) {
     console.error('Error loading leaderboard:', error)
   } finally {
     leaderboardLoading.value = false
+  }
+}
+
+const loadUserRankData = async (guildId) => {
+  try {
+    if (!authStore.user) return
+    
+    const currentUserId = authStore.user.id
+    const allUsers = leaderboardData.value
+    
+    // Find current user in leaderboard
+    const userInLeaderboard = allUsers.find(u => u.id === currentUserId)
+    
+    if (userInLeaderboard) {
+      const userRank = allUsers.findIndex(u => u.id === currentUserId) + 1
+      
+      // Get avatar URL
+      let avatarUrl = null
+      if (authStore.user.avatar) {
+        if (authStore.user.avatar.includes('http')) {
+          avatarUrl = authStore.user.avatar
+        } else {
+          avatarUrl = `https://cdn.discordapp.com/avatars/${currentUserId}/${authStore.user.avatar}.png`
+        }
+      }
+      
+      // Calculate progress bar percentage
+      const prevLevelXp = userInLeaderboard.currentLevelXp || 0
+      const currentLevelXp = (userInLeaderboard.nextLevelXp || 100) - prevLevelXp
+      const userLevelXp = userInLeaderboard.xp - prevLevelXp
+      const progressPercent = Math.min(100, (userLevelXp / currentLevelXp) * 100)
+      
+      // Update user rank data
+      Object.assign(userRankData, {
+        rank: userRank,
+        level: userInLeaderboard.level || 0,
+        xp: userInLeaderboard.xp || 0,
+        nextLevelXp: userInLeaderboard.nextLevelXp || 100,
+        progressPercent: progressPercent,
+        avatarUrl: avatarUrl
+      })
+    } else {
+      // User not in leaderboard yet
+      Object.assign(userRankData, {
+        rank: null,
+        level: 0,
+        xp: 0,
+        nextLevelXp: 100,
+        progressPercent: 0,
+        avatarUrl: null
+      })
+    }
+  } catch (error) {
+    console.error('Error loading user rank data:', error)
   }
 }
 
@@ -1887,6 +2046,113 @@ onMounted(() => {
   text-align: center;
   color: #999;
   padding: 30px;
+}
+
+.info-box {
+  background: rgba(81, 112, 255, 0.15);
+  border: 2px solid rgba(81, 112, 255, 0.4);
+  border-radius: 12px;
+  padding: 24px;
+  position: sticky;
+  top: 30px;
+}
+
+.info-box h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #5170ff;
+}
+
+.info-box p {
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.info-box strong {
+  color: #5170ff;
+}
+
+.rank-card {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2), rgba(81, 112, 255, 0.05));
+  border: 2px solid rgba(81, 112, 255, 0.4);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.rank-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #5170ff;
+}
+
+.rank-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: #5170ff;
+  margin: 0 auto 16px;
+  border: 3px solid #5170ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 32px;
+  color: #fff;
+}
+
+.rank-number {
+  font-size: 36px;
+  font-weight: 800;
+  color: #5170ff;
+  margin-bottom: 12px;
+}
+
+.rank-xp {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
+.rank-level {
+  font-size: 14px;
+  font-weight: 600;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.rank-level span {
+  color: #5170ff;
+}
+
+.rank-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(81, 112, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.rank-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #5170ff, #7c9dff);
+  width: 0%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.leaderboard-full {
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 .overview-container {
