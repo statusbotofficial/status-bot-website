@@ -462,31 +462,43 @@
           <!-- Member Goals -->
           <section v-else-if="activeSection === 'member-goals'" class="config-section">
             <h3>Member Goals</h3>
-            <div class="settings-form">
-              <div class="form-group">
+            <div class="settings-box">
+              <div class="setting-item">
                 <label>Enable Member Goals</label>
                 <toggle-switch v-model="memberGoalsSettings.enabled" />
               </div>
 
-              <div class="form-group">
+              <div class="setting-item">
                 <label>Member Count Channel</label>
-                <div class="input-with-button">
-                  <input v-model="memberCountChannelName" type="text" class="input-field" readonly placeholder="Select channel..." />
+                <div class="channel-selector">
+                  <input 
+                    v-model="memberCountChannelName" 
+                    type="text" 
+                    class="input-field" 
+                    readonly 
+                    placeholder="Select channel..." 
+                  />
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberCountChannelId')" class="select-btn">+</button>
                 </div>
                 <small>Channel name will display as: "Members: 150"</small>
               </div>
 
-              <div class="form-group">
+              <div class="setting-item">
                 <label>Member Goal Channel</label>
-                <div class="input-with-button">
-                  <input v-model="memberGoalChannelName" type="text" class="input-field" readonly placeholder="Select channel..." />
+                <div class="channel-selector">
+                  <input 
+                    v-model="memberGoalChannelName" 
+                    type="text" 
+                    class="input-field" 
+                    readonly 
+                    placeholder="Select channel..." 
+                  />
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberGoalChannelId')" class="select-btn">+</button>
                 </div>
                 <small>Channel will display goal countdown or completion status</small>
               </div>
 
-              <div class="form-group">
+              <div class="setting-item">
                 <label>Target Member Goal</label>
                 <input v-model.number="memberGoalsSettings.memberGoal" type="number" min="0" class="input-field" placeholder="e.g., 500" />
                 <small>Set to 0 to disable the goal counter</small>
