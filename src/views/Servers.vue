@@ -892,9 +892,29 @@ const closeChannelModal = () => {
   selectedChannelIds.value = []
 }
 
-const openMemberSelector = () => {
+const openMemberSelector = async () => {
   memberSearchQuery.value = ''
   showMemberModal.value = true
+  
+  // Fetch guild members if not already loaded
+  if (guildMembers.value.length === 0 && selectedServer.value) {
+    try {
+      const headers = { Authorization: `Bearer ${authStore.token}` }
+      const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
+        headers
+      })
+      if (response.ok) {
+        const data = await response.json()
+        guildMembers.value = (data.members || []).map(m => ({
+          id: m.id,
+          username: m.username,
+          avatar: m.avatar
+        }))
+      }
+    } catch (error) {
+      console.error('Error fetching guild members:', error)
+    }
+  }
 }
 
 const selectMember = (member) => {
