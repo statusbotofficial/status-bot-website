@@ -2607,18 +2607,6 @@ onMounted(() => {
   width: 18px;
 }
 
-.mobile-hamburger span.open:nth-child(1) {
-  transform: rotate(45deg) translateY(8px);
-}
-
-.mobile-hamburger span.open:nth-child(2) {
-  opacity: 0;
-}
-
-.mobile-hamburger span.open:nth-child(3) {
-  transform: rotate(-45deg) translateY(-8px);
-}
-
 /* Responsive Design */
 @media (max-width: 1024px) {
   .config-main {
