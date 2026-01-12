@@ -458,6 +458,48 @@
               </div>
             </div>
           </section>
+
+          <!-- Member Goals -->
+          <section v-else-if="activeSection === 'member-goals'" class="config-section">
+            <h3>Member Goals</h3>
+            <div class="settings-form">
+              <div class="form-group">
+                <label>Enable Member Goals</label>
+                <toggle-switch v-model="memberGoalsSettings.enabled" />
+              </div>
+
+              <div class="form-group">
+                <label>Member Count Channel</label>
+                <div class="input-with-button">
+                  <input v-model="memberCountChannelName" type="text" class="input-field" readonly placeholder="Select channel..." />
+                  <button @click="openChannelSelector('memberGoalsSettings', 'memberCountChannelId')" class="select-btn">+</button>
+                </div>
+                <small>Channel name will display as: "Members: 150"</small>
+              </div>
+
+              <div class="form-group">
+                <label>Member Goal Channel</label>
+                <div class="input-with-button">
+                  <input v-model="memberGoalChannelName" type="text" class="input-field" readonly placeholder="Select channel..." />
+                  <button @click="openChannelSelector('memberGoalsSettings', 'memberGoalChannelId')" class="select-btn">+</button>
+                </div>
+                <small>Channel will display goal countdown or completion status</small>
+              </div>
+
+              <div class="form-group">
+                <label>Target Member Goal</label>
+                <input v-model.number="memberGoalsSettings.memberGoal" type="number" min="0" class="input-field" placeholder="e.g., 500" />
+                <small>Set to 0 to disable the goal counter</small>
+              </div>
+
+              <div class="button-group">
+                <button @click="saveMemberGoalsSettings" class="save-btn" :class="{ 'save-success': memberGoalsSaveSuccess }">
+                  {{ memberGoalsSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                </button>
+                <button @click="resetMemberGoalsSettings" class="reset-btn">Reset</button>
+              </div>
+            </div>
+          </section>
         </main>
       </div>
     </div>
@@ -550,6 +592,7 @@ const levelingSaveSuccess = ref(false)
 const economySaveSuccess = ref(false)
 const statusSaveSuccess = ref(false)
 const welcomeSaveSuccess = ref(false)
+const memberGoalsSaveSuccess = ref(false)
 
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 
@@ -560,6 +603,7 @@ const sections = [
   { id: 'economy', label: 'Economy', icon: '💰' },
   { id: 'status-tracking', label: 'Status Tracking', icon: '🟢' },
   { id: 'welcome', label: 'Welcome', icon: '👋' },
+  { id: 'member-goals', label: 'Member Goals', icon: '👥' },
 ]
 
 // Settings
@@ -604,6 +648,13 @@ const welcomeSettings = reactive({
   embedColor: '#5170ff',
   embedFieldName: '',
   embedFieldValue: '',
+})
+
+const memberGoalsSettings = reactive({
+  enabled: true,
+  memberCountChannelId: '',
+  memberGoalChannelId: '',
+  memberGoal: 0,
 })
 
 // Modal state
@@ -725,6 +776,18 @@ const trackedUserName = computed(() => {
   if (!statusSettings.userToTrackId) return 'None selected'
   const member = guildMembers.value.find(m => m.id === statusSettings.userToTrackId)
   return member ? member.username : statusSettings.userToTrackId
+})
+
+const memberCountChannelName = computed(() => {
+  if (!memberGoalsSettings.memberCountChannelId) return 'None selected'
+  const channel = guildChannels.value.find(c => c.id === memberGoalsSettings.memberCountChannelId)
+  return channel ? channel.name : memberGoalsSettings.memberCountChannelId
+})
+
+const memberGoalChannelName = computed(() => {
+  if (!memberGoalsSettings.memberGoalChannelId) return 'None selected'
+  const channel = guildChannels.value.find(c => c.id === memberGoalsSettings.memberGoalChannelId)
+  return channel ? channel.name : memberGoalsSettings.memberGoalChannelId
 })
 
 const allowedChannelsDisplay = computed(() => {
@@ -923,6 +986,14 @@ const loadAllSettings = async (guildId) => {
         embedColor: data.embed_color || '#5170ff',
         embedFieldName: data.embed_field_name || '',
         embedFieldValue: data.embed_field_value || ''
+      })
+      
+      // Load member goals from welcome endpoint
+      Object.assign(memberGoalsSettings, {
+        enabled: data.enabled === true,
+        memberCountChannelId: data.member_count_channel_id || '',
+        memberGoalChannelId: data.member_goal_channel_id || '',
+        memberGoal: data.member_goal || 0
       })
     }
   } catch (error) {
@@ -1251,6 +1322,46 @@ const resetWelcomeSettings = () => {
     embedColor: '#5170ff',
     embedFieldName: '',
     embedFieldValue: '',
+  })
+}
+
+const saveMemberGoalsSettings = async () => {
+  if (!selectedServer.value) return
+  try {
+    const payload = {
+      enabled: memberGoalsSettings.enabled,
+      member_count_channel_id: memberGoalsSettings.memberCountChannelId,
+      member_goal_channel_id: memberGoalsSettings.memberGoalChannelId,
+      member_goal: memberGoalsSettings.memberGoal
+    }
+    console.log('Saving member goals settings with payload:', payload)
+    const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/member-goals`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify(payload)
+    })
+    if (response.ok) {
+      const data = await response.json()
+      console.log('Member goals settings saved successfully:', data)
+      memberGoalsSaveSuccess.value = true
+      setTimeout(() => {
+        memberGoalsSaveSuccess.value = false
+      }, 2000)
+    }
+  } catch (error) {
+    console.error('Error saving member goals settings:', error)
+  }
+}
+
+const resetMemberGoalsSettings = () => {
+  Object.assign(memberGoalsSettings, {
+    enabled: true,
+    memberCountChannelId: '',
+    memberGoalChannelId: '',
+    memberGoal: 0,
   })
 }
 
