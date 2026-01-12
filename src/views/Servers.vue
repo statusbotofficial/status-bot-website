@@ -2608,7 +2608,7 @@ onMounted(() => {
 }
 
 .mobile-hamburger span.open:nth-child(1) {
-  transform: rotate(45deg) translateY(11px);
+  transform: rotate(45deg) translateY(8px);
 }
 
 .mobile-hamburger span.open:nth-child(2) {
@@ -2616,7 +2616,7 @@ onMounted(() => {
 }
 
 .mobile-hamburger span.open:nth-child(3) {
-  transform: rotate(-45deg) translateY(-11px);
+  transform: rotate(-45deg) translateY(-8px);
 }
 
 /* Responsive Design */
