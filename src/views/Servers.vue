@@ -562,6 +562,7 @@ const statusSettings = reactive({
   automatic: true,
   useEmbed: false,
   offlineMessage: 'User is currently offline',
+  messageId: null
 })
 
 const welcomeSettings = reactive({
@@ -861,7 +862,8 @@ const loadAllSettings = async (guildId) => {
         trackingChannel: data.channel_id || '',
         delay: data.delay_seconds || 0,
         useEmbed: data.use_embed || false,
-        offlineMessage: data.offline_message || 'User is offline'
+        offlineMessage: data.offline_message || 'User is offline',
+        messageId: data.message_id || null
       })
     }
     
@@ -1014,38 +1016,32 @@ const postStatusMessage = async () => {
     console.warn('Missing required fields for posting status message')
     return
   }
+  
+  // Only post a new message if one doesn't already exist
+  if (statusSettings.messageId) {
+    console.log('Message already exists, skipping new post')
+    return
+  }
+  
   try {
-    // Check if a message already exists for this user
-    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
-      headers: { Authorization: `Bearer status-bot-stats-secret-key` }
+    const payload = {
+      user_id: statusSettings.userToTrackId,
+      channel_id: statusSettings.trackingChannel,
+      offline_message: statusSettings.offlineMessage,
+      use_embed: statusSettings.useEmbed
+    }
+    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer status-bot-stats-secret-key'
+      },
+      body: JSON.stringify(payload)
     })
-    
-    const existingSettings = response.ok ? await response.json() : null
-    const userConfig = existingSettings ? existingSettings[statusSettings.userToTrackId] : null
-    
-    // Only post a new message if one doesn't exist
-    if (!userConfig || !userConfig.message_id) {
-      const payload = {
-        user_id: statusSettings.userToTrackId,
-        channel_id: statusSettings.trackingChannel,
-        offline_message: statusSettings.offlineMessage,
-        use_embed: statusSettings.useEmbed
-      }
-      const postResponse = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer status-bot-stats-secret-key'
-        },
-        body: JSON.stringify(payload)
-      })
-      if (!postResponse.ok) {
-        console.error('Failed to post status message:', postResponse.status, postResponse.statusText)
-      } else {
-        console.log('Status message posted successfully')
-      }
+    if (!response.ok) {
+      console.error('Failed to post status message:', response.status, response.statusText)
     } else {
-      console.log('Message already exists, bot will update it on next status change')
+      console.log('Status message posted successfully')
     }
   } catch (error) {
     console.error('Error posting status message:', error)
@@ -1153,11 +1149,13 @@ const resetStatusSettings = () => {
   Object.assign(statusSettings, {
     enabled: true,
     userToTrack: '',
+    userToTrackId: '',
     trackingChannel: '',
     delay: 60,
     automatic: true,
     useEmbed: false,
     offlineMessage: 'User is currently offline',
+    messageId: null
   })
 }
 
