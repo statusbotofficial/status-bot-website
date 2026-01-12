@@ -176,8 +176,8 @@
                 <label>Level up channel</label>
                 <div class="channel-selector">
                   <input
-                    v-model="levelingSettings.levelUpChannel"
                     type="text"
+                    :value="levelingChannelName"
                     placeholder="None selected"
                     disabled
                     class="input-field"
@@ -204,8 +204,8 @@
                 <label>Allowed XP channels</label>
                 <div class="channel-selector">
                   <input
-                    v-model="levelingSettings.allowedChannels"
                     type="text"
+                    :value="allowedChannelsDisplay"
                     placeholder="All channels"
                     disabled
                     class="input-field"
@@ -680,6 +680,29 @@ const trackingChannelName = computed(() => {
   return channel ? channel.name : statusSettings.trackingChannel
 })
 
+const levelingChannelName = computed(() => {
+  if (!levelingSettings.levelUpChannel) return 'None selected'
+  const channel = guildChannels.value.find(c => c.id === levelingSettings.levelUpChannel)
+  return channel ? channel.name : levelingSettings.levelUpChannel
+})
+
+const allowedChannelsDisplay = computed(() => {
+  if (!levelingSettings.allowedChannels || levelingSettings.allowedChannels.length === 0) {
+    return 'None selected'
+  }
+  const channelIds = typeof levelingSettings.allowedChannels === 'string' 
+    ? levelingSettings.allowedChannels.split(', ') 
+    : levelingSettings.allowedChannels
+  
+  return channelIds
+    .map(id => {
+      const channel = guildChannels.value.find(c => c.id === id)
+      return channel ? channel.name : id
+    })
+    .filter(Boolean)
+    .join(', ')
+})
+
 // Methods
 const loadServers = async () => {
   if (!authStore.user || !authStore.token) return
@@ -992,24 +1015,37 @@ const postStatusMessage = async () => {
     return
   }
   try {
-    const payload = {
-      user_id: statusSettings.userToTrackId,
-      channel_id: statusSettings.trackingChannel,
-      offline_message: statusSettings.offlineMessage,
-      use_embed: statusSettings.useEmbed
-    }
-    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer status-bot-stats-secret-key'
-      },
-      body: JSON.stringify(payload)
+    // Check if a message already exists for this user
+    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
+      headers: { Authorization: `Bearer status-bot-stats-secret-key` }
     })
-    if (!response.ok) {
-      console.error('Failed to post status message:', response.status, response.statusText)
+    
+    const existingSettings = response.ok ? await response.json() : null
+    const userConfig = existingSettings ? existingSettings[statusSettings.userToTrackId] : null
+    
+    // Only post a new message if one doesn't exist
+    if (!userConfig || !userConfig.message_id) {
+      const payload = {
+        user_id: statusSettings.userToTrackId,
+        channel_id: statusSettings.trackingChannel,
+        offline_message: statusSettings.offlineMessage,
+        use_embed: statusSettings.useEmbed
+      }
+      const postResponse = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer status-bot-stats-secret-key'
+        },
+        body: JSON.stringify(payload)
+      })
+      if (!postResponse.ok) {
+        console.error('Failed to post status message:', postResponse.status, postResponse.statusText)
+      } else {
+        console.log('Status message posted successfully')
+      }
     } else {
-      console.log('Status message posted successfully')
+      console.log('Message already exists, bot will update it on next status change')
     }
   } catch (error) {
     console.error('Error posting status message:', error)
