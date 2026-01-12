@@ -70,6 +70,22 @@
             </button>
           </div>
 
+          <h2 style="margin-top: 20px;">Who to send notification to</h2>
+          <div class="input-group">
+            <label>User ID</label>
+            <input 
+              v-model="notificationUserId" 
+              type="text" 
+              placeholder="e.g. 1362553254117904496"
+              class="dev-input"
+            >
+          </div>
+          <div class="checkbox-group">
+            <input v-model="sendNotificationToAll" type="checkbox" id="notifToAll">
+            <label for="notifToAll">Send to all users</label>
+          </div>
+
+          <h2 style="margin-top: 20px;">Notification details</h2>
           <div class="input-group">
             <label>Title</label>
             <input 
@@ -87,11 +103,6 @@
               placeholder="Send as a custom message..."
               class="dev-input dev-textarea"
             ></textarea>
-          </div>
-
-          <div class="checkbox-group">
-            <input v-model="sendNotificationToAll" type="checkbox" id="notifToAll">
-            <label for="notifToAll">Send to all users</label>
           </div>
 
           <button @click="sendNotification" :disabled="sendingNotification" class="dev-btn notify-btn">
@@ -145,6 +156,7 @@ const sendTrialToAll = ref(false)
 const sendingTrial = ref(false)
 
 // Notification state
+const notificationUserId = ref('')
 const selectedNotificationType = ref('Update')
 const notificationTitle = ref('')
 const notificationMessage = ref('')
@@ -223,9 +235,15 @@ const sendTrial = async () => {
 const sendNotification = async () => {
   const title = notificationTitle.value.trim()
   const message = notificationMessage.value.trim()
+  const userId = notificationUserId.value.trim()
 
   if (!title || !message) {
     alert('Please fill in both title and message')
+    return
+  }
+
+  if (!sendNotificationToAll.value && !userId) {
+    alert('Please enter a User ID or check "Send to all users"')
     return
   }
 
@@ -242,7 +260,7 @@ const sendNotification = async () => {
         title,
         message,
         type: selectedNotificationType.value,
-        targetUsers: sendNotificationToAll.value ? [] : [],
+        targetUsers: sendNotificationToAll.value ? [] : [userId],
         sendToAll: sendNotificationToAll.value
       })
     })
@@ -250,6 +268,7 @@ const sendNotification = async () => {
     const data = await response.json()
     if (response.ok) {
       alert('✓ Notification sent successfully')
+      notificationUserId.value = ''
       notificationTitle.value = ''
       notificationMessage.value = ''
       sendNotificationToAll.value = false
