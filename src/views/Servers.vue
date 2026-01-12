@@ -1054,12 +1054,12 @@ const saveStatusSettings = async () => {
     const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 60
     const payload = {
       enabled: statusSettings.enabled,
-      user_id: statusSettings.userToTrackId,
-      channel_id: statusSettings.trackingChannel,
-      delay_seconds: delayValue,
+      userToTrack: statusSettings.userToTrackId,
+      trackingChannel: statusSettings.trackingChannel,
+      delay: delayValue,
       automatic: statusSettings.automatic,
-      use_embed: statusSettings.useEmbed,
-      offline_message: statusSettings.offlineMessage
+      useEmbed: statusSettings.useEmbed,
+      offlineMessage: statusSettings.offlineMessage
     }
     console.log('Saving status settings with payload:', payload)
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
