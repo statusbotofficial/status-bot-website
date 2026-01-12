@@ -223,7 +223,7 @@
               </div>
 
               <!-- Right Sidebar: Info Box + Rank Card -->
-              <div style="display: flex; flex-direction: column; gap: 40px;">
+              <div style="display: flex; flex-direction: column; gap: 40px; margin-top: 32px;">
                 <!-- How XP Works Info Box -->
                 <div class="info-box">
                   <h3>How XP works</h3>
@@ -2051,7 +2051,7 @@ onMounted(() => {
 .info-box {
   background: rgba(81, 112, 255, 0.15);
   border: 2px solid rgba(81, 112, 255, 0.4);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 24px;
   position: sticky;
   top: 30px;
