@@ -91,19 +91,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="section-panel">
-              <div class="panel-header">Active Sessions</div>
-              <div class="session-info">
-                <div class="session-item">
-                  <div class="session-details">
-                    <div class="session-name">Current Session</div>
-                    <div class="session-time">{{ currentSessionTime }}</div>
-                  </div>
-                  <div class="session-badge">Active</div>
-                </div>
-              </div>
-            </div>
           </section>
 
           <!-- Premium Section -->
