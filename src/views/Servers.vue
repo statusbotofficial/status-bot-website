@@ -2051,7 +2051,7 @@ onMounted(() => {
 .info-box {
   background: rgba(81, 112, 255, 0.15);
   border: 2px solid rgba(81, 112, 255, 0.4);
-  border-radius: 18px;
+  border-radius: 16px;
   padding: 24px;
   position: sticky;
   top: 30px;
