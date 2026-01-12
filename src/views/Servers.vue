@@ -2608,7 +2608,8 @@ onMounted(() => {
 }
 
 .mobile-hamburger span.open:nth-child(1) {
-  transform: rotate(45deg) translate(8px, 8px);
+  transform: rotate(45deg) translate(5px, 10px);
+  width: 24px;
 }
 
 .mobile-hamburger span.open:nth-child(2) {
@@ -2617,7 +2618,8 @@ onMounted(() => {
 }
 
 .mobile-hamburger span.open:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -7px);
+  transform: rotate(-45deg) translate(6px, -10px);
+  width: 24px;
 }
 
 /* Responsive Design */
@@ -2678,8 +2680,9 @@ onMounted(() => {
   }
 
   .config-sidebar.mobile-open {
-    max-height: 500px;
+    max-height: 70vh;
     padding: 16px 0;
+    overflow-y: auto;
   }
 
   .config-nav {
