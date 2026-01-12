@@ -27,14 +27,27 @@
 
           <h2 style="margin-top: 30px;">How long should it last</h2>
           <div class="input-group">
-            <label>Duration (days)</label>
+            <label>Dashboard Duration (days)</label>
             <input 
-              v-model.number="trialDuration" 
+              v-model.number="dashboardDuration" 
               type="number" 
-              placeholder="e.g. 7 days"
+              placeholder="e.g. 7 days - how long the gift appears on dashboard"
               min="1"
               class="dev-input"
             >
+            <small style="color: #999; margin-top: 4px;">How long the gift will be visible on the dashboard</small>
+          </div>
+
+          <div class="input-group">
+            <label>Premium Trial Duration (days)</label>
+            <input 
+              v-model.number="premiumTrialDuration" 
+              type="number" 
+              placeholder="e.g. 7 days - how long the premium access lasts"
+              min="1"
+              class="dev-input"
+            >
+            <small style="color: #999; margin-top: 4px;">How long the user will have premium access</small>
           </div>
 
           <button @click="sendTrial" :disabled="sendingTrial" class="dev-btn trial-btn">
@@ -126,7 +139,8 @@ const SECRET_KEY = 'status-bot-stats-secret-key'
 
 // Trial state
 const trialUserId = ref('')
-const trialDuration = ref(7)
+const dashboardDuration = ref(7)
+const premiumTrialDuration = ref(7)
 const sendTrialToAll = ref(false)
 const sendingTrial = ref(false)
 
@@ -161,8 +175,13 @@ const sendTrial = async () => {
     return
   }
 
-  if (trialDuration.value < 1) {
-    alert('Duration must be at least 1 day')
+  if (dashboardDuration.value < 1) {
+    alert('Dashboard duration must be at least 1 day')
+    return
+  }
+
+  if (premiumTrialDuration.value < 1) {
+    alert('Premium trial duration must be at least 1 day')
     return
   }
 
@@ -177,7 +196,8 @@ const sendTrial = async () => {
       },
       body: JSON.stringify({
         userId: authStore.user.id,
-        durationDays: trialDuration.value,
+        dashboardDurationDays: dashboardDuration.value,
+        premiumTrialDurationDays: premiumTrialDuration.value,
         targetUsers: sendTrialToAll.value ? [] : [userId],
         sendToAll: sendTrialToAll.value
       })
@@ -187,7 +207,8 @@ const sendTrial = async () => {
     if (response.ok) {
       alert('✓ Trial sent successfully')
       trialUserId.value = ''
-      trialDuration.value = 7
+      dashboardDuration.value = 7
+      premiumTrialDuration.value = 7
       sendTrialToAll.value = false
     } else {
       alert(`❌ Error: ${data.message || 'Failed to send trial'}`)
