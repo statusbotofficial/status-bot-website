@@ -1074,8 +1074,8 @@ const saveStatusSettings = async () => {
       console.log('Settings saved, posting message...')
       await postStatusMessage()
       
-      // Wait a moment for the bot to process and store the message_id, then reload settings
-      await new Promise(resolve => setTimeout(resolve, 500))
+      // Wait for the bot to process the pending post and store the message_id (bot checks every 2 seconds)
+      await new Promise(resolve => setTimeout(resolve, 2500))
       
       // Reload settings from backend to get the message_id
       const reloadRes = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
