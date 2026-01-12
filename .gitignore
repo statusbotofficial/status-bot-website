@@ -12,3 +12,7 @@ requirements.txt
 discloud.config
 # Backend files (deployed to Render separately)
 backend.js
+
+# Old reference files
+old-backend-file.js
+servers.html
