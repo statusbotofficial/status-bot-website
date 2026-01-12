@@ -10,3 +10,5 @@ dist/
 *.py
 requirements.txt
 discloud.config
+# Backend files (deployed to Render separately)
+backend.js
