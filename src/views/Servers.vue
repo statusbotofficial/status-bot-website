@@ -283,8 +283,8 @@
                 <label>Channel to post in</label>
                 <div class="channel-selector">
                   <input
-                    v-model="statusSettings.trackingChannel"
                     type="text"
+                    :value="trackingChannelName"
                     placeholder="None selected"
                     disabled
                     class="input-field"
@@ -674,6 +674,12 @@ const filteredMembers = computed(() => {
   )
 })
 
+const trackingChannelName = computed(() => {
+  if (!statusSettings.trackingChannel) return 'None selected'
+  const channel = guildChannels.value.find(c => c.id === statusSettings.trackingChannel)
+  return channel ? channel.name : statusSettings.trackingChannel
+})
+
 // Methods
 const loadServers = async () => {
   if (!authStore.user || !authStore.token) return
@@ -884,10 +890,14 @@ const openChannelSelector = (settingsObject, fieldName) => {
 const confirmChannelSelection = () => {
   if (currentSettingsObject.value && currentChannelField.value) {
     const settings = eval(currentSettingsObject.value)
-    settings[currentChannelField.value] = selectedChannelIds.value
-      .map(id => guildChannels.value.find(c => c.id === id)?.name)
-      .filter(Boolean)
-      .join(', ')
+    
+    // For status tracking (single channel), store ID directly
+    if (currentSettingsObject.value === 'statusSettings' || currentSettingsObject.value === 'welcomeSettings') {
+      settings[currentChannelField.value] = selectedChannelIds.value[0] || ''
+    } else {
+      // For multi-channel settings (leveling), store IDs as comma-separated
+      settings[currentChannelField.value] = selectedChannelIds.value.join(', ')
+    }
   }
   closeChannelModal()
 }
