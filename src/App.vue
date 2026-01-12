@@ -145,7 +145,7 @@ const toggleNotifications = () => {
       } catch (err) {
         console.error('Error syncing read status:', err)
       }
-    }, 50)
+    }, 100)
   }
 }
 
@@ -258,6 +258,7 @@ const loadNotifications = async () => {
               ...backendNotifs,
               ...parsed.filter(stored => !backendNotifs.find(backend => backend.id === stored.id)).map(n => ({
                 ...n,
+                read: n.read !== undefined ? n.read : false,
                 timestamp: n.timestamp instanceof Date ? n.timestamp : new Date(n.timestamp || Date.now())
               }))
             ]
@@ -283,6 +284,7 @@ const loadNotifications = async () => {
       const notifs = JSON.parse(storedNotifs)
       notifications.value = notifs.map(n => ({
         ...n,
+        read: n.read !== undefined ? n.read : false,
         timestamp: n.timestamp instanceof Date ? n.timestamp : new Date(n.timestamp || Date.now())
       }))
     }
