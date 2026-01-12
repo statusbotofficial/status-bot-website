@@ -62,18 +62,24 @@
           <div v-else class="server-icon-header-placeholder">{{ selectedServer.name.charAt(0).toUpperCase() }}</div>
           <h2>{{ selectedServer.name }}</h2>
         </div>
+        <!-- Hamburger Menu for Mobile -->
+        <button class="mobile-hamburger" @click="isMobileNavOpen = !isMobileNavOpen">
+          <span :class="{ open: isMobileNavOpen }"></span>
+          <span :class="{ open: isMobileNavOpen }"></span>
+          <span :class="{ open: isMobileNavOpen }"></span>
+        </button>
       </div>
 
       <div class="config-container">
-        <!-- Sidebar -->
-        <aside class="config-sidebar">
+        <!-- Sidebar (Hidden on Mobile unless menu is open) -->
+        <aside class="config-sidebar" :class="{ 'mobile-open': isMobileNavOpen }">
           <nav class="config-nav">
             <button
               v-for="section in filteredSections"
               :key="section.id"
               class="nav-btn"
               :class="{ active: activeSection === section.id }"
-              @click="activeSection = section.id"
+              @click="activeSection = section.id; isMobileNavOpen = false"
             >
               <span class="nav-icon">{{ section.icon }}</span>
               <span>{{ section.label }}</span>
@@ -158,7 +164,7 @@
                   <!-- How XP Works Info Box -->
                   <div class="info-box">
                     <h3>How XP works</h3>
-                    <p>First to enable the XP system go to the <strong>Leveling</strong> section, use the toggle button, or use <strong>/xp toggle</strong> in discord. Then set up your preferences for the XP rewards. Then, when a user sends a message, or spends time in a voice chat, they earn XP.</p>
+                    <p>First to enable the XP system go to the <strong>Leveling</strong> section, toggle in on. Then set up your preferences for the XP rewards. Then, when a user sends a message, or spends time in a voice chat, they earn XP.</p>
                   </div>
 
                   <!-- Your Rank Card -->
@@ -708,6 +714,9 @@ const economySaveSuccess = ref(false)
 const statusSaveSuccess = ref(false)
 const welcomeSaveSuccess = ref(false)
 const memberGoalsSaveSuccess = ref(false)
+
+// Mobile navigation state
+const isMobileNavOpen = ref(false)
 
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 
@@ -2562,5 +2571,296 @@ onMounted(() => {
 
 .cancel-btn:hover {
   background: rgba(128, 128, 128, 0.35);
+}
+
+/* Mobile Hamburger Menu */
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  background: rgba(81, 112, 255, 0.2);
+  border: 2px solid #5170ff;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: absolute;
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  gap: 4px;
+}
+
+.mobile-hamburger:hover {
+  background: rgba(81, 112, 255, 0.35);
+}
+
+.mobile-hamburger span {
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+.mobile-hamburger span:nth-child(2) {
+  width: 18px;
+}
+
+.mobile-hamburger span.open:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.mobile-hamburger span.open:nth-child(2) {
+  opacity: 0;
+  width: 24px;
+}
+
+.mobile-hamburger span.open:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .config-main {
+    padding: 30px 35px;
+  }
+
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .overview-grid > div:nth-child(2) {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .config-header {
+    padding: 20px 16px;
+    gap: 12px;
+  }
+
+  .back-btn {
+    left: 16px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .mobile-hamburger {
+    display: flex;
+    right: 16px;
+  }
+
+  .config-header h2 {
+    font-size: 18px;
+  }
+
+  .server-icon-header,
+  .server-icon-header-placeholder {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .config-container {
+    flex-direction: column;
+  }
+
+  .config-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #333;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .config-sidebar.mobile-open {
+    max-height: 500px;
+    padding: 16px 0;
+  }
+
+  .config-nav {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    gap: 0;
+  }
+
+  .nav-btn {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(81, 112, 255, 0.1);
+    border-right: 1px solid rgba(81, 112, 255, 0.1);
+    text-align: center;
+    font-size: 13px;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .nav-btn:nth-child(odd) {
+    border-right: 1px solid rgba(81, 112, 255, 0.1);
+  }
+
+  .nav-btn:nth-child(even) {
+    border-right: none;
+  }
+
+  .nav-btn:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+
+  .nav-btn.active {
+    background: rgba(81, 112, 255, 0.15);
+    border-left: none;
+    padding-left: 16px;
+  }
+
+  .nav-icon {
+    font-size: 20px;
+    min-width: auto;
+  }
+
+  .config-main {
+    flex: 1;
+    padding: 20px 16px;
+    overflow-y: auto;
+  }
+
+  .config-section h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .overview-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .stat-box {
+    padding: 16px;
+  }
+
+  .stats-grid {
+    gap: 12px;
+  }
+
+  /* Leaderboard responsive layout */
+  .leaderboard-full {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns: 1fr 1.2fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns: 1fr 500px"] {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .leaderboard-item {
+    padding: 12px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .leaderboard-item .stats {
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .leaderboard-item .stat-item {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .info-box,
+  .rank-card {
+    max-width: 100%;
+  }
+
+  .overview-panel {
+    padding: 16px;
+  }
+
+  .settings-box {
+    padding: 16px;
+  }
+
+  .setting-item {
+    gap: 12px;
+  }
+
+  .setting-item input,
+  .setting-item select,
+  .setting-item textarea {
+    font-size: 16px;
+  }
+
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .settings-form {
+    gap: 16px;
+  }
+
+  .form-group {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .config-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-btn {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(81, 112, 255, 0.1);
+    padding: 14px 12px;
+  }
+
+  .nav-btn:nth-last-child(1) {
+    border-bottom: none;
+  }
+
+  .config-header h2 {
+    font-size: 14px;
+  }
+
+  .leaderboard-item {
+    flex-wrap: wrap;
+  }
+
+  .leaderboard-item .user-info {
+    width: 100%;
+  }
+
+  .leaderboard-item .stats {
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .save-btn,
+  .reset-btn,
+  .confirm-btn,
+  .cancel-btn {
+    width: 100%;
+  }
 }
 </style>
