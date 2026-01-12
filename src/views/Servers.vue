@@ -223,7 +223,7 @@
               </div>
 
               <!-- Right Sidebar: Info Box + Rank Card -->
-              <div style="display: flex; flex-direction: column; gap: 40px; margin-top: 70px;">
+              <div style="display: flex; flex-direction: column; gap: 40px; margin-top: 60px;">
                 <!-- How XP Works Info Box -->
                 <div class="info-box">
                   <h3>How XP works</h3>
