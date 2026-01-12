@@ -1083,13 +1083,15 @@ const saveStatusSettings = async () => {
       })
       if (reloadRes.ok) {
         const data = await reloadRes.json()
+        console.log('Reloaded settings from backend:', data)
         Object.assign(statusSettings, {
-          enabled: data.enabled || false,
-          userToTrack: data.user_id ? `User ${data.user_id}` : '',
+          enabled: data.enabled === true,
+          userToTrack: data.user_id || '',
           userToTrackId: data.user_id || '',
           trackingChannel: data.channel_id || '',
           delay: data.delay_seconds || 0,
-          useEmbed: data.use_embed || false,
+          useEmbed: data.use_embed === true,
+          automatic: data.automatic === true,
           offlineMessage: data.offline_message || 'User is offline',
           messageId: data.message_id || null
         })
