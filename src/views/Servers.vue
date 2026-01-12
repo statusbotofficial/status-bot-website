@@ -476,7 +476,7 @@
               class="member-radio"
             />
             <img v-if="member.avatar" :src="member.avatar" :alt="member.username" class="avatar-small" />
-            <div class="member-info" style="margin-top: 6px;">
+            <div class="member-info">
               <div class="member-username">@{{ member.username }}</div>
               <div class="member-id">ID: {{ member.id }}</div>
             </div>
@@ -1928,7 +1928,8 @@ onMounted(() => {
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+  padding: 12px 0;
 }
 
 .channel-option,
@@ -1958,6 +1959,10 @@ onMounted(() => {
 .member-option-label {
   display: flex;
   align-items: center;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  cursor: pointer;
   gap: 12px;
   padding: 12px;
   background: rgba(81, 112, 255, 0.1);
@@ -1984,6 +1989,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin-left: 8px;
 }
 
 .member-username {
@@ -2000,7 +2006,11 @@ onMounted(() => {
 .member-option {
   border: none;
   background: transparent;
-  padding: 8px 0;
+  padding: 0;
+}
+
+.member-option-label:hover {
+  background: rgba(81, 112, 255, 0.1);
 }
 
 .modal-buttons {
