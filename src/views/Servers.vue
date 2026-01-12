@@ -467,15 +467,20 @@
           class="input-field"
         />
         <div class="member-list">
-          <button
-            v-for="member in filteredMembers"
-            :key="member.id"
-            @click="selectMember(member)"
-            class="member-option"
-          >
+          <label v-for="member in filteredMembers" :key="member.id" class="member-option-label">
+            <input
+              type="radio"
+              name="selectedMember"
+              :value="member.id"
+              @change="selectMember(member)"
+              class="member-radio"
+            />
             <img v-if="member.avatar" :src="member.avatar" :alt="member.username" class="avatar-small" />
-            <span>{{ member.username }}</span>
-          </button>
+            <div class="member-info">
+              <div class="member-username">@{{ member.username }}</div>
+              <div class="member-id">ID: {{ member.id }}</div>
+            </div>
+          </label>
         </div>
         <div class="modal-buttons">
           <button @click="closeMemberModal" class="cancel-btn">Cancel</button>
@@ -971,6 +976,30 @@ const saveEconomySettings = async () => {
   }
 }
 
+const postStatusMessage = async () => {
+  if (!selectedServer.value || !statusSettings.userToTrackId || !statusSettings.trackingChannel) {
+    return
+  }
+  try {
+    const payload = {
+      user_id: statusSettings.userToTrackId,
+      channel_id: statusSettings.trackingChannel,
+      offline_message: statusSettings.offlineMessage,
+      use_embed: statusSettings.useEmbed
+    }
+    await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer status-bot-stats-secret-key'
+      },
+      body: JSON.stringify(payload)
+    })
+  } catch (error) {
+    console.error('Error posting status message:', error)
+  }
+}
+
 const saveStatusSettings = async () => {
   if (!selectedServer.value) return
   try {
@@ -978,7 +1007,7 @@ const saveStatusSettings = async () => {
       enabled: statusSettings.enabled,
       user_id: statusSettings.userToTrackId,
       channel_id: statusSettings.trackingChannel,
-      delay_seconds: statusSettings.delay,
+      delay_seconds: parseInt(statusSettings.delay) || 60,
       automatic: statusSettings.automatic,
       use_embed: statusSettings.useEmbed,
       offline_message: statusSettings.offlineMessage
@@ -992,6 +1021,7 @@ const saveStatusSettings = async () => {
       body: JSON.stringify(payload)
     })
     if (response.ok) {
+      await postStatusMessage()
       statusSaveSuccess.value = true
       setTimeout(() => {
         statusSaveSuccess.value = false
@@ -1912,6 +1942,48 @@ onMounted(() => {
 
 .channel-option input {
   cursor: pointer;
+}
+
+.member-option-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(81, 112, 255, 0.1);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.member-option-label:hover {
+  background: rgba(81, 112, 255, 0.2);
+}
+
+.member-radio {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.member-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.member-username {
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+}
+
+.member-id {
+  font-size: 12px;
+  color: #999;
 }
 
 .member-option {
