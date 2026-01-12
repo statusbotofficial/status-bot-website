@@ -476,7 +476,7 @@
               class="member-radio"
             />
             <img v-if="member.avatar" :src="member.avatar" :alt="member.username" class="avatar-small" />
-            <div class="member-info">
+            <div class="member-info" style="margin-top: 6px;">
               <div class="member-username">@{{ member.username }}</div>
               <div class="member-id">ID: {{ member.id }}</div>
             </div>
@@ -978,6 +978,7 @@ const saveEconomySettings = async () => {
 
 const postStatusMessage = async () => {
   if (!selectedServer.value || !statusSettings.userToTrackId || !statusSettings.trackingChannel) {
+    console.warn('Missing required fields for posting status message')
     return
   }
   try {
@@ -987,7 +988,7 @@ const postStatusMessage = async () => {
       offline_message: statusSettings.offlineMessage,
       use_embed: statusSettings.useEmbed
     }
-    await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
+    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -995,6 +996,11 @@ const postStatusMessage = async () => {
       },
       body: JSON.stringify(payload)
     })
+    if (!response.ok) {
+      console.error('Failed to post status message:', response.status, response.statusText)
+    } else {
+      console.log('Status message posted successfully')
+    }
   } catch (error) {
     console.error('Error posting status message:', error)
   }
@@ -1003,15 +1009,17 @@ const postStatusMessage = async () => {
 const saveStatusSettings = async () => {
   if (!selectedServer.value) return
   try {
+    const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 60
     const payload = {
       enabled: statusSettings.enabled,
       user_id: statusSettings.userToTrackId,
       channel_id: statusSettings.trackingChannel,
-      delay_seconds: parseInt(statusSettings.delay) || 60,
+      delay_seconds: delayValue,
       automatic: statusSettings.automatic,
       use_embed: statusSettings.useEmbed,
       offline_message: statusSettings.offlineMessage
     }
+    console.log('Saving status settings with payload:', payload)
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
@@ -1021,11 +1029,14 @@ const saveStatusSettings = async () => {
       body: JSON.stringify(payload)
     })
     if (response.ok) {
+      console.log('Settings saved, posting message...')
       await postStatusMessage()
       statusSaveSuccess.value = true
       setTimeout(() => {
         statusSaveSuccess.value = false
       }, 2000)
+    } else {
+      console.error('Failed to save settings:', response.status)
     }
   } catch (error) {
     console.error('Error saving settings:', error)
