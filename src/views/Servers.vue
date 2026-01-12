@@ -391,7 +391,17 @@
               </div>
 
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
-                <label>Image URL</label>
+                <label>Thumbnail URL (small image, right side)</label>
+                <input
+                  v-model="welcomeSettings.embedThumbnail"
+                  type="text"
+                  class="input-field"
+                  placeholder="https://example.com/thumbnail.png"
+                />
+              </div>
+
+              <div v-if="welcomeSettings.useEmbed" class="setting-item">
+                <label>Image URL (large image, bottom)</label>
                 <input
                   v-model="welcomeSettings.embedImage"
                   type="text"
@@ -589,6 +599,7 @@ const welcomeSettings = reactive({
   embedTitle: 'Welcome!',
   embedDescription: 'Welcome to {servername}! We\'re glad to have you here.',
   embedFooter: 'Thanks for joining!',
+  embedThumbnail: '',
   embedImage: '',
   embedColor: '#5170ff',
   embedFieldName: '',
@@ -907,6 +918,7 @@ const loadAllSettings = async (guildId) => {
         embedTitle: data.embed_title || 'Welcome!',
         embedDescription: data.embed_description || 'Welcome to {servername}! We\'re glad to have you here.',
         embedFooter: data.embed_footer || 'Thanks for joining!',
+        embedThumbnail: data.embed_thumbnail || '',
         embedImage: data.embed_image || '',
         embedColor: data.embed_color || '#5170ff',
         embedFieldName: data.embed_field_name || '',
@@ -1145,6 +1157,7 @@ const saveWelcomeSettings = async () => {
       embed_title: welcomeSettings.embedTitle,
       embed_description: welcomeSettings.embedDescription,
       embed_footer: welcomeSettings.embedFooter,
+      embed_thumbnail: welcomeSettings.embedThumbnail,
       embed_image: welcomeSettings.embedImage,
       embed_color: welcomeSettings.embedColor,
       embed_field_name: welcomeSettings.embedFieldName,
@@ -1230,6 +1243,7 @@ const resetWelcomeSettings = () => {
     embedTitle: 'Welcome!',
     embedDescription: 'Welcome to {servername}! We\'re glad to have you here.',
     embedFooter: 'Thanks for joining!',
+    embedThumbnail: '',
     embedImage: '',
     embedColor: '#5170ff',
     embedFieldName: '',
