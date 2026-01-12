@@ -32,10 +32,15 @@
           <div v-if="showNotifications" class="notifications-panel">
             <div class="notifications-header">
               <h3>Notifications</h3>
-              <button @click="toggleNotifications" class="close-btn">✕</button>
+              <div class="notifications-header-buttons">
+                <button v-if="notificationCount > 0" @click="markAllAsRead" class="mark-read-btn" title="Mark all as read">
+                  Mark as Read
+                </button>
+                <button @click="toggleNotifications" class="close-btn">✕</button>
+              </div>
             </div>
             <div v-if="notifications.length > 0" class="notifications-list">
-              <div v-for="(notif, index) in notifications" :key="index" class="notification-item">
+              <div v-for="(notif, index) in notifications" :key="index" class="notification-item" :class="{ 'is-read': notif.read }">
                 <div class="notif-title">{{ notif.title }}</div>
                 <div class="notif-message">{{ notif.message }}</div>
                 <div class="notif-time">{{ formatTime(notif.timestamp) }}</div>
@@ -127,25 +132,6 @@ const toggleNotifications = () => {
   if (showNotifications.value) {
     // Refresh notifications when panel opens
     loadNotifications()
-    // Mark all notifications as read when opening the panel
-    setTimeout(() => {
-      notifications.value = notifications.value.map(n => ({ ...n, read: true }))
-      saveNotifications()
-      
-      // Sync with backend
-      try {
-        const authStore = useAuthStore()
-        if (authStore.user?.id) {
-          const SECRET_KEY = 'status-bot-stats-secret-key'
-          fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
-          }).catch(err => console.error('Error marking as read:', err))
-        }
-      } catch (err) {
-        console.error('Error syncing read status:', err)
-      }
-    }, 100)
   }
 }
 
@@ -170,6 +156,10 @@ const markNotificationsAsRead = async () => {
   } catch (err) {
     console.error('Error marking notifications as read:', err)
   }
+}
+
+const markAllAsRead = async () => {
+  await markNotificationsAsRead()
 }
 
 const handleLogin = () => {
@@ -533,6 +523,29 @@ onMounted(() => {
   color: var(--text-primary);
 }
 
+.notifications-header-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.mark-read-btn {
+  background: rgba(81, 112, 255, 0.2);
+  border: 1px solid #5170ff;
+  color: #5170ff;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.mark-read-btn:hover {
+  background: rgba(81, 112, 255, 0.35);
+  color: #fff;
+}
+
 .close-btn {
   background: none;
   border: none;
@@ -555,11 +568,15 @@ onMounted(() => {
 .notification-item {
   padding: 12px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
 .notification-item:hover {
   background-color: rgba(81, 112, 255, 0.1);
+}
+
+.notification-item.is-read {
+  opacity: 0.6;
 }
 
 .notif-title {
