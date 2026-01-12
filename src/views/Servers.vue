@@ -269,7 +269,7 @@
                 <label>User to track</label>
                 <div class="channel-selector">
                   <input
-                    v-model="statusSettings.userToTrack"
+                    v-model="trackedUserName"
                     type="text"
                     placeholder="None selected"
                     disabled
@@ -355,13 +355,19 @@
                 <toggle-switch v-model="welcomeSettings.useEmbed" />
               </div>
 
+              <div class="info-box">
+                <strong>Available placeholders:</strong>
+                <div style="font-size: 12px; color: #999; margin-top: 8px;">
+                  {user} • {user_icon} • {servername} • {server_icon} • {members} • {member_count}
+                </div>
+              </div>
+
               <div v-if="!welcomeSettings.useEmbed" class="setting-item">
                 <label>Message text</label>
                 <textarea
                   v-model="welcomeSettings.messageText"
                   class="input-field textarea"
-                  placeholder="Welcome to {server}, {user}!"
-                  @input="updateWelcomePreview"
+                  placeholder="Welcome to {servername}, {user}!"
                 />
               </div>
 
@@ -372,7 +378,6 @@
                   type="text"
                   class="input-field"
                   placeholder="Welcome!"
-                  @input="updateWelcomePreview"
                 />
               </div>
 
@@ -381,19 +386,17 @@
                 <textarea
                   v-model="welcomeSettings.embedDescription"
                   class="input-field textarea"
-                  placeholder="Welcome to {server}! We're glad to have you here."
-                  @input="updateWelcomePreview"
+                  placeholder="Welcome to {servername}! We're glad to have you here."
                 />
               </div>
 
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
-                <label>Thumbnail URL</label>
+                <label>Image URL</label>
                 <input
-                  v-model="welcomeSettings.embedThumbnail"
+                  v-model="welcomeSettings.embedImage"
                   type="text"
                   class="input-field"
                   placeholder="https://example.com/image.png"
-                  @input="updateWelcomePreview"
                 />
               </div>
 
@@ -404,24 +407,27 @@
                   type="text"
                   class="input-field"
                   placeholder="#5170ff"
-                  @input="updateWelcomePreview"
                 />
               </div>
 
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
-                <label>Author name</label>
-                <input
-                  v-model="welcomeSettings.embedAuthor"
-                  type="text"
-                  class="input-field"
-                  placeholder="Welcome to our server!"
-                  @input="updateWelcomePreview"
-                />
-              </div>
-
-              <div class="preview-box">
-                <div class="preview-title">Preview</div>
-                <div class="preview-content" v-html="welcomePreview"></div>
+                <label>Custom field (optional)</label>
+                <div style="display: flex; gap: 8px;">
+                  <input
+                    v-model="welcomeSettings.embedFieldName"
+                    type="text"
+                    class="input-field"
+                    placeholder="Field name"
+                    style="flex: 1;"
+                  />
+                  <input
+                    v-model="welcomeSettings.embedFieldValue"
+                    type="text"
+                    class="input-field"
+                    placeholder="Field value"
+                    style="flex: 1;"
+                  />
+                </div>
               </div>
 
               <div class="button-group">
@@ -569,13 +575,14 @@ const welcomeSettings = reactive({
   enabled: true,
   useEmbed: false,
   welcomeChannel: '',
-  messageText: 'Welcome to {server}, {user}!',
+  messageText: 'Welcome to {servername}, {user}!',
   embedTitle: 'Welcome!',
-  embedDescription: 'Welcome to {server}! We\'re glad to have you here.',
+  embedDescription: 'Welcome to {servername}! We\'re glad to have you here.',
   embedFooter: 'Thanks for joining!',
-  embedThumbnail: '',
+  embedImage: '',
   embedColor: '#5170ff',
-  embedAuthor: '',
+  embedFieldName: '',
+  embedFieldValue: '',
 })
 
 // Modal state
@@ -691,6 +698,12 @@ const welcomeChannelName = computed(() => {
   if (!welcomeSettings.welcomeChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === welcomeSettings.welcomeChannel)
   return channel ? channel.name : welcomeSettings.welcomeChannel
+})
+
+const trackedUserName = computed(() => {
+  if (!statusSettings.userToTrackId) return 'None selected'
+  const member = guildMembers.value.find(m => m.id === statusSettings.userToTrackId)
+  return member ? member.username : statusSettings.userToTrackId
 })
 
 const allowedChannelsDisplay = computed(() => {
@@ -880,13 +893,14 @@ const loadAllSettings = async (guildId) => {
         enabled: data.enabled === true,
         useEmbed: data.use_embed === true,
         welcomeChannel: data.channel_id || '',
-        messageText: data.message_text || 'Welcome to {server}, {user}!',
+        messageText: data.message_text || 'Welcome to {servername}, {user}!',
         embedTitle: data.embed_title || 'Welcome!',
-        embedDescription: data.embed_description || 'Welcome to {server}! We\'re glad to have you here.',
+        embedDescription: data.embed_description || 'Welcome to {servername}! We\'re glad to have you here.',
         embedFooter: data.embed_footer || 'Thanks for joining!',
-        embedThumbnail: data.embed_thumbnail || '',
+        embedImage: data.embed_image || '',
         embedColor: data.embed_color || '#5170ff',
-        embedAuthor: data.embed_author || ''
+        embedFieldName: data.embed_field_name || '',
+        embedFieldValue: data.embed_field_value || ''
       })
     }
   } catch (error) {
@@ -1121,9 +1135,10 @@ const saveWelcomeSettings = async () => {
       embed_title: welcomeSettings.embedTitle,
       embed_description: welcomeSettings.embedDescription,
       embed_footer: welcomeSettings.embedFooter,
-      embed_thumbnail: welcomeSettings.embedThumbnail,
+      embed_image: welcomeSettings.embedImage,
       embed_color: welcomeSettings.embedColor,
-      embed_author: welcomeSettings.embedAuthor
+      embed_field_name: welcomeSettings.embedFieldName,
+      embed_field_value: welcomeSettings.embedFieldValue
     }
     const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -1201,13 +1216,14 @@ const resetWelcomeSettings = () => {
     enabled: true,
     useEmbed: false,
     welcomeChannel: '',
-    messageText: 'Welcome to {server}, {user}!',
+    messageText: 'Welcome to {servername}, {user}!',
     embedTitle: 'Welcome!',
-    embedDescription: 'Welcome to {server}! We\'re glad to have you here.',
+    embedDescription: 'Welcome to {servername}! We\'re glad to have you here.',
     embedFooter: 'Thanks for joining!',
-    embedThumbnail: '',
+    embedImage: '',
     embedColor: '#5170ff',
-    embedAuthor: '',
+    embedFieldName: '',
+    embedFieldValue: '',
   })
 }
 
@@ -1859,6 +1875,15 @@ onMounted(() => {
   border-left: 4px solid #5170ff;
   border-radius: 4px;
   margin-top: 8px;
+}
+
+.info-box {
+  padding: 12px;
+  background: rgba(81, 112, 255, 0.1);
+  border-left: 4px solid #5170ff;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 13px;
 }
 
 .preview-title {
