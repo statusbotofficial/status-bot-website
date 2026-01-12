@@ -273,6 +273,13 @@ const loadNotifications = async () => {
           }
         }
         
+        // Sort by newest first (descending by createdAt/timestamp)
+        allNotifs.sort((a, b) => {
+          const aTime = typeof a.createdAt === 'number' ? a.createdAt : a.timestamp?.getTime?.() || 0
+          const bTime = typeof b.createdAt === 'number' ? b.createdAt : b.timestamp?.getTime?.() || 0
+          return bTime - aTime
+        })
+        
         notifications.value = allNotifs
         saveNotifications()
         return
