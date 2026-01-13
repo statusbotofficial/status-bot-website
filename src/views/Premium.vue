@@ -70,7 +70,7 @@
             Priority support
           </li>
         </ul>
-        <button class="plan-button premium-button">Get Premium</button>
+        <button class="plan-button premium-button" @click="showPremiumModal = true">Get Premium</button>
       </div>
 
       <!-- Custom Bot Plan -->
@@ -106,10 +106,33 @@
         <button class="plan-button">Get Custom Bot</button>
       </div>
     </div>
+
+    <!-- Premium Modal -->
+    <div v-if="showPremiumModal" class="modal-overlay" @click.self="showPremiumModal = false">
+      <div class="modal-content">
+        <button class="modal-close" @click="showPremiumModal = false">✕</button>
+        <h2>Get Premium</h2>
+        <p>Choose how you'd like to support Status Bot:</p>
+        
+        <div class="modal-buttons">
+          <a href="https://www.patreon.com/posts/status-bot-148075915" target="_blank" class="modal-btn patreon-btn">
+            <span class="btn-icon">🎁</span>
+            <span class="btn-text">Support on Patreon</span>
+          </a>
+          <a href="https://discord.gg/Kd2MckVxED" target="_blank" class="modal-btn boost-btn">
+            <span class="btn-icon">🚀</span>
+            <span class="btn-text">Server Boost</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
+const showPremiumModal = ref(false)
 </script>
 
 <style scoped>
@@ -117,7 +140,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 60px auto 0;
-  padding: 0 50px;
+  padding: 0 50px 150px 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -400,5 +423,112 @@
     margin-top: 20px;
     width: 100%;
   }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--bg-tertiary);
+  border: 2px solid var(--primary-color);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 5px;
+}
+
+.modal-close:hover {
+  transform: scale(1.2);
+}
+
+.modal-content h2 {
+  font-size: 28px;
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+}
+
+.modal-content p {
+  color: var(--text-secondary);
+  margin: 0 0 30px 0;
+  font-size: 16px;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.patreon-btn {
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.2), rgba(255, 68, 68, 0.1));
+  border-color: #ff4444;
+  color: #ff6666;
+}
+
+.patreon-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.3), rgba(255, 68, 68, 0.2));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 68, 68, 0.25);
+}
+
+.boost-btn {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2), rgba(81, 112, 255, 0.1));
+  border-color: #5170ff;
+  color: #7f9fff;
+}
+
+.boost-btn:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3), rgba(81, 112, 255, 0.2));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(81, 112, 255, 0.25);
+}
+
+.btn-icon {
+  font-size: 20px;
+}
+
+.btn-text {
+  font-size: 16px;
 }
 </style>
