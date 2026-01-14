@@ -49,7 +49,7 @@
         <div class="plan-divider">Monthly subscription</div>
         <div class="plan-boost">
           <span class="boost-icon">🚀</span>
-          1 Month Server Boost
+          Boost Our Server
         </div>
         <h3 class="plan-features-title">Features:</h3>
         <ul class="plan-features">
@@ -82,7 +82,7 @@
         <div class="plan-divider">Monthly subscription</div>
         <div class="plan-boost">
           <span class="boost-icon">🚀</span>
-          3 Month Server Boost
+          Boost Our Server
         </div>
         <h3 class="plan-features-title">Features:</h3>
         <ul class="plan-features">
