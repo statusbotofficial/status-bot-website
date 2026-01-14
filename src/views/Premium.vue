@@ -274,17 +274,16 @@ const scrollToFeatures = (plan) => {
   border: 2px solid var(--primary-color);
   border-radius: 16px;
   padding: 30px 24px;
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.12) 0%, rgba(81, 112, 255, 0.06) 100%);
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 1;
-  overflow: hidden;
 }
 
 .plan-card:hover {
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.18) 0%, rgba(81, 112, 255, 0.1) 100%);
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.12) 0%, rgba(81, 112, 255, 0.08) 100%);
   transform: translateY(-5px);
   box-shadow: 0 20px 40px rgba(81, 112, 255, 0.2);
 }
@@ -302,8 +301,9 @@ const scrollToFeatures = (plan) => {
     rgba(255, 255, 255, 0.25) 50%,
     transparent 100%
   );
-  animation: metalShine 1.5s ease-in-out forwards;
+  animation: metalShine 0.8s ease-in-out forwards;
   pointer-events: none;
+  border-radius: 14px;
 }
 
 @keyframes metalShine {
@@ -317,20 +317,20 @@ const scrollToFeatures = (plan) => {
 
 .plan-card.premium-highlighted {
   border-color: var(--primary-color);
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.22) 0%, rgba(81, 112, 255, 0.14) 100%);
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.12) 0%, rgba(81, 112, 255, 0.06) 100%);
   transform: scale(1.02);
 }
 
 .plan-card.premium-highlighted:hover {
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.28) 0%, rgba(81, 112, 255, 0.18) 100%);
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.18) 0%, rgba(81, 112, 255, 0.12) 100%);
   box-shadow: 0 25px 50px rgba(81, 112, 255, 0.3);
 }
 
 .plan-badge {
   position: absolute;
-  top: -12px;
+  top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(-50%);
   background: linear-gradient(135deg, var(--primary-color), rgba(81, 112, 255, 0.8));
   color: #fff;
   padding: 6px 16px;
@@ -339,6 +339,7 @@ const scrollToFeatures = (plan) => {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  z-index: 10;
 }
 
 .plan-name {
