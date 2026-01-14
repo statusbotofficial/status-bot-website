@@ -280,7 +280,7 @@ const scrollToFeatures = (plan) => {
   flex-direction: column;
   position: relative;
   z-index: 1;
-  overflow: hidden;
+  clip-path: inset(0 round 16px);
 }
 
 .plan-card:hover {
@@ -329,7 +329,7 @@ const scrollToFeatures = (plan) => {
 
 .plan-badge {
   position: absolute;
-  top: -8px;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%);
   background: linear-gradient(135deg, var(--primary-color), rgba(81, 112, 255, 0.8));
