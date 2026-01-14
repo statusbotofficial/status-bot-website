@@ -45,8 +45,8 @@
         <div class="plan-name">
           Premium<span></span>
         </div>
-        <div class="plan-price">$4.99</div>
-        <div class="plan-divider">One time payment</div>
+        <div class="plan-price">$3.99<span class="plan-period">/m</span></div>
+        <div class="plan-divider">Monthly subscription</div>
         <div class="plan-boost">
           <span class="boost-icon">🚀</span>
           1 Month Server Boost
@@ -78,8 +78,8 @@
         <div class="plan-name">
           Custom Bot<span></span>
         </div>
-        <div class="plan-price">$7.99</div>
-        <div class="plan-divider">One time payment</div>
+        <div class="plan-price">$3.99<span class="plan-period">/m</span></div>
+        <div class="plan-divider">Monthly subscription</div>
         <div class="plan-boost">
           <span class="boost-icon">🚀</span>
           3 Month Server Boost
@@ -242,6 +242,11 @@ const showPremiumModal = ref(false)
   margin-bottom: 10px;
   color: #fff;
   text-align: center;
+}
+
+.plan-period {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .plan-divider {

@@ -119,6 +119,9 @@
                   <label>Days Remaining</label>
                   <div class="info-value">{{ daysUntilExpiry }} days</div>
                 </div>
+                <button class="btn btn-danger" @click="cancelPremium" style="margin-top: 15px; width: 100%;">
+                  Cancel Premium
+                </button>
               </div>
 
               <div v-else class="premium-cta">
@@ -407,6 +410,34 @@ const claimGift = async (giftId) => {
     }
   } catch (err) {
     console.error('Error claiming gift:', err)
+  }
+}
+
+const cancelPremium = async () => {
+  if (!confirm('Are you sure you want to cancel your premium membership? This action cannot be undone.')) {
+    return
+  }
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/user-premium/${discordUser.value.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (response.ok) {
+      hasPremium.value = false
+      premiumExpiryDate.value = null
+      alert('Premium membership cancelled successfully')
+      await fetchPremiumStatus()
+    } else {
+      alert('Failed to cancel premium. Please try again.')
+    }
+  } catch (err) {
+    console.error('Error cancelling premium:', err)
+    alert('Error cancelling premium')
   }
 }
 
@@ -1445,6 +1476,18 @@ onMounted(async () => {
 .btn-primary:hover:not(:disabled) {
   background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
   box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.8), rgba(255, 68, 68, 0.5));
+  border: 2px solid #ff4444;
+  color: #fff;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(255, 68, 68, 1), rgba(255, 68, 68, 0.8));
+  box-shadow: 0 8px 20px rgba(255, 68, 68, 0.3);
   transform: translateY(-2px);
 }
 
