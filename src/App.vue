@@ -67,7 +67,18 @@
     </header>
 
     <main>
-      <router-view />
+      <!-- Page Transition Overlay -->
+      <div v-if="isNavigating" class="page-transition-overlay">
+        <div class="page-loader">
+          <div class="loader-spinner"></div>
+          <p class="loader-text">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Page Content with Transition -->
+      <Transition name="page-fade" mode="out-in" @enter="onTransitionEnter" @leave="onTransitionLeave">
+        <router-view :key="$route.fullPath" />
+      </Transition>
     </main>
 
     <footer class="footer">
@@ -108,6 +119,7 @@ const menuOpen = ref(false)
 const dropdownOpen = ref(false)
 const showNotifications = ref(false)
 const notifications = ref([])
+const isNavigating = ref(false)
 const notificationCount = computed(() => notifications.value.filter(n => !n.read).length)
 
 const isLoggedIn = computed(() => authStore.isLoggedIn)
@@ -207,6 +219,14 @@ const formatTime = (timestamp) => {
   } catch (e) {
     return 'Recently'
   }
+}
+
+const onTransitionEnter = () => {
+  // Transition is entering
+}
+
+const onTransitionLeave = () => {
+  isNavigating.value = false
 }
 
 const removeExpiredNotifications = (notifs) => {
@@ -317,6 +337,14 @@ const saveNotifications = () => {
 onMounted(() => {
   authStore.initializeAuth()
   loadNotifications()
+
+  // Setup route navigation listeners
+  router.beforeEach((to, from, next) => {
+    if (to.path !== from.path) {
+      isNavigating.value = true
+    }
+    next()
+  })
 
   // Reload notifications when user logs in
   watch(() => authStore.isLoggedIn, (newVal) => {
@@ -1019,5 +1047,76 @@ main {
   .legal-content {
     gap: 8px;
   }
+}
+
+/* Page Transition Animations */
+.page-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(3px);
+  animation: overlayFadeIn 0.3s ease;
+}
+
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.loader-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(81, 112, 255, 0.2);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader-text {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Page transition animations */
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.page-fade-enter-from {
+  opacity: 0;
+}
+
+.page-fade-leave-to {
+  opacity: 0;
 }
 </style>
