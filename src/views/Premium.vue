@@ -274,56 +274,28 @@ const scrollToFeatures = (plan) => {
   border: 2px solid var(--primary-color);
   border-radius: 16px;
   padding: 30px 24px;
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 1;
-  clip-path: inset(0 round 16px);
 }
 
 .plan-card:hover {
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.12) 0%, rgba(81, 112, 255, 0.08) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.5), rgba(81, 112, 255, 0.35));
   transform: translateY(-5px);
   box-shadow: 0 20px 40px rgba(81, 112, 255, 0.2);
 }
 
-.plan-card:hover::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.25) 50%,
-    transparent 100%
-  );
-  animation: metalShine 0.8s ease-in-out forwards;
-  pointer-events: none;
-  border-radius: 14px;
-}
-
-@keyframes metalShine {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
 .plan-card.premium-highlighted {
   border-color: var(--primary-color);
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.12) 0%, rgba(81, 112, 255, 0.06) 100%);
+  background: rgba(81, 112, 255, 0.15);
   transform: scale(1.02);
 }
 
 .plan-card.premium-highlighted:hover {
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.18) 0%, rgba(81, 112, 255, 0.12) 100%);
+  background: rgba(81, 112, 255, 0.2);
   box-shadow: 0 25px 50px rgba(81, 112, 255, 0.3);
 }
 
@@ -340,7 +312,6 @@ const scrollToFeatures = (plan) => {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  z-index: 10;
 }
 
 .plan-name {
