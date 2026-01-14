@@ -12,15 +12,15 @@
     <!-- Premium Info Section -->
     <div class="premium-info-section">
       <div class="info-item">
-        <span class="info-check">✓</span>
+        <span class="info-check">⚡</span>
         <span class="info-text">Instant activation</span>
       </div>
       <div class="info-item">
-        <span class="info-check">✓</span>
+        <span class="info-check">🔄</span>
         <span class="info-text">Cancel anytime</span>
       </div>
       <div class="info-item">
-        <span class="info-check">✓</span>
+        <span class="info-check">💰</span>
         <span class="info-text">7-day refund</span>
       </div>
     </div>
@@ -53,7 +53,7 @@
           </li>
         </ul>
         <button class="plan-button" :disabled="!hasPremium" :class="{ 'current-plan': !hasPremium }">
-          {{ !hasPremium ? 'Current Plan' : 'Upgrade' }}
+          {{ !hasPremium ? 'Current Plan' : 'Downgrade' }}
         </button>
         <button class="see-features-btn" @click="scrollToFeatures('free')">See all features</button>
       </div>
@@ -103,31 +103,68 @@
     <!-- Full Features Section -->
     <div class="features-section" ref="featuresSection">
       <h2 class="features-title">All Premium Features</h2>
-      <div class="features-grid">
-        <!-- Free Features -->
-        <div class="feature-column">
-          <h3 class="feature-column-title">✓ Free Plan</h3>
-          <ul class="feature-list">
-            <li class="feature-list-item free"><span class="check">✓</span> Basic commands</li>
-            <li class="feature-list-item free"><span class="check">✓</span> Status tracking</li>
-            <li class="feature-list-item free"><span class="check">✓</span> Leveling system</li>
-            <li class="feature-list-item free"><span class="check">✓</span> Economy mini-games</li>
-            <li class="feature-list-item free"><span class="check">✓</span> Community support</li>
-            <li class="feature-list-item free"><span class="check">✓</span> Voice chat XP</li>
-          </ul>
+      <div class="features-table">
+        <div class="table-header">
+          <div class="table-feature-name">Feature</div>
+          <div class="table-column-header">Free Plan</div>
+          <div class="table-column-header premium">Premium Plan</div>
         </div>
-
-        <!-- Premium Features -->
-        <div class="feature-column premium-features">
-          <h3 class="feature-column-title premium">⭐ Premium Plan</h3>
-          <ul class="feature-list">
-            <li class="feature-list-item premium"><span class="check">✓</span> Everything in Free</li>
-            <li class="feature-list-item premium"><span class="check">✓</span> 2x XP multiplier</li>
-            <li class="feature-list-item premium"><span class="check">✓</span> Exclusive commands</li>
-            <li class="feature-list-item premium"><span class="check">✓</span> Luck boost in economy</li>
-            <li class="feature-list-item premium"><span class="check">✓</span> Priority support</li>
-            <li class="feature-list-item premium"><span class="check">✓</span> Premium badge</li>
-          </ul>
+        <div class="table-body">
+          <div class="table-row">
+            <div class="table-feature-name">Basic commands</div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row">
+            <div class="table-feature-name">Status tracking</div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row">
+            <div class="table-feature-name">Leveling system</div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row">
+            <div class="table-feature-name">Economy mini-games</div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row">
+            <div class="table-feature-name">Community support</div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row">
+            <div class="table-feature-name">Voice chat XP</div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row premium-feature">
+            <div class="table-feature-name">2x XP multiplier</div>
+            <div class="table-cell"><span class="x-icon">✕</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row premium-feature">
+            <div class="table-feature-name">Exclusive commands</div>
+            <div class="table-cell"><span class="x-icon">✕</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row premium-feature">
+            <div class="table-feature-name">Luck boost in economy</div>
+            <div class="table-cell"><span class="x-icon">✕</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row premium-feature">
+            <div class="table-feature-name">Priority support</div>
+            <div class="table-cell"><span class="x-icon">✕</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
+          <div class="table-row premium-feature">
+            <div class="table-feature-name">Premium badge</div>
+            <div class="table-cell"><span class="x-icon">✕</span></div>
+            <div class="table-cell"><span class="check-icon">✓</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -236,7 +273,7 @@ const scrollToFeatures = (plan) => {
 .plan-card {
   border: 2px solid var(--primary-color);
   border-radius: 16px;
-  padding: 40px 30px;
+  padding: 30px 24px;
   background: rgba(81, 112, 255, 0.05);
   transition: all 0.3s ease;
   display: flex;
@@ -254,7 +291,7 @@ const scrollToFeatures = (plan) => {
 .plan-card.premium-highlighted {
   border-color: var(--primary-color);
   background: rgba(81, 112, 255, 0.15);
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .plan-card.premium-highlighted:hover {
@@ -278,39 +315,39 @@ const scrollToFeatures = (plan) => {
 }
 
 .plan-name {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 10px 0 20px 0;
+  margin: 10px 0 15px 0;
 }
 
 .plan-price {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: #fff;
   text-align: center;
 }
 
 .plan-period {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
 }
 
 .plan-divider {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-secondary);
-  margin: 5px 0 20px 0;
+  margin: 4px 0 15px 0;
   text-align: center;
   font-weight: 500;
 }
 
 .plan-boost {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: #fff;
   display: flex;
   align-items: center;
@@ -318,18 +355,10 @@ const scrollToFeatures = (plan) => {
   gap: 8px;
 }
 
-.boost-icon {
-  width: 20px;
-  height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .plan-features-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  margin: 0 0 20px 0;
+  margin: 0 0 15px 0;
   color: #fff;
 }
 
@@ -337,7 +366,7 @@ const scrollToFeatures = (plan) => {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
   flex-grow: 1;
   margin: 0;
   padding: 0;
@@ -347,7 +376,7 @@ const scrollToFeatures = (plan) => {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
@@ -367,12 +396,12 @@ const scrollToFeatures = (plan) => {
   background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
   border: 2px solid var(--primary-color);
   color: #fff;
-  padding: 14px 28px;
+  padding: 12px 24px;
   border-radius: 20px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
-  margin-top: 30px;
+  margin-top: 20px;
   transition: all 0.3s ease;
 }
 
@@ -648,63 +677,93 @@ const scrollToFeatures = (plan) => {
   color: var(--text-primary);
 }
 
-.features-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
+.features-table {
   max-width: 900px;
   margin: 0 auto;
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(81, 112, 255, 0.05);
 }
 
-.feature-column-title {
-  font-size: 24px;
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  background: rgba(81, 112, 255, 0.15);
+  border-bottom: 2px solid var(--primary-color);
+  padding: 0;
+}
+
+.table-column-header {
+  padding: 20px;
   font-weight: 700;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  font-size: 16px;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.table-column-header.premium {
+  color: var(--primary-color);
+  background: rgba(81, 112, 255, 0.1);
+}
+
+.table-feature-name {
+  padding: 20px;
+  font-weight: 700;
+  font-size: 16px;
   color: var(--text-primary);
 }
 
-.feature-column-title.premium {
-  color: var(--primary-color);
-}
-
-.feature-list {
+.table-body {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
-.feature-list-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  font-size: 16px;
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  border-bottom: 1px solid rgba(81, 112, 255, 0.1);
+  transition: background 0.2s ease;
+}
+
+.table-row:hover {
+  background: rgba(81, 112, 255, 0.08);
+}
+
+.table-row.premium-feature {
+  background: rgba(81, 112, 255, 0.05);
+}
+
+.table-row.premium-feature:hover {
+  background: rgba(81, 112, 255, 0.12);
+}
+
+.table-row .table-feature-name {
+  padding: 18px 20px;
+  font-weight: 500;
+  font-size: 15px;
   color: var(--text-secondary);
 }
 
-.feature-list-item .check {
-  width: 24px;
-  height: 24px;
-  min-width: 24px;
+.table-cell {
+  padding: 18px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-color);
+  font-size: 14px;
+}
+
+.check-icon {
+  color: #4ade80;
   font-weight: bold;
-  margin-top: 2px;
+  font-size: 18px;
 }
 
-.feature-list-item.premium .check {
-  color: var(--primary-color);
-}
-
-.feature-list-item.free .check {
-  opacity: 0.3;
+.x-icon {
+  color: #ef4444;
+  font-weight: bold;
+  font-size: 18px;
+  opacity: 0.6;
 }
 
 /* See All Features Button */
