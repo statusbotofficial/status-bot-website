@@ -16,7 +16,7 @@
         <span class="info-text">Instant activation</span>
       </div>
       <div class="info-item">
-        <span class="info-check">🔁</span>
+        <span class="info-check">🔄️</span>
         <span class="info-text">Cancel anytime</span>
       </div>
       <div class="info-item">
@@ -463,7 +463,7 @@ const scrollToFeatures = (plan) => {
 
 @media (max-width: 768px) {
   .premium-container {
-    padding: 0 20px;
+    padding: 0 20px 100px 20px;
     margin-top: 40px;
     gap: 35px;
   }
@@ -666,6 +666,7 @@ const scrollToFeatures = (plan) => {
   width: 100%;
   margin-top: 80px;
   padding-top: 60px;
+  padding-bottom: 60px;
   border-top: 2px solid rgba(81, 112, 255, 0.2);
 }
 
