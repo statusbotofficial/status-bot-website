@@ -119,9 +119,6 @@
                   <label>Days Remaining</label>
                   <div class="info-value">{{ daysUntilExpiry }} days</div>
                 </div>
-                <button class="btn btn-danger" @click="cancelPremium" style="margin-top: 15px; width: 100%;">
-                  Cancel Premium
-                </button>
               </div>
 
               <div v-else class="premium-cta">
@@ -410,34 +407,6 @@ const claimGift = async (giftId) => {
     }
   } catch (err) {
     console.error('Error claiming gift:', err)
-  }
-}
-
-const cancelPremium = async () => {
-  if (!confirm('Are you sure you want to cancel your premium membership? This action cannot be undone.')) {
-    return
-  }
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/user-premium/${discordUser.value.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${SECRET_KEY}`,
-        'Content-Type': 'application/json'
-      }
-    })
-
-    if (response.ok) {
-      hasPremium.value = false
-      premiumExpiryDate.value = null
-      alert('Premium membership cancelled successfully')
-      await fetchPremiumStatus()
-    } else {
-      alert('Failed to cancel premium. Please try again.')
-    }
-  } catch (err) {
-    console.error('Error cancelling premium:', err)
-    alert('Error cancelling premium')
   }
 }
 
