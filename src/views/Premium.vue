@@ -46,7 +46,7 @@
           Premium<span></span>
         </div>
         <div class="plan-price">$3.99<span class="plan-period">/m</span></div>
-        <div class="plan-divider">Monthly subscription</div>
+        <div class="plan-divider">or</div>
         <div class="plan-boost">
           <span class="boost-icon">🚀</span>
           Boost Our Server
@@ -79,7 +79,7 @@
           Custom Bot<span></span>
         </div>
         <div class="plan-price">$7.99<span class="plan-period">/m</span></div>
-        <div class="plan-divider">Monthly subscription</div>
+        <div class="plan-divider">or</div>
         <div class="plan-boost">
           <span class="boost-icon">🚀</span>
           Boost Our Server
