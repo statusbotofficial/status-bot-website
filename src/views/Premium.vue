@@ -816,77 +816,13 @@ const scrollToFeatures = (plan) => {
 
 @media (max-width: 768px) {
   .modal-content {
-    padding: 35px 25px;
-    border-radius: 16px;
-  }
-
-  .modal-header-content h2 {
-    font-size: 24px;
-  }
-
-  .modal-header-content {
-    margin-bottom: 30px;
-  }
-
-  .support-options {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .support-card {
-    padding: 24px 20px;
-  }
-
-  .card-icon {
-    font-size: 40px;
-    margin-bottom: 10px;
-  }
-
-  .card-title {
-    font-size: 16px;
-  }
-
-  .card-price {
-    font-size: 18px;
-  }
-
-  .card-benefits {
-    margin: 0 0 16px 0;
-    gap: 6px;
-  }
-
-  .card-benefits li {
-    font-size: 12px;
-  }
-
-  .card-cta {
-    padding: 9px 18px;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .modal-content {
     padding: 25px 18px;
-    width: 95%;
     border-radius: 14px;
-  }
-
-  .modal-close {
-    top: 12px;
-    right: 12px;
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
+    max-width: calc(100vw - 20px);
   }
 
   .modal-header-content h2 {
     font-size: 20px;
-    margin: 0 0 10px 0;
-  }
-
-  .modal-header-content p {
-    font-size: 14px;
   }
 
   .modal-header-content {
@@ -894,11 +830,12 @@ const scrollToFeatures = (plan) => {
   }
 
   .support-options {
+    grid-template-columns: 1fr;
     gap: 12px;
   }
 
   .support-card {
-    padding: 18px 16px;
+    padding: 16px 14px;
   }
 
   .card-icon {
@@ -907,21 +844,16 @@ const scrollToFeatures = (plan) => {
   }
 
   .card-title {
-    font-size: 15px;
-    margin-bottom: 6px;
+    font-size: 14px;
   }
 
   .card-price {
     font-size: 16px;
-    margin-bottom: 16px;
-  }
-
-  .card-price span {
-    font-size: 12px;
+    margin-bottom: 12px;
   }
 
   .card-benefits {
-    margin: 0 0 14px 0;
+    margin: 0 0 12px 0;
     gap: 5px;
   }
 
@@ -930,16 +862,87 @@ const scrollToFeatures = (plan) => {
   }
 
   .card-cta {
-    padding: 8px 16px;
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 15px 12px;
+    width: 95%;
+    border-radius: 12px;
+    max-width: calc(100vw - 20px);
+  }
+
+  .modal-close {
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  .modal-header-content h2 {
+    font-size: 18px;
+    margin: 0 0 8px 0;
+  }
+
+  .modal-header-content p {
+    font-size: 13px;
+  }
+
+  .modal-header-content {
+    margin-bottom: 15px;
+  }
+
+  .support-options {
+    gap: 10px;
+  }
+
+  .support-card {
+    padding: 12px 10px;
+  }
+
+  .card-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .card-price {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .card-price span {
     font-size: 11px;
   }
 
+  .card-benefits {
+    margin: 0 0 10px 0;
+    gap: 4px;
+  }
+
+  .card-benefits li {
+    font-size: 10px;
+  }
+
+  .card-cta {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+
   .modal-footer {
-    padding-top: 15px;
+    padding-top: 10px;
   }
 
   .modal-footer p {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
 
