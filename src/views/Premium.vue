@@ -200,10 +200,10 @@
             <div class="card-title">Server Boost</div>
             <div class="card-price">Easier Alternative</div>
             <ul class="card-benefits">
-              <li>✓ Premium Access</li>
               <li>✓ 2x XP Multiplier</li>
               <li>✓ Exclusive Commands</li>
-              <li>✓ Permanent Unlock</li>
+              <li>✓ Economy Perks</li>
+              <li>✓ Priority Support</li>
             </ul>
             <div class="card-cta">Boost Server</div>
           </a>
