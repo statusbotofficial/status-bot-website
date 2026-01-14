@@ -173,18 +173,58 @@
     <div v-if="showPremiumModal" class="modal-overlay" @click.self="showPremiumModal = false">
       <div class="modal-content">
         <button class="modal-close" @click="showPremiumModal = false">✕</button>
-        <h2>Get Premium</h2>
-        <p>Choose how you'd like to support Status Bot:</p>
         
-        <div class="modal-buttons">
-          <a href="https://www.patreon.com/posts/status-bot-148075915" target="_blank" class="modal-btn patreon-btn">
-            <span class="btn-icon">🎁</span>
-            <span class="btn-text">Support on Patreon</span>
+        <div class="modal-header-content">
+          <h2>Join Premium Today</h2>
+          <p>Support our development and unlock exclusive features</p>
+        </div>
+        
+        <div class="support-options">
+          <!-- Patreon Option -->
+          <a href="https://www.patreon.com/posts/status-bot-148075915" target="_blank" class="support-card patreon-card">
+            <div class="card-icon">🎁</div>
+            <div class="card-title">Patreon Membership</div>
+            <div class="card-price">$3.99<span>/month</span></div>
+            <ul class="card-benefits">
+              <li>✓ 2x XP Multiplier</li>
+              <li>✓ Exclusive Commands</li>
+              <li>✓ Economy Perks</li>
+              <li>✓ Priority Support</li>
+            </ul>
+            <div class="card-cta">Support on Patreon</div>
           </a>
-          <a href="https://discord.gg/Kd2MckVxED" target="_blank" class="modal-btn boost-btn">
-            <span class="btn-icon">🚀</span>
-            <span class="btn-text">Server Boost</span>
+
+          <!-- Server Boost Option -->
+          <a href="https://discord.gg/Kd2MckVxED" target="_blank" class="support-card boost-card">
+            <div class="card-icon">🚀</div>
+            <div class="card-title">Server Boost</div>
+            <div class="card-price">Easier Alternative</div>
+            <ul class="card-benefits">
+              <li>✓ Premium Access</li>
+              <li>✓ 2x XP Multiplier</li>
+              <li>✓ Exclusive Commands</li>
+              <li>✓ Permanent Unlock</li>
+            </ul>
+            <div class="card-cta">Boost Server</div>
           </a>
+
+          <!-- Gift Card Option -->
+          <div class="support-card gift-card" @click="showPremiumModal = false">
+            <div class="card-icon">🏆</div>
+            <div class="card-title">Receive as Gift</div>
+            <div class="card-price">From Friends</div>
+            <ul class="card-benefits">
+              <li>✓ Get Premium Gifted</li>
+              <li>✓ No Payment Needed</li>
+              <li>✓ Full Access</li>
+              <li>✓ Join Exclusive Community</li>
+            </ul>
+            <div class="card-cta">Contact Us</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <p>Questions? Join our Discord for support and updates</p>
         </div>
       </div>
     </div>
@@ -531,104 +571,298 @@ const scrollToFeatures = (plan) => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-content {
-  background: var(--bg-tertiary);
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(81, 112, 255, 0.05) 100%);
   border: 2px solid var(--primary-color);
-  border-radius: 16px;
-  padding: 40px;
-  max-width: 500px;
+  border-radius: 20px;
+  padding: 50px 40px;
+  max-width: 900px;
   width: 90%;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 80px rgba(81, 112, 255, 0.3);
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .modal-close {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
-  border: none;
+  top: 20px;
+  right: 20px;
+  background: rgba(81, 112, 255, 0.1);
+  border: 2px solid transparent;
   color: var(--text-primary);
   font-size: 24px;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  padding: 5px;
-}
-
-.modal-close:hover {
-  transform: scale(1.2);
-}
-
-.modal-content h2 {
-  font-size: 28px;
-  margin: 0 0 12px 0;
-  color: var(--text-primary);
-}
-
-.modal-content p {
-  color: var(--text-secondary);
-  margin: 0 0 30px 0;
-  font-size: 16px;
-}
-
-.modal-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.modal-btn {
+  transition: all 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 16px 24px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: 2px solid transparent;
 }
 
-.patreon-btn {
-  background: linear-gradient(135deg, rgba(255, 68, 68, 0.2), rgba(255, 68, 68, 0.1));
-  border-color: #ff4444;
-  color: #ff6666;
+.modal-close:hover {
+  background: rgba(81, 112, 255, 0.2);
+  border-color: var(--primary-color);
+  transform: scale(1.1);
 }
 
-.patreon-btn:hover {
-  background: linear-gradient(135deg, rgba(255, 68, 68, 0.3), rgba(255, 68, 68, 0.2));
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(255, 68, 68, 0.25);
+.modal-header-content {
+  text-align: center;
+  margin-bottom: 40px;
 }
 
-.boost-btn {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2), rgba(81, 112, 255, 0.1));
-  border-color: #5170ff;
-  color: #7f9fff;
+.modal-header-content h2 {
+  font-size: 32px;
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary-color), rgba(81, 112, 255, 0.8));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.boost-btn:hover {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3), rgba(81, 112, 255, 0.2));
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(81, 112, 255, 0.25);
-}
-
-.btn-icon {
-  font-size: 20px;
-}
-
-.btn-text {
+.modal-header-content p {
+  color: var(--text-secondary);
+  margin: 0;
   font-size: 16px;
+}
+
+.support-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.support-card {
+  background: rgba(81, 112, 255, 0.05);
+  border: 2px solid rgba(81, 112, 255, 0.3);
+  border-radius: 16px;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.support-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.support-card:hover::before {
+  left: 100%;
+}
+
+.support-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary-color);
+  box-shadow: 0 12px 24px rgba(81, 112, 255, 0.2);
+}
+
+.patreon-card {
+  border-color: rgba(255, 68, 68, 0.4);
+  background: rgba(255, 68, 68, 0.05);
+}
+
+.patreon-card:hover {
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+  box-shadow: 0 12px 24px rgba(255, 68, 68, 0.2);
+}
+
+.boost-card {
+  border-color: rgba(81, 112, 255, 0.4);
+}
+
+.boost-card:hover {
+  border-color: var(--primary-color);
+  background: rgba(81, 112, 255, 0.1);
+}
+
+.gift-card {
+  border-color: rgba(255, 215, 0, 0.4);
+  background: rgba(255, 215, 0, 0.05);
+}
+
+.gift-card:hover {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
+  box-shadow: 0 12px 24px rgba(255, 215, 0, 0.2);
+}
+
+.card-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.card-price {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.card-price span {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.card-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.card-benefits li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.card-cta {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.6), rgba(81, 112, 255, 0.3));
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.patreon-card:hover .card-cta {
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.7), rgba(255, 68, 68, 0.4));
+}
+
+.boost-card:hover .card-cta {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+}
+
+.gift-card:hover .card-cta {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.7), rgba(255, 215, 0, 0.4));
+  color: #000;
+}
+
+.modal-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(81, 112, 255, 0.2);
+}
+
+.modal-footer p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 35px 25px;
+    border-radius: 16px;
+  }
+
+  .modal-header-content h2 {
+    font-size: 24px;
+  }
+
+  .modal-header-content {
+    margin-bottom: 30px;
+  }
+
+  .support-options {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .support-card {
+    padding: 24px 20px;
+  }
+
+  .card-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+
+  .card-price {
+    font-size: 18px;
+  }
+
+  .card-benefits {
+    margin: 0 0 16px 0;
+    gap: 6px;
+  }
+
+  .card-benefits li {
+    font-size: 12px;
+  }
+
+  .card-cta {
+    padding: 9px 18px;
+    font-size: 12px;
+  }
 }
 
 /* Premium Info Section */
