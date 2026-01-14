@@ -274,28 +274,55 @@ const scrollToFeatures = (plan) => {
   border: 2px solid var(--primary-color);
   border-radius: 16px;
   padding: 30px 24px;
-  background: rgba(81, 112, 255, 0.05);
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 
 .plan-card:hover {
-  background: rgba(81, 112, 255, 0.1);
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.1) 0%, rgba(81, 112, 255, 0.05) 100%);
   transform: translateY(-5px);
   box-shadow: 0 20px 40px rgba(81, 112, 255, 0.2);
 }
 
+.plan-card:hover::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  animation: shine 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%);
+  }
+}
+
 .plan-card.premium-highlighted {
   border-color: var(--primary-color);
-  background: rgba(81, 112, 255, 0.15);
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.15) 0%, rgba(81, 112, 255, 0.08) 100%);
   transform: scale(1.02);
 }
 
 .plan-card.premium-highlighted:hover {
-  background: rgba(81, 112, 255, 0.2);
+  background: linear-gradient(180deg, rgba(81, 112, 255, 0.2) 0%, rgba(81, 112, 255, 0.12) 100%);
   box-shadow: 0 25px 50px rgba(81, 112, 255, 0.3);
 }
 
