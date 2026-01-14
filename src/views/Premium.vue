@@ -16,7 +16,7 @@
         <span class="info-text">Instant activation</span>
       </div>
       <div class="info-item">
-        <span class="info-check">🔄</span>
+        <span class="info-check">🔁</span>
         <span class="info-text">Cancel anytime</span>
       </div>
       <div class="info-item">
@@ -102,10 +102,10 @@
 
     <!-- Full Features Section -->
     <div class="features-section" ref="featuresSection">
-      <h2 class="features-title">All Premium Features</h2>
+      <h2 class="features-title">All Features</h2>
       <div class="features-table">
         <div class="table-header">
-          <div class="table-feature-name">Feature</div>
+          <div class="table-feature-name">Features</div>
           <div class="table-column-header">Free Plan</div>
           <div class="table-column-header premium">Premium Plan</div>
         </div>
