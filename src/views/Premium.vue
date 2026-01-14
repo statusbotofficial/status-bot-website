@@ -280,6 +280,7 @@ const scrollToFeatures = (plan) => {
   flex-direction: column;
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 
 .plan-card:hover {
