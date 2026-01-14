@@ -902,6 +902,8 @@ const scrollToFeatures = (plan) => {
   .modal-content {
     padding: 35px 30px;
     max-width: 700px;
+    max-height: none;
+    overflow-y: visible;
   }
 
   .modal-header-content h2 {
