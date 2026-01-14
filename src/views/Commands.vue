@@ -50,28 +50,32 @@ import { ref, computed } from 'vue'
 const activeCategory = ref('all')
 const searchTerm = ref('')
 
-const categories = ['all', 'status', 'leveling', 'economy', 'misc']
+const categories = ['all', 'leveling', 'economy', 'misc', 'admin']
 
 const commands = ref([
-  { id: 1, name: '/status', description: "Post the current status message in the channel.", category: 'status' },
-  { id: 2, name: '/status-update', description: "Manually update the tracked user's status.", category: 'status' },
-  { id: 3, name: '/status-reset', description: "Reset all status tracking settings for this server.", category: 'status' },
-  { id: 4, name: '/rank', description: "View a user's rank card and stats.", category: 'leveling' },
-  { id: 5, name: '/leaderboard', description: "View the server leaderboard.", category: 'leveling' },
-  { id: 6, name: '/balance', description: "Check your balance.", category: 'economy' },
-  { id: 7, name: '/pay', description: "Send currency to another user.", category: 'economy' },
-  { id: 8, name: '/daily', description: "Claim your daily reward.", category: 'economy' },
-  { id: 9, name: '/slots', description: "Play the slot machine.", category: 'economy' },
-  { id: 10, name: '/blackjack', description: "Play blackjack against the dealer.", category: 'economy' },
-  { id: 11, name: '/coinflip', description: "Flip a coin and bet on the outcome.", category: 'economy' },
-  { id: 12, name: '/clicker', description: "Click to earn currency.", category: 'economy' },
-  { id: 13, name: '/lootbox', description: "Roll a lootbox for rare rewards.", category: 'economy' },
-  { id: 14, name: '/give', description: "Give XP or balance to a user (Admin).", category: 'misc' },
-  { id: 15, name: '/take', description: "Take XP or balance from a user (Admin).", category: 'misc' },
-  { id: 16, name: '/help', description: "Display the help menu.", category: 'misc' },
-  { id: 17, name: '/invite', description: "Get the bot's invite link.", category: 'misc' },
-  { id: 18, name: '/about', description: "Learn more about Status Bot.", category: 'misc' },
-  { id: 19, name: '/profile', description: "View your profile information (Coming Soon).", category: 'misc' }
+  // Leveling Commands
+  { id: 1, name: '/rank', description: "View a user's rank card and XP stats.", category: 'leveling' },
+  { id: 2, name: '/leaderboard', description: "View the server XP leaderboard.", category: 'leveling' },
+  
+  // Economy Commands
+  { id: 3, name: '/balance', description: "Check your currency balance.", category: 'economy' },
+  { id: 4, name: '/pay', description: "Send currency to another user.", category: 'economy' },
+  { id: 5, name: '/daily', description: "Claim your daily currency reward.", category: 'economy' },
+  { id: 6, name: '/slots', description: "Play the slot machine mini-game.", category: 'economy' },
+  { id: 7, name: '/blackjack', description: "Play blackjack against the dealer.", category: 'economy' },
+  { id: 8, name: '/coinflip', description: "Flip a coin and bet on the outcome.", category: 'economy' },
+  { id: 9, name: '/clicker', description: "Click to earn currency.", category: 'economy' },
+  { id: 10, name: '/lootbox', description: "Roll a lootbox for rare rewards.", category: 'economy' },
+  
+  // Misc Commands
+  { id: 11, name: '/profile', description: "View your global profile and stats.", category: 'misc' },
+  { id: 12, name: '/help', description: "Display all available commands.", category: 'misc' },
+  { id: 13, name: '/invite', description: "Get the bot's invite link.", category: 'misc' },
+  { id: 14, name: '/about', description: "Learn more about Status Bot.", category: 'misc' },
+  
+  // Admin Commands
+  { id: 15, name: '/give', description: "Give XP or balance to a user (Admin).", category: 'admin' },
+  { id: 16, name: '/take', description: "Take XP or balance from a user (Admin).", category: 'admin' }
 ])
 
 const filteredCommands = computed(() => {

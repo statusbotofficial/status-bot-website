@@ -9,6 +9,22 @@
       <p class="premium-description">Pick from one of our premium purchase plans for Status Bot.</p>
     </div>
 
+    <!-- Premium Info Section -->
+    <div class="premium-info-section">
+      <div class="info-item">
+        <span class="info-check">✓</span>
+        <span class="info-text">Instant activation</span>
+      </div>
+      <div class="info-item">
+        <span class="info-check">✓</span>
+        <span class="info-text">Cancel anytime</span>
+      </div>
+      <div class="info-item">
+        <span class="info-check">✓</span>
+        <span class="info-text">7-day refund</span>
+      </div>
+    </div>
+
     <div class="plans-container">
       <!-- Free Plan -->
       <div class="plan-card">
@@ -36,12 +52,16 @@
             Community support
           </li>
         </ul>
-        <button class="plan-button">Get Started</button>
+        <button class="plan-button" :disabled="!hasPremium" :class="{ 'current-plan': !hasPremium }">
+          {{ !hasPremium ? 'Current Plan' : 'Upgrade' }}
+        </button>
+        <button class="see-features-btn" @click="scrollToFeatures('free')">See all features</button>
       </div>
 
       <!-- Premium Plan -->
-      <div class="plan-card premium-highlighted">
-        <div class="plan-badge">Most Popular</div>
+      <div class="plan-card" :class="{ 'premium-highlighted': hasPremium }">
+        <div v-if="hasPremium" class="plan-badge">Your Plan</div>
+        <div v-else class="plan-badge">Most Popular</div>
         <div class="plan-name">
           Premium<span></span>
         </div>
@@ -70,40 +90,45 @@
             Priority support
           </li>
         </ul>
-        <button class="plan-button premium-button" @click="showPremiumModal = true">Get Premium</button>
+        <button v-if="hasPremium" class="plan-button" disabled :class="{ 'current-plan': true }">
+          Current Plan
+        </button>
+        <button v-else class="plan-button premium-button" @click="showPremiumModal = true">
+          Get Premium
+        </button>
+        <button class="see-features-btn" @click="scrollToFeatures('premium')">See all features</button>
       </div>
+    </div>
 
-      <!-- Custom Bot Plan -->
-      <div class="plan-card">
-        <div class="plan-name">
-          Custom Bot<span></span>
+    <!-- Full Features Section -->
+    <div class="features-section" ref="featuresSection">
+      <h2 class="features-title">All Premium Features</h2>
+      <div class="features-grid">
+        <!-- Free Features -->
+        <div class="feature-column">
+          <h3 class="feature-column-title">✓ Free Plan</h3>
+          <ul class="feature-list">
+            <li class="feature-list-item free"><span class="check">✓</span> Basic commands</li>
+            <li class="feature-list-item free"><span class="check">✓</span> Status tracking</li>
+            <li class="feature-list-item free"><span class="check">✓</span> Leveling system</li>
+            <li class="feature-list-item free"><span class="check">✓</span> Economy mini-games</li>
+            <li class="feature-list-item free"><span class="check">✓</span> Community support</li>
+            <li class="feature-list-item free"><span class="check">✓</span> Voice chat XP</li>
+          </ul>
         </div>
-        <div class="plan-price">$7.99<span class="plan-period">/m</span></div>
-        <div class="plan-divider">or</div>
-        <div class="plan-boost">
-          <span class="boost-icon">🚀</span>
-          Boost Our Server
+
+        <!-- Premium Features -->
+        <div class="feature-column premium-features">
+          <h3 class="feature-column-title premium">⭐ Premium Plan</h3>
+          <ul class="feature-list">
+            <li class="feature-list-item premium"><span class="check">✓</span> Everything in Free</li>
+            <li class="feature-list-item premium"><span class="check">✓</span> 2x XP multiplier</li>
+            <li class="feature-list-item premium"><span class="check">✓</span> Exclusive commands</li>
+            <li class="feature-list-item premium"><span class="check">✓</span> Luck boost in economy</li>
+            <li class="feature-list-item premium"><span class="check">✓</span> Priority support</li>
+            <li class="feature-list-item premium"><span class="check">✓</span> Premium badge</li>
+          </ul>
         </div>
-        <h3 class="plan-features-title">Features:</h3>
-        <ul class="plan-features">
-          <li class="plan-feature">
-            <span class="feature-checkmark">✓</span>
-            Everything in Premium
-          </li>
-          <li class="plan-feature">
-            <span class="feature-checkmark">✓</span>
-            Custom bot branding
-          </li>
-          <li class="plan-feature">
-            <span class="feature-checkmark">✓</span>
-            Dedicated support team
-          </li>
-          <li class="plan-feature">
-            <span class="feature-checkmark">✓</span>
-            Custom commands & automations
-          </li>
-        </ul>
-        <button class="plan-button">Get Custom Bot</button>
       </div>
     </div>
 
@@ -130,9 +155,34 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useAuthStore } from '../stores/auth'
 
+const authStore = useAuthStore()
 const showPremiumModal = ref(false)
+const hasPremium = ref(false)
+const featuresSection = ref(null)
+
+// Check if user has premium
+onMounted(async () => {
+  if (authStore.user?.id) {
+    try {
+      const response = await fetch(`https://status-bot-backend.onrender.com/api/user-premium/${authStore.user.id}`)
+      if (response.ok) {
+        const data = await response.json()
+        hasPremium.value = data.hasPremium || false
+      }
+    } catch (err) {
+      console.error('Error fetching premium status:', err)
+    }
+  }
+})
+
+const scrollToFeatures = (plan) => {
+  if (featuresSection.value) {
+    featuresSection.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
 </script>
 
 <style scoped>
@@ -340,6 +390,21 @@ const showPremiumModal = ref(false)
   box-shadow: 0 15px 35px rgba(81, 112, 255, 0.4);
 }
 
+.plan-button:disabled,
+.plan-button.current-plan {
+  background: rgba(81, 112, 255, 0.15);
+  border-color: rgba(81, 112, 255, 0.5);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.plan-button:disabled:hover,
+.plan-button.current-plan:hover {
+  background: rgba(81, 112, 255, 0.15);
+  box-shadow: none;
+  transform: none;
+}
+
 @media (max-width: 1024px) {
   .premium-container {
     padding: 0 30px;
@@ -535,5 +600,167 @@ const showPremiumModal = ref(false)
 
 .btn-text {
   font-size: 16px;
+}
+
+/* Premium Info Section */
+.premium-info-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.info-check {
+  font-size: 24px;
+  color: var(--primary-color);
+}
+
+.info-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+/* Features Section */
+.features-section {
+  width: 100%;
+  margin-top: 80px;
+  padding-top: 60px;
+  border-top: 2px solid rgba(81, 112, 255, 0.2);
+}
+
+.features-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 900;
+  margin: 0 0 50px 0;
+  color: var(--text-primary);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.feature-column-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+}
+
+.feature-column-title.premium {
+  color: var(--primary-color);
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.feature-list-item .check {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+.feature-list-item.premium .check {
+  color: var(--primary-color);
+}
+
+.feature-list-item.free .check {
+  opacity: 0.3;
+}
+
+/* See All Features Button */
+.see-features-btn {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.15), rgba(81, 112, 255, 0.05));
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+}
+
+.see-features-btn:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.25), rgba(81, 112, 255, 0.15));
+  box-shadow: 0 8px 16px rgba(81, 112, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .premium-info-section {
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+
+  .info-text {
+    font-size: 14px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .features-title {
+    font-size: 28px;
+    margin-bottom: 35px;
+  }
+
+  .feature-column-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .feature-list-item {
+    font-size: 15px;
+  }
+
+  .see-features-btn {
+    width: 100%;
+  }
 }
 </style>

@@ -53,9 +53,10 @@
         <p>Follow these steps to set up Status Bot in your Discord server:</p>
         <ul>
           <li><strong>Invite the Bot:</strong> Use the invite button on our website to add Status Bot to your server. You need administrator or manage server permissions.</li>
-          <li><strong>Enable Systems:</strong> Configure which features you want to use (Status Tracking, Leveling, Economy, Welcome Messages).</li>
-          <li><strong>Customize Settings:</strong> Use slash commands to set up notifications channels, XP rates, currency symbols, and more.</li>
-          <li><strong>Test It Out:</strong> Run commands to verify everything is working correctly for your server.</li>
+          <li><strong>Access Dashboard:</strong> Visit the Status Bot dashboard and connect your Discord account to manage your servers.</li>
+          <li><strong>Configure Features:</strong> Select your server and enable the systems you want to use (Leveling, Economy, etc.) directly from the dashboard.</li>
+          <li><strong>Customize Settings:</strong> Adjust XP rates, currency symbols, notification channels, and more through the intuitive dashboard interface.</li>
+          <li><strong>Save & Deploy:</strong> Your settings apply immediately to your server.</li>
         </ul>
       </div>
 
@@ -85,93 +86,63 @@
 
       <div class="docs-section" id="command-reference">
         <h2>Command Reference</h2>
-        <p>Status Bot uses slash commands for easy interaction. Here are the main command categories:</p>
+        <p>Status Bot uses slash commands for easy interaction. All configuration is done through the dashboard, but here are the commands members use to interact with the bot:</p>
+        
+        <p><strong>Leveling Commands</strong></p>
         <ul>
-          <li>
-            <strong>/status track</strong> - Track a user's status
-            <ul>
-              <li>Usage: <code>/status track [user]</code></li>
-              <li>Get notified when the user changes status</li>
-            </ul>
-          </li>
-          <li>
-            <strong>/leveling set</strong> - Configure XP settings
-            <ul>
-              <li>Set XP per message and voice time</li>
-              <li>Configure allowed channels</li>
-              <li>Enable/disable for your server</li>
-            </ul>
-          </li>
-          <li>
-            <strong>/economy set</strong> - Configure economy settings
-            <ul>
-              <li>Set per-message earnings</li>
-              <li>Configure currency symbol</li>
-              <li>Enable/disable mini-games</li>
-            </ul>
-          </li>
-          <li>
-            <strong>/balance</strong> - Check your server currency balance
-            <ul>
-              <li>Usage: <code>/balance [@user]</code></li>
-              <li>View your or another user's balance</li>
-            </ul>
-          </li>
-          <li>
-            <strong>/daily</strong> - Claim daily currency reward
-            <ul>
-              <li>Claim once per day for currency</li>
-              <li>Streak rewards for consecutive days</li>
-            </ul>
-          </li>
-          <li>
-            <strong>/coinflip</strong> - Flip a coin for currency
-            <ul>
-              <li>Usage: <code>/coinflip [amount]</code></li>
-              <li>Double or lose your bet</li>
-            </ul>
-          </li>
-          <li>
-            <strong>/welcome set</strong> - Configure welcome messages
-            <ul>
-              <li>Set title, description, and images</li>
-              <li>Configure notification channel</li>
-              <li>Track member goals</li>
-            </ul>
-          </li>
-          <li>
-            <strong>/help</strong> - Display command help
-            <ul>
-              <li>Shows all available commands and usage</li>
-            </ul>
-          </li>
+          <li><strong>/rank</strong> - View your current level, XP progress, and rank in the server</li>
+          <li><strong>/leaderboard</strong> - See the top leveled members in your server</li>
+        </ul>
+        
+        <p><strong>Economy Commands</strong></p>
+        <ul>
+          <li><strong>/balance</strong> - Check your or another user's currency balance</li>
+          <li><strong>/pay</strong> - Send currency to another server member</li>
+          <li><strong>/daily</strong> - Claim your daily currency reward with streak bonuses</li>
+          <li><strong>/slots</strong> - Play slots for currency</li>
+          <li><strong>/blackjack</strong> - Play blackjack against the dealer</li>
+          <li><strong>/coinflip</strong> - Flip a coin for currency</li>
+          <li><strong>/clicker</strong> - Click your way to earnings</li>
+          <li><strong>/lootbox</strong> - Open a mystery lootbox for random rewards</li>
+        </ul>
+        
+        <p><strong>Utility Commands</strong></p>
+        <ul>
+          <li><strong>/profile</strong> - View your server profile with stats and achievements</li>
+          <li><strong>/help</strong> - Display all available commands</li>
+          <li><strong>/invite</strong> - Get the invite link to add Status Bot to another server</li>
+          <li><strong>/about</strong> - Learn about Status Bot</li>
         </ul>
       </div>
 
       <div class="docs-section" id="setup-monitoring">
-        <h2>Setting Up Systems</h2>
-        <p><strong>Step 1: Enable Leveling System</strong></p>
+        <h2>Configuring Your Server</h2>
+        <p>All configuration is done through the Status Bot dashboard. Here's what you can customize:</p>
+        
+        <p><strong>Leveling System</strong></p>
         <ul>
-          <li>Use <code>/leveling set enabled true</code></li>
-          <li>Set XP per message with <code>/leveling set xp_per_message [amount]</code></li>
-          <li>Optionally restrict to specific channels with <code>/leveling set allowed_channels [#channel]</code></li>
+          <li>Enable or disable the leveling system for your server</li>
+          <li>Set XP earned per message</li>
+          <li>Configure voice chat XP (if enabled)</li>
+          <li>Choose which channels to track XP in (optional)</li>
         </ul>
-        <p><strong>Step 2: Set Up Economy</strong></p>
+        
+        <p><strong>Economy System</strong></p>
         <ul>
-          <li>Use <code>/economy set enabled true</code></li>
-          <li>Configure per-message earnings with <code>/economy set per_message [amount]</code></li>
-          <li>Set currency symbol with <code>/economy set currency [symbol]</code></li>
+          <li>Enable or disable the economy system</li>
+          <li>Set currency earned per message</li>
+          <li>Customize your currency symbol</li>
+          <li>Control which mini-games are available</li>
         </ul>
-        <p><strong>Step 3: Configure Welcome Messages</strong></p>
+        
+        <p><strong>In-Game Commands</strong></p>
+        <p>Once configured in the dashboard, members use these slash commands to interact with the systems:</p>
         <ul>
-          <li>Use <code>/welcome set enabled true</code></li>
-          <li>Set notification channel with <code>/welcome set channel [#channel]</code></li>
-          <li>Customize message with title, description, and images</li>
-        </ul>
-        <p><strong>Step 4: Start Tracking Status</strong></p>
-        <ul>
-          <li>Use <code>/status track [user]</code> to monitor specific users</li>
-          <li>Bot will notify when they change status</li>
+          <li><strong>/rank</strong> - View your current level and XP</li>
+          <li><strong>/balance</strong> - Check your currency balance</li>
+          <li><strong>/daily</strong> - Claim daily currency reward</li>
+          <li><strong>/profile</strong> - View your server profile</li>
+          <li>Economy games: <strong>/coinflip</strong>, <strong>/slots</strong>, <strong>/blackjack</strong>, and more</li>
         </ul>
       </div>
 
@@ -216,27 +187,21 @@
         <h2>Troubleshooting</h2>
         <p><strong>Bot not responding to commands?</strong></p>
         <ul>
-          <li>Ensure Status Bot has permission to send messages in the channel</li>
-          <li>Check that you're using the correct slash command syntax (start with <code>/</code>)</li>
-          <li>Verify the bot is online by checking your server member list</li>
+          <li>Make sure the bot is in your server and has proper permissions</li>
+          <li>Try using <code>/help</code> to see available commands</li>
+          <li>Check that your server has the bot enabled in the dashboard</li>
         </ul>
-        <p><strong>Not earning XP or currency?</strong></p>
+        <p><strong>XP or currency not being earned?</strong></p>
         <ul>
-          <li>Check if the system is enabled: <code>/leveling set enabled</code> or <code>/economy set enabled</code></li>
-          <li>Verify you're not in a cooldown period (60 second XP cooldown)</li>
-          <li>Ensure the channel isn't excluded from earning (if restrictions are set)</li>
+          <li>Verify that Leveling or Economy is enabled in the dashboard for your server</li>
+          <li>Make sure you're sending messages in allowed channels</li>
+          <li>Check the bot has message read permissions in your channels</li>
         </ul>
-        <p><strong>Welcome messages not showing?</strong></p>
+        <p><strong>Commands not showing in Discord?</strong></p>
         <ul>
-          <li>Verify the welcome system is enabled with <code>/welcome set enabled</code></li>
-          <li>Check the notification channel is set and bot has permissions</li>
-          <li>Ensure new member join events are being registered</li>
-        </ul>
-        <p><strong>Status tracking not working?</strong></p>
-        <ul>
-          <li>Verify the user is actually in the server</li>
-          <li>Check bot has proper permissions in the channel</li>
-          <li>Make sure notifications channel is configured</li>
+          <li>Invite the bot to your server again with the correct permissions</li>
+          <li>Refresh your Discord client or app</li>
+          <li>Clear your Discord cache and restart</li>
         </ul>
         <p><strong>Need more help?</strong></p>
         <p>Visit our <router-link to="/support">Support page</router-link> to get in touch with our team or check the FAQ.</p>
@@ -245,36 +210,36 @@
       <div class="docs-section" id="best-practices">
         <h2>Best Practices</h2>
         <ul>
-          <li><strong>Enable Systems Gradually:</strong> Start with one system (e.g., leveling) and expand as you get comfortable with configuration</li>
-          <li><strong>Customize for Your Community:</strong> Adjust XP rates, currency earnings, and messages to fit your server's size and culture</li>
-          <li><strong>Use Dedicated Channels:</strong> Create separate channels for welcome messages and notifications to keep the server organized</li>
-          <li><strong>Test Commands:</strong> After configuration, test commands in a private channel to ensure everything works</li>
-          <li><strong>Set Reasonable XP Rates:</strong> Higher rates can cause members to level up too quickly; find the right balance</li>
-          <li><strong>Regular Configuration Reviews:</strong> Periodically review your settings to ensure they still meet your server's needs</li>
+          <li><strong>Configure in Dashboard:</strong> Use the dashboard to enable/disable systems and customize settings for your server</li>
+          <li><strong>Enable Systems Gradually:</strong> Start with one system (e.g., leveling) and expand as you get comfortable with the features</li>
+          <li><strong>Customize for Your Community:</strong> Adjust XP rates and currency earnings to fit your server's size and activity level</li>
+          <li><strong>Set Reasonable XP Rates:</strong> Higher rates can cause members to level up too quickly; find the right balance for your community</li>
           <li><strong>Communicate Changes:</strong> Let members know when you enable new systems or change rates</li>
-          <li><strong>Consider Premium:</strong> Use Premium for enhanced features if you want to reward your most active members</li>
+          <li><strong>Review Settings Periodically:</strong> Check your dashboard settings to ensure they still meet your server's needs</li>
+          <li><strong>Encourage Engagement:</strong> Use premium features to reward your most active members and encourage participation</li>
+          <li><strong>Monitor System Health:</strong> Check the commands page to see all available features and keep members informed</li>
         </ul>
       </div>
 
       <div class="docs-section" id="faq">
         <h2>FAQ</h2>
         <p><strong>Q: How much XP do I earn per message?</strong></p>
-        <p>A: The default is 10 XP per message, but server admins can customize this. Premium members earn 2x XP.</p>
+        <p>A: The default is 10 XP per message, but server admins can customize this in the dashboard. Premium members earn 2x XP.</p>
         
         <p><strong>Q: How do I check my level and XP?</strong></p>
-        <p>A: Use the <code>/leaderboard</code> command to see server rankings or check your profile for personal stats.</p>
+        <p>A: Use <code>/rank</code> to see your personal stats or <code>/leaderboard</code> to see server rankings.</p>
         
         <p><strong>Q: Can I earn currency while AFK?</strong></p>
-        <p>A: The bot requires actual message activity to earn currency. Just being in a voice channel earns voice XP but not economy rewards.</p>
+        <p>A: The bot requires actual message activity to earn currency. Voice chat does not earn economy currency.</p>
         
         <p><strong>Q: What can I do with my currency?</strong></p>
-        <p>A: Use currency for mini-games like Coinflip, Lootbox, and Clicker. Premium members have access to additional cosmetics and items.</p>
+        <p>A: Use currency for mini-games like Coinflip, Slots, Blackjack, Lootbox, and Clicker. Premium members can earn more!</p>
         
         <p><strong>Q: Do I lose XP or currency if I leave the server?</strong></p>
-        <p>A: Your data is stored per-guild. If you leave and rejoin, your progress will be there if the data hasn't been purged.</p>
+        <p>A: Your data is stored per-guild. If you leave and rejoin, your progress will be there unless the server admin has cleared old data.</p>
         
-        <p><strong>Q: How do status notifications work?</strong></p>
-        <p>A: When you track a user, the bot monitors their status. Any change (online, idle, DND, offline) triggers a notification in your configured channel.</p>
+        <p><strong>Q: How do I enable/disable systems in my server?</strong></p>
+        <p>A: Visit the Status Bot dashboard, select your server, and enable/disable Leveling and Economy systems as you prefer.</p>
       </div>
 
       <div class="docs-section" id="contact">
