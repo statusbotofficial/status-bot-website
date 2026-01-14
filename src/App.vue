@@ -70,10 +70,8 @@
       <!-- Page Progress Bar -->
       <div v-if="isNavigating" class="page-progress-bar" :style="{ width: progressWidth + '%' }"></div>
 
-      <!-- Page Content with Transition -->
-      <Transition name="page-fade" mode="out-in">
-        <router-view :key="$route.fullPath" />
-      </Transition>
+      <!-- Page Content -->
+      <router-view />
     </main>
 
     <footer class="footer">
@@ -1078,19 +1076,5 @@ main {
   transition: width 0.3s ease;
   z-index: 999;
   box-shadow: 0 0 10px rgba(81, 112, 255, 0.6);
-}
-
-/* Page transition animations */
-.page-fade-enter-active,
-.page-fade-leave-active {
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.page-fade-enter-from {
-  opacity: 0;
-}
-
-.page-fade-leave-to {
-  opacity: 0;
 }
 </style>
