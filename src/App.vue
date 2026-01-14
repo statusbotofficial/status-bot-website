@@ -67,16 +67,11 @@
     </header>
 
     <main>
-      <!-- Page Transition Overlay -->
-      <div v-if="isNavigating" class="page-transition-overlay">
-        <div class="page-loader">
-          <div class="loader-spinner"></div>
-          <p class="loader-text">Loading...</p>
-        </div>
-      </div>
+      <!-- Page Progress Bar -->
+      <div v-if="isNavigating" class="page-progress-bar" :style="{ width: progressWidth + '%' }"></div>
 
       <!-- Page Content with Transition -->
-      <Transition name="page-fade" mode="out-in" @enter="onTransitionEnter" @leave="onTransitionLeave">
+      <Transition name="page-fade" mode="out-in">
         <router-view :key="$route.fullPath" />
       </Transition>
     </main>
@@ -120,6 +115,8 @@ const dropdownOpen = ref(false)
 const showNotifications = ref(false)
 const notifications = ref([])
 const isNavigating = ref(false)
+const progressWidth = ref(0)
+let progressInterval = null
 const notificationCount = computed(() => notifications.value.filter(n => !n.read).length)
 
 const isLoggedIn = computed(() => authStore.isLoggedIn)
@@ -221,12 +218,29 @@ const formatTime = (timestamp) => {
   }
 }
 
-const onTransitionEnter = () => {
-  // Transition is entering
+const startProgressBar = () => {
+  isNavigating.value = true
+  progressWidth.value = 10
+
+  if (progressInterval) clearInterval(progressInterval)
+  
+  progressInterval = setInterval(() => {
+    if (progressWidth.value < 90) {
+      // Gradually increase progress with diminishing speed
+      progressWidth.value += Math.random() * (90 - progressWidth.value) * 0.15
+    }
+  }, 200)
 }
 
-const onTransitionLeave = () => {
-  isNavigating.value = false
+const completeProgressBar = () => {
+  if (progressInterval) clearInterval(progressInterval)
+  
+  progressWidth.value = 100
+  
+  setTimeout(() => {
+    isNavigating.value = false
+    progressWidth.value = 0
+  }, 300)
 }
 
 const removeExpiredNotifications = (notifs) => {
@@ -341,9 +355,13 @@ onMounted(() => {
   // Setup route navigation listeners
   router.beforeEach((to, from, next) => {
     if (to.path !== from.path) {
-      isNavigating.value = true
+      startProgressBar()
     }
     next()
+  })
+
+  router.afterEach(() => {
+    completeProgressBar()
   })
 
   // Reload notifications when user logs in
@@ -1049,61 +1067,17 @@ main {
   }
 }
 
-/* Page Transition Animations */
-.page-transition-overlay {
+/* Page Progress Bar */
+.page-progress-bar {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), rgba(81, 112, 255, 0.8));
+  width: 0%;
+  transition: width 0.3s ease;
   z-index: 999;
-  backdrop-filter: blur(3px);
-  animation: overlayFadeIn 0.3s ease;
-}
-
-@keyframes overlayFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.page-loader {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.loader-spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid rgba(81, 112, 255, 0.2);
-  border-top: 4px solid var(--primary-color);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loader-text {
-  color: var(--text-secondary);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1px;
+  box-shadow: 0 0 10px rgba(81, 112, 255, 0.6);
 }
 
 /* Page transition animations */
