@@ -865,6 +865,84 @@ const scrollToFeatures = (plan) => {
   }
 }
 
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 25px 18px;
+    width: 95%;
+    border-radius: 14px;
+  }
+
+  .modal-close {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .modal-header-content h2 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+  }
+
+  .modal-header-content p {
+    font-size: 14px;
+  }
+
+  .modal-header-content {
+    margin-bottom: 20px;
+  }
+
+  .support-options {
+    gap: 12px;
+  }
+
+  .support-card {
+    padding: 18px 16px;
+  }
+
+  .card-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .card-price {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .card-price span {
+    font-size: 12px;
+  }
+
+  .card-benefits {
+    margin: 0 0 14px 0;
+    gap: 5px;
+  }
+
+  .card-benefits li {
+    font-size: 11px;
+  }
+
+  .card-cta {
+    padding: 8px 16px;
+    font-size: 11px;
+  }
+
+  .modal-footer {
+    padding-top: 15px;
+  }
+
+  .modal-footer p {
+    font-size: 12px;
+  }
+}
+
 /* Premium Info Section */
 .premium-info-section {
   display: flex;
