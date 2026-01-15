@@ -273,6 +273,11 @@
               </div>
 
               <div class="setting-item">
+                <label>XP Cooldown (seconds)</label>
+                <input v-model.number="levelingSettings.xpCooldown" type="number" min="1" max="300" class="input-field" placeholder="60" />
+              </div>
+
+              <div class="setting-item">
                 <label>Level up channel</label>
                 <div class="channel-selector">
                   <input
@@ -735,6 +740,7 @@ const levelingSettings = reactive({
   enabled: true,
   xpPerMessage: 10,
   voiceXp: 10,
+  xpCooldown: 60,
   levelUpMessage: '🎉 {user} has reached Level {level}!',
   levelUpChannel: '',
   allowedChannels: '',
@@ -1124,6 +1130,7 @@ const loadAllSettings = async (guildId) => {
         enabled: data.enabled || false,
         xpPerMessage: data.xp_per_message || 10,
         voiceXp: data.vc_xp_per_minute || 2,
+        xpCooldown: data.xp_cooldown || 60,
         levelUpMessage: data.level_up_message || "🎉 {user} reached level {level}!",
         levelUpChannel: data.level_up_channel || '',
         allowedChannels: Array.isArray(data.allowed_xp_channels) ? data.allowed_xp_channels.join(', ') : ''
