@@ -70,6 +70,43 @@ let pollInterval = null
 
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 const OFFLINE_THRESHOLD = 5 * 60 * 1000 // 5 minutes
+const INCIDENT_EXPIRY_DAYS = 7
+
+// Load incidents from localStorage
+const loadIncidents = () => {
+  try {
+    const stored = localStorage.getItem('status_incidents')
+    if (!stored) return []
+    
+    const data = JSON.parse(stored)
+    const now = Date.now()
+    const sevenDaysMs = INCIDENT_EXPIRY_DAYS * 24 * 60 * 60 * 1000
+    
+    // Filter out incidents older than 7 days
+    const validIncidents = data.filter(incident => {
+      return (now - incident.startTime) < sevenDaysMs
+    })
+    
+    // Save filtered list back to localStorage
+    if (validIncidents.length !== data.length) {
+      saveIncidents(validIncidents)
+    }
+    
+    return validIncidents
+  } catch (error) {
+    console.error('Error loading incidents:', error)
+    return []
+  }
+}
+
+// Save incidents to localStorage
+const saveIncidents = (incidentsToSave) => {
+  try {
+    localStorage.setItem('status_incidents', JSON.stringify(incidentsToSave))
+  } catch (error) {
+    console.error('Error saving incidents:', error)
+  }
+}
 
 // Fetch bot stats from backend
 const fetchBotStats = async () => {
@@ -131,13 +168,16 @@ const addIncident = (type, startTime) => {
   const existingIncident = incidents.value.find(inc => !inc.resolved)
   if (existingIncident) return // Don't add duplicate
   
-  incidents.value.unshift({
+  const newIncident = {
     id: Date.now(),
     type,
     startTime,
     endTime: null,
     resolved: false
-  })
+  }
+  
+  incidents.value.unshift(newIncident)
+  saveIncidents(incidents.value)
 }
 
 // Resolve last incident
@@ -146,6 +186,7 @@ const resolveLastIncident = () => {
   if (lastIncident) {
     lastIncident.resolved = true
     lastIncident.endTime = Date.now()
+    saveIncidents(incidents.value)
   }
 }
 
@@ -172,6 +213,9 @@ const formatDuration = (startTime, endTime) => {
 }
 
 onMounted(() => {
+  // Load incidents from localStorage
+  incidents.value = loadIncidents()
+  
   // Initial fetch
   fetchBotStats()
   
