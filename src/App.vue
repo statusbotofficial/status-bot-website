@@ -60,7 +60,10 @@
           <div class="dropdown-menu" :class="{ show: dropdownOpen }">
             <router-link to="/servers" class="dropdown-item">Dashboard</router-link>
             <router-link to="/settings" class="dropdown-item">Settings</router-link>
-            <button class="dropdown-item logout" @click="handleLogout">Logout</button>
+            <button class="dropdown-item logout" @click="handleLogout" :disabled="isLoggingOut">
+              <span v-if="isLoggingOut" class="spinner logout-spinner"></span>
+              {{ isLoggingOut ? 'Logging out...' : 'Logout' }}
+            </button>
           </div>
         </div>
       </div>
@@ -115,6 +118,7 @@ const notifications = ref([])
 const isNavigating = ref(false)
 const progressWidth = ref(0)
 let progressInterval = null
+const isLoggingOut = ref(false)
 const notificationCount = computed(() => notifications.value.filter(n => !n.read).length)
 
 const isLoggedIn = computed(() => authStore.isLoggedIn)
@@ -173,10 +177,14 @@ const handleLogin = () => {
   authStore.login()
 }
 
-const handleLogout = () => {
+const handleLogout = async () => {
+  isLoggingOut.value = true
+  // Simulate logout animation delay
+  await new Promise(resolve => setTimeout(resolve, 800))
   authStore.logout()
   dropdownOpen.value = false
   menuOpen.value = false
+  isLoggingOut.value = false
 }
 
 const addNotification = (title, message) => {
@@ -896,6 +904,23 @@ onMounted(() => {
 .dropdown-item.logout:hover {
   background-color: rgba(255, 94, 94, 0.2);
   color: #ff5e5e;
+}
+
+.dropdown-item.logout:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.logout-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  border: 2px solid rgba(255, 94, 94, 0.3);
+  border-top-color: #ff5e5e;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
 }
 
 .user-chevron {
