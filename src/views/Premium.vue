@@ -208,19 +208,19 @@
             <div class="card-cta">Boost Server</div>
           </a>
 
-          <!-- Gift Card Option -->
-          <router-link to="/settings?tab=gifts" class="support-card gift-card" @click="showPremiumModal = false">
-            <div class="card-icon">🏆</div>
-            <div class="card-title">Receive as Gift</div>
-            <div class="card-price">From Friends</div>
+          <!-- Contact Card Option -->
+          <div class="support-card contact-card" @click="window.open('https://discord.gg/Kd2MckVxED', '_blank')">
+            <div class="card-icon">💬</div>
+            <div class="card-title">Get Help</div>
+            <div class="card-price">Support Team</div>
             <ul class="card-benefits">
-              <li>✓ Get Premium Gifted</li>
-              <li>✓ No Payment Needed</li>
-              <li>✓ Full Access</li>
-              <li>✓ Join Exclusive Community</li>
+              <li>✓ Questions Answered</li>
+              <li>✓ Premium Guidance</li>
+              <li>✓ Community Support</li>
+              <li>✓ Real People</li>
             </ul>
-            <div class="card-cta">Send a Gift</div>
-          </router-link>
+            <div class="card-cta">Contact Us</div>
+          </div>
         </div>
 
         <div class="modal-footer">
