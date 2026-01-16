@@ -423,6 +423,19 @@
                 />
               </div>
 
+              <div class="setting-item" v-if="statusSettings.messageId">
+                <label>Update Status Message</label>
+                <input
+                  v-model="statusSettings.customStatusMessage"
+                  type="text"
+                  class="input-field"
+                  placeholder="Enter custom status message"
+                />
+                <button @click="updateStatusMessage" class="select-btn" style="margin-top: 8px; width: 100%;">
+                  Update
+                </button>
+              </div>
+
               <div class="button-group">
                 <button @click="saveStatusSettings" class="save-btn" :class="{ 'save-success': statusSaveSuccess }">
                   {{ statusSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
@@ -762,6 +775,7 @@ const statusSettings = reactive({
   automatic: true,
   useEmbed: false,
   offlineMessage: 'User is currently offline',
+  customStatusMessage: '',
   messageId: null
 })
 
@@ -1407,6 +1421,32 @@ const saveStatusSettings = async () => {
     }
   } catch (error) {
     console.error('Error saving settings:', error)
+  }
+}
+
+const updateStatusMessage = async () => {
+  if (!selectedServer.value || !statusSettings.messageId || !statusSettings.customStatusMessage) return
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/update-message`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify({
+        messageId: statusSettings.messageId,
+        customMessage: statusSettings.customStatusMessage
+      })
+    })
+    if (response.ok) {
+      statusSaveSuccess.value = true
+      statusSettings.customStatusMessage = ''
+      setTimeout(() => {
+        statusSaveSuccess.value = false
+      }, 2000)
+    }
+  } catch (error) {
+    console.error('Error updating status message:', error)
   }
 }
 
