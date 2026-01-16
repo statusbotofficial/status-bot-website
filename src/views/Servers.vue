@@ -56,7 +56,7 @@
     <!-- Server Config View -->
     <div v-else class="config-view">
       <div class="config-header">
-        <button class="back-btn" @click="selectedServer = null">Back</button>
+        <button class="back-btn" @click="router.push('/servers')">Back</button>
         <div class="header-content">
           <img v-if="selectedServer.icon" :src="selectedServer.icon" :alt="selectedServer.name" class="server-icon-header" />
           <div v-else class="server-icon-header-placeholder">{{ selectedServer.name.charAt(0).toUpperCase() }}</div>
@@ -693,10 +693,13 @@
 
 <script setup>
 import { ref, computed, reactive, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 
 const authStore = useAuthStore()
+const router = useRouter()
+const route = useRoute()
 
 // State
 const loading = ref(false)
@@ -1009,6 +1012,7 @@ const loadServers = async () => {
 
 const selectServer = async (server) => {
   selectedServer.value = server
+  router.push(`/servers/${server.id}`)
   
   // Reset active section based on permissions
   if (server.buttonType === 'view') {
@@ -1633,6 +1637,53 @@ const escapeHtml = (text) => {
 onMounted(() => {
   loadServers()
 })
+
+// Watch route for guildId parameter and auto-select server
+watch(
+  () => route.params.guildId,
+  async (guildId) => {
+    if (guildId && servers.value.length > 0) {
+      const server = servers.value.find(s => s.id === guildId)
+      if (server) {
+        selectedServer.value = server
+        // Set section based on permissions
+        if (server.buttonType === 'view') {
+          activeSection.value = 'overview'
+        } else if (server.buttonType === 'configure') {
+          activeSection.value = 'overview'
+        }
+        // Load all data for the selected server
+        await Promise.all([
+          loadOverviewData(server.id),
+          loadLeaderboardData(server.id),
+          loadAllSettings(server.id)
+        ])
+      }
+    } else if (!guildId) {
+      selectedServer.value = null
+    }
+  },
+  { immediate: true }
+)
+
+// Also watch servers array to handle initial load with route parameter
+watch(
+  () => servers.value,
+  () => {
+    const guildId = route.params.guildId
+    if (guildId && servers.value.length > 0 && !selectedServer.value) {
+      const server = servers.value.find(s => s.id === guildId)
+      if (server) {
+        selectedServer.value = server
+        if (server.buttonType === 'view') {
+          activeSection.value = 'overview'
+        } else if (server.buttonType === 'configure') {
+          activeSection.value = 'overview'
+        }
+      }
+    }
+  }
+)
 </script>
 
 <style scoped>

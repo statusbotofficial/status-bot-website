@@ -18,6 +18,7 @@ const routes = [
   { path: '/support', component: Support },
   { path: '/status', component: Status },
   { path: '/servers', component: Servers },
+  { path: '/servers/:guildId', component: Servers },
   { path: '/settings', component: Settings },
   { path: '/privacy', component: Privacy },
   { path: '/terms', component: Terms },
