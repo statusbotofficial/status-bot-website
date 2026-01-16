@@ -423,22 +423,6 @@
                 />
               </div>
 
-              <div class="setting-item" v-if="statusSettings.messageId">
-                <label>Override Status</label>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                  <select v-model="statusSettings.overrideStatus" class="status-override-select">
-                    <option value="">None (Use actual)</option>
-                    <option value="online">🟢 Online</option>
-                    <option value="idle">🟡 Idle</option>
-                    <option value="dnd">🔴 Do Not Disturb</option>
-                    <option value="offline">⚫ Offline</option>
-                  </select>
-                  <button @click="updateStatusMessage" class="update-status-btn" :disabled="!statusSettings.overrideStatus">
-                    Update
-                  </button>
-                </div>
-              </div>
-
               <div class="button-group">
                 <button @click="saveStatusSettings" class="save-btn" :class="{ 'save-success': statusSaveSuccess }">
                   {{ statusSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
@@ -778,7 +762,6 @@ const statusSettings = reactive({
   automatic: true,
   useEmbed: false,
   offlineMessage: 'User is currently offline',
-  overrideStatus: '',
   messageId: null
 })
 
@@ -1424,31 +1407,6 @@ const saveStatusSettings = async () => {
     }
   } catch (error) {
     console.error('Error saving settings:', error)
-  }
-}
-
-const updateStatusMessage = async () => {
-  if (!selectedServer.value || !statusSettings.messageId) return
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/update-message`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authStore.token}`
-      },
-      body: JSON.stringify({
-        messageId: statusSettings.messageId,
-        overrideStatus: statusSettings.overrideStatus || null
-      })
-    })
-    if (response.ok) {
-      statusSaveSuccess.value = true
-      setTimeout(() => {
-        statusSaveSuccess.value = false
-      }, 2000)
-    }
-  } catch (error) {
-    console.error('Error updating status message:', error)
   }
 }
 
@@ -2461,53 +2419,6 @@ onMounted(() => {
 
 .reset-btn:hover {
   background: rgba(220, 53, 69, 0.35);
-}
-
-.status-override-select {
-  flex: 1;
-  padding: 10px 14px;
-  background: rgba(50, 50, 50, 0.8);
-  border: 1px solid rgba(81, 112, 255, 0.3);
-  border-radius: 6px;
-  color: #ccc;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.status-override-select:hover,
-.status-override-select:focus {
-  background: rgba(60, 60, 60, 0.9);
-  border-color: rgba(81, 112, 255, 0.5);
-  outline: none;
-}
-
-.status-override-select option {
-  background: #2a2a2a;
-  color: #ccc;
-}
-
-.update-status-btn {
-  padding: 10px 20px;
-  background: rgba(81, 112, 255, 0.15);
-  border: 1px solid rgba(81, 112, 255, 0.4);
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.update-status-btn:hover:not(:disabled) {
-  background: rgba(81, 112, 255, 0.25);
-  border-color: rgba(81, 112, 255, 0.6);
-  color: #fff;
-}
-
-.update-status-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* Modals */
