@@ -111,6 +111,39 @@
         </div>
       </div>
 
+      <!-- Premium Credits Section -->
+      <section class="dev-section">
+        <h2>Premium Credits Management</h2>
+        <div class="credits-panel">
+          <div class="input-group">
+            <label>User ID</label>
+            <input 
+              v-model="creditUserId" 
+              type="text" 
+              placeholder="e.g. 1362553254117904496"
+              class="dev-input"
+            >
+            <small style="color: #999; margin-top: 4px;">Discord user ID to grant credits to</small>
+          </div>
+
+          <div class="input-group">
+            <label>Credit Amount</label>
+            <input 
+              v-model.number="creditAmount" 
+              type="number" 
+              placeholder="e.g. 5"
+              min="1"
+              class="dev-input"
+            >
+            <small style="color: #999; margin-top: 4px;">Number of credits to grant</small>
+          </div>
+
+          <button @click="grantCredits" :disabled="grantingCredit" class="dev-btn credits-btn">
+            {{ grantingCredit ? 'Granting...' : 'Grant Credits' }}
+          </button>
+        </div>
+      </section>
+
       <!-- Billing Section -->
       <section class="dev-section">
         <h2>Billing History</h2>
@@ -165,6 +198,11 @@ const sendingNotification = ref(false)
 
 // Billing state
 const billingHistory = ref([])
+
+// Premium Credits state
+const creditUserId = ref('')
+const creditAmount = ref(1)
+const grantingCredit = ref(false)
 
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
@@ -279,6 +317,49 @@ const sendNotification = async () => {
     alert(`❌ Error: ${err.message}`)
   } finally {
     sendingNotification.value = false
+  }
+}
+
+const grantCredits = async () => {
+  const userId = creditUserId.value.trim()
+
+  if (!userId) {
+    alert('Please enter a User ID')
+    return
+  }
+
+  if (creditAmount.value < 1) {
+    alert('Credit amount must be at least 1')
+    return
+  }
+
+  grantingCredit.value = true
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/dev/grant-credits`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId,
+        amount: creditAmount.value
+      })
+    })
+
+    const data = await response.json()
+    if (response.ok) {
+      alert(`✓ Granted ${creditAmount.value} credit(s) to user ${userId}`)
+      creditUserId.value = ''
+      creditAmount.value = 1
+    } else {
+      alert(`❌ Error: ${data.message || 'Failed to grant credits'}`)
+    }
+  } catch (err) {
+    alert(`❌ Error: ${err.message}`)
+  } finally {
+    grantingCredit.value = false
   }
 }
 
@@ -634,6 +715,38 @@ onMounted(async () => {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.credits-panel {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.credits-btn {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.6));
+  color: #fff;
+  border: 1px solid rgba(81, 112, 255, 0.5);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.credits-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
+  box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
+}
+
+.credits-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .unauthorized {

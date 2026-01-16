@@ -239,35 +239,104 @@
           <!-- Gifts & Rewards Section -->
           <section v-show="activeSection === 'gifts'" class="settings-section">
             <h2>Gifts & Rewards</h2>
-            <p class="section-subtitle">Claim your available gifts and rewards</p>
+            <p class="section-subtitle">Claim your available gifts and rewards, or send premium gifts to friends</p>
 
-            <div v-if="loadingGifts" class="loading-state">
-              <div class="spinner"></div>
-              <p>Loading gifts...</p>
+            <!-- Premium Credits Section -->
+            <div class="section-panel credits-panel">
+              <div class="panel-header">Your Premium Credits</div>
+              <div class="credits-display">
+                <div class="credits-amount">{{ userCredits }}</div>
+                <div class="credits-label">Credits Available</div>
+                <p class="credits-info">💡 Server boost to earn credits, then gift premium to others!</p>
+              </div>
+              <button v-if="userCredits > 0" class="gift-button" @click="showGiftModal = true">
+                🎁 Send Premium Gift
+              </button>
+              <button v-else class="gift-button disabled" disabled>
+                No Credits Available
+              </button>
             </div>
 
-            <div v-else-if="gifts.length > 0" class="section-panel gifts-container">
-              <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
-                <div class="gift-icon-container">🎁</div>
-                <div class="gift-details">
-                  <div class="gift-name">{{ gift.name }}</div>
-                  <div class="gift-expiry" v-if="gift.dashboardExpiresAt || gift.expiresAt">Expires: {{ formatDate(gift.dashboardExpiresAt || gift.expiresAt) }}</div>
+            <!-- Gift Modal -->
+            <div v-if="showGiftModal" class="modal-overlay" @click="showGiftModal = false">
+              <div class="gift-modal" @click.stop>
+                <div class="modal-header">
+                  <h3>Send Premium Gift</h3>
+                  <button class="close-btn" @click="showGiftModal = false">✕</button>
                 </div>
-                <button
-                  :disabled="gift.claimed"
-                  :class="{ 'claimed': gift.claimed }"
-                  class="claim-btn"
-                  @click="claimGift(gift.id)"
-                >
-                  {{ gift.claimed ? 'Claimed' : 'Claim' }}
-                </button>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label>Recipient User ID</label>
+                    <input 
+                      v-model="giftForm.recipientId" 
+                      type="text" 
+                      placeholder="Enter Discord User ID"
+                      class="form-input"
+                    />
+                    <small>💡 You can find a user's ID by enabling Developer Mode in Discord settings, then right-clicking their profile</small>
+                  </div>
+                  <div class="form-group">
+                    <label>Gift Details</label>
+                    <div class="gift-details-info">
+                      <div class="detail-item">
+                        <strong>Cost:</strong> 1 Premium Credit
+                      </div>
+                      <div class="detail-item">
+                        <strong>Duration:</strong> 30 Days Premium
+                      </div>
+                      <div class="detail-item">
+                        <strong>After Gift:</strong> They get 3x tracked users
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="cancel-btn" @click="showGiftModal = false">Cancel</button>
+                  <button 
+                    class="confirm-btn" 
+                    @click="sendGift"
+                    :disabled="!giftForm.recipientId || sendingGift"
+                  >
+                    {{ sendingGift ? 'Sending...' : 'Send Gift' }}
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div v-else class="empty-state">
-              <div class="empty-icon">🎁</div>
-              <p>No gifts available right now</p>
-              <p class="empty-hint">Check back later or claim gifts from special events</p>
+            <hr style="margin: 30px 0;">
+
+            <!-- Available Gifts Section -->
+            <div class="section-panel">
+              <div class="panel-header">Available Gifts</div>
+
+              <div v-if="loadingGifts" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading gifts...</p>
+              </div>
+
+              <div v-else-if="gifts.length > 0" class="gifts-container">
+                <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
+                  <div class="gift-icon-container">🎁</div>
+                  <div class="gift-details">
+                    <div class="gift-name">{{ gift.name }}</div>
+                    <div class="gift-expiry" v-if="gift.dashboardExpiresAt || gift.expiresAt">Expires: {{ formatDate(gift.dashboardExpiresAt || gift.expiresAt) }}</div>
+                  </div>
+                  <button
+                    :disabled="gift.claimed"
+                    :class="{ 'claimed': gift.claimed }"
+                    class="claim-btn"
+                    @click="claimGift(gift.id)"
+                  >
+                    {{ gift.claimed ? 'Claimed' : 'Claim' }}
+                  </button>
+                </div>
+              </div>
+
+              <div v-else class="empty-state">
+                <div class="empty-icon">🎁</div>
+                <p>No gifts available right now</p>
+                <p class="empty-hint">Check back later or claim gifts from special events</p>
+              </div>
             </div>
           </section>
         </main>
@@ -289,6 +358,12 @@ const premiumExpiryDate = ref(null)
 const loadingGifts = ref(false)
 const gifts = ref([])
 const currentTheme = ref('default')
+const userCredits = ref(0)
+const showGiftModal = ref(false)
+const sendingGift = ref(false)
+const giftForm = ref({
+  recipientId: ''
+})
 
 const notificationPrefs = ref({
   updates: true,
@@ -410,6 +485,60 @@ const claimGift = async (giftId) => {
   }
 }
 
+const loadUserCredits = async () => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/premium-credits/${authStore.user.id}`, {
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      userCredits.value = data.credits || 0
+    }
+  } catch (err) {
+    console.error('Error loading credits:', err)
+  }
+}
+
+const sendGift = async () => {
+  if (!giftForm.value.recipientId) {
+    alert('Please enter a recipient User ID')
+    return
+  }
+
+  sendingGift.value = true
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/gift-premium`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        recipientId: giftForm.value.recipientId
+      })
+    })
+
+    const data = await response.json()
+
+    if (response.ok) {
+      alert('✨ Gift sent successfully! The recipient will receive their premium gift shortly.')
+      showGiftModal.value = false
+      giftForm.value.recipientId = ''
+      await loadUserCredits()
+    } else {
+      alert(`❌ Error: ${data.error || 'Failed to send gift'}`)
+    }
+  } catch (err) {
+    console.error('Error sending gift:', err)
+    alert('❌ An error occurred while sending the gift')
+  } finally {
+    sendingGift.value = false
+  }
+}
+
 const saveNotificationPrefs = async () => {
   localStorage.setItem('notificationPrefs', JSON.stringify(notificationPrefs.value))
   
@@ -524,6 +653,7 @@ onMounted(async () => {
   await fetchDiscordUser()
   await fetchPremiumStatus()
   await loadGifts()
+  await loadUserCredits()
   
   const savedTheme = localStorage.getItem('site_theme') || 'default'
   currentTheme.value = savedTheme
@@ -532,6 +662,13 @@ onMounted(async () => {
   const savedPrefs = localStorage.getItem('notificationPrefs')
   if (savedPrefs) {
     notificationPrefs.value = JSON.parse(savedPrefs)
+  }
+
+  // Check for tab parameter in URL
+  const urlParams = new URLSearchParams(window.location.search)
+  const tab = urlParams.get('tab')
+  if (tab) {
+    activeSection.value = tab
   }
 })
 </script>
@@ -1561,5 +1698,220 @@ onMounted(async () => {
   .modal {
     width: 95%;
   }
+
+  .gift-modal {
+    width: 95%;
+  }
+}
+
+/* Gift System Styles */
+.credits-panel {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.1), rgba(74, 222, 128, 0.05));
+  border: 2px solid rgba(81, 112, 255, 0.2);
+  padding: 30px;
+  text-align: center;
+}
+
+.credits-display {
+  margin: 20px 0;
+}
+
+.credits-amount {
+  font-size: 48px;
+  font-weight: bold;
+  color: #5170ff;
+  margin: 10px 0;
+}
+
+.credits-label {
+  color: var(--text-secondary);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.credits-info {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.gift-button {
+  background: linear-gradient(135deg, #5170ff, #7b68ff);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.gift-button:hover:not(.disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(81, 112, 255, 0.3);
+}
+
+.gift-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.gift-modal {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 400px;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #5170ff;
+  box-shadow: 0 0 0 3px rgba(81, 112, 255, 0.1);
+}
+
+.form-group small {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.gift-details-info {
+  background: var(--bg-secondary);
+  border-left: 3px solid #5170ff;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.detail-item {
+  padding: 6px 0;
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.detail-item strong {
+  color: #5170ff;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+  justify-content: flex-end;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-btn {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.cancel-btn:hover {
+  background: var(--bg-tertiary);
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #5170ff, #7b68ff);
+  color: white;
+}
+
+.confirm-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.3);
+}
+
+.confirm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>
