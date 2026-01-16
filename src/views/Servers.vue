@@ -424,15 +424,16 @@
               </div>
 
               <div class="setting-item" v-if="statusSettings.messageId">
-                <label>Update Status Message</label>
-                <input
-                  v-model="statusSettings.customStatusMessage"
-                  type="text"
-                  class="input-field"
-                  placeholder="Enter custom status message"
-                />
+                <label>Update Status</label>
+                <select v-model="statusSettings.overrideStatus" class="input-field" style="padding: 10px;">
+                  <option value="">None (Use actual status)</option>
+                  <option value="online">🟢 Online</option>
+                  <option value="idle">🟡 Idle</option>
+                  <option value="dnd">🔴 Do Not Disturb</option>
+                  <option value="offline">⚫ Offline</option>
+                </select>
                 <button @click="updateStatusMessage" class="select-btn" style="margin-top: 8px; width: 100%;">
-                  Update
+                  Update Status
                 </button>
               </div>
 
@@ -775,7 +776,7 @@ const statusSettings = reactive({
   automatic: true,
   useEmbed: false,
   offlineMessage: 'User is currently offline',
-  customStatusMessage: '',
+  overrideStatus: '',
   messageId: null
 })
 
@@ -1425,7 +1426,7 @@ const saveStatusSettings = async () => {
 }
 
 const updateStatusMessage = async () => {
-  if (!selectedServer.value || !statusSettings.messageId || !statusSettings.customStatusMessage) return
+  if (!selectedServer.value || !statusSettings.messageId) return
   try {
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/update-message`, {
       method: 'POST',
@@ -1435,12 +1436,11 @@ const updateStatusMessage = async () => {
       },
       body: JSON.stringify({
         messageId: statusSettings.messageId,
-        customMessage: statusSettings.customStatusMessage
+        overrideStatus: statusSettings.overrideStatus || null
       })
     })
     if (response.ok) {
       statusSaveSuccess.value = true
-      statusSettings.customStatusMessage = ''
       setTimeout(() => {
         statusSaveSuccess.value = false
       }, 2000)
