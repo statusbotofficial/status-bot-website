@@ -285,7 +285,7 @@
                         <strong>Duration:</strong> 30 Days Premium
                       </div>
                       <div class="detail-item">
-                        <strong>After Gift:</strong> They get 3x tracked users
+                        <strong>After Gift:</strong> They get all perks of <a href="https://status-bot.xyz/premium">premium</a>
                       </div>
                     </div>
                   </div>
