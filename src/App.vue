@@ -565,6 +565,12 @@ onMounted(() => {
   }
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .notifications-panel {
   position: absolute;
   top: calc(100% + 8px);
