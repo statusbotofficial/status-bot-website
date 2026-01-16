@@ -285,7 +285,7 @@
                         <strong>Duration:</strong> 30 Days Premium
                       </div>
                       <div class="detail-item">
-                        <strong>After Gift:</strong> They get all perks of <a href="https://status-bot.xyz/premium">premium</a>
+                        <strong>After Gift:</strong> They get all perks of <a href="https://status-bot.xyz/premium" style="color: #5170ff">premium</a>
                       </div>
                     </div>
                   </div>
