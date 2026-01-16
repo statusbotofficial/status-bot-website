@@ -320,8 +320,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveLevelingSettings" class="save-btn" :class="{ 'save-success': levelingSaveSuccess }">
-                  {{ levelingSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                <button @click="saveLevelingSettings" class="save-btn" :class="{ 'save-success': levelingSaveSuccess }" :disabled="levelingSaveLoading">
+                  <span v-if="levelingSaveLoading" class="spinner"></span>
+                  {{ levelingSaveSuccess ? '✓ Saved Successfully' : levelingSaveLoading ? 'Saving...' : 'Save' }}
                 </button>
                 <button @click="resetLevelingSettings" class="reset-btn">Reset</button>
               </div>
@@ -353,8 +354,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveEconomySettings" class="save-btn" :class="{ 'save-success': economySaveSuccess }">
-                  {{ economySaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                <button @click="saveEconomySettings" class="save-btn" :class="{ 'save-success': economySaveSuccess }" :disabled="economySaveLoading">
+                  <span v-if="economySaveLoading" class="spinner"></span>
+                  {{ economySaveSuccess ? '✓ Saved Successfully' : economySaveLoading ? 'Saving...' : 'Save' }}
                 </button>
                 <button @click="showResetEconomyModal" class="reset-btn">Reset All Balances</button>
               </div>
@@ -424,8 +426,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveStatusSettings" class="save-btn" :class="{ 'save-success': statusSaveSuccess }">
-                  {{ statusSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                <button @click="saveStatusSettings" class="save-btn" :class="{ 'save-success': statusSaveSuccess }" :disabled="statusSaveLoading">
+                  <span v-if="statusSaveLoading" class="spinner"></span>
+                  {{ statusSaveSuccess ? '✓ Saved Successfully' : statusSaveLoading ? 'Saving...' : 'Save' }}
                 </button>
                 <button @click="resetStatusSettings" class="reset-btn">Reset</button>
               </div>
@@ -556,8 +559,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveWelcomeSettings" class="save-btn" :class="{ 'save-success': welcomeSaveSuccess }">
-                  {{ welcomeSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                <button @click="saveWelcomeSettings" class="save-btn" :class="{ 'save-success': welcomeSaveSuccess }" :disabled="welcomeSaveLoading">
+                  <span v-if="welcomeSaveLoading" class="spinner"></span>
+                  {{ welcomeSaveSuccess ? '✓ Saved Successfully' : welcomeSaveLoading ? 'Saving...' : 'Save' }}
                 </button>
                 <button @click="resetWelcomeSettings" class="reset-btn">Reset</button>
               </div>
@@ -610,8 +614,9 @@
               </div>
 
               <div class="button-group">
-                <button @click="saveMemberGoalsSettings" class="save-btn" :class="{ 'save-success': memberGoalsSaveSuccess }">
-                  {{ memberGoalsSaveSuccess ? '✓ Saved Successfully' : 'Save' }}
+                <button @click="saveMemberGoalsSettings" class="save-btn" :disabled="memberGoalsSaveLoading" :class="{ 'save-success': memberGoalsSaveSuccess }">
+                  <span v-if="memberGoalsSaveLoading" class="spinner"></span>
+                  {{ memberGoalsSaveSuccess ? '✓ Saved Successfully' : memberGoalsSaveLoading ? 'Saving...' : 'Save' }}
                 </button>
                 <button @click="resetMemberGoalsSettings" class="reset-btn">Reset</button>
               </div>
@@ -715,10 +720,15 @@ const userRankData = reactive({
 
 // Save states for button feedback
 const levelingSaveSuccess = ref(false)
+const levelingSaveLoading = ref(false)
 const economySaveSuccess = ref(false)
+const economySaveLoading = ref(false)
 const statusSaveSuccess = ref(false)
+const statusSaveLoading = ref(false)
 const welcomeSaveSuccess = ref(false)
+const welcomeSaveLoading = ref(false)
 const memberGoalsSaveSuccess = ref(false)
+const memberGoalsSaveLoading = ref(false)
 
 // Mobile navigation state
 const isMobileNavOpen = ref(false)
@@ -1275,8 +1285,23 @@ const closeMemberModal = () => {
   memberSearchQuery.value = ''
 }
 
+// Helper function to manage save button states
+const setSaveState = (loadingRef, successRef) => {
+  loadingRef.value = true
+  successRef.value = false
+}
+
+const resetSaveState = (loadingRef, successRef) => {
+  loadingRef.value = false
+  successRef.value = true
+  setTimeout(() => {
+    successRef.value = false
+  }, 2000)
+}
+
 const saveLevelingSettings = async () => {
   if (!selectedServer.value) return
+  setSaveState(levelingSaveLoading, levelingSaveSuccess)
   try {
     const response = await fetch(`${BACKEND_URL}/api/leveling/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -1287,18 +1312,19 @@ const saveLevelingSettings = async () => {
       body: JSON.stringify(levelingSettings)
     })
     if (response.ok) {
-      levelingSaveSuccess.value = true
-      setTimeout(() => {
-        levelingSaveSuccess.value = false
-      }, 2000)
+      resetSaveState(levelingSaveLoading, levelingSaveSuccess)
+    } else {
+      levelingSaveLoading.value = false
     }
   } catch (error) {
     console.error('Error saving settings:', error)
+    levelingSaveLoading.value = false
   }
 }
 
 const saveEconomySettings = async () => {
   if (!selectedServer.value) return
+  setSaveState(economySaveLoading, economySaveSuccess)
   try {
     const response = await fetch(`${BACKEND_URL}/api/economy/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -1309,13 +1335,13 @@ const saveEconomySettings = async () => {
       body: JSON.stringify(economySettings)
     })
     if (response.ok) {
-      economySaveSuccess.value = true
-      setTimeout(() => {
-        economySaveSuccess.value = false
-      }, 2000)
+      resetSaveState(economySaveLoading, economySaveSuccess)
+    } else {
+      economySaveLoading.value = false
     }
   } catch (error) {
     console.error('Error saving settings:', error)
+    economySaveLoading.value = false
   }
 }
 
@@ -1352,6 +1378,7 @@ const postStatusMessage = async () => {
 
 const saveStatusSettings = async () => {
   if (!selectedServer.value) return
+  setSaveState(statusSaveLoading, statusSaveSuccess)
   try {
     const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 60
     const payload = {
@@ -1400,20 +1427,20 @@ const saveStatusSettings = async () => {
         console.log('Settings reloaded with messageId:', data.message_id)
       }
       
-      statusSaveSuccess.value = true
-      setTimeout(() => {
-        statusSaveSuccess.value = false
-      }, 2000)
+      resetSaveState(statusSaveLoading, statusSaveSuccess)
     } else {
       console.error('Failed to save settings:', response.status)
+      statusSaveLoading.value = false
     }
   } catch (error) {
     console.error('Error saving settings:', error)
+    statusSaveLoading.value = false
   }
 }
 
 const saveWelcomeSettings = async () => {
   if (!selectedServer.value) return
+  setSaveState(welcomeSaveLoading, welcomeSaveSuccess)
   try {
     const payload = {
       enabled: welcomeSettings.enabled,
@@ -1441,13 +1468,13 @@ const saveWelcomeSettings = async () => {
     if (response.ok) {
       const data = await response.json()
       console.log('Welcome settings saved successfully:', data)
-      welcomeSaveSuccess.value = true
-      setTimeout(() => {
-        welcomeSaveSuccess.value = false
-      }, 2000)
+      resetSaveState(welcomeSaveLoading, welcomeSaveSuccess)
+    } else {
+      welcomeSaveLoading.value = false
     }
   } catch (error) {
     console.error('Error saving settings:', error)
+    welcomeSaveLoading.value = false
   }
 }
 
@@ -1522,6 +1549,7 @@ const resetWelcomeSettings = () => {
 
 const saveMemberGoalsSettings = async () => {
   if (!selectedServer.value) return
+  setSaveState(memberGoalsSaveLoading, memberGoalsSaveSuccess)
   try {
     const payload = {
       enabled: memberGoalsSettings.enabled,
@@ -1541,13 +1569,13 @@ const saveMemberGoalsSettings = async () => {
     if (response.ok) {
       const data = await response.json()
       console.log('Member goals settings saved successfully:', data)
-      memberGoalsSaveSuccess.value = true
-      setTimeout(() => {
-        memberGoalsSaveSuccess.value = false
-      }, 2000)
+      resetSaveState(memberGoalsSaveLoading, memberGoalsSaveSuccess)
+    } else {
+      memberGoalsSaveLoading.value = false
     }
   } catch (error) {
     console.error('Error saving member goals settings:', error)
+    memberGoalsSaveLoading.value = false
   }
 }
 
@@ -2406,6 +2434,29 @@ onMounted(() => {
   background: rgba(74, 222, 128, 0.2);
   border-color: #4ade80;
   color: #4ade80;
+}
+
+.save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .reset-btn {
