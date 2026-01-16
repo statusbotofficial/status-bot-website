@@ -919,7 +919,7 @@ onMounted(() => {
   border: 2px solid rgba(255, 94, 94, 0.3);
   border-top-color: #ff5e5e;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 1.4s linear infinite;
   vertical-align: middle;
 }
 
