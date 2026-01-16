@@ -180,7 +180,7 @@ const handleLogin = () => {
 const handleLogout = async () => {
   isLoggingOut.value = true
   // Simulate logout animation delay
-  await new Promise(resolve => setTimeout(resolve, 2000))
+  await new Promise(resolve => setTimeout(resolve, 800))
   authStore.logout()
   dropdownOpen.value = false
   menuOpen.value = false
@@ -925,7 +925,7 @@ onMounted(() => {
   border: 2px solid rgba(255, 94, 94, 0.3);
   border-top-color: #ff5e5e;
   border-radius: 50%;
-  animation: spin 1.4s linear infinite;
+  animation: spin 0.8s linear infinite;
   vertical-align: middle;
 }
 
