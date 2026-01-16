@@ -798,6 +798,7 @@ const memberSearchQuery = ref('')
 const currentChannelField = ref(null)
 const currentSettingsObject = ref(null)
 const resetModalTitle = ref('')
+const totalGuildMembers = ref(0)
 const resetModalMessage = ref('')
 const resetType = ref(null)
 
@@ -837,7 +838,7 @@ const totalStats = computed(() => {
   return {
     totalXp: leaderboardData.value.reduce((sum, u) => sum + (u.xp || 0), 0).toLocaleString(),
     totalBalance: leaderboardData.value.reduce((sum, u) => sum + (u.balance || 0), 0).toLocaleString(),
-    membersTracked: leaderboardData.value.length
+    membersTracked: totalGuildMembers.value
   }
 })
 
@@ -1048,6 +1049,7 @@ const loadLeaderboardData = async (guildId) => {
     if (response.ok) {
       const data = await response.json()
       leaderboardData.value = data.leaderboard || data.allUsers || []
+      totalGuildMembers.value = data.memberCount || leaderboardData.value.length
       // Load user rank after leaderboard data is loaded
       await loadUserRankData(guildId)
     }
