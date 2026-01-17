@@ -48,6 +48,15 @@
                   Appearance
                 </button>
               </li>
+              <li>
+                <button
+                  class="nav-link"
+                  :class="{ active: activeSection === 'gifts' }"
+                  @click="activeSection = 'gifts'"
+                >
+                  Gifts & Rewards
+                </button>
+              </li>
             </ul>
           </nav>
         </aside>
@@ -223,6 +232,44 @@
                   ></div>
                   <div class="swatch-label">{{ theme.name }}</div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Gifts & Rewards Section -->
+          <section v-show="activeSection === 'gifts'" class="settings-section">
+            <h2>Gifts & Rewards</h2>
+            <p class="section-subtitle">Manage your received gifts and rewards</p>
+
+            <div class="section-panel">
+              <div v-if="loadingGifts" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading gifts...</p>
+              </div>
+              <div v-else-if="gifts.length > 0" class="gifts-container">
+                <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
+                  <div class="gift-icon-container">🎁</div>
+                  <div class="gift-details">
+                    <div class="gift-name">{{ gift.name }}</div>
+                    <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
+                    <div class="gift-expiry" v-if="gift.premiumExpiresAt">
+                      Expires: {{ new Date(gift.premiumExpiresAt).toLocaleDateString() }}
+                    </div>
+                  </div>
+                  <button
+                    v-if="!gift.claimed"
+                    @click="claimGift(gift.id)"
+                    class="claim-btn"
+                  >
+                    Claim
+                  </button>
+                  <button v-else class="claim-btn claimed" disabled>
+                    Claimed ✓
+                  </button>
+                </div>
+              </div>
+              <div v-else class="empty-state">
+                <p>No gifts yet. Check back later for exclusive rewards!</p>
               </div>
             </div>
           </section>

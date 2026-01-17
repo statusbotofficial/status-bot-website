@@ -361,14 +361,17 @@ const fetchPremiumUsers = async () => {
           const expiryTimestamp = premiumData.expiresAt ? premiumData.expiresAt * 1000 : null
           const isExpired = expiryTimestamp && expiryTimestamp < Date.now()
           
-          let sourceLabel = 'Unknown'
+          let sourceLabel = premiumData.reason || 'Unknown'
           let source = premiumData.source || 'unknown'
           
-          if (source === 'booster') sourceLabel = 'Server Booster'
-          else if (source === 'dashboard') sourceLabel = 'Dashboard'
-          else if (source === 'trial') sourceLabel = 'Trial'
-          else if (source === 'gift') sourceLabel = 'Gifted'
-          else if (source === 'patreon') sourceLabel = 'Patreon'
+          if (!premiumData.reason || premiumData.reason === 'Unknown') {
+            if (source === 'booster') sourceLabel = 'Server Booster'
+            else if (source === 'dashboard') sourceLabel = 'Dashboard'
+            else if (source === 'trial') sourceLabel = 'Trial'
+            else if (source === 'gift') sourceLabel = 'Gifted'
+            else if (source === 'patreon') sourceLabel = 'Patreon'
+            else sourceLabel = 'Unknown'
+          }
           
           let expiryText = 'Permanent'
           if (expiryTimestamp) {
