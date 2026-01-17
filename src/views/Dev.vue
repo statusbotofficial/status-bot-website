@@ -111,30 +111,6 @@
         </div>
       </div>
 
-      <!-- Premium Users Section -->
-      <section class="dev-section">
-        <h2>Premium Users</h2>
-        <div class="premium-panel">
-          <div v-if="premiumUsers.length > 0" class="premium-list">
-            <div class="premium-header">
-              <div class="col-user">User</div>
-              <div class="col-type">Type</div>
-              <div class="col-expiry">Expiry</div>
-            </div>
-            <div v-for="user in premiumUsers" :key="user.userId" class="premium-entry">
-              <div class="col-user">{{ user.userId }}</div>
-              <div class="col-type">
-                <span :class="['type-badge', 'type-' + user.source]">{{ user.sourceLabel }}</span>
-              </div>
-              <div class="col-expiry">{{ user.expiryText }}</div>
-            </div>
-          </div>
-          <div v-else class="empty-state">
-            <p>No premium users found</p>
-          </div>
-        </div>
-      </section>
-
       <!-- Give Premium Section -->
       <section class="dev-section">
         <h2>Give Premium</h2>
@@ -163,6 +139,30 @@
           <button @click="grantPremium" :disabled="grantingPremium" class="dev-btn grant-btn">
             {{ grantingPremium ? 'Granting...' : 'Grant Premium' }}
           </button>
+        </div>
+      </section>
+
+      <!-- Premium Users Section -->
+      <section class="dev-section">
+        <h2>Premium Users</h2>
+        <div class="premium-panel">
+          <div v-if="premiumUsers.length > 0" class="premium-list">
+            <div class="premium-header">
+              <div class="col-user">User</div>
+              <div class="col-type">Type</div>
+              <div class="col-expiry">Expiry</div>
+            </div>
+            <div v-for="user in premiumUsers" :key="user.userId" class="premium-entry">
+              <div class="col-user">{{ user.userId }}</div>
+              <div class="col-type">
+                <span :class="['type-badge', 'type-' + user.source]">{{ user.sourceLabel }}</span>
+              </div>
+              <div class="col-expiry">{{ user.expiryText }}</div>
+            </div>
+          </div>
+          <div v-else class="empty-state">
+            <p>No premium users found</p>
+          </div>
         </div>
       </section>
 
