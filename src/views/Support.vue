@@ -21,10 +21,17 @@
         <div class="support-chat-box">
           <div class="support-chat-area" id="chatArea">
             <div v-if="!isLoggedIn" class="chat-login-message">
+              <div class="login-icon">👤</div>
               <p>Please log in to start chatting with our AI support</p>
             </div>
             <div v-else-if="messages.length === 0" class="chat-welcome">
+              <div class="welcome-icon">💬</div>
               <p>Welcome to Status Bot Support! Ask me anything about Status Bot, and I'll help you out.</p>
+              <div class="suggestion-boxes">
+                <button v-for="suggestion in suggestions" :key="suggestion" class="suggestion-box" @click="inputMessage = suggestion; $nextTick(() => sendMessage())">
+                  {{ suggestion }}
+                </button>
+              </div>
             </div>
             <div v-for="(msg, idx) in messages" :key="idx" class="chat-message" :class="msg.sender">
               <div class="message-content" :class="msg.sender" v-html="msg.text"></div>
@@ -97,6 +104,13 @@ const messages = ref([])
 const inputMessage = ref('')
 const isLoading = ref(false)
 const chatAreaEl = ref(null)
+
+const suggestions = ref([
+  'How do I invite Status Bot to my server?',
+  'How do I set up the leveling system?',
+  'What are the premium features?',
+  'How do I get help with a command?'
+])
 
 const faqs = ref([
   {
@@ -347,12 +361,64 @@ onMounted(() => {
 
 .chat-login-message {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
   text-align: center;
   color: var(--text-secondary);
   font-size: 16px;
+  gap: 16px;
+}
+
+.login-icon {
+  font-size: 48px;
+  opacity: 0.8;
+}
+
+.chat-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 16px;
+  gap: 20px;
+}
+
+.welcome-icon {
+  font-size: 48px;
+}
+
+.suggestion-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  width: 90%;
+  max-width: 600px;
+  margin-top: 16px;
+}
+
+.suggestion-box {
+  background: rgba(81, 112, 255, 0.1);
+  border: 2px solid rgba(81, 112, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.suggestion-box:hover {
+  background: rgba(81, 112, 255, 0.2);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.2);
 }
 
 .support-links-section {
