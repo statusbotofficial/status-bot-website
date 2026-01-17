@@ -127,13 +127,11 @@
           <div class="form-group">
             <label>Duration (days)</label>
             <input 
-              v-model="givePremiumDuration" 
-              type="text" 
-              placeholder='Type "p" for permanent or enter days'
-              @input="handleDurationInput"
+              v-model.number="givePremiumDuration" 
+              type="number" 
+              placeholder="e.g. 30"
               class="dev-input"
             >
-            <small style="color: #999; margin-top: 4px;">Type "p" for permanent, or enter number of days</small>
           </div>
 
           <button @click="grantPremium" :disabled="grantingPremium" class="dev-btn grant-btn">
@@ -423,7 +421,7 @@ const grantPremium = async () => {
     return
   }
   
-  const duration = givePremiumDuration.value || 30
+  const duration = givePremiumDuration.value !== undefined && givePremiumDuration.value !== '' ? givePremiumDuration.value : 30
   if (duration < 0) {
     alert('Duration cannot be negative')
     return
@@ -462,12 +460,7 @@ const grantPremium = async () => {
 }
 
 const handleDurationInput = (event) => {
-  const value = event.target.value.toLowerCase().trim()
-  if (value === 'p') {
-    givePremiumDuration.value = 0
-  } else if (value && !isNaN(value)) {
-    givePremiumDuration.value = parseInt(value)
-  }
+  // No longer used
 }
 
 const removePremium = async () => {
