@@ -773,7 +773,7 @@ const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 const sections = [
   { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: #3b82f6;"></i>' },
   { id: 'leaderboard', label: 'Leaderboard', icon: '<i class="fas fa-trophy" style="color: #fbbf24;"></i>' },
-  { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: #10b981;"></i>' },
+  { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: #d946ef;"></i>' },
   { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: #fbbf24;"></i>' },
   { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: #10b981;"></i>' },
   { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-hand" style="color: #fbbf24;"></i>' },

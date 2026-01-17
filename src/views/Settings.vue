@@ -132,7 +132,7 @@
               <div class="panel-header">Premium Features</div>
               <div class="features-grid">
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon"><span style="font-weight: bold; font-size: 20px;">2x</span></div>
+                  <div class="feature-icon"><span style="font-weight: bold; font-size: 32px;">2x</span></div>
                   <div class="feature-name">2x XP Multiplier</div>
                   <div class="feature-desc">Earn double XP on messages and voice chat</div>
                 </div>
