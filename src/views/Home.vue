@@ -13,7 +13,7 @@
         <div class="stats-divider"></div>
         <div class="stats">
           <div class="stat-item">
-            <div class="stat-number">1.5k</div>
+            <div class="stat-number">1.8k</div>
             <div class="stat-label">Active Users</div>
           </div>
           <div class="stat-item">
