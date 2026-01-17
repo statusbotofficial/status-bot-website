@@ -361,11 +361,12 @@ const fetchPremiumUsers = async () => {
           let source = premiumData.source || 'unknown'
           
           if (!premiumData.reason || premiumData.reason === 'Unknown') {
-            if (source === 'booster') sourceLabel = 'Server Booster'
+            if (source === 'booster' || source === 'server_booster') sourceLabel = 'Server Booster'
             else if (source === 'dashboard') sourceLabel = 'Dashboard'
             else if (source === 'trial') sourceLabel = 'Trial'
             else if (source === 'gift') sourceLabel = 'Gifted'
             else if (source === 'patreon') sourceLabel = 'Patreon'
+            else if (source) sourceLabel = source.charAt(0).toUpperCase() + source.slice(1)
             else sourceLabel = 'Unknown'
           }
           
@@ -932,14 +933,13 @@ onMounted(async () => {
 }
 
 .type-booster {
-  background: rgba(74, 222, 128, 0.2);
-  color: #4ade80;
+  background: rgba(236, 72, 153, 0.2);
+  color: #ec4899;
 }
 
-.type-server_booster,
-.type-booster {
-  background: rgba(244, 63, 94, 0.2);
-  color: #f43f5e;
+.type-server_booster {
+  background: rgba(236, 72, 153, 0.2);
+  color: #ec4899;
 }
 
 .type-dashboard {

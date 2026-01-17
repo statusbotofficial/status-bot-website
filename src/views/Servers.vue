@@ -1674,6 +1674,16 @@ watch(
 .servers-list-view {
   padding: 50px;
   overflow-y: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .servers-list-view {
+    padding: 24px;
+    max-width: 100%;
+  }
 }
 
 .page-title {
