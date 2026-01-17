@@ -263,6 +263,16 @@
               </div>
 
               <div class="setting-item">
+                <label>Leveling Formula Type <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
+                <select v-model="levelingSettings.levelingType" class="input-field" :disabled="!userHasPremium">
+                  <option value="linear">Linear - Constant XP increase per level</option>
+                  <option value="exponential">Exponential (Arcane) - Rapidly increasing requirements</option>
+                  <option value="polynomial">Polynomial - Medium increase per level</option>
+                  <option value="logarithmic">Logarithmic - Slow increase for early levels</option>
+                </select>
+              </div>
+
+              <div class="setting-item">
                 <label>XP per message <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
                 <input v-model.number="levelingSettings.xpPerMessage" type="number" min="1" class="input-field" :disabled="!userHasPremium" />
               </div>
@@ -782,6 +792,7 @@ const sections = [
 
 const levelingSettings = reactive({
   enabled: true,
+  levelingType: 'linear',
   xpPerMessage: 10,
   voiceXp: 10,
   xpCooldown: 60,
@@ -1160,6 +1171,7 @@ const loadAllSettings = async (guildId) => {
       const data = await levelingRes.json()
       Object.assign(levelingSettings, {
         enabled: data.enabled || false,
+        levelingType: data.leveling_type || 'linear',
         xpPerMessage: data.xp_per_message || 10,
         voiceXp: data.vc_xp_per_minute || 2,
         xpCooldown: data.xp_cooldown || 60,

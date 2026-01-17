@@ -37,7 +37,16 @@
         class="command-card"
         :data-category="cmd.category"
       >
-        <h3>{{ cmd.name }}</h3>
+        <div class="command-header">
+          <h3>{{ cmd.name }}</h3>
+          <button 
+            class="copy-btn"
+            @click="copyCommand(cmd.name)"
+            :title="`Copy ${cmd.name}`"
+          >
+            <i class="fas fa-copy"></i>
+          </button>
+        </div>
         <p>{{ cmd.description }}</p>
       </div>
     </div>
@@ -87,6 +96,14 @@ const filteredCommands = computed(() => {
     return matchesCategory && matchesSearch
   })
 })
+
+const copyCommand = async (commandName) => {
+  try {
+    await navigator.clipboard.writeText(commandName)
+  } catch (err) {
+    console.error('Failed to copy:', err)
+  }
+}
 </script>
 
 <style scoped>
@@ -219,11 +236,44 @@ const filteredCommands = computed(() => {
   border-color: var(--primary-color);
 }
 
+.command-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
 .command-card h3 {
   font-size: 18px;
   font-weight: 700;
   margin: 0;
   color: #fff;
+  flex: 1;
+}
+
+.copy-btn {
+  background-color: rgba(81, 112, 255, 0.2);
+  border: 1px solid rgba(81, 112, 255, 0.5);
+  color: #5170ff;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.copy-btn:hover {
+  background-color: rgba(81, 112, 255, 0.4);
+  border-color: rgba(81, 112, 255, 0.8);
+  box-shadow: 0 0 10px rgba(81, 112, 255, 0.6);
+}
+
+.copy-btn i {
+  font-size: 14px;
 }
 
 .command-card p {
