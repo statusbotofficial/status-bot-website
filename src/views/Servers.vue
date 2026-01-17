@@ -95,7 +95,7 @@
               <!-- Server Stats -->
               <div class="stats-grid">
                 <div class="stat-box">
-                  <div class="stat-icon xp-icon"><i class="fas fa-star" style="color: #a855f7;"></i></div>
+                  <div class="stat-icon xp-icon"><i class="fas fa-star" style="color: #f59e0b;"></i></div>
                   <div class="stat-content">
                     <div class="stat-label">Total XP</div>
                     <div class="stat-value">{{ totalStats.totalXp }}</div>
@@ -774,10 +774,10 @@ const sections = [
   { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: #3b82f6;"></i>' },
   { id: 'leaderboard', label: 'Leaderboard', icon: '<i class="fas fa-trophy" style="color: #fbbf24;"></i>' },
   { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: #10b981;"></i>' },
-  { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: #f59e0b;"></i>' },
+  { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: #fbbf24;"></i>' },
   { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: #10b981;"></i>' },
   { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-hand" style="color: #f97316;"></i>' },
-  { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: #6366f1;"></i>' },
+  { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: #3b82f6;"></i>' },
 ]
 
 const levelingSettings = reactive({

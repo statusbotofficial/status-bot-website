@@ -36,19 +36,19 @@
         <h3 class="plan-features-title">Features:</h3>
         <ul class="plan-features">
           <li class="plan-feature">
-            <span class="feature-checkmark"><i class="fas fa-check"></i></span>
+            <span class="feature-checkmark"><i class="fas fa-check" style="color: #10b981;"></i></span>
             Basic commands
           </li>
           <li class="plan-feature">
-            <span class="feature-checkmark"><i class="fas fa-check"></i></span>
+            <span class="feature-checkmark"><i class="fas fa-check" style="color: #10b981;"></i></span>
             Status tracking
           </li>
           <li class="plan-feature">
-            <span class="feature-checkmark"><i class="fas fa-check"></i></span>
+            <span class="feature-checkmark"><i class="fas fa-check" style="color: #10b981;"></i></span>
             Leveling system
           </li>
           <li class="plan-feature">
-            <span class="feature-checkmark"><i class="fas fa-check"></i></span>
+            <span class="feature-checkmark"><i class="fas fa-check" style="color: #10b981;"></i></span>
             Community support
           </li>
         </ul>
@@ -74,19 +74,19 @@
         <h3 class="plan-features-title">Features:</h3>
         <ul class="plan-features">
           <li class="plan-feature">
-            <span class="feature-checkmark"><i class="fas fa-check"></i></span>
+            <span class="feature-checkmark"><i class="fas fa-check" style="color: #10b981;"></i></span>
             Everything in Free
           </li>
           <li class="plan-feature">
-            <span class="feature-checkmark"><i class="fas fa-check"></i></span>
+            <span class="feature-checkmark"><i class="fas fa-check" style="color: #10b981;"></i></span>
             Exclusive commands
           </li>
           <li class="plan-feature">
-            <span class="feature-checkmark"><i class="fas fa-check"></i></span>
+            <span class="feature-checkmark"><i class="fas fa-check" style="color: #10b981;"></i></span>
             Luck boost in economy
           </li>
           <li class="plan-feature">
-            <span class="feature-checkmark"><i class="fas fa-check"></i></span>
+            <span class="feature-checkmark"><i class="fas fa-check" style="color: #10b981;"></i></span>
             Priority support
           </li>
         </ul>
@@ -112,58 +112,58 @@
         <div class="table-body">
           <div class="table-row">
             <div class="table-feature-name">Basic commands</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row">
             <div class="table-feature-name">Status tracking</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row">
             <div class="table-feature-name">Leveling system</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row">
             <div class="table-feature-name">Economy mini-games</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row">
             <div class="table-feature-name">Community support</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row">
             <div class="table-feature-name">Voice chat XP</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">2x XP multiplier</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">Exclusive commands</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">Luck boost in economy</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">Priority support</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">Premium badge</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
         </div>
       </div>
@@ -186,10 +186,10 @@
             <div class="card-title">Patreon Membership</div>
             <div class="card-price">$3.99<span>/month</span></div>
             <ul class="card-benefits">
-              <li><i class="fas fa-check"></i> 2x XP Multiplier</li>
-              <li><i class="fas fa-check"></i> Exclusive Commands</li>
-              <li><i class="fas fa-check"></i> Economy Perks</li>
-              <li><i class="fas fa-check"></i> Priority Support</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> 2x XP Multiplier</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Exclusive Commands</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Economy Perks</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Priority Support</li>
             </ul>
             <div class="card-cta">Support on Patreon</div>
           </a>
@@ -200,10 +200,10 @@
             <div class="card-title">Server Boost</div>
             <div class="card-price">Easier Alternative</div>
             <ul class="card-benefits">
-              <li><i class="fas fa-check"></i> 2x XP Multiplier</li>
-              <li><i class="fas fa-check"></i> Exclusive Commands</li>
-              <li><i class="fas fa-check"></i> Economy Perks</li>
-              <li><i class="fas fa-check"></i> Priority Support</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> 2x XP Multiplier</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Exclusive Commands</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Economy Perks</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Priority Support</li>
             </ul>
             <div class="card-cta">Boost Server</div>
           </a>
@@ -214,10 +214,10 @@
             <div class="card-title">Get Help</div>
             <div class="card-price">Support Team</div>
             <ul class="card-benefits">
-              <li><i class="fas fa-check"></i> Questions Answered</li>
-              <li><i class="fas fa-check"></i> Premium Guidance</li>
-              <li><i class="fas fa-check"></i> Community Support</li>
-              <li><i class="fas fa-check"></i> Real People</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Questions Answered</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Premium Guidance</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Community Support</li>
+              <li><i class="fas fa-check" style="color: #10b981;"></i> Real People</li>
             </ul>
             <div class="card-cta">Contact Us</div>
           </div>
