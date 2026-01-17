@@ -263,13 +263,16 @@
               </div>
 
               <div class="setting-item">
-                <label>Leveling Formula Type <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
-                <select v-model="levelingSettings.levelingType" class="input-field" :disabled="!userHasPremium">
-                  <option value="linear">Linear - Constant XP increase per level</option>
-                  <option value="exponential">Exponential (Arcane) - Rapidly increasing requirements</option>
-                  <option value="polynomial">Polynomial - Medium increase per level</option>
-                  <option value="logarithmic">Logarithmic - Slow increase for early levels</option>
-                </select>
+                <label>Leveling Formula <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
+                <button 
+                  @click="openLevelingFormulaModal" 
+                  class="input-field" 
+                  style="text-align: left; cursor: pointer;" 
+                  :disabled="!userHasPremium"
+                >
+                  {{ getLevelingFormulaLabel(levelingSettings.levelingType) }}
+                  <i class="fas fa-chevron-down" style="float: right;"></i>
+                </button>
               </div>
 
               <div class="setting-item">
@@ -718,6 +721,34 @@
         </div>
       </div>
     </div>
+
+    <div v-if="showLevelingFormulaModal" class="modal-overlay" @click="closeLevelingFormulaModal">
+      <div class="modal-content" @click.stop>
+        <h3>Select Leveling Formula</h3>
+        <div class="formula-list">
+          <label 
+            v-for="formula in levelingFormulas" 
+            :key="formula.value" 
+            class="formula-option"
+          >
+            <input
+              type="radio"
+              name="levelingFormula"
+              :value="formula.value"
+              v-model="levelingSettings.levelingType"
+              class="formula-radio"
+            />
+            <div class="formula-info">
+              <div class="formula-name">{{ formula.name }}</div>
+              <div class="formula-description">{{ formula.description }}</div>
+            </div>
+          </label>
+        </div>
+        <div class="modal-buttons">
+          <button @click="closeLevelingFormulaModal" class="confirm-btn">Done</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -849,6 +880,7 @@ const memberGoalsSettings = reactive({
 const showChannelModal = ref(false)
 const showMemberModal = ref(false)
 const showResetModal = ref(false)
+const showLevelingFormulaModal = ref(false)
 const guildChannels = ref([])
 const guildMembers = ref([])
 const selectedChannelIds = ref([])
@@ -859,6 +891,29 @@ const resetModalTitle = ref('')
 const totalGuildMembers = ref(0)
 const resetModalMessage = ref('')
 const resetType = ref(null)
+
+const levelingFormulas = [
+  { 
+    value: 'linear', 
+    name: 'Linear', 
+    description: 'Constant XP increase per level - Balanced progression' 
+  },
+  { 
+    value: 'exponential', 
+    name: 'Exponential (Arcane)', 
+    description: 'Rapidly increasing requirements - Challenging progression' 
+  },
+  { 
+    value: 'polynomial', 
+    name: 'Polynomial', 
+    description: 'Medium increase per level - Steady difficulty curve' 
+  },
+  { 
+    value: 'logarithmic', 
+    name: 'Logarithmic', 
+    description: 'Slow increase for early levels - Forgiving at start' 
+  }
+]
 
 const filteredServers = computed(() => {
   return servers.value.filter(server =>
@@ -1306,6 +1361,19 @@ const selectMember = (member) => {
 const closeMemberModal = () => {
   showMemberModal.value = false
   memberSearchQuery.value = ''
+}
+
+const openLevelingFormulaModal = () => {
+  showLevelingFormulaModal.value = true
+}
+
+const closeLevelingFormulaModal = () => {
+  showLevelingFormulaModal.value = false
+}
+
+const getLevelingFormulaLabel = (value) => {
+  const formula = levelingFormulas.find(f => f.value === value)
+  return formula ? formula.name : 'Linear'
 }
 
 const setSaveState = (loadingRef, successRef) => {
@@ -2680,6 +2748,57 @@ watch(
   background: rgba(81, 112, 255, 0.1);
 }
 
+.formula-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.formula-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  background: rgba(81, 112, 255, 0.05);
+  border: 2px solid rgba(81, 112, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.formula-option:hover {
+  background: rgba(81, 112, 255, 0.1);
+  border-color: rgba(81, 112, 255, 0.4);
+}
+
+.formula-radio {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.formula-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.formula-name {
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+}
+
+.formula-description {
+  font-size: 12px;
+  color: #999;
+}
 .modal-buttons {
   display: flex;
   gap: 12px;
