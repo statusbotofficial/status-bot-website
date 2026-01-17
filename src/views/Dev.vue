@@ -113,7 +113,6 @@
 
       <!-- Give Premium Section -->
       <section class="dev-section">
-        <h2>Give Premium</h2>
         <div class="give-premium-panel">
           <div class="form-group">
             <label>User ID</label>
