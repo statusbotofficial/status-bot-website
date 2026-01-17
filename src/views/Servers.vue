@@ -701,7 +701,6 @@ const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 
-// State
 const loading = ref(false)
 const overviewLoading = ref(false)
 const leaderboardLoading = ref(false)
@@ -721,7 +720,6 @@ const userRankData = reactive({
   avatarUrl: null
 })
 
-// Save states for button feedback
 const levelingSaveSuccess = ref(false)
 const levelingSaveLoading = ref(false)
 const economySaveSuccess = ref(false)
@@ -733,7 +731,6 @@ const welcomeSaveLoading = ref(false)
 const memberGoalsSaveSuccess = ref(false)
 const memberGoalsSaveLoading = ref(false)
 
-// Mobile navigation state
 const isMobileNavOpen = ref(false)
 
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
@@ -748,7 +745,6 @@ const sections = [
   { id: 'member-goals', label: 'Member Goals', icon: '👥' },
 ]
 
-// Settings
 const levelingSettings = reactive({
   enabled: true,
   xpPerMessage: 10,
@@ -800,7 +796,6 @@ const memberGoalsSettings = reactive({
   memberGoal: 0,
 })
 
-// Modal state
 const showChannelModal = ref(false)
 const showMemberModal = ref(false)
 const showResetModal = ref(false)
@@ -815,7 +810,6 @@ const totalGuildMembers = ref(0)
 const resetModalMessage = ref('')
 const resetType = ref(null)
 
-// Computed
 const filteredServers = computed(() => {
   return servers.value.filter(server =>
     server.name.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -823,15 +817,12 @@ const filteredServers = computed(() => {
 })
 
 const filteredSections = computed(() => {
-  // If user only has view permission, only show overview and leaderboard
   if (selectedServer.value?.buttonType === 'view') {
     return sections.filter(s => ['overview', 'leaderboard'].includes(s.id))
   }
-  // Admin can see all sections
   return sections
 })
 
-// Watch activeSection to prevent accessing forbidden sections
 watch(activeSection, (newSection) => {
   if (selectedServer.value?.buttonType === 'view') {
     if (!['overview', 'leaderboard'].includes(newSection)) {
@@ -855,7 +846,6 @@ const totalStats = computed(() => {
   }
 })
 
-// Preview computed properties
 const levelUpPreview = computed(() => {
   let msg = levelingSettings.levelUpMessage
     .replace('{user}', 'Blake')
@@ -951,7 +941,6 @@ const allowedChannelsDisplay = computed(() => {
     .join(', ')
 })
 
-// Methods
 const loadServers = async () => {
   if (!authStore.user || !authStore.token) return
 
@@ -971,7 +960,6 @@ const loadServers = async () => {
     const botData = await botResponse.json()
     const botGuildIds = new Set(botData.guilds || [])
 
-    // Dev user ID who has full access to all servers
     const DEV_USER_ID = '1362553254117904496'
     const isDevUser = authStore.user.id === DEV_USER_ID
 
@@ -982,7 +970,6 @@ const loadServers = async () => {
       const isBotPresent = botGuildIds.has(guild.id)
 
       let buttonType = 'no-access'
-      // Dev user can configure any server the bot is in
       if (isDevUser && isBotPresent) buttonType = 'configure'
       else if (hasManage && isBotPresent) buttonType = 'configure'
       else if (!hasManage && isBotPresent) buttonType = 'view'
@@ -1014,12 +1001,9 @@ const selectServer = async (server) => {
   selectedServer.value = server
   router.push(`/servers/${server.id}`)
   
-  // Reset active section based on permissions
   if (server.buttonType === 'view') {
-    // Non-admin: only allow overview and leaderboard
     activeSection.value = 'overview'
   } else if (server.buttonType === 'configure') {
-    // Admin: allow all sections, default to overview
     activeSection.value = 'overview'
   }
   
@@ -1029,7 +1013,6 @@ const selectServer = async (server) => {
     loadAllSettings(server.id),
     loadGuildChannels(server.id),
   ])
-  // Populate members from leaderboard data
   guildMembers.value = leaderboardData.value.map(u => ({
     id: u.id,
     username: u.username,
@@ -1064,7 +1047,6 @@ const loadLeaderboardData = async (guildId) => {
       const data = await response.json()
       leaderboardData.value = data.leaderboard || data.allUsers || []
       totalGuildMembers.value = data.memberCount || leaderboardData.value.length
-      // Load user rank after leaderboard data is loaded
       await loadUserRankData(guildId)
     }
   } catch (error) {
@@ -1081,13 +1063,11 @@ const loadUserRankData = async (guildId) => {
     const currentUserId = authStore.user.id
     const allUsers = leaderboardData.value
     
-    // Find current user in leaderboard
     const userInLeaderboard = allUsers.find(u => u.id === currentUserId)
     
     if (userInLeaderboard) {
       const userRank = allUsers.findIndex(u => u.id === currentUserId) + 1
       
-      // Get avatar URL
       let avatarUrl = null
       if (authStore.user.avatar) {
         if (authStore.user.avatar.includes('http')) {
@@ -1097,13 +1077,11 @@ const loadUserRankData = async (guildId) => {
         }
       }
       
-      // Calculate progress bar percentage
       const prevLevelXp = userInLeaderboard.currentLevelXp || 0
       const currentLevelXp = (userInLeaderboard.nextLevelXp || 100) - prevLevelXp
       const userLevelXp = userInLeaderboard.xp - prevLevelXp
       const progressPercent = Math.min(100, (userLevelXp / currentLevelXp) * 100)
       
-      // Update user rank data
       Object.assign(userRankData, {
         rank: userRank,
         level: userInLeaderboard.level || 0,
@@ -1113,7 +1091,6 @@ const loadUserRankData = async (guildId) => {
         avatarUrl: avatarUrl
       })
     } else {
-      // User not in leaderboard yet
       Object.assign(userRankData, {
         rank: null,
         level: 0,
@@ -1141,7 +1118,6 @@ const loadAllSettings = async (guildId) => {
 
     if (levelingRes.ok) {
       const data = await levelingRes.json()
-      // Convert snake_case from backend to camelCase for frontend
       Object.assign(levelingSettings, {
         enabled: data.enabled || false,
         xpPerMessage: data.xp_per_message || 10,
@@ -1155,7 +1131,6 @@ const loadAllSettings = async (guildId) => {
     
     if (economyRes.ok) {
       const data = await economyRes.json()
-      // Convert snake_case from backend to camelCase for frontend
       Object.assign(economySettings, {
         enabled: data.enabled || false,
         currencyPerMessage: data.per_message || 5,
@@ -1166,7 +1141,6 @@ const loadAllSettings = async (guildId) => {
     
     if (statusRes.ok) {
       const data = await statusRes.json()
-      // Convert snake_case from backend to camelCase for frontend
       Object.assign(statusSettings, {
         enabled: data.enabled || false,
         userToTrack: data.username || '',
@@ -1181,7 +1155,6 @@ const loadAllSettings = async (guildId) => {
     
     if (welcomeRes.ok) {
       const data = await welcomeRes.json()
-      // Convert snake_case from backend to camelCase for frontend
       Object.assign(welcomeSettings, {
         enabled: data.enabled === true,
         useEmbed: data.use_embed === true,
@@ -1197,7 +1170,6 @@ const loadAllSettings = async (guildId) => {
         embedFieldValue: data.embed_field_value || ''
       })
       
-      // Load member goals from welcome endpoint
       Object.assign(memberGoalsSettings, {
         enabled: data.enabled === true,
         memberCountChannelId: data.member_count_channel_id || '',
@@ -1206,7 +1178,6 @@ const loadAllSettings = async (guildId) => {
       })
     }
   } catch (error) {
-    // Silently fail - use default values
   }
 }
 
@@ -1223,7 +1194,6 @@ const loadGuildChannels = async (guildId) => {
       }))
     }
   } catch (error) {
-    // Silently fail - user can still use the component
   }
 }
 
@@ -1238,11 +1208,9 @@ const confirmChannelSelection = () => {
   if (currentSettingsObject.value && currentChannelField.value) {
     const settings = eval(currentSettingsObject.value)
     
-    // For status tracking (single channel), store ID directly
     if (currentSettingsObject.value === 'statusSettings' || currentSettingsObject.value === 'welcomeSettings') {
       settings[currentChannelField.value] = selectedChannelIds.value[0] || ''
     } else {
-      // For multi-channel settings (leveling), store IDs as comma-separated
       settings[currentChannelField.value] = selectedChannelIds.value.join(', ')
     }
   }
@@ -1258,7 +1226,6 @@ const openMemberSelector = async () => {
   memberSearchQuery.value = ''
   showMemberModal.value = true
   
-  // Fetch guild members if not already loaded
   if (guildMembers.value.length === 0 && selectedServer.value) {
     try {
       const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
@@ -1289,7 +1256,6 @@ const closeMemberModal = () => {
   memberSearchQuery.value = ''
 }
 
-// Helper function to manage save button states
 const setSaveState = (loadingRef, successRef) => {
   loadingRef.value = true
   successRef.value = false
@@ -1407,10 +1373,8 @@ const saveStatusSettings = async () => {
       console.log('Settings saved, posting message...')
       await postStatusMessage()
       
-      // Wait for the bot to process the pending post and store the message_id (bot checks every 2 seconds)
       await new Promise(resolve => setTimeout(resolve, 2500))
       
-      // Reload settings from backend to get the message_id
       const reloadRes = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
         headers: { Authorization: `Bearer ${authStore.token}` }
       })
@@ -1605,15 +1569,12 @@ const closeResetModal = () => {
 }
 
 const updateLevelUpPreview = () => {
-  // Computed property handles this
 }
 
 const updateStatusPreview = () => {
-  // Removed - no preview in status section
 }
 
 const updateWelcomePreview = () => {
-  // Computed property handles this
 }
 
 const inviteBot = (server) => {
@@ -1638,7 +1599,6 @@ onMounted(() => {
   loadServers()
 })
 
-// Watch route for guildId parameter and auto-select server
 watch(
   () => route.params.guildId,
   async (guildId) => {
@@ -1646,13 +1606,11 @@ watch(
       const server = servers.value.find(s => s.id === guildId)
       if (server) {
         selectedServer.value = server
-        // Set section based on permissions
         if (server.buttonType === 'view') {
           activeSection.value = 'overview'
         } else if (server.buttonType === 'configure') {
           activeSection.value = 'overview'
         }
-        // Load all data for the selected server
         await Promise.all([
           loadOverviewData(server.id),
           loadLeaderboardData(server.id),
@@ -1666,7 +1624,6 @@ watch(
   { immediate: true }
 )
 
-// Also watch servers array to handle initial load with route parameter
 watch(
   () => servers.value,
   () => {

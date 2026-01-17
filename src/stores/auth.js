@@ -29,7 +29,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const initializeAuth = () => {
-    // Check if user is already logged in
     const storedUser = localStorage.getItem(AUTH_STORAGE_KEY)
     if (storedUser) {
       try {
@@ -39,13 +38,11 @@ export const useAuthStore = defineStore('auth', () => {
       }
     }
 
-    // Check if token is stored
     const storedToken = localStorage.getItem('discordToken')
     if (storedToken) {
       token.value = storedToken
     }
 
-    // Check for OAuth callback
     handleOAuthCallback()
   }
 

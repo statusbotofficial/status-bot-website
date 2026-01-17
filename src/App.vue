@@ -111,16 +111,18 @@ import { DISCORD_INVITE_URL } from './config'
 const authStore = useAuthStore()
 const router = useRouter()
 
+// UI state
 const menuOpen = ref(false)
 const dropdownOpen = ref(false)
 const showNotifications = ref(false)
 const notifications = ref([])
+
 const isNavigating = ref(false)
 const progressWidth = ref(0)
 let progressInterval = null
 const isLoggingOut = ref(false)
-const notificationCount = computed(() => notifications.value.filter(n => !n.read).length)
 
+const notificationCount = computed(() => notifications.value.filter(n => !n.read).length)
 const isLoggedIn = computed(() => authStore.isLoggedIn)
 const userName = computed(() => authStore.user?.username || '')
 const userAvatar = computed(() => {
@@ -141,36 +143,8 @@ const toggleDropdown = () => {
 const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value
   if (showNotifications.value) {
-    // Refresh notifications when panel opens
     loadNotifications()
   }
-}
-
-const markNotificationsAsRead = async () => {
-  // Update all notifications to be read
-  notifications.value = notifications.value.map(n => ({
-    ...n,
-    read: true
-  }))
-  saveNotifications()
-  
-  // Try to sync with backend
-  try {
-    const authStore = useAuthStore()
-    if (authStore.user?.id) {
-      const SECRET_KEY = 'status-bot-stats-secret-key'
-      await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
-      })
-    }
-  } catch (err) {
-    console.error('Error marking notifications as read:', err)
-  }
-}
-
-const markAllAsRead = async () => {
-  await markNotificationsAsRead()
 }
 
 const handleLogin = () => {
@@ -179,12 +153,34 @@ const handleLogin = () => {
 
 const handleLogout = async () => {
   isLoggingOut.value = true
-  // Simulate logout animation delay
   await new Promise(resolve => setTimeout(resolve, 800))
   authStore.logout()
   dropdownOpen.value = false
   menuOpen.value = false
   isLoggingOut.value = false
+}
+
+const markNotificationsAsRead = async () => {
+  notifications.value = notifications.value.map(n => ({
+    ...n,
+    read: true
+  }))
+  saveNotifications()
+
+  try {
+    if (authStore.user?.id) {
+      const SECRET_KEY = 'status-bot-stats-secret-key'
+      await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
+      })
+    }
+  } catch (err) {
+  }
+}
+
+const markAllAsRead = async () => {
+  await markNotificationsAsRead()
 }
 
 const addNotification = (title, message) => {
@@ -193,7 +189,7 @@ const addNotification = (title, message) => {
     message,
     timestamp: new Date()
   })
-  
+
   if (notifications.value.length > 10) {
     notifications.value.pop()
   }
@@ -201,20 +197,18 @@ const addNotification = (title, message) => {
 
 const formatTime = (timestamp) => {
   try {
-    // Ensure timestamp is a Date object
     let ts = timestamp
     if (!ts) ts = new Date()
     if (typeof ts === 'string') ts = new Date(ts)
     if (!(ts instanceof Date)) ts = new Date(ts)
-    
-    // Validate the date
+
     if (isNaN(ts.getTime())) return 'Recently'
-    
+
     const now = new Date()
     const diff = now - ts
     const minutes = Math.floor(diff / 60000)
     const hours = Math.floor(diff / 3600000)
-    
+
     if (minutes < 1) return 'Just now'
     if (minutes < 60) return `${minutes}m ago`
     if (hours < 24) return `${hours}h ago`
@@ -224,47 +218,11 @@ const formatTime = (timestamp) => {
   }
 }
 
-const startProgressBar = () => {
-  isNavigating.value = true
-  progressWidth.value = 10
-
-  if (progressInterval) clearInterval(progressInterval)
-  
-  progressInterval = setInterval(() => {
-    if (progressWidth.value < 90) {
-      // Gradually increase progress with diminishing speed
-      progressWidth.value += Math.random() * (90 - progressWidth.value) * 0.15
-    }
-  }, 200)
-}
-
-const completeProgressBar = () => {
-  if (progressInterval) clearInterval(progressInterval)
-  
-  progressWidth.value = 100
-  
-  setTimeout(() => {
-    isNavigating.value = false
-    progressWidth.value = 0
-  }, 300)
-}
-
-const removeExpiredNotifications = (notifs) => {
-  const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000
-  const now = new Date().getTime()
-  
-  return notifs.filter(notif => {
-    const notifTime = notif.timestamp instanceof Date ? notif.timestamp.getTime() : new Date(notif.timestamp).getTime()
-    return (now - notifTime) < SEVEN_DAYS_MS
-  })
-}
-
 const loadNotifications = async () => {
   try {
-    // Load stored read state first
     const storedNotifs = localStorage.getItem('siteNotifications')
     const readStateMap = new Map()
-    
+
     if (storedNotifs) {
       try {
         const parsed = JSON.parse(storedNotifs)
@@ -272,12 +230,9 @@ const loadNotifications = async () => {
           if (n.id) readStateMap.set(n.id, n.read === true)
         })
       } catch (e) {
-        console.error('Error parsing stored notifications for read state:', e)
       }
     }
-    
-    // Then load from backend
-    const authStore = useAuthStore()
+
     if (authStore.user?.id) {
       const SECRET_KEY = 'status-bot-stats-secret-key'
       const response = await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications`, {
@@ -288,17 +243,14 @@ const loadNotifications = async () => {
         const backendNotifs = (data.notifications || []).map(n => ({
           ...n,
           timestamp: new Date(n.createdAt || Date.now()),
-          // Preserve read state from localStorage if it exists, otherwise new notifications are unread
           read: readStateMap.has(n.id) ? readStateMap.get(n.id) : false
         }))
-        
-        // Merge with stored notifications to keep any locally stored ones
+
         let allNotifs = [...backendNotifs]
-        
+
         if (storedNotifs) {
           try {
             const parsed = JSON.parse(storedNotifs)
-            // Add back any stored notifications that aren't in backend (in case they expired on backend but are still local)
             parsed.forEach(stored => {
               if (!backendNotifs.find(b => b.id === stored.id)) {
                 allNotifs.push({
@@ -309,27 +261,23 @@ const loadNotifications = async () => {
               }
             })
           } catch (e) {
-            // If localStorage is corrupted, just use backend
           }
         }
-        
-        // Sort by newest first (descending by createdAt/timestamp)
+
         allNotifs.sort((a, b) => {
           const aTime = typeof a.createdAt === 'number' ? a.createdAt : a.timestamp?.getTime?.() || 0
           const bTime = typeof b.createdAt === 'number' ? b.createdAt : b.timestamp?.getTime?.() || 0
           return bTime - aTime
         })
-        
+
         notifications.value = allNotifs
         saveNotifications()
         return
       }
     }
   } catch (err) {
-    console.error('Error loading notifications from backend:', err)
   }
-  
-  // Fall back to localStorage
+
   try {
     const storedNotifs = localStorage.getItem('siteNotifications')
     if (storedNotifs) {
@@ -341,12 +289,10 @@ const loadNotifications = async () => {
       }))
     }
   } catch (err) {
-    console.error('Error loading notifications from localStorage:', err)
   }
 }
 
 const saveNotifications = () => {
-  // Convert timestamps to ISO strings for JSON serialization
   const notificationsToSave = notifications.value.map(n => ({
     ...n,
     timestamp: n.timestamp instanceof Date ? n.timestamp.toISOString() : n.timestamp
@@ -354,11 +300,34 @@ const saveNotifications = () => {
   localStorage.setItem('siteNotifications', JSON.stringify(notificationsToSave))
 }
 
+const startProgressBar = () => {
+  isNavigating.value = true
+  progressWidth.value = 10
+
+  if (progressInterval) clearInterval(progressInterval)
+
+  progressInterval = setInterval(() => {
+    if (progressWidth.value < 90) {
+      progressWidth.value += Math.random() * (90 - progressWidth.value) * 0.15
+    }
+  }, 200)
+}
+
+const completeProgressBar = () => {
+  if (progressInterval) clearInterval(progressInterval)
+
+  progressWidth.value = 100
+
+  setTimeout(() => {
+    isNavigating.value = false
+    progressWidth.value = 0
+  }, 300)
+}
+
 onMounted(() => {
   authStore.initializeAuth()
   loadNotifications()
 
-  // Setup route navigation listeners
   router.beforeEach((to, from, next) => {
     if (to.path !== from.path) {
       startProgressBar()
@@ -370,14 +339,12 @@ onMounted(() => {
     completeProgressBar()
   })
 
-  // Reload notifications when user logs in
   watch(() => authStore.isLoggedIn, (newVal) => {
     if (newVal) {
       loadNotifications()
     }
   })
 
-  // Close menu when clicking outside
   document.addEventListener('click', (e) => {
     if (!e.target.closest('header')) {
       menuOpen.value = false
@@ -386,7 +353,6 @@ onMounted(() => {
     }
   })
 
-  // Close menu when a link is clicked
   document.querySelectorAll('nav a, .dropdown-item').forEach(link => {
     link.addEventListener('click', () => {
       menuOpen.value = false
@@ -394,7 +360,6 @@ onMounted(() => {
     })
   })
 
-  // Save notifications when they change
   window.addEventListener('beforeunload', saveNotifications)
 })
 </script>

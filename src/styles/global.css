@@ -195,8 +195,7 @@ p {
   }
 }
 
-/* ====== RESPONSIVE DESIGN ====== */
-
+/* Responsive design breakpoints */
 /* Extra Large Screens (1440px+) */
 @media (min-width: 1440px) {
   .container {

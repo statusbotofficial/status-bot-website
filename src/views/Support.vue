@@ -129,7 +129,6 @@ const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 const CHAT_STORAGE_KEY = 'supportChatHistory'
 const CHAT_STORAGE_USER_KEY = (userId) => `${CHAT_STORAGE_KEY}_${userId}`
 
-// Load chat history
 const loadChatHistory = () => {
   if (!isLoggedIn.value || !authStore.user) return
   
@@ -147,7 +146,6 @@ const loadChatHistory = () => {
   }
 }
 
-// Save chat history
 const saveChatHistory = () => {
   if (!isLoggedIn.value || !authStore.user) return
   
@@ -155,7 +153,6 @@ const saveChatHistory = () => {
   localStorage.setItem(storageKey, JSON.stringify(messages.value))
 }
 
-// Scroll chat to bottom
 const scrollChatToBottom = () => {
   const chatArea = document.getElementById('chatArea')
   if (chatArea) {
@@ -163,14 +160,12 @@ const scrollChatToBottom = () => {
   }
 }
 
-// Send message
 const sendMessage = async () => {
   if (!isLoggedIn.value) return
   
   const text = inputMessage.value.trim()
   if (!text || isLoading.value) return
 
-  // Add user message
   messages.value.push({
     text: text,
     sender: 'user'
@@ -211,7 +206,6 @@ const sendMessage = async () => {
   }
 }
 
-// Load chat when logged in
 watch(() => isLoggedIn.value, (newVal) => {
   if (newVal) {
     loadChatHistory()

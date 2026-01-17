@@ -285,26 +285,11 @@ import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
 
-const activeSection = ref('account')
-const discordUser = ref(null)
-const hasPremium = ref(false)
-const premiumExpiryDate = ref(null)
-const loadingGifts = ref(false)
-const gifts = ref([])
-const currentTheme = ref('default')
-
-const notificationPrefs = ref({
-  updates: true,
-  gifts: true,
-  trials: true,
-  community: true
-})
+const BACKEND_URL = 'https://status-bot-backend.onrender.com'
+const SECRET_KEY = 'status-bot-stats-secret-key'
 
 const themes = {
-  default: {
-    name: 'Default',
-    preview: 'linear-gradient(135deg, #ffffff 0%, #2630b6 100%)'
-  },
+  default: { name: 'Default', preview: 'linear-gradient(135deg, #ffffff 0%, #2630b6 100%)' },
   dark: { name: 'Dark', preview: 'linear-gradient(135deg, #0b0b0b 0%, #2b2b2b 100%)' },
   light: { name: 'Light', preview: '#ffffff' },
   sunset: { name: 'Sunset', preview: 'linear-gradient(135deg, #ffb86b 0%, #7e4bb8 100%)' },
@@ -315,10 +300,32 @@ const themes = {
   lime: { name: 'Lime', preview: 'linear-gradient(135deg, #b0ff6d 0%, #7be35a 100%)' }
 }
 
-const BACKEND_URL = 'https://status-bot-backend.onrender.com'
-const SECRET_KEY = 'status-bot-stats-secret-key'
+const themeColorMap = {
+  default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' },
+  dark: { primary: '#4d4d4d', bg: '#000000', text: '#cccccc' },
+  light: { primary: '#0066cc', bg: '#ffffff', text: '#000000' },
+  sunset: { primary: '#ff7f50', bg: '#1a0f0a', text: '#fff5e6' },
+  obsidian: { primary: '#708090', bg: '#0b0b0b', text: '#e8e8e8' },
+  saphire: { primary: '#0b3cff', bg: '#0a0a1a', text: '#e0e8ff' },
+  parrot: { primary: '#00bcd4', bg: '#0a1a1a', text: '#e0fff5' },
+  icicle: { primary: '#00bfff', bg: '#0f1a2e', text: '#e0f7ff' },
+  lime: { primary: '#7be35a', bg: '#0a1a00', text: '#e8ffe0' }
+}
 
-// Computed properties
+const activeSection = ref('account')
+const discordUser = ref(null)
+const hasPremium = ref(false)
+const premiumExpiryDate = ref(null)
+const loadingGifts = ref(false)
+const gifts = ref([])
+const currentTheme = ref('default')
+const notificationPrefs = ref({
+  updates: true,
+  gifts: true,
+  trials: true,
+  community: true
+})
+
 const accountCreatedDate = computed(() => {
   if (!discordUser.value?.id) return 'Loading...'
   const timestamp = BigInt(discordUser.value.id)
@@ -326,9 +333,7 @@ const accountCreatedDate = computed(() => {
   return createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 })
 
-const currentSessionTime = computed(() => {
-  return 'Active now'
-})
+const currentSessionTime = computed(() => 'Active now')
 
 const daysUntilExpiry = computed(() => {
   if (!premiumExpiryDate.value) return 0
@@ -338,7 +343,6 @@ const daysUntilExpiry = computed(() => {
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 })
 
-// Methods
 const fetchDiscordUser = async () => {
   const token = localStorage.getItem('discordToken')
   if (!token) return
@@ -351,8 +355,13 @@ const fetchDiscordUser = async () => {
       discordUser.value = await response.json()
     }
   } catch (err) {
-    console.error('Error fetching Discord user:', err)
   }
+}
+
+const copyToClipboard = (text) => {
+  if (!text) return
+  navigator.clipboard.writeText(text)
+  alert('✓ Copied to clipboard')
 }
 
 const fetchPremiumStatus = async () => {
@@ -368,7 +377,6 @@ const fetchPremiumStatus = async () => {
       }
     }
   } catch (err) {
-    console.error('Error fetching premium status:', err)
   }
 }
 
@@ -385,7 +393,6 @@ const loadGifts = async () => {
       gifts.value = data.gifts || []
     }
   } catch (err) {
-    console.error('Error loading gifts:', err)
   } finally {
     loadingGifts.value = false
   }
@@ -404,63 +411,10 @@ const claimGift = async (giftId) => {
         giftId
       })
     })
-
     if (response.ok) {
       loadGifts()
     }
   } catch (err) {
-    console.error('Error claiming gift:', err)
-  }
-}
-
-const saveNotificationPrefs = async () => {
-  localStorage.setItem('notificationPrefs', JSON.stringify(notificationPrefs.value))
-  
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/user/${discordUser.value.id}/notifications`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${SECRET_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(notificationPrefs.value)
-    })
-    
-    if (response.ok) {
-      alert('✓ Notification preferences saved')
-      
-      if (notificationPrefs.value.updates || notificationPrefs.value.gifts || notificationPrefs.value.trials || notificationPrefs.value.community) {
-        requestNotificationPermission()
-      }
-    }
-  } catch (err) {
-    console.error('Error saving notification preferences:', err)
-    alert('Error saving preferences')
-  }
-}
-
-const requestNotificationPermission = async () => {
-  if (!('Notification' in window)) {
-    console.log('This browser does not support notifications')
-    return
-  }
-  
-  if (Notification.permission === 'granted') {
-    new Notification('Status Bot', {
-      body: 'Notifications enabled for Status Bot!',
-      icon: '/Status Bot Logo.png'
-    })
-    return
-  }
-  
-  if (Notification.permission !== 'denied') {
-    const permission = await Notification.requestPermission()
-    if (permission === 'granted') {
-      new Notification('Status Bot', {
-        body: 'Notifications enabled for Status Bot!',
-        icon: '/Status Bot Logo.png'
-      })
-    }
   }
 }
 
@@ -473,70 +427,81 @@ const selectTheme = (themeName) => {
 const applyTheme = (themeName) => {
   const theme = themes[themeName]
   if (!theme) return
-  
+
+  const themeColors = themeColorMap[themeName] || themeColorMap.default
   const root = document.documentElement
-  const colors = {
-    default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' },
-    dark: { primary: '#4d4d4d', bg: '#000000', text: '#cccccc' },
-    light: { primary: '#0066cc', bg: '#ffffff', text: '#000000' },
-    sunset: { primary: '#ff7f50', bg: '#1a0f0a', text: '#fff5e6' },
-    obsidian: { primary: '#708090', bg: '#0b0b0b', text: '#e8e8e8' },
-    saphire: { primary: '#0b3cff', bg: '#0a0a1a', text: '#e0e8ff' },
-    parrot: { primary: '#00bcd4', bg: '#0a1a1a', text: '#e0fff5' },
-    icicle: { primary: '#00bfff', bg: '#0f1a2e', text: '#e0f7ff' },
-    lime: { primary: '#7be35a', bg: '#0a1a00', text: '#e8ffe0' }
-  }
-  
-  const themeColors = colors[themeName] || colors.default
   root.style.setProperty('--primary-color', themeColors.primary)
   root.style.setProperty('--bg-primary', themeColors.bg)
   root.style.setProperty('--text-primary', themeColors.text)
 }
 
-const copyToClipboard = (text) => {
-  if (!text) return
-  navigator.clipboard.writeText(text)
-  alert('✓ Copied to clipboard')
+const saveNotificationPrefs = async () => {
+  localStorage.setItem('notificationPrefs', JSON.stringify(notificationPrefs.value))
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/user/${discordUser.value.id}/notifications`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(notificationPrefs.value)
+    })
+
+    if (response.ok) {
+      alert('✓ Notification preferences saved')
+      if (Object.values(notificationPrefs.value).some(v => v)) {
+        requestNotificationPermission()
+      }
+    }
+  } catch (err) {
+    alert('Error saving preferences')
+  }
 }
 
-const formatDate = (timestamp) => {
-  return new Date(timestamp).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
-}
+const requestNotificationPermission = async () => {
+  if (!('Notification' in window)) return
 
-const formatExpiryDate = (dateString) => {
-  if (!dateString) return 'N/A'
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
+  if (Notification.permission === 'granted') {
+    new Notification('Status Bot', {
+      body: 'Notifications enabled for Status Bot!',
+      icon: '/Status Bot Logo.png'
+    })
+    return
+  }
+
+  if (Notification.permission !== 'denied') {
+    const permission = await Notification.requestPermission()
+    if (permission === 'granted') {
+      new Notification('Status Bot', {
+        body: 'Notifications enabled for Status Bot!',
+        icon: '/Status Bot Logo.png'
+      })
+    }
+  }
 }
 
 onMounted(async () => {
   document.title = 'Settings | Status Bot'
-  
+
   const storedUser = localStorage.getItem('discordUser')
   if (storedUser) {
     discordUser.value = JSON.parse(storedUser)
   }
-  
+
   await fetchDiscordUser()
   await fetchPremiumStatus()
-  
+  await loadGifts()
+
   const savedTheme = localStorage.getItem('site_theme') || 'default'
   currentTheme.value = savedTheme
   applyTheme(savedTheme)
-  
+
   const savedPrefs = localStorage.getItem('notificationPrefs')
   if (savedPrefs) {
     notificationPrefs.value = JSON.parse(savedPrefs)
   }
 
-  // Check for tab parameter in URL
   const urlParams = new URLSearchParams(window.location.search)
   const tab = urlParams.get('tab')
   if (tab) {
@@ -546,6 +511,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* Layout */
 .settings-wrapper {
   width: 100%;
   padding: 60px 50px;
@@ -558,6 +524,13 @@ onMounted(async () => {
   margin: 0 auto;
 }
 
+.settings-main {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 40px;
+}
+
+/* Header styling */
 .settings-header {
   display: flex;
   flex-direction: column;
@@ -588,12 +561,7 @@ onMounted(async () => {
   margin-top: 20px;
 }
 
-.settings-main {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 40px;
-}
-
+/* Sidebar navigation */
 .settings-sidebar {
   position: sticky;
   top: 100px;
@@ -660,6 +628,7 @@ onMounted(async () => {
   font-size: 18px;
 }
 
+/* Settings content sections */
 .settings-content {
   width: 100%;
 }
@@ -687,6 +656,7 @@ onMounted(async () => {
   margin-bottom: 30px;
 }
 
+/* Cards and panels */
 .section-panel {
   background: rgba(81, 112, 255, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
@@ -714,6 +684,7 @@ onMounted(async () => {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Account information display */
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -763,6 +734,7 @@ onMounted(async () => {
   margin-left: 8px;
 }
 
+/* Active sessions */
 .session-item {
   display: flex;
   justify-content: space-between;
@@ -798,6 +770,7 @@ onMounted(async () => {
   color: #4ade80;
 }
 
+/* Danger zone styling */
 .danger-content {
   display: flex;
   flex-direction: column;
@@ -810,6 +783,7 @@ onMounted(async () => {
   margin: 0;
 }
 
+/* Premium status and features */
 .premium-status {
   display: flex;
   gap: 15px;
@@ -860,6 +834,7 @@ onMounted(async () => {
   margin-bottom: 20px;
 }
 
+/* Feature cards */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -901,6 +876,7 @@ onMounted(async () => {
   color: var(--text-secondary);
 }
 
+/* Statistics cards */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -937,6 +913,7 @@ onMounted(async () => {
   color: #fff;
 }
 
+/* Activity history */
 .history-list {
   display: flex;
   flex-direction: column;
@@ -971,6 +948,7 @@ onMounted(async () => {
   margin-top: 10px;
 }
 
+/* Server listing */
 .servers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1210,6 +1188,7 @@ onMounted(async () => {
   text-align: center;
 }
 
+/* Gift display and claiming */
 .gifts-container {
   display: flex;
   flex-direction: column;
@@ -1303,6 +1282,7 @@ onMounted(async () => {
   opacity: 0.7;
 }
 
+/* Privacy and policy information */
 .privacy-item {
   padding: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -1352,7 +1332,7 @@ onMounted(async () => {
   border-color: rgba(81, 112, 255, 0.4);
 }
 
-/* Modal Styles */
+/* Dialog overlays */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1429,7 +1409,7 @@ onMounted(async () => {
   to { transform: rotate(360deg); }
 }
 
-/* Button Styles */
+/* Buttons and interactions */
 .btn {
   padding: 10px 20px;
   border: none;
@@ -1502,7 +1482,7 @@ onMounted(async () => {
   font-size: 12px;
 }
 
-/* Responsive Design */
+/* Responsive design */
 @media (max-width: 1023px) {
   .settings-wrapper {
     padding: 40px 30px;

@@ -72,7 +72,6 @@ const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 const OFFLINE_THRESHOLD = 5 * 60 * 1000 // 5 minutes
 const INCIDENT_EXPIRY_DAYS = 7
 
-// Load incidents from localStorage
 const loadIncidents = () => {
   try {
     const stored = localStorage.getItem('status_incidents')
@@ -82,12 +81,10 @@ const loadIncidents = () => {
     const now = Date.now()
     const sevenDaysMs = INCIDENT_EXPIRY_DAYS * 24 * 60 * 60 * 1000
     
-    // Filter out incidents older than 7 days
     const validIncidents = data.filter(incident => {
       return (now - incident.startTime) < sevenDaysMs
     })
     
-    // Save filtered list back to localStorage
     if (validIncidents.length !== data.length) {
       saveIncidents(validIncidents)
     }
@@ -99,7 +96,6 @@ const loadIncidents = () => {
   }
 }
 
-// Save incidents to localStorage
 const saveIncidents = (incidentsToSave) => {
   try {
     localStorage.setItem('status_incidents', JSON.stringify(incidentsToSave))
@@ -108,7 +104,6 @@ const saveIncidents = (incidentsToSave) => {
   }
 }
 
-// Fetch bot stats from backend
 const fetchBotStats = async () => {
   try {
     const response = await fetch(`${BACKEND_URL}/api/bot-stats`)
@@ -116,11 +111,9 @@ const fetchBotStats = async () => {
     
     const data = await response.json()
     
-    // Update basic stats
     ping.value = data.ping || 0
     servers.value = data.servers || 0
     
-    // Update uptime from backend (sent in seconds)
     if (data.uptime) {
       const uptimeMs = data.uptime * 1000
       const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24))
@@ -136,22 +129,17 @@ const fetchBotStats = async () => {
       }
     }
     
-    // Check if bot is online or offline
     if (data.lastUpdated) {
       const lastUpdateTime = new Date(data.lastUpdated).getTime()
       const timeSinceUpdate = Date.now() - lastUpdateTime
       
       if (timeSinceUpdate > OFFLINE_THRESHOLD) {
-        // Bot is offline
         if (botStatus.value === 'online') {
-          // Just went offline - add incident
           addIncident('Downtime Detected', Date.now())
         }
         botStatus.value = 'offline'
       } else {
-        // Bot is online
         if (botStatus.value === 'offline') {
-          // Just came back online - resolve last incident
           resolveLastIncident()
         }
         botStatus.value = 'online'
@@ -163,7 +151,6 @@ const fetchBotStats = async () => {
   }
 }
 
-// Add incident to list
 const addIncident = (type, startTime) => {
   const existingIncident = incidents.value.find(inc => !inc.resolved)
   if (existingIncident) return // Don't add duplicate
@@ -180,7 +167,6 @@ const addIncident = (type, startTime) => {
   saveIncidents(incidents.value)
 }
 
-// Resolve last incident
 const resolveLastIncident = () => {
   const lastIncident = incidents.value.find(inc => !inc.resolved)
   if (lastIncident) {
@@ -190,13 +176,11 @@ const resolveLastIncident = () => {
   }
 }
 
-// Format incident time
 const formatIncidentTime = (timestamp) => {
   const date = new Date(timestamp)
   return date.toLocaleString()
 }
 
-// Format duration
 const formatDuration = (startTime, endTime) => {
   const duration = endTime - startTime
   const hours = Math.floor(duration / (1000 * 60 * 60))
@@ -213,13 +197,10 @@ const formatDuration = (startTime, endTime) => {
 }
 
 onMounted(() => {
-  // Load incidents from localStorage
   incidents.value = loadIncidents()
   
-  // Initial fetch
   fetchBotStats()
   
-  // Poll every 30 seconds
   pollInterval = setInterval(() => {
     fetchBotStats()
   }, 30000)

@@ -203,14 +203,12 @@ const AUTHORIZED_USER_ID = '1362553254117904496'
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 const SECRET_KEY = 'status-bot-stats-secret-key'
 
-// Trial state
 const trialUserId = ref('')
 const dashboardDuration = ref(7)
 const premiumTrialDuration = ref(7)
 const sendTrialToAll = ref(false)
 const sendingTrial = ref(false)
 
-// Notification state
 const notificationUserId = ref('')
 const selectedNotificationType = ref('Update')
 const notificationTitle = ref('')
@@ -218,14 +216,12 @@ const notificationMessage = ref('')
 const sendNotificationToAll = ref(false)
 const sendingNotification = ref(false)
 
-// Billing state
-const billingHistory = ref([])
-
-// Premium state
 const premiumUsers = ref([])
 const giveUserIdInput = ref('')
 const givePremiumDuration = ref(30)
 const grantingPremium = ref(false)
+
+const billingHistory = ref([])
 
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
@@ -434,7 +430,6 @@ const grantPremium = async () => {
       alert(`✓ Premium granted for ${duration} days`)
       giveUserIdInput.value = ''
       givePremiumDuration.value = 30
-      // Refresh immediately after grant
       setTimeout(() => fetchPremiumUsers(), 500)
     } else {
       alert(`❌ Error: ${data.message || 'Failed to grant premium'}`)
@@ -455,6 +450,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* Layout */
 .dev-wrapper {
   width: 100%;
   padding: 60px 50px;
@@ -467,6 +463,7 @@ onMounted(async () => {
   margin: 0 auto;
 }
 
+/* Header section */
 .dev-header {
   display: flex;
   flex-direction: column;
@@ -519,6 +516,7 @@ onMounted(async () => {
   margin-top: 0;
 }
 
+/* Form inputs */
 .input-group {
   display: flex;
   flex-direction: column;

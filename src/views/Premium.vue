@@ -240,7 +240,6 @@ const showPremiumModal = ref(false)
 const hasPremium = ref(false)
 const featuresSection = ref(null)
 
-// Check if user has premium
 onMounted(async () => {
   if (authStore.user?.id) {
     try {
