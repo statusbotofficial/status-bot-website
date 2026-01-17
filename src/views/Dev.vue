@@ -434,7 +434,8 @@ const grantPremium = async () => {
       alert(`✓ Premium granted for ${duration} days`)
       giveUserIdInput.value = ''
       givePremiumDuration.value = 30
-      await fetchPremiumUsers()
+      // Refresh immediately after grant
+      setTimeout(() => fetchPremiumUsers(), 500)
     } else {
       alert(`❌ Error: ${data.message || 'Failed to grant premium'}`)
     }
