@@ -255,7 +255,7 @@
 
           <!-- Leveling -->
           <section v-else-if="activeSection === 'leveling'" class="config-section">
-            <h3>Leveling Settings <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></h3>
+            <h3>Leveling Settings</h3>
             <div class="settings-box">
               <div class="setting-item">
                 <label>Enable Leveling</label>
@@ -263,17 +263,17 @@
               </div>
 
               <div class="setting-item">
-                <label>XP per message</label>
+                <label>XP per message <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
                 <input v-model.number="levelingSettings.xpPerMessage" type="number" min="1" class="input-field" :disabled="!userHasPremium" />
               </div>
 
               <div class="setting-item">
-                <label>Voice chat XP</label>
+                <label>Voice chat XP <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
                 <input v-model.number="levelingSettings.voiceXp" type="number" min="1" class="input-field" :disabled="!userHasPremium" />
               </div>
 
               <div class="setting-item">
-                <label>XP Cooldown (seconds)</label>
+                <label>XP Cooldown (seconds) <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
                 <input v-model.number="levelingSettings.xpCooldown" type="number" min="1" max="300" class="input-field" :disabled="!userHasPremium" placeholder="60" />
               </div>
 
@@ -1654,7 +1654,8 @@ watch(
         await Promise.all([
           loadOverviewData(server.id),
           loadLeaderboardData(server.id),
-          loadAllSettings(server.id)
+          loadAllSettings(server.id),
+          fetchPremiumStatus()
         ])
       }
     } else if (!guildId) {
