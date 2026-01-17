@@ -95,21 +95,21 @@
               <!-- Server Stats -->
               <div class="stats-grid">
                 <div class="stat-box">
-                  <div class="stat-icon xp-icon">⭐</div>
+                  <div class="stat-icon xp-icon"><i class="fas fa-star"></i></div>
                   <div class="stat-content">
                     <div class="stat-label">Total XP</div>
                     <div class="stat-value">{{ totalStats.totalXp }}</div>
                   </div>
                 </div>
                 <div class="stat-box">
-                  <div class="stat-icon balance-icon">💰</div>
+                  <div class="stat-icon balance-icon"><i class="fas fa-coins"></i></div>
                   <div class="stat-content">
                     <div class="stat-label">Total Currency</div>
                     <div class="stat-value">{{ totalStats.totalBalance }}</div>
                   </div>
                 </div>
                 <div class="stat-box">
-                  <div class="stat-icon members-icon">👥</div>
+                  <div class="stat-icon members-icon"><i class="fas fa-users"></i></div>
                   <div class="stat-content">
                     <div class="stat-label">Members</div>
                     <div class="stat-value">{{ totalStats.membersTracked }}</div>
@@ -130,7 +130,7 @@
                       class="leaderboard-item"
                       :class="getMedalClass(idx)"
                     >
-                      <span class="rank" :class="getMedalClass(idx)">{{ idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '#' + (idx + 1) }}</span>
+                      <span class="rank" :class="getMedalClass(idx)"><template v-if="idx === 0"><i class="fas fa-medal" style="color: #ffd700;"></i></template><template v-else-if="idx === 1"><i class="fas fa-medal" style="color: #c0c0c0;"></i></template><template v-else-if="idx === 2"><i class="fas fa-medal" style="color: #cd7f32;"></i></template><template v-else>#{{ idx + 1 }}</template></span>
                       <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
                       <div class="user-info">
                         <p class="username">{{ user.username }}</p>
@@ -199,7 +199,7 @@
                     class="leaderboard-item"
                     :class="getMedalClass(idx)"
                   >
-                    <span class="rank" :class="getMedalClass(idx)">{{ idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '#' + (idx + 1) }}</span>
+                    <span class="rank" :class="getMedalClass(idx)"><template v-if="idx === 0"><i class="fas fa-medal" style="color: #ffd700;"></i></template><template v-else-if="idx === 1"><i class="fas fa-medal" style="color: #c0c0c0;"></i></template><template v-else-if="idx === 2"><i class="fas fa-medal" style="color: #cd7f32;"></i></template><template v-else>#{{ idx + 1 }}</template></span>
                     <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
                     <div class="user-info">
                       <p class="username">{{ user.username }}</p>
@@ -263,17 +263,17 @@
               </div>
 
               <div class="setting-item">
-                <label>XP per message <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <label>XP per message <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
                 <input v-model.number="levelingSettings.xpPerMessage" type="number" min="1" class="input-field" :disabled="!userHasPremium" />
               </div>
 
               <div class="setting-item">
-                <label>Voice chat XP <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <label>Voice chat XP <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
                 <input v-model.number="levelingSettings.voiceXp" type="number" min="1" class="input-field" :disabled="!userHasPremium" />
               </div>
 
               <div class="setting-item">
-                <label>XP Cooldown (seconds) <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <label>XP Cooldown (seconds) <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
                 <input v-model.number="levelingSettings.xpCooldown" type="number" min="1" max="300" class="input-field" :disabled="!userHasPremium" placeholder="60" />
               </div>
 
@@ -331,7 +331,7 @@
 
           <!-- Economy -->
           <section v-else-if="activeSection === 'economy'" class="config-section">
-            <h3>Economy System <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></h3>
+            <h3>Economy System <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></h3>
             <div class="settings-box">
               <div class="setting-item">
                 <label>Enable Economy</label>

@@ -78,7 +78,7 @@
                   <label>User ID</label>
                   <div class="info-value copy-able" @click="copyToClipboard(discordUser?.id)">
                     {{ discordUser?.id || 'Loading...' }}
-                    <span class="copy-icon">📋</span>
+                    <span class="copy-icon"><i class="fas fa-copy"></i></span>
                   </div>
                 </div>
                 <div class="info-item">
@@ -109,7 +109,7 @@
               <div v-if="hasPremium" class="premium-info">
                 <div class="info-item">
                   <label>Status</label>
-                  <div class="info-value">✓ Premium Member</div>
+                  <div class="info-value"><i class="fas fa-check"></i> Premium Member</div>
                 </div>
                 <div class="info-item">
                   <label>Expiry Date</label>
@@ -132,22 +132,22 @@
               <div class="panel-header">Premium Features</div>
               <div class="features-grid">
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon">2️⃣</div>
+                  <div class="feature-icon"><i class="fas fa-times-circle"></i></div>
                   <div class="feature-name">2x XP Multiplier</div>
                   <div class="feature-desc">Earn double XP on messages and voice chat</div>
                 </div>
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon">✨</div>
+                  <div class="feature-icon"><i class="fas fa-star"></i></div>
                   <div class="feature-name">Exclusive Items</div>
                   <div class="feature-desc">Access premium cosmetics and rewards</div>
                 </div>
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon">⚡</div>
+                  <div class="feature-icon"><i class="fas fa-bolt"></i></div>
                   <div class="feature-name">Priority Support</div>
                   <div class="feature-desc">Get faster responses to your questions</div>
                 </div>
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon">📈</div>
+                  <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
                   <div class="feature-name">Enhanced Limits</div>
                   <div class="feature-desc">Higher limits on tracked users and settings</div>
                 </div>
@@ -248,7 +248,7 @@
               </div>
               <div v-else-if="gifts.length > 0" class="gifts-container">
                 <div v-for="gift in gifts" :key="gift.id" class="gift-entry">
-                  <div class="gift-icon-container">🎁</div>
+                  <div class="gift-icon-container"><i class="fas fa-gift"></i></div>
                   <div class="gift-details">
                     <div class="gift-name">{{ gift.name }}</div>
                     <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
@@ -264,7 +264,7 @@
                     Claim
                   </button>
                   <button v-else class="claim-btn claimed" disabled>
-                    Claimed ✓
+                    Claimed <i class="fas fa-check"></i>
                   </button>
                 </div>
               </div>
