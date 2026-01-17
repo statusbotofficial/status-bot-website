@@ -334,44 +334,54 @@
 
           <!-- Economy -->
           <section v-else-if="activeSection === 'economy'" class="config-section">
-            <div v-if="!userHasPremium" class="premium-lock">
-              <div class="premium-lock-content">
-                <div class="lock-icon">🔒</div>
-                <h4>Premium Feature</h4>
-                <p>The Economy System is a premium feature. Upgrade your server to unlock it!</p>
-                <a href="/premium" class="upgrade-btn">Upgrade to Premium</a>
+            <h3>Economy System <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></h3>
+            <div class="settings-box">
+              <div class="setting-item">
+                <label>Enable Economy</label>
+                <toggle-switch v-model="economySettings.enabled" :disabled="!userHasPremium" />
               </div>
-            </div>
-            <div v-else>
-              <h3>Economy System</h3>
-              <div class="settings-box">
-                <div class="setting-item">
-                  <label>Enable Economy</label>
-                  <toggle-switch v-model="economySettings.enabled" />
-                </div>
 
-                <div class="setting-item">
-                  <label>Currency gained per message</label>
-                  <input v-model.number="economySettings.currencyPerMessage" type="number" min="1" class="input-field" />
-                </div>
+              <div class="setting-item">
+                <label>Currency gained per message</label>
+                <input v-model.number="economySettings.currencyPerMessage" type="number" min="1" class="input-field" :disabled="!userHasPremium" />
+              </div>
 
-                <div class="setting-item">
-                  <label>Currency symbol</label>
-                  <input v-model="economySettings.currencySymbol" type="text" class="input-field" placeholder="💰" />
-                </div>
+              <div class="setting-item">
+                <label>Currency symbol</label>
+                <input v-model="economySettings.currencySymbol" type="text" class="input-field" placeholder="💰" :disabled="!userHasPremium" />
+              </div>
 
-                <div class="setting-item">
-                  <label>Starting amount</label>
-                  <input v-model.number="economySettings.startingAmount" type="number" min="0" class="input-field" />
-                </div>
+              <div class="setting-item">
+                <label>Starting amount</label>
+                <input v-model.number="economySettings.startingAmount" type="number" min="0" class="input-field" :disabled="!userHasPremium" />
+              </div>
 
-                <div class="button-group">
-                  <button @click="saveEconomySettings" class="save-btn" :class="{ 'save-success': economySaveSuccess }" :disabled="economySaveLoading">
-                    <span v-if="economySaveLoading" class="spinner"></span>
-                    {{ economySaveSuccess ? '✓ Saved Successfully' : economySaveLoading ? 'Saving...' : 'Save' }}
-                  </button>
-                  <button @click="showResetEconomyModal" class="reset-btn">Reset All Balances</button>
-                </div>
+              <div class="setting-item">
+                <label>Balance multiplier <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <input v-model.number="economySettings.balanceMultiplier" type="number" step="0.1" min="0.1" class="input-field" :disabled="!userHasPremium" />
+              </div>
+
+              <div class="setting-item">
+                <label>Daily interest rate (%) <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <input v-model.number="economySettings.dailyInterestRate" type="number" step="0.1" min="0" max="100" class="input-field" :disabled="!userHasPremium" />
+              </div>
+
+              <div class="setting-item">
+                <label>Robbery success chance (%) <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <input v-model.number="economySettings.robberyChance" type="number" step="0.1" min="0" max="100" class="input-field" :disabled="!userHasPremium" />
+              </div>
+
+              <div class="setting-item">
+                <label>Work reward multiplier <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <input v-model.number="economySettings.workRewardMultiplier" type="number" step="0.1" min="0.1" class="input-field" :disabled="!userHasPremium" />
+              </div>
+
+              <div class="button-group">
+                <button @click="saveEconomySettings" class="save-btn" :class="{ 'save-success': economySaveSuccess }" :disabled="economySaveLoading || !userHasPremium">
+                  <span v-if="economySaveLoading" class="spinner"></span>
+                  {{ economySaveSuccess ? '✓ Saved Successfully' : economySaveLoading ? 'Saving...' : 'Save' }}
+                </button>
+                <button @click="showResetEconomyModal" class="reset-btn" :disabled="!userHasPremium">Reset All Balances</button>
               </div>
             </div>
           </section>
@@ -746,7 +756,20 @@ const memberGoalsSaveLoading = ref(false)
 
 const isMobileNavOpen = ref(false)
 
-const userHasPremium = computed(() => authStore.userPremium?.hasPremium || false)
+const userHasPremium = ref(false)
+
+const fetchPremiumStatus = async () => {
+  if (!selectedServer.value?.id) return
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/user-premium/${authStore.user?.id}`)
+    if (response.ok) {
+      const data = await response.json()
+      userHasPremium.value = data.hasPremium || false
+    }
+  } catch (err) {
+    console.error('Failed to fetch premium status:', err)
+  }
+}
 
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 
@@ -1027,6 +1050,7 @@ const selectServer = async (server) => {
     loadLeaderboardData(server.id),
     loadAllSettings(server.id),
     loadGuildChannels(server.id),
+    fetchPremiumStatus(),
   ])
   guildMembers.value = leaderboardData.value.map(u => ({
     id: u.id,
@@ -2975,60 +2999,5 @@ input:disabled {
   color: #666;
   cursor: not-allowed;
   opacity: 0.6;
-}
-
-.premium-lock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.05), rgba(81, 112, 255, 0.02));
-  border: 2px dashed rgba(81, 112, 255, 0.3);
-  border-radius: 12px;
-}
-
-.premium-lock-content {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.lock-icon {
-  font-size: 64px;
-  opacity: 0.5;
-}
-
-.premium-lock-content h4 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0;
-}
-
-.premium-lock-content p {
-  color: #999;
-  font-size: 14px;
-  margin: 0;
-  max-width: 300px;
-}
-
-.upgrade-btn {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #000;
-  padding: 10px 24px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  display: inline-block;
-  margin-top: 8px;
-}
-
-.upgrade-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3);
 }
 </style>
