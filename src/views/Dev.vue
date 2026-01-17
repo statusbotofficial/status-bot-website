@@ -111,6 +111,61 @@
         </div>
       </div>
 
+      <!-- Premium Users Section -->
+      <section class="dev-section">
+        <h2>Premium Users</h2>
+        <div class="premium-panel">
+          <div v-if="premiumUsers.length > 0" class="premium-list">
+            <div class="premium-header">
+              <div class="col-user">User</div>
+              <div class="col-type">Type</div>
+              <div class="col-expiry">Expiry</div>
+            </div>
+            <div v-for="user in premiumUsers" :key="user.userId" class="premium-entry">
+              <div class="col-user">{{ user.userId }}</div>
+              <div class="col-type">
+                <span :class="['type-badge', 'type-' + user.source]">{{ user.sourceLabel }}</span>
+              </div>
+              <div class="col-expiry">{{ user.expiryText }}</div>
+            </div>
+          </div>
+          <div v-else class="empty-state">
+            <p>No premium users found</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Give Premium Section -->
+      <section class="dev-section">
+        <h2>Give Premium</h2>
+        <div class="give-premium-panel">
+          <div class="form-group">
+            <label>User ID</label>
+            <input 
+              v-model="giveUserIdInput" 
+              type="text" 
+              placeholder="User ID"
+              class="dev-input"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Duration (days)</label>
+            <input 
+              v-model.number="givePremiumDuration" 
+              type="number" 
+              placeholder="Days (0 for permanent)"
+              min="0"
+              class="dev-input"
+            >
+          </div>
+
+          <button @click="grantPremium" :disabled="grantingPremium" class="dev-btn grant-btn">
+            {{ grantingPremium ? 'Granting...' : 'Grant Premium' }}
+          </button>
+        </div>
+      </section>
+
       <!-- Billing Section -->
       <section class="dev-section">
         <h2>Billing History</h2>
@@ -165,6 +220,12 @@ const sendingNotification = ref(false)
 
 // Billing state
 const billingHistory = ref([])
+
+// Premium state
+const premiumUsers = ref([])
+const giveUserIdInput = ref('')
+const givePremiumDuration = ref(30)
+const grantingPremium = ref(false)
 
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
@@ -282,8 +343,110 @@ const sendNotification = async () => {
   }
 }
 
+const fetchPremiumUsers = async () => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/premium-data`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await response.json()
+    
+    if (data.premiumCache) {
+      const users = []
+      for (const [userId, premiumData] of Object.entries(data.premiumCache)) {
+        if (premiumData.active) {
+          const expiryTimestamp = premiumData.expiresAt ? premiumData.expiresAt * 1000 : null
+          const isExpired = expiryTimestamp && expiryTimestamp < Date.now()
+          
+          let sourceLabel = 'Unknown'
+          let source = premiumData.source || 'unknown'
+          
+          if (source === 'booster') sourceLabel = 'Server Booster'
+          else if (source === 'dashboard') sourceLabel = 'Dashboard'
+          else if (source === 'trial') sourceLabel = 'Trial'
+          else if (source === 'gift') sourceLabel = 'Gifted'
+          else if (source === 'patreon') sourceLabel = 'Patreon'
+          
+          let expiryText = 'Permanent'
+          if (expiryTimestamp) {
+            const expiryDate = new Date(expiryTimestamp)
+            if (isExpired) {
+              expiryText = 'Expired'
+            } else {
+              const daysLeft = Math.ceil((expiryTimestamp - Date.now()) / (1000 * 60 * 60 * 24))
+              expiryText = `${daysLeft}d (${expiryDate.toLocaleDateString()})`
+            }
+          }
+          
+          users.push({
+            userId,
+            source,
+            sourceLabel,
+            expiryText,
+            isExpired
+          })
+        }
+      }
+      premiumUsers.value = users.sort((a, b) => a.userId - b.userId)
+    }
+  } catch (err) {
+    console.error('Failed to fetch premium users:', err)
+  }
+}
+
+const grantPremium = async () => {
+  const userId = giveUserIdInput.value.trim()
+  
+  if (!userId) {
+    alert('Please enter a User ID')
+    return
+  }
+  
+  const duration = givePremiumDuration.value || 30
+  if (duration < 0) {
+    alert('Duration cannot be negative')
+    return
+  }
+  
+  grantingPremium.value = true
+  
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/premium/grant`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId,
+        durationDays: duration
+      })
+    })
+    
+    const data = await response.json()
+    if (response.ok) {
+      alert(`✓ Premium granted for ${duration} days`)
+      giveUserIdInput.value = ''
+      givePremiumDuration.value = 30
+      await fetchPremiumUsers()
+    } else {
+      alert(`❌ Error: ${data.message || 'Failed to grant premium'}`)
+    }
+  } catch (err) {
+    alert(`❌ Error: ${err.message}`)
+  } finally {
+    grantingPremium.value = false
+  }
+}
+
 onMounted(async () => {
   document.title = 'Developer Tools | Status Bot'
+  if (isAuthorized.value) {
+    await fetchPremiumUsers()
+  }
 })
 </script>
 
@@ -693,6 +856,138 @@ onMounted(async () => {
 
   .claim-btn {
     width: 100%;
+  }
+}
+
+.premium-panel,
+.give-premium-panel {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.premium-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.premium-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 15px;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(81, 112, 255, 0.2);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.premium-entry {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 15px;
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(81, 112, 255, 0.1);
+  align-items: center;
+  font-size: 14px;
+}
+
+.premium-entry:last-child {
+  border-bottom: none;
+}
+
+.col-user {
+  color: #fff;
+  font-weight: 500;
+}
+
+.col-type {
+  display: flex;
+  align-items: center;
+}
+
+.col-expiry {
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.type-booster {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+}
+
+.type-dashboard {
+  background: rgba(81, 112, 255, 0.2);
+  color: #5170ff;
+}
+
+.type-trial {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.type-gift {
+  background: rgba(244, 63, 94, 0.2);
+  color: #f43f5e;
+}
+
+.type-patreon {
+  background: rgba(255, 89, 116, 0.2);
+  color: #ff5974;
+}
+
+.give-premium-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.grant-btn {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+  border: 2px solid #5170ff;
+}
+
+.grant-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
+  box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
+}
+
+@media (max-width: 1023px) {
+  .premium-header,
+  .premium-entry {
+    grid-template-columns: 1fr;
   }
 }
 </style>
