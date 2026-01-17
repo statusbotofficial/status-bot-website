@@ -30,17 +30,17 @@
       <h2>Powerful Features</h2>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">🟢</div>
+          <div class="feature-icon"><i class="fas fa-circle"></i></div>
           <h3>Status Tracking</h3>
           <p>Track user statuses and activity across your Discord server.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">⭐</div>
+          <div class="feature-icon"><i class="fas fa-star"></i></div>
           <h3>XP System</h3>
           <p>Reward active members with an engaging experience system.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🏦</div>
+          <div class="feature-icon"><i class="fas fa-coins"></i></div>
           <h3>Economy</h3>
           <p>Create a server economy with custom currency and mini-games.</p>
         </div>
@@ -182,6 +182,11 @@ const discordServerUrl = DISCORD_SERVER_URL
 .feature-icon {
   font-size: 3rem;
   margin-bottom: 15px;
+}
+
+.feature-icon i {
+  font-size: 3rem;
+  color: #5170ff;
 }
 
 .feature-card h3 {

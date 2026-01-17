@@ -81,7 +81,7 @@
               :class="{ active: activeSection === section.id }"
               @click="activeSection = section.id; isMobileNavOpen = false"
             >
-              <span class="nav-icon">{{ section.icon }}</span>
+              <span class="nav-icon" v-html="section.icon"></span>
               <span>{{ section.label }}</span>
             </button>
           </nav>
@@ -772,12 +772,12 @@ const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 
 const sections = [
   { id: 'overview', label: 'Overview', icon: '📊' },
-  { id: 'leaderboard', label: 'Leaderboard', icon: '🏆' },
-  { id: 'leveling', label: 'Leveling', icon: '⬆️' },
-  { id: 'economy', label: 'Economy', icon: '💰' },
-  { id: 'status-tracking', label: 'Status Tracking', icon: '🟢' },
-  { id: 'welcome', label: 'Welcome', icon: '👋' },
-  { id: 'member-goals', label: 'Member Goals', icon: '👥' },
+  { id: 'leaderboard', label: 'Leaderboard', icon: '<i class="fas fa-trophy"></i>' },
+  { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up"></i>' },
+  { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins"></i>' },
+  { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle"></i>' },
+  { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-hand"></i>' },
+  { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users"></i>' },
 ]
 
 const levelingSettings = reactive({
@@ -1963,6 +1963,12 @@ watch(
   font-size: 18px;
   min-width: 24px;
   text-align: center;
+  color: #5170ff;
+}
+
+.nav-icon i {
+  font-size: 18px;
+  color: #5170ff;
 }
 
 .config-main {

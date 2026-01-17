@@ -21,11 +21,11 @@
         <div class="support-chat-box">
           <div class="support-chat-area" id="chatArea">
             <div v-if="!isLoggedIn" class="chat-login-message">
-              <div class="login-icon">👤</div>
+              <div class="login-icon"><i class="fas fa-user"></i></div>
               <p>Please log in to start chatting with our AI support</p>
             </div>
             <div v-else-if="messages.length === 0" class="chat-welcome">
-              <div class="welcome-icon">💬</div>
+              <div class="welcome-icon"><i class="fas fa-comment"></i></div>
               <p>Welcome to Status Bot Support! Ask me anything about Status Bot, and I'll help you out.</p>
               <div class="suggestion-boxes">
                 <button v-for="suggestion in suggestions" :key="suggestion" class="suggestion-box" @click="inputMessage = suggestion; $nextTick(() => sendMessage())">
@@ -376,6 +376,11 @@ onMounted(() => {
   opacity: 0.8;
 }
 
+.login-icon i {
+  font-size: 48px;
+  color: #5170ff;
+}
+
 .chat-welcome {
   display: flex;
   flex-direction: column;
@@ -390,6 +395,11 @@ onMounted(() => {
 
 .welcome-icon {
   font-size: 48px;
+}
+
+.welcome-icon i {
+  font-size: 48px;
+  color: #5170ff;
 }
 
 .suggestion-boxes {
