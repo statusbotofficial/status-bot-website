@@ -127,10 +127,9 @@
           <div class="form-group">
             <label>Duration (days)</label>
             <input 
-              v-model.number="givePremiumDuration" 
-              type="number" 
-              placeholder='Days (type "p" or 0 for permanent)'
-              min="1"
+              v-model="givePremiumDuration" 
+              type="text" 
+              placeholder='Type "p" for permanent or enter days'
               @input="handleDurationInput"
               class="dev-input"
             >
@@ -140,16 +139,15 @@
           <button @click="grantPremium" :disabled="grantingPremium" class="dev-btn grant-btn">
             {{ grantingPremium ? 'Granting...' : 'Grant Premium' }}
           </button>
-        </div>
 
-        <div class="remove-premium-panel" style="margin-top: 20px;">
-          <h2 style="margin-bottom: 20px;">Remove Premium from User</h2>
+          <hr style="margin: 20px 0; border: none; border-top: 1px solid rgba(81, 112, 255, 0.2);">
+
           <div class="form-group">
-            <label>User ID</label>
+            <label>Remove Premium - User ID</label>
             <input 
               v-model="removeUserIdInput" 
               type="text" 
-              placeholder="User ID"
+              placeholder="User ID to remove from"
               class="dev-input"
             >
           </div>
@@ -467,7 +465,8 @@ const handleDurationInput = (event) => {
   const value = event.target.value.toLowerCase().trim()
   if (value === 'p') {
     givePremiumDuration.value = 0
-    event.target.value = ''
+  } else if (value && !isNaN(value)) {
+    givePremiumDuration.value = parseInt(value)
   }
 }
 
