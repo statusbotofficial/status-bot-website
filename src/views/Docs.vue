@@ -104,6 +104,11 @@
           <li><strong>/coinflip</strong> - Flip a coin for currency</li>
           <li><strong>/clicker</strong> - Click your way to earnings</li>
           <li><strong>/lootbox</strong> - Open a mystery lootbox for random rewards</li>
+          <li><strong>/work</strong> - Work to earn currency</li>
+          <li><strong>/robbery</strong> - Attempt to rob another user</li>
+          <li><strong>/invest</strong> - Invest money to earn daily interest</li>
+          <li><strong>/withdraw</strong> - Withdraw your investment</li>
+          <li><strong>/interest</strong> - Check your investment and earned interest</li>
         </ul>
         
         <p><strong>Utility Commands</strong></p>

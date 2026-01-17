@@ -64,14 +64,19 @@ const commands = ref([
   { id: 8, name: '/coinflip', description: "Flip a coin and bet on the outcome.", category: 'economy' },
   { id: 9, name: '/clicker', description: "Click to earn currency.", category: 'economy' },
   { id: 10, name: '/lootbox', description: "Roll a lootbox for rare rewards.", category: 'economy' },
+  { id: 11, name: '/work', description: "Work to earn currency.", category: 'economy' },
+  { id: 12, name: '/robbery', description: "Attempt to rob another user.", category: 'economy' },
+  { id: 13, name: '/invest', description: "Invest money to earn daily interest.", category: 'economy' },
+  { id: 14, name: '/withdraw', description: "Withdraw your investment.", category: 'economy' },
+  { id: 15, name: '/interest', description: "Check your investment and earned interest.", category: 'economy' },
   
-  { id: 11, name: '/profile', description: "View your global profile and stats.", category: 'misc' },
-  { id: 12, name: '/help', description: "Display all available commands.", category: 'misc' },
-  { id: 13, name: '/invite', description: "Get the bot's invite link.", category: 'misc' },
-  { id: 14, name: '/about', description: "Learn more about Status Bot.", category: 'misc' },
+  { id: 16, name: '/profile', description: "View your global profile and stats.", category: 'misc' },
+  { id: 17, name: '/help', description: "Display all available commands.", category: 'misc' },
+  { id: 18, name: '/invite', description: "Get the bot's invite link.", category: 'misc' },
+  { id: 19, name: '/about', description: "Learn more about Status Bot.", category: 'misc' },
   
-  { id: 15, name: '/give', description: "Give XP or balance to a user (Admin).", category: 'admin' },
-  { id: 16, name: '/take', description: "Take XP or balance from a user (Admin).", category: 'admin' }
+  { id: 20, name: '/give', description: "Give XP or balance to a user (Admin).", category: 'admin' },
+  { id: 21, name: '/take', description: "Take XP or balance from a user (Admin).", category: 'admin' }
 ])
 
 const filteredCommands = computed(() => {
