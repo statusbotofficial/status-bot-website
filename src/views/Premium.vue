@@ -16,7 +16,7 @@
         <span class="info-text">Instant activation</span>
       </div>
       <div class="info-item">
-        <span class="info-check"><i class="fas fa-redo" style="color: #6366f1;"></i></span>
+        <span class="info-check"><i class="fas fa-redo" style="color: #5170ff;"></i></span>
         <span class="info-text">Cancel anytime</span>
       </div>
       <div class="info-item">

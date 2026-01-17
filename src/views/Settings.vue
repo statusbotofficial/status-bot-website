@@ -132,22 +132,22 @@
               <div class="panel-header">Premium Features</div>
               <div class="features-grid">
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon"><i class="fas fa-times-circle"></i></div>
+                  <div class="feature-icon"><span style="font-weight: bold; font-size: 20px;">2x</span></div>
                   <div class="feature-name">2x XP Multiplier</div>
                   <div class="feature-desc">Earn double XP on messages and voice chat</div>
                 </div>
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon"><i class="fas fa-star"></i></div>
+                  <div class="feature-icon"><i class="fas fa-star" :style="{ color: hasPremium ? '#f59e0b' : 'white' }"></i></div>
                   <div class="feature-name">Exclusive Items</div>
                   <div class="feature-desc">Access premium cosmetics and rewards</div>
                 </div>
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                  <div class="feature-icon"><i class="fas fa-bolt" :style="{ color: hasPremium ? '#fbbf24' : 'white' }"></i></div>
                   <div class="feature-name">Priority Support</div>
                   <div class="feature-desc">Get faster responses to your questions</div>
                 </div>
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                  <div class="feature-icon"><i class="fas fa-chart-line" :style="{ color: hasPremium ? '#3b82f6' : 'white' }"></i></div>
                   <div class="feature-name">Enhanced Limits</div>
                   <div class="feature-desc">Higher limits on tracked users and settings</div>
                 </div>
