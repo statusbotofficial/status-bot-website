@@ -137,22 +137,6 @@
           <button @click="grantPremium" :disabled="grantingPremium" class="dev-btn grant-btn">
             {{ grantingPremium ? 'Granting...' : 'Grant Premium' }}
           </button>
-
-          <hr style="margin: 20px 0; border: none; border-top: 1px solid rgba(81, 112, 255, 0.2);">
-
-          <div class="form-group">
-            <label>Remove Premium - User ID</label>
-            <input 
-              v-model="removeUserIdInput" 
-              type="text" 
-              placeholder="User ID to remove from"
-              class="dev-input"
-            >
-          </div>
-
-          <button @click="removePremium" :disabled="removingPremium" class="dev-btn remove-btn">
-            {{ removingPremium ? 'Removing...' : 'Remove Premium' }}
-          </button>
         </div>
       </section>
 
@@ -464,44 +448,7 @@ const handleDurationInput = (event) => {
 }
 
 const removePremium = async () => {
-  const userId = removeUserIdInput.value.trim()
-  
-  if (!userId) {
-    alert('Please enter a User ID')
-    return
-  }
-  
-  if (!confirm(`Are you sure you want to remove premium from user ${userId}?`)) {
-    return
-  }
-  
-  removingPremium.value = true
-  
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/premium/remove`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${SECRET_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userId
-      })
-    })
-    
-    const data = await response.json()
-    if (response.ok) {
-      alert(`✓ Premium removed from user ${userId}`)
-      removeUserIdInput.value = ''
-      setTimeout(() => fetchPremiumUsers(), 500)
-    } else {
-      alert(`❌ Error: ${data.message || 'Failed to remove premium'}`)
-    }
-  } catch (err) {
-    alert(`❌ Error: ${err.message}`)
-  } finally {
-    removingPremium.value = false
-  }
+  // Remove premium functionality disabled
 }
 
 onMounted(async () => {
