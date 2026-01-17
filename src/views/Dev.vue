@@ -114,7 +114,6 @@
       <!-- Give Premium Section -->
       <section class="dev-section">
         <div class="give-premium-panel">
-          <h2 style="margin-bottom: 20px;">Grant Premium to User</h2>
           <div class="form-group">
             <label>User ID</label>
             <input 
