@@ -375,7 +375,7 @@ const fetchPremiumUsers = async () => {
       const users = []
       for (const [userId, premiumData] of Object.entries(data.premiumCache)) {
         if (premiumData.active) {
-          const expiryTimestamp = premiumData.expiresAt ? premiumData.expiresAt * 1000 : null
+          const expiryTimestamp = premiumData.expiresAt && premiumData.expiresAt !== 0 ? premiumData.expiresAt * 1000 : null
           const isExpired = expiryTimestamp && expiryTimestamp < Date.now()
           
           let sourceLabel = premiumData.reason || 'Unknown'
