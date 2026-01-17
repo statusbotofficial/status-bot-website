@@ -255,7 +255,7 @@
 
           <!-- Leveling -->
           <section v-else-if="activeSection === 'leveling'" class="config-section">
-            <h3>Leveling Settings</h3>
+            <h3>Leveling Settings <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></h3>
             <div class="settings-box">
               <div class="setting-item">
                 <label>Enable Leveling</label>
@@ -263,21 +263,18 @@
               </div>
 
               <div class="setting-item">
-                <label>XP per message <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <label>XP per message</label>
                 <input v-model.number="levelingSettings.xpPerMessage" type="number" min="1" class="input-field" :disabled="!userHasPremium" />
-                <p v-if="!userHasPremium" class="premium-note">Upgrade to Premium to customize XP rewards</p>
               </div>
 
               <div class="setting-item">
-                <label>Voice chat XP <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <label>Voice chat XP</label>
                 <input v-model.number="levelingSettings.voiceXp" type="number" min="1" class="input-field" :disabled="!userHasPremium" />
-                <p v-if="!userHasPremium" class="premium-note">Upgrade to Premium to customize voice rewards</p>
               </div>
 
               <div class="setting-item">
-                <label>XP Cooldown (seconds) <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
+                <label>XP Cooldown (seconds)</label>
                 <input v-model.number="levelingSettings.xpCooldown" type="number" min="1" max="300" class="input-field" :disabled="!userHasPremium" placeholder="60" />
-                <p v-if="!userHasPremium" class="premium-note">Upgrade to Premium to customize cooldown settings</p>
               </div>
 
               <div class="setting-item">
@@ -354,26 +351,6 @@
               <div class="setting-item">
                 <label>Starting amount</label>
                 <input v-model.number="economySettings.startingAmount" type="number" min="0" class="input-field" :disabled="!userHasPremium" />
-              </div>
-
-              <div class="setting-item">
-                <label>Balance multiplier <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
-                <input v-model.number="economySettings.balanceMultiplier" type="number" step="0.1" min="0.1" class="input-field" :disabled="!userHasPremium" />
-              </div>
-
-              <div class="setting-item">
-                <label>Daily interest rate (%) <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
-                <input v-model.number="economySettings.dailyInterestRate" type="number" step="0.1" min="0" max="100" class="input-field" :disabled="!userHasPremium" />
-              </div>
-
-              <div class="setting-item">
-                <label>Robbery success chance (%) <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
-                <input v-model.number="economySettings.robberyChance" type="number" step="0.1" min="0" max="100" class="input-field" :disabled="!userHasPremium" />
-              </div>
-
-              <div class="setting-item">
-                <label>Work reward multiplier <span v-if="!userHasPremium" class="premium-badge">⭐ Premium</span></label>
-                <input v-model.number="economySettings.workRewardMultiplier" type="number" step="0.1" min="0.1" class="input-field" :disabled="!userHasPremium" />
               </div>
 
               <div class="button-group">
