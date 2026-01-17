@@ -138,32 +138,32 @@
           <div class="table-row">
             <div class="table-feature-name">Voice chat XP</div>
             <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
-            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">2x XP multiplier</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">Exclusive commands</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">Luck boost in economy</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">Priority support</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
           </div>
           <div class="table-row premium-feature">
             <div class="table-feature-name">Premium badge</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
-            <div class="table-cell"><span class="check-icon">✓</span></div>
+            <div class="table-cell"><span class="check-icon"><i class="fas fa-check"></i></span></div>
           </div>
         </div>
       </div>
@@ -172,7 +172,7 @@
     <!-- Premium Modal -->
     <div v-if="showPremiumModal" class="modal-overlay" @click.self="showPremiumModal = false">
       <div class="modal-content">
-        <button class="modal-close" @click="showPremiumModal = false">✕</button>
+        <button class="modal-close" @click="showPremiumModal = false"><i class="fas fa-times"></i></button>
         
         <div class="modal-header-content">
           <h2>Join Premium Today</h2>
@@ -182,42 +182,42 @@
         <div class="support-options">
           <!-- Patreon Option -->
           <a href="https://www.patreon.com/posts/status-bot-148075915" target="_blank" class="support-card patreon-card">
-            <div class="card-icon">🎁</div>
+            <div class="card-icon"><i class="fas fa-gift" style="color: #ec4899;"></i></div>
             <div class="card-title">Patreon Membership</div>
             <div class="card-price">$3.99<span>/month</span></div>
             <ul class="card-benefits">
-              <li>✓ 2x XP Multiplier</li>
-              <li>✓ Exclusive Commands</li>
-              <li>✓ Economy Perks</li>
-              <li>✓ Priority Support</li>
+              <li><i class="fas fa-check"></i> 2x XP Multiplier</li>
+              <li><i class="fas fa-check"></i> Exclusive Commands</li>
+              <li><i class="fas fa-check"></i> Economy Perks</li>
+              <li><i class="fas fa-check"></i> Priority Support</li>
             </ul>
             <div class="card-cta">Support on Patreon</div>
           </a>
 
           <!-- Server Boost Option -->
           <a href="https://discord.gg/Kd2MckVxED" target="_blank" class="support-card boost-card">
-            <div class="card-icon">🚀</div>
+            <div class="card-icon"><i class="fas fa-rocket" style="color: #f59e0b;"></i></div>
             <div class="card-title">Server Boost</div>
             <div class="card-price">Easier Alternative</div>
             <ul class="card-benefits">
-              <li>✓ 2x XP Multiplier</li>
-              <li>✓ Exclusive Commands</li>
-              <li>✓ Economy Perks</li>
-              <li>✓ Priority Support</li>
+              <li><i class="fas fa-check"></i> 2x XP Multiplier</li>
+              <li><i class="fas fa-check"></i> Exclusive Commands</li>
+              <li><i class="fas fa-check"></i> Economy Perks</li>
+              <li><i class="fas fa-check"></i> Priority Support</li>
             </ul>
             <div class="card-cta">Boost Server</div>
           </a>
 
           <!-- Contact Card Option -->
           <div class="support-card contact-card" @click="window.open('https://discord.gg/Kd2MckVxED', '_blank')">
-            <div class="card-icon">💬</div>
+            <div class="card-icon"><i class="fas fa-comments" style="color: #3b82f6;"></i></div>
             <div class="card-title">Get Help</div>
             <div class="card-price">Support Team</div>
             <ul class="card-benefits">
-              <li>✓ Questions Answered</li>
-              <li>✓ Premium Guidance</li>
-              <li>✓ Community Support</li>
-              <li>✓ Real People</li>
+              <li><i class="fas fa-check"></i> Questions Answered</li>
+              <li><i class="fas fa-check"></i> Premium Guidance</li>
+              <li><i class="fas fa-check"></i> Community Support</li>
+              <li><i class="fas fa-check"></i> Real People</li>
             </ul>
             <div class="card-cta">Contact Us</div>
           </div>
