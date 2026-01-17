@@ -938,6 +938,11 @@ onMounted(async () => {
   color: #4ade80;
 }
 
+.type-server_booster {
+  background: rgba(244, 63, 94, 0.2);
+  color: #f43f5e;
+}
+
 .type-dashboard {
   background: rgba(81, 112, 255, 0.2);
   color: #5170ff;
