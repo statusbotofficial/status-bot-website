@@ -111,78 +111,6 @@
         </div>
       </div>
 
-      <!-- Premium Users Section -->
-      <section class="dev-section">
-        <h2>Premium Users</h2>
-        <div class="premium-panel">
-          <div v-if="premiumUsers.length > 0" class="premium-list">
-            <div class="premium-table-header">
-              <div class="col-user">User</div>
-              <div class="col-type">Type</div>
-              <div class="col-expiry">Expiry</div>
-              <div class="col-status">Status</div>
-            </div>
-            <div v-for="user in premiumUsers" :key="user.userId" class="premium-entry">
-              <div class="col-user">
-                <span class="user-id">{{ user.userId }}</span>
-                <span class="user-name" v-if="user.username">{{ user.username }}</span>
-              </div>
-              <div class="col-type">
-                <span :class="['premium-badge', 'type-' + user.source]">
-                  {{ user.sourceLabel }}
-                </span>
-              </div>
-              <div class="col-expiry">
-                <span v-if="user.expiry" :class="['expiry-date', { expired: user.isExpired }]">
-                  {{ user.expiryText }}
-                </span>
-                <span v-else class="expiry-date permanent">Permanent</span>
-              </div>
-              <div class="col-status">
-                <span :class="['status-badge', user.active ? 'active' : 'inactive']">
-                  {{ user.active ? 'Active' : 'Inactive' }}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div v-else class="empty-state">
-            <p>No premium users found</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Give Premium Section -->
-      <section class="dev-section">
-        <h2>Give Premium</h2>
-        <div class="give-premium-panel">
-          <div class="form-group">
-            <label>User ID</label>
-            <input 
-              v-model="giveUserIdInput" 
-              type="text" 
-              placeholder="e.g. 1362553254117904496"
-              class="dev-input"
-            >
-          </div>
-
-          <div class="form-group">
-            <label>Duration (days)</label>
-            <input 
-              v-model.number="givePremiumDuration" 
-              type="number" 
-              placeholder="0 for permanent"
-              min="0"
-              class="dev-input"
-            >
-            <small style="color: #999; margin-top: 4px;">0 = permanent, leave blank for 30 days</small>
-          </div>
-
-          <button @click="grantPremium" :disabled="grantingPremium" class="dev-btn grant-btn">
-            {{ grantingPremium ? 'Granting...' : 'Grant Premium' }}
-          </button>
-        </div>
-      </section>
-
       <!-- Billing Section -->
       <section class="dev-section">
         <h2>Billing History</h2>
@@ -238,37 +166,17 @@ const sendingNotification = ref(false)
 // Billing state
 const billingHistory = ref([])
 
-// Premium Users state
-const premiumUsers = ref([])
-
-// Give Premium state
-const giveUserIdInput = ref('')
-const givePremiumDuration = ref(null)
-const grantingPremium = ref(false)
-
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
 })
 
 const formatDate = (timestamp) => {
   if (!timestamp) return 'N/A'
-  return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+  return new Date(timestamp).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
   })
-}
-
-const formatExpiryText = (timestamp) => {
-  if (!timestamp) return 'Permanent'
-  const now = new Date()
-  const expiry = new Date(timestamp * 1000)
-  const daysLeft = Math.ceil((expiry - now) / (1000 * 60 * 60 * 24))
-  
-  if (daysLeft < 0) return 'Expired'
-  if (daysLeft === 0) return 'Expires today'
-  if (daysLeft === 1) return 'Expires tomorrow'
-  return `${daysLeft} days left`
 }
 
 const sendTrial = async () => {
@@ -376,105 +284,7 @@ const sendNotification = async () => {
 
 onMounted(async () => {
   document.title = 'Developer Tools | Status Bot'
-  await fetchPremiumUsers()
 })
-
-const fetchPremiumUsers = async () => {
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/premium/users`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${SECRET_KEY}`
-      }
-    })
-
-    if (response.ok) {
-      const data = await response.json()
-      const users = data.users || []
-      
-      premiumUsers.value = users.map(user => {
-        const sourceLabels = {
-          'booster': '🚀 Server Booster',
-          'patreon': '❤️ Patreon/Dashboard',
-          'trial': '⏰ Trial',
-          'gift': '🎁 Gifted'
-        }
-        
-        const isExpired = user.expiry ? new Date().getTime() > user.expiry * 1000 : false
-        
-        return {
-          userId: user.userId,
-          username: user.username || null,
-          source: user.source || 'unknown',
-          sourceLabel: sourceLabels[user.source] || user.source,
-          expiry: user.expiry,
-          expiryText: formatExpiryText(user.expiry),
-          active: user.active && !isExpired,
-          isExpired
-        }
-      }).sort((a, b) => {
-        // Sort by active status first, then by expiry
-        if (a.active !== b.active) return b.active - a.active
-        if (!a.expiry) return -1
-        if (!b.expiry) return 1
-        return b.expiry - a.expiry
-      })
-    }
-  } catch (err) {
-    console.error('Failed to fetch premium users:', err)
-  }
-}
-
-const grantPremium = async () => {
-  const userId = giveUserIdInput.value.trim()
-  
-  if (!userId) {
-    alert('Please enter a User ID')
-    return
-  }
-
-  if (!/^\d+$/.test(userId)) {
-    alert('User ID must be a valid number')
-    return
-  }
-
-  const duration = givePremiumDuration.value ?? 30
-
-  if (duration < 0) {
-    alert('Duration cannot be negative')
-    return
-  }
-
-  grantingPremium.value = true
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/premium/grant`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${SECRET_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userId,
-        durationDays: duration
-      })
-    })
-
-    const data = await response.json()
-    if (response.ok) {
-      alert('✓ Premium granted successfully')
-      giveUserIdInput.value = ''
-      givePremiumDuration.value = null
-      await fetchPremiumUsers()
-    } else {
-      alert(`❌ Error: ${data.message || 'Failed to grant premium'}`)
-    }
-  } catch (err) {
-    alert(`❌ Error: ${err.message}`)
-  } finally {
-    grantingPremium.value = false
-  }
-}
 </script>
 
 <style scoped>
@@ -678,9 +488,7 @@ const grantPremium = async () => {
 }
 
 .billing-panel,
-.gifts-container,
-.premium-panel,
-.give-premium-panel {
+.gifts-container {
   background: rgba(81, 112, 255, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
@@ -797,166 +605,6 @@ const grantPremium = async () => {
 
 .billing-entry:hover {
   background: rgba(255, 255, 255, 0.06);
-}
-
-.premium-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  border: 1px solid rgba(81, 112, 255, 0.2);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.premium-table-header {
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
-  gap: 15px;
-  padding: 12px 15px;
-  background: rgba(81, 112, 255, 0.15);
-  border-bottom: 1px solid rgba(81, 112, 255, 0.2);
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.premium-entry {
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
-  gap: 15px;
-  padding: 12px 15px;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(81, 112, 255, 0.1);
-  align-items: center;
-  font-size: 14px;
-  transition: background 0.2s ease;
-}
-
-.premium-entry:last-child {
-  border-bottom: none;
-}
-
-.premium-entry:hover {
-  background: rgba(81, 112, 255, 0.08);
-}
-
-.col-user {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.user-id {
-  font-family: monospace;
-  color: #fff;
-  font-weight: 600;
-  font-size: 13px;
-}
-
-.user-name {
-  color: var(--text-secondary);
-  font-size: 12px;
-}
-
-.col-type,
-.col-expiry,
-.col-status {
-  display: flex;
-  align-items: center;
-}
-
-.premium-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.premium-badge.type-booster {
-  background: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
-}
-
-.premium-badge.type-patreon {
-  background: rgba(236, 72, 153, 0.2);
-  color: #ec4899;
-}
-
-.premium-badge.type-trial {
-  background: rgba(251, 146, 60, 0.2);
-  color: #fb923c;
-}
-
-.premium-badge.type-gift {
-  background: rgba(34, 197, 94, 0.2);
-  color: #86efac;
-}
-
-.expiry-date {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.expiry-date.permanent {
-  color: #86efac;
-  font-weight: 600;
-}
-
-.expiry-date.expired {
-  color: #ef4444;
-  text-decoration: line-through;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.status-badge.active {
-  background: rgba(34, 197, 94, 0.2);
-  color: #86efac;
-}
-
-.status-badge.inactive {
-  background: rgba(107, 114, 128, 0.2);
-  color: #9ca3af;
-}
-
-.give-premium-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-group label {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.grant-btn {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(59, 130, 246, 0.5));
-  border: 2px solid #3b82f6;
-}
-
-.grant-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 1), rgba(59, 130, 246, 0.8));
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
 
 .empty-state {
