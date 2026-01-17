@@ -343,6 +343,12 @@ const daysUntilExpiry = computed(() => {
   return Math.ceil(diff / (1000 * 60 * 60 * 24))
 })
 
+const formatExpiryDate = (dateString) => {
+  if (!dateString) return 'N/A'
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+}
+
 const fetchDiscordUser = async () => {
   const token = localStorage.getItem('discordToken')
   if (!token) return
