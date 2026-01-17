@@ -72,7 +72,7 @@
             <div class="support-link-card">
               <h3>Documentation</h3>
               <p>Read our comprehensive documentation and guides.</p>
-              <a href="https://status-bot-website.netlify.app/docs" target="_blank" class="link-btn">View Docs</a>
+              <a href="https://status-bot.xyz/docs" target="_blank" class="link-btn">View Docs</a>
             </div>
           </div>
         </div>
