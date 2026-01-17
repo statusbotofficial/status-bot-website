@@ -938,7 +938,8 @@ onMounted(async () => {
   color: #4ade80;
 }
 
-.type-server_booster {
+.type-server_booster,
+.type-booster {
   background: rgba(244, 63, 94, 0.2);
   color: #f43f5e;
 }
