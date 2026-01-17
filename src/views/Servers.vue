@@ -900,7 +900,7 @@ const levelingFormulas = [
   },
   { 
     value: 'exponential', 
-    name: 'Exponential (Arcane)', 
+    name: 'Exponential', 
     description: 'Rapidly increasing requirements - Challenging progression' 
   },
   { 
