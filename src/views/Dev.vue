@@ -113,31 +113,51 @@
 
       <!-- Give Premium Section -->
       <section class="dev-section">
-        <div class="give-premium-panel">
-          <div class="form-group">
-            <label>User ID</label>
-            <input 
-              v-model="giveUserIdInput" 
-              type="text" 
-              placeholder="User ID"
-              class="dev-input"
-            >
+        <div class="premium-actions">
+          <div class="give-premium-panel">
+            <div class="form-group">
+              <label>User ID</label>
+              <input 
+                v-model="giveUserIdInput" 
+                type="text" 
+                placeholder="User ID"
+                class="dev-input"
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Duration (days)</label>
+              <input 
+                v-model.number="givePremiumDuration" 
+                type="number" 
+                placeholder="Days (0 for permanent)"
+                min="0"
+                class="dev-input"
+              >
+              <small style="color: #999; margin-top: 4px;">Enter 0 to give permanent premium</small>
+            </div>
+
+            <button @click="grantPremium" :disabled="grantingPremium" class="dev-btn grant-btn">
+              {{ grantingPremium ? 'Granting...' : 'Grant Premium' }}
+            </button>
           </div>
 
-          <div class="form-group">
-            <label>Duration (days)</label>
-            <input 
-              v-model.number="givePremiumDuration" 
-              type="number" 
-              placeholder="Days (0 for permanent)"
-              min="0"
-              class="dev-input"
-            >
-          </div>
+          <div class="remove-premium-panel">
+            <h3>Remove from User</h3>
+            <div class="form-group">
+              <label>User ID</label>
+              <input 
+                v-model="removeUserIdInput" 
+                type="text" 
+                placeholder="User ID"
+                class="dev-input"
+              >
+            </div>
 
-          <button @click="grantPremium" :disabled="grantingPremium" class="dev-btn grant-btn">
-            {{ grantingPremium ? 'Granting...' : 'Grant Premium' }}
-          </button>
+            <button @click="removePremium" :disabled="removingPremium" class="dev-btn remove-btn">
+              {{ removingPremium ? 'Removing...' : 'Remove Premium' }}
+            </button>
+          </div>
         </div>
       </section>
 
@@ -219,6 +239,8 @@ const premiumUsers = ref([])
 const giveUserIdInput = ref('')
 const givePremiumDuration = ref(30)
 const grantingPremium = ref(false)
+const removeUserIdInput = ref('')
+const removingPremium = ref(false)
 
 const billingHistory = ref([])
 
@@ -404,7 +426,7 @@ const grantPremium = async () => {
     return
   }
   
-  const duration = givePremiumDuration.value || 30
+  const duration = givePremiumDuration.value
   if (duration < 0) {
     alert('Duration cannot be negative')
     return
@@ -421,13 +443,14 @@ const grantPremium = async () => {
       },
       body: JSON.stringify({
         userId,
-        durationDays: duration
+        durationDays: duration || 0 // 0 = permanent
       })
     })
     
     const data = await response.json()
     if (response.ok) {
-      alert(`✓ Premium granted for ${duration} days`)
+      const message = duration === 0 ? 'permanent premium' : `premium for ${duration} days`
+      alert(`✓ Granted ${message}`)
       giveUserIdInput.value = ''
       givePremiumDuration.value = 30
       setTimeout(() => fetchPremiumUsers(), 500)
@@ -438,6 +461,47 @@ const grantPremium = async () => {
     alert(`❌ Error: ${err.message}`)
   } finally {
     grantingPremium.value = false
+  }
+}
+
+const removePremium = async () => {
+  const userId = removeUserIdInput.value.trim()
+  
+  if (!userId) {
+    alert('Please enter a User ID')
+    return
+  }
+  
+  if (!confirm(`Are you sure you want to remove premium from user ${userId}?`)) {
+    return
+  }
+  
+  removingPremium.value = true
+  
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/premium/remove`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId
+      })
+    })
+    
+    const data = await response.json()
+    if (response.ok) {
+      alert(`✓ Premium removed from user`)
+      removeUserIdInput.value = ''
+      setTimeout(() => fetchPremiumUsers(), 500)
+    } else {
+      alert(`❌ Error: ${data.message || 'Failed to remove premium'}`)
+    }
+  } catch (err) {
+    alert(`❌ Error: ${err.message}`)
+  } finally {
+    removingPremium.value = false
   }
 }
 
@@ -862,11 +926,18 @@ onMounted(async () => {
 }
 
 .premium-panel,
-.give-premium-panel {
+.give-premium-panel,
+.remove-premium-panel {
   background: rgba(81, 112, 255, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
   padding: 25px;
+}
+
+.premium-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
 }
 
 .premium-list {
@@ -991,9 +1062,29 @@ onMounted(async () => {
   box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
 }
 
+.remove-btn {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.8), rgba(220, 38, 38, 0.5));
+  border: 2px solid #dc2626;
+}
+
+.remove-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 1), rgba(220, 38, 38, 0.8));
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+}
+
+.premium-actions h3 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #fff;
+}
+
 @media (max-width: 1023px) {
   .premium-header,
   .premium-entry {
+    grid-template-columns: 1fr;
+  }
+
+  .premium-actions {
     grid-template-columns: 1fr;
   }
 }
