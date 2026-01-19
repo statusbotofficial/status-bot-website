@@ -180,6 +180,13 @@
                       <div class="rank-bar-fill" :style="{ width: userRankData.progressPercent + '%' }"></div>
                     </div>
                   </div>
+
+                  <!-- Shop Info Box -->
+                  <div class="info-box">
+                    <h3>Server Shop</h3>
+                    <p>Set up your server shop to let members purchase perks like XP boosts, custom roles, and nickname changes.</p>
+                    <button @click="activeSection = 'shop'" class="btn btn-small">Configure Shop</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3091,6 +3098,20 @@ const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
   transition: all 0.2s ease;
 }
 
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237192ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 20px;
+  padding-right: 32px;
+}
+
+.form-group select option {
+  background: #1a1a2e;
+  color: #fff;
+}
+
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
@@ -3124,6 +3145,30 @@ const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
 .submit-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-small {
+  padding: 8px 12px;
+  font-size: 12px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+  border: 1px solid rgba(81, 112, 255, 0.4);
+  color: #5170ff;
+}
+
+.btn-small:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.5) 0%, rgba(139, 92, 246, 0.5) 100%);
+  border-color: rgba(81, 112, 255, 0.6);
+  transform: translateY(-1px);
 }
 
 .purchases-list {
@@ -3944,6 +3989,10 @@ const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
 
   [style*="grid-template-columns: 1fr 1.2fr"] {
     grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns: 1fr 1.2fr"] > div:nth-child(2) {
+    order: 3;
   }
 
   [style*="grid-template-columns: 1fr 500px"] {
