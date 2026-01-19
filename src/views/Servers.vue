@@ -167,37 +167,17 @@
                     <p>First to enable the XP system go to the <strong>Leveling</strong> section, toggle in on. Then set up your preferences for the XP rewards. Then, when a user sends a message, or spends time in a voice chat, they earn XP.</p>
                   </div>
 
-                  <!-- Rank Card + Shop Grid -->
-                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <!-- Your Rank Card -->
-                    <div class="rank-card">
-                      <h3>Your Rank</h3>
-                      <div class="rank-avatar" :style="{ backgroundImage: userRankData.avatarUrl ? `url('${userRankData.avatarUrl}')` : 'none' }">
-                        {{ !userRankData.avatarUrl ? (authStore.user?.username?.charAt(0) || 'U').toUpperCase() : '' }}
-                      </div>
-                      <div class="rank-number">#{{ userRankData.rank || '-' }}</div>
-                      <div class="rank-xp">{{ userRankData.xp?.toLocaleString() || 0 }}/{{ userRankData.nextLevelXp?.toLocaleString() || '-' }} XP</div>
-                      <div class="rank-level">Level: <span>{{ userRankData.level || '-' }}</span></div>
-                      <div class="rank-bar">
-                        <div class="rank-bar-fill" :style="{ width: userRankData.progressPercent + '%' }"></div>
-                      </div>
+                  <!-- Your Rank Card -->
+                  <div class="rank-card">
+                    <h3>Your Rank</h3>
+                    <div class="rank-avatar" :style="{ backgroundImage: userRankData.avatarUrl ? `url('${userRankData.avatarUrl}')` : 'none' }">
+                      {{ !userRankData.avatarUrl ? (authStore.user?.username?.charAt(0) || 'U').toUpperCase() : '' }}
                     </div>
-
-                    <!-- Server Shop Card -->
-                    <div class="shop-card">
-                      <h3>Server Shop</h3>
-                      <div v-if="overviewShopLoading" class="loading" style="font-size: 12px;">Loading shop...</div>
-                      <div v-else-if="overviewShopItems.length > 0" class="shop-items">
-                        <div v-for="item in overviewShopItems.slice(0, 3)" :key="item.id" class="mini-shop-item">
-                          <div class="item-name">{{ item.name }}</div>
-                          <div class="item-price">{{ item.price }} 💰</div>
-                          <button class="buy-btn" @click="purchaseFromOverview(item)">Buy</button>
-                        </div>
-                      </div>
-                      <div v-else class="empty-shop">
-                        <p>No items available</p>
-                        <button @click="activeSection = 'shop'" class="btn btn-small">Add Items</button>
-                      </div>
+                    <div class="rank-number">#{{ userRankData.rank || '-' }}</div>
+                    <div class="rank-xp">{{ userRankData.xp?.toLocaleString() || 0 }}/{{ userRankData.nextLevelXp?.toLocaleString() || '-' }} XP</div>
+                    <div class="rank-level">Level: <span>{{ userRankData.level || '-' }}</span></div>
+                    <div class="rank-bar">
+                      <div class="rank-bar-fill" :style="{ width: userRankData.progressPercent + '%' }"></div>
                     </div>
                   </div>
                 </div>
@@ -693,132 +673,6 @@
               <div v-else class="empty">No logs yet</div>
             </div>
           </section>
-
-          <!-- Shop Section -->
-          <section v-else-if="activeSection === 'shop'" class="config-section">
-            <h3>Server Shop</h3>
-            
-            <!-- Shop Tabs -->
-            <div class="shop-tabs">
-              <button 
-                :class="{ active: shopTab === 'preset' }" 
-                @click="shopTab = 'preset'"
-                class="tab-btn"
-              >
-                Preset Items
-              </button>
-              <button 
-                :class="{ active: shopTab === 'custom' }" 
-                @click="shopTab = 'custom'"
-                class="tab-btn"
-              >
-                Custom Items
-              </button>
-              <button 
-                :class="{ active: shopTab === 'purchases' }" 
-                @click="shopTab = 'purchases'"
-                class="tab-btn"
-              >
-                Purchases
-              </button>
-            </div>
-
-            <!-- Preset Items -->
-            <div v-if="shopTab === 'preset'" class="shop-content">
-              <h4>Preset Shop Items - Enable & Configure</h4>
-              <p style="font-size: 13px; color: #999; margin-bottom: 16px;">Select preset items to enable in your server shop. Customize prices and settings below.</p>
-              <div class="items-grid">
-                <div v-for="item in presetShopItems" :key="item.id" class="item-card">
-                  <div class="item-header">
-                    <h5>{{ item.name }}</h5>
-                    <span class="item-price">{{ item.price }} 💰</span>
-                  </div>
-                  <p class="item-description">{{ item.description }}</p>
-                  <div v-if="item.duration_minutes" class="item-detail">
-                    Duration: {{ item.duration_minutes }} minutes
-                  </div>
-                  <div class="item-actions">
-                    <button class="item-btn secondary" @click="showPresetConfig(item)">Configure</button>
-                    <button class="item-btn primary" @click="addPresetToShop(item)">Add to Shop</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Custom Items -->
-            <div v-if="shopTab === 'custom'" class="shop-content">
-              <h4>Create Custom Item</h4>
-              <div class="form-group">
-                <label>Item Name</label>
-                <input v-model="customItemForm.name" type="text" placeholder="e.g., Dragon Wings" />
-              </div>
-              <div class="form-group">
-                <label>Description</label>
-                <textarea v-model="customItemForm.description" placeholder="e.g., Exclusive cosmetic item"></textarea>
-              </div>
-              <div class="form-group">
-                <label>Price (Currency)</label>
-                <input v-model.number="customItemForm.price" type="number" min="1" />
-              </div>
-              <div class="form-group">
-                <label>Category</label>
-                <select v-model="customItemForm.category">
-                  <option value="misc">Miscellaneous</option>
-                  <option value="cosmetics">Cosmetics</option>
-                  <option value="boosts">Boosts</option>
-                  <option value="roles">Roles</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <button @click="createCustomItem" class="submit-btn" :disabled="!customItemForm.name || !customItemForm.price">
-                Create Item
-              </button>
-
-              <h4 style="margin-top: 2rem;">Pending Custom Items</h4>
-              <div v-if="customItems.length > 0" class="items-grid">
-                <div v-for="item in customItems" :key="item.id" class="item-card custom">
-                  <div class="item-header">
-                    <h5>{{ item.name }}</h5>
-                    <span class="item-status" :class="item.status">{{ item.status }}</span>
-                  </div>
-                  <p class="item-description">{{ item.description }}</p>
-                  <span class="item-price">{{ item.price }} 💰</span>
-                  <div class="item-actions">
-                    <button v-if="item.status === 'pending_approval'" @click="approveItem(item.id)" class="approve-btn">Approve</button>
-                    <button v-if="item.status === 'pending_approval'" @click="rejectItem(item.id)" class="reject-btn">Reject</button>
-                  </div>
-                </div>
-              </div>
-              <div v-else class="empty">No custom items</div>
-            </div>
-
-            <!-- Purchases -->
-            <div v-if="shopTab === 'purchases'" class="shop-content">
-              <h4>Recent Purchases</h4>
-              <div v-if="shopLoading" class="loading">Loading purchases...</div>
-              <div v-else-if="recentPurchases.length > 0" class="purchases-list">
-                <div v-for="purchase in recentPurchases" :key="purchase.purchase_id" class="purchase-item">
-                  <div class="purchase-header">
-                    <span class="purchase-item-name">{{ purchase.item_name }}</span>
-                    <span class="purchase-status" :class="{ redeemed: purchase.redeemed }">
-                      {{ purchase.redeemed ? 'Redeemed' : 'Pending' }}
-                    </span>
-                  </div>
-                  <div class="purchase-details">
-                    <span>User: <strong>#{{ purchase.user_id }}</strong></span>
-                    <span>Price: {{ purchase.price }} 💰</span>
-                    <span>{{ new Date(purchase.purchased_at).toLocaleDateString() }}</span>
-                  </div>
-                  <div v-if="!purchase.redeemed && purchase.item_id === 'nickname_change'" class="purchase-actions">
-                    <button @click="openNicknameModal(purchase)" class="redeem-btn">
-                      Change Nickname
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div v-else class="empty">No purchases yet</div>
-            </div>
-          </section>
         </main>
       </div>
     </div>
@@ -914,42 +768,6 @@
       </div>
     </div>
 
-    <!-- Nickname Modal -->
-    <NicknameModal
-      :isOpen="showNicknameModal"
-      :guildId="nicknameModalData.guildId"
-      :userId="nicknameModalData.userId"
-      :purchaseId="nicknameModalData.purchaseId"
-      @close="showNicknameModal = false"
-      @success="onNicknameSuccess"
-    />
-
-    <!-- Preset Config Modal -->
-    <div v-if="showPresetConfigModal && selectedPresetItem" class="modal-overlay" @click="showPresetConfigModal = false">
-      <div class="modal-content" @click.stop>
-        <h3>Configure: {{ selectedPresetItem.name }}</h3>
-        
-        <div class="form-group">
-          <label>Custom Price (leave empty to use default: {{ selectedPresetItem.price }})</label>
-          <input v-model.number="presetConfig.customPrice" type="number" min="1" placeholder="Optional" />
-        </div>
-
-        <div v-if="selectedPresetItem.id === 'custom_role'" class="form-group">
-          <label>Available Roles (optional - leave empty if users can pick any role)</label>
-          <p style="font-size: 12px; color: #999; margin: 0 0 8px 0;">Users will be able to select from roles you create with these prefixes</p>
-          <input 
-            v-model="presetConfig.selectedRole" 
-            type="text" 
-            placeholder="e.g., [Premium] or leave empty for any role"
-          />
-        </div>
-
-        <div class="modal-buttons">
-          <button @click="showPresetConfigModal = false" class="cancel-btn">Cancel</button>
-          <button @click="addPresetToShopWithConfig" class="confirm-btn">Add to Shop</button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -958,7 +776,6 @@ import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
-import NicknameModal from '../components/NicknameModal.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -1081,48 +898,13 @@ const memberGoalsSettings = reactive({
   memberGoal: 0,
 })
 
-// Shop System
-const shopTab = ref('preset')
-const shopLoading = ref(false)
-const showNicknameModal = ref(false)
-const nicknameModalData = reactive({
-  guildId: '',
-  userId: '',
-  purchaseId: ''
-})
-const presetShopItems = ref([
-  { id: 'xp_boost_1h', type: 'preset', name: '1 Hour XP Boost', description: '2x XP multiplier for 1 hour', price: 500, category: 'boosts', duration_minutes: 60, multiplier: 2 },
-  { id: 'xp_boost_6h', type: 'preset', name: '6 Hour XP Boost', description: '2x XP multiplier for 6 hours', price: 2000, category: 'boosts', duration_minutes: 360, multiplier: 2 },
-  { id: 'xp_boost_24h', type: 'preset', name: '24 Hour XP Boost', description: '2x XP multiplier for 24 hours', price: 5000, category: 'boosts', duration_minutes: 1440, multiplier: 2 },
-  { id: 'custom_role', type: 'preset', name: 'Custom Role', description: 'Create a custom role (admin configured)', price: 3000, category: 'roles' },
-  { id: 'nickname_change', type: 'preset', name: 'Nickname Change', description: 'Change your server nickname', price: 800, category: 'cosmetics' }
-])
-const customItems = ref([])
-const customItemForm = reactive({
-  name: '',
-  description: '',
-  price: 0,
-  category: 'misc'
-})
-const recentPurchases = ref([])
-
 // Overview shop display
-const overviewShopItems = ref([])
-const overviewShopLoading = ref(false)
-
 const activityLogs = ref([])
 const logsLoading = ref(false)
 const showChannelModal = ref(false)
 const showMemberModal = ref(false)
 const showResetModal = ref(false)
 const showLevelingFormulaModal = ref(false)
-const showPresetConfigModal = ref(false)
-const selectedPresetItem = ref(null)
-const presetConfig = reactive({
-  customPrice: null,
-  enabledRoles: [],
-  selectedRole: ''
-})
 const guildChannels = ref([])
 const guildMembers = ref([])
 const selectedChannelIds = ref([])
@@ -2059,260 +1841,12 @@ watch(activeSection, (newSection) => {
   if (newSection === 'logs' && selectedServer.value) {
     loadActivityLogs(selectedServer.value.id)
   }
-  if (newSection === 'shop' && selectedServer.value) {
-    loadShopData(selectedServer.value.id)
-  }
-  if (newSection === 'overview' && selectedServer.value) {
-    loadOverviewShop(selectedServer.value.id)
-  }
 })
-
-watch(shopTab, () => {
-  if (selectedServer.value && shopTab.value === 'purchases') {
-    loadOverviewShop(selectedServer.value.id)
-  }
-})
-
-// Shop Functions
-const loadShopData = async (guildId) => {
-  shopLoading.value = true
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/shop/${guildId}/items/all`, {
-      headers: {
-        'Authorization': `Bearer ${authStore.token}`
-      }
-    })
-    if (response.ok) {
-      const data = await response.json()
-      customItems.value = data.items.filter(i => i.type === 'custom') || []
-    }
-
-    // Load recent purchases
-    const purchaseResponse = await fetch(`${BACKEND_URL}/api/shop/${guildId}/purchases?limit=20`)
-    if (purchaseResponse.ok) {
-      const purchaseData = await purchaseResponse.json()
-      recentPurchases.value = purchaseData.purchases || []
-    }
-  } catch (err) {
-    console.error('Failed to load shop data:', err)
-  } finally {
-    shopLoading.value = false
-  }
-}
-
-const loadOverviewShop = async (guildId) => {
-  overviewShopLoading.value = true
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/shop/${guildId}/items`, {
-      headers: {
-        'Authorization': `Bearer ${authStore.token}`
-      }
-    })
-    if (response.ok) {
-      const data = await response.json()
-      overviewShopItems.value = data.items || []
-    }
-  } catch (err) {
-    console.error('Failed to load overview shop:', err)
-  } finally {
-    overviewShopLoading.value = false
-  }
-}
-
-const purchaseFromOverview = async (item) => {
-  if (!confirm(`Purchase "${item.name}" for ${item.price} 💰?`)) {
-    return
-  }
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/purchase`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authStore.token}`
-      },
-      body: JSON.stringify({
-        itemId: item.id,
-        userId: authStore.user.id
-      })
-    })
-
-    if (response.ok) {
-      const data = await response.json()
-      alert(`Purchase successful!`)
-      
-      // Handle special items
-      if (item.type === 'nickname_change') {
-        nicknameModalData.guildId = selectedServer.value.id
-        nicknameModalData.userId = authStore.user.id
-        nicknameModalData.purchaseId = data.purchaseId
-        showNicknameModal.value = true
-      }
-      
-      // Reload the overview shop
-      await loadOverviewShop(selectedServer.value.id)
-      // Reload recent purchases in shop section
-      if (shopTab.value === 'purchases') {
-        await loadShopData(selectedServer.value.id)
-      }
-    } else {
-      const error = await response.json()
-      alert(`Purchase failed: ${error.message || 'Unknown error'}`)
-    }
-  } catch (err) {
-    console.error('Error purchasing item:', err)
-    alert('Error completing purchase')
-  }
-}
-
-const createCustomItem = async () => {
-  if (!customItemForm.name || !customItemForm.price) {
-    alert('Please fill in all required fields')
-    return
-  }
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/items`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authStore.token}`
-      },
-      body: JSON.stringify(customItemForm)
-    })
-
-    if (response.ok) {
-      alert('Item created! It will appear after mod approval.')
-      customItemForm.name = ''
-      customItemForm.description = ''
-      customItemForm.price = 0
-      customItemForm.category = 'misc'
-      await loadShopData(selectedServer.value.id)
-    } else {
-      alert('Failed to create item')
-    }
-  } catch (err) {
-    console.error('Error creating item:', err)
-    alert('Error creating item')
-  }
-}
-
-const approveItem = async (itemId) => {
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/approvals/${itemId}/approve`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${authStore.token}`
-      }
-    })
-
-    if (response.ok) {
-      alert('Item approved!')
-      await loadShopData(selectedServer.value.id)
-    } else {
-      alert('Failed to approve item')
-    }
-  } catch (err) {
-    console.error('Error approving item:', err)
-  }
-}
-
-const rejectItem = async (itemId) => {
-  if (!confirm('Are you sure you want to reject this item?')) return
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/approvals/${itemId}/reject`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${authStore.token}`
-      }
-    })
-
-    if (response.ok) {
-      alert('Item rejected')
-      await loadShopData(selectedServer.value.id)
-    } else {
-      alert('Failed to reject item')
-    }
-  } catch (err) {
-    console.error('Error rejecting item:', err)
-  }
-}
 
 const copyItemJson = (item) => {
   const json = JSON.stringify(item, null, 2)
   navigator.clipboard.writeText(json)
   alert('Item details copied to clipboard!')
-}
-
-const openNicknameModal = (purchase) => {
-  nicknameModalData.guildId = selectedServer.value.id
-  nicknameModalData.userId = authStore.user?.id
-  nicknameModalData.purchaseId = purchase.purchase_id
-  showNicknameModal.value = true
-}
-
-const onNicknameSuccess = () => {
-  alert('Your nickname has been successfully applied!')
-  loadShopData(selectedServer.value.id)
-}
-
-const showPresetConfig = (item) => {
-  selectedPresetItem.value = item
-  presetConfig.customPrice = null
-  presetConfig.selectedRole = ''
-  showPresetConfigModal.value = true
-}
-
-const addPresetToShop = (item) => {
-  // Quick add with default settings
-  const price = presetConfig.customPrice || item.price
-  
-  // For items that need config, show config modal
-  if (item.id === 'custom_role' || item.id === 'xp_boost_custom') {
-    showPresetConfig(item)
-    return
-  }
-  
-  // Otherwise add directly
-  addPresetToShopWithConfig(item, price)
-}
-
-const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
-  const item = itemToAdd || selectedPresetItem.value
-  const price = customPrice || presetConfig.customPrice || item.price
-
-  try {
-    // Create a purchase-like entry that marks the preset as enabled
-    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/purchase`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authStore.token}`
-      },
-      body: JSON.stringify({
-        itemId: item.id,
-        userId: selectedServer.value.id, // Use guild ID to mark it as enabled
-        price: price,
-        config: {
-          rolePrefix: presetConfig.selectedRole || null
-        }
-      })
-    })
-
-    if (response.ok) {
-      alert(`✅ ${item.name} has been added to your shop!`)
-      showPresetConfigModal.value = false
-      presetConfig.customPrice = null
-      presetConfig.selectedRole = ''
-      await loadShopData(selectedServer.value.id)
-    } else {
-      alert('Failed to add item to shop. Please try again.')
-    }
-  } catch (err) {
-    console.error('Error adding preset to shop:', err)
-    alert('Error adding item to shop')
-  }
 }
 </script>
 
@@ -3424,81 +2958,6 @@ const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
   transition: width 0.3s ease;
 }
 
-.shop-card {
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
-  border: 2px solid rgba(212, 175, 55, 0.4);
-  border-radius: 12px;
-  padding: 24px;
-}
-
-.shop-card h3 {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: #d4af37;
-}
-
-.shop-items {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.mini-shop-item {
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 8px;
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.item-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: #ddd;
-  flex: 1;
-}
-
-.item-price {
-  font-size: 13px;
-  font-weight: 600;
-  color: #d4af37;
-  white-space: nowrap;
-}
-
-.buy-btn {
-  background: linear-gradient(135deg, #d4af37, #f4d03f);
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #111;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.buy-btn:hover {
-  background: linear-gradient(135deg, #f4d03f, #d4af37);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
-
-.empty-shop {
-  text-align: center;
-  padding: 20px 10px;
-  color: #999;
-  font-size: 14px;
-}
-
-.empty-shop p {
-  margin-bottom: 12px;
-}
-
 .leaderboard-full {
   max-height: calc(100vh - 280px);
   overflow-y: auto;
@@ -4148,17 +3607,8 @@ const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
     gap: 12px;
   }
 
-  .shop-card {
-    margin-top: 16px;
-    width: 100%;
-  }
-
   /* Leaderboard responsive layout */
   .leaderboard-full {
-    grid-template-columns: 1fr !important;
-  }
-
-  [style*="grid-template-columns: 1fr 1fr"] {
     grid-template-columns: 1fr !important;
   }
 
