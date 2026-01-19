@@ -785,6 +785,11 @@
                     <span>Price: {{ purchase.price }} 💰</span>
                     <span>{{ new Date(purchase.purchased_at).toLocaleDateString() }}</span>
                   </div>
+                  <div v-if="!purchase.redeemed && purchase.item_id === 'nickname_change'" class="purchase-actions">
+                    <button @click="openNicknameModal(purchase)" class="redeem-btn">
+                      Change Nickname
+                    </button>
+                  </div>
                 </div>
               </div>
               <div v-else class="empty">No purchases yet</div>
@@ -884,6 +889,16 @@
         </div>
       </div>
     </div>
+
+    <!-- Nickname Modal -->
+    <NicknameModal
+      :isOpen="showNicknameModal"
+      :guildId="nicknameModalData.guildId"
+      :userId="nicknameModalData.userId"
+      :purchaseId="nicknameModalData.purchaseId"
+      @close="showNicknameModal = false"
+      @success="onNicknameSuccess"
+    />
   </div>
 </template>
 
@@ -892,6 +907,7 @@ import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
+import NicknameModal from '../components/NicknameModal.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -1017,6 +1033,12 @@ const memberGoalsSettings = reactive({
 // Shop System
 const shopTab = ref('preset')
 const shopLoading = ref(false)
+const showNicknameModal = ref(false)
+const nicknameModalData = reactive({
+  guildId: '',
+  userId: '',
+  purchaseId: ''
+})
 const presetShopItems = ref([
   { id: 'xp_boost_1h', type: 'preset', name: '1 Hour XP Boost', description: '2x XP multiplier for 1 hour', price: 500, category: 'boosts', duration_minutes: 60, multiplier: 2 },
   { id: 'xp_boost_6h', type: 'preset', name: '6 Hour XP Boost', description: '2x XP multiplier for 6 hours', price: 2000, category: 'boosts', duration_minutes: 360, multiplier: 2 },
@@ -2086,6 +2108,18 @@ const copyItemJson = (item) => {
   navigator.clipboard.writeText(json)
   alert('Item details copied to clipboard!')
 }
+
+const openNicknameModal = (purchase) => {
+  nicknameModalData.guildId = selectedServer.value.id
+  nicknameModalData.userId = authStore.user?.id
+  nicknameModalData.purchaseId = purchase.purchase_id
+  showNicknameModal.value = true
+}
+
+const onNicknameSuccess = () => {
+  alert('Your nickname has been successfully applied!')
+  loadShopData(selectedServer.value.id)
+}
 </script>
 
 <style scoped>
@@ -3021,6 +3055,30 @@ const copyItemJson = (item) => {
 
 .purchase-details strong {
   color: #aaa;
+}
+
+.purchase-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.redeem-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+  border: 1px solid rgba(81, 112, 255, 0.4);
+  border-radius: 6px;
+  color: #5170ff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.redeem-btn:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4) 0%, rgba(139, 92, 246, 0.4) 100%);
+  border-color: rgba(81, 112, 255, 0.6);
+  transform: translateY(-1px);
 }
 
 .rank-card {
