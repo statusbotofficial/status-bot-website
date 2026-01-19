@@ -668,9 +668,6 @@
                     <span class="log-time">{{ formatLogTime(log.timestamp) }}</span>
                   </div>
                   <div class="log-description">{{ log.description }}</div>
-                  <div v-if="log.details && Object.keys(log.details).length > 0" class="log-details">
-                    <small>{{ JSON.stringify(log.details) }}</small>
-                  </div>
                 </div>
               </div>
               <div v-else class="empty">No logs yet</div>
@@ -2338,6 +2335,9 @@ watch(activeSection, (newSection) => {
   gap: 0;
   max-height: 600px;
   overflow-y: auto;
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .log-entry {
