@@ -673,6 +673,123 @@
               <div v-else class="empty">No logs yet</div>
             </div>
           </section>
+
+          <!-- Shop Section -->
+          <section v-else-if="activeSection === 'shop'" class="config-section">
+            <h3>🛍️ Server Shop Management</h3>
+            
+            <!-- Shop Tabs -->
+            <div class="shop-tabs">
+              <button 
+                :class="{ active: shopTab === 'preset' }" 
+                @click="shopTab = 'preset'"
+                class="tab-btn"
+              >
+                Preset Items
+              </button>
+              <button 
+                :class="{ active: shopTab === 'custom' }" 
+                @click="shopTab = 'custom'"
+                class="tab-btn"
+              >
+                Custom Items
+              </button>
+              <button 
+                :class="{ active: shopTab === 'purchases' }" 
+                @click="shopTab = 'purchases'"
+                class="tab-btn"
+              >
+                Purchases
+              </button>
+            </div>
+
+            <!-- Preset Items -->
+            <div v-if="shopTab === 'preset'" class="shop-content">
+              <h4>Preset Shop Items</h4>
+              <div class="items-grid">
+                <div v-for="item in presetShopItems" :key="item.id" class="item-card">
+                  <div class="item-header">
+                    <h5>{{ item.name }}</h5>
+                    <span class="item-price">{{ item.price }} 💰</span>
+                  </div>
+                  <p class="item-description">{{ item.description }}</p>
+                  <div v-if="item.duration_minutes" class="item-detail">
+                    Duration: {{ item.duration_minutes }}  minutes
+                  </div>
+                  <button class="item-btn" @click="copyItemJson(item)">View Details</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Custom Items -->
+            <div v-if="shopTab === 'custom'" class="shop-content">
+              <h4>Create Custom Item</h4>
+              <div class="form-group">
+                <label>Item Name</label>
+                <input v-model="customItemForm.name" type="text" placeholder="e.g., Dragon Wings" />
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea v-model="customItemForm.description" placeholder="e.g., Exclusive cosmetic item"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Price (Currency)</label>
+                <input v-model.number="customItemForm.price" type="number" min="1" />
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select v-model="customItemForm.category">
+                  <option value="misc">Miscellaneous</option>
+                  <option value="cosmetics">Cosmetics</option>
+                  <option value="boosts">Boosts</option>
+                  <option value="roles">Roles</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <button @click="createCustomItem" class="submit-btn" :disabled="!customItemForm.name || !customItemForm.price">
+                Create Item
+              </button>
+
+              <h4 style="margin-top: 2rem;">Pending Custom Items</h4>
+              <div v-if="customItems.length > 0" class="items-grid">
+                <div v-for="item in customItems" :key="item.id" class="item-card custom">
+                  <div class="item-header">
+                    <h5>{{ item.name }}</h5>
+                    <span class="item-status" :class="item.status">{{ item.status }}</span>
+                  </div>
+                  <p class="item-description">{{ item.description }}</p>
+                  <span class="item-price">{{ item.price }} 💰</span>
+                  <div class="item-actions">
+                    <button v-if="item.status === 'pending_approval'" @click="approveItem(item.id)" class="approve-btn">Approve</button>
+                    <button v-if="item.status === 'pending_approval'" @click="rejectItem(item.id)" class="reject-btn">Reject</button>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="empty">No custom items</div>
+            </div>
+
+            <!-- Purchases -->
+            <div v-if="shopTab === 'purchases'" class="shop-content">
+              <h4>Recent Purchases</h4>
+              <div v-if="shopLoading" class="loading">Loading purchases...</div>
+              <div v-else-if="recentPurchases.length > 0" class="purchases-list">
+                <div v-for="purchase in recentPurchases" :key="purchase.purchase_id" class="purchase-item">
+                  <div class="purchase-header">
+                    <span class="purchase-item-name">{{ purchase.item_name }}</span>
+                    <span class="purchase-status" :class="{ redeemed: purchase.redeemed }">
+                      {{ purchase.redeemed ? 'Redeemed' : 'Pending' }}
+                    </span>
+                  </div>
+                  <div class="purchase-details">
+                    <span>User: <strong>#{{ purchase.user_id }}</strong></span>
+                    <span>Price: {{ purchase.price }} 💰</span>
+                    <span>{{ new Date(purchase.purchased_at).toLocaleDateString() }}</span>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="empty">No purchases yet</div>
+            </div>
+          </section>
         </main>
       </div>
     </div>
@@ -838,6 +955,7 @@ const sections = [
   { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-door-open" style="color: #d946ef;"></i>' },
   { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: #3b82f6;"></i>' },
   { id: 'logs', label: 'Activity Logs', icon: '<i class="fas fa-history" style="color: #ef4444;"></i>' },
+  { id: 'shop', label: 'Shop', icon: '<i class="fas fa-store" style="color: #8b5cf6;"></i>' },
 ]
 
 const levelingSettings = reactive({
@@ -895,6 +1013,25 @@ const memberGoalsSettings = reactive({
   memberGoalChannelId: '',
   memberGoal: 0,
 })
+
+// Shop System
+const shopTab = ref('preset')
+const shopLoading = ref(false)
+const presetShopItems = ref([
+  { id: 'xp_boost_1h', type: 'preset', name: '1 Hour XP Boost', description: '2x XP multiplier for 1 hour', price: 500, category: 'boosts', duration_minutes: 60, multiplier: 2 },
+  { id: 'xp_boost_6h', type: 'preset', name: '6 Hour XP Boost', description: '2x XP multiplier for 6 hours', price: 2000, category: 'boosts', duration_minutes: 360, multiplier: 2 },
+  { id: 'xp_boost_24h', type: 'preset', name: '24 Hour XP Boost', description: '2x XP multiplier for 24 hours', price: 5000, category: 'boosts', duration_minutes: 1440, multiplier: 2 },
+  { id: 'custom_role', type: 'preset', name: 'Custom Role', description: 'Create a custom role (admin configured)', price: 3000, category: 'roles' },
+  { id: 'nickname_change', type: 'preset', name: 'Nickname Change', description: 'Change your server nickname', price: 800, category: 'cosmetics' }
+])
+const customItems = ref([])
+const customItemForm = reactive({
+  name: '',
+  description: '',
+  price: 0,
+  category: 'misc'
+})
+const recentPurchases = ref([])
 
 const activityLogs = ref([])
 const logsLoading = ref(false)
@@ -1838,7 +1975,117 @@ watch(activeSection, (newSection) => {
   if (newSection === 'logs' && selectedServer.value) {
     loadActivityLogs(selectedServer.value.id)
   }
+  if (newSection === 'shop' && selectedServer.value) {
+    loadShopData(selectedServer.value.id)
+  }
 })
+
+// Shop Functions
+const loadShopData = async (guildId) => {
+  shopLoading.value = true
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/shop/${guildId}/items/all`, {
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
+    if (response.ok) {
+      const data = await response.json()
+      customItems.value = data.items.filter(i => i.type === 'custom') || []
+    }
+
+    // Load recent purchases
+    const purchaseResponse = await fetch(`${BACKEND_URL}/api/shop/${guildId}/purchases?limit=20`)
+    if (purchaseResponse.ok) {
+      const purchaseData = await purchaseResponse.json()
+      recentPurchases.value = purchaseData.purchases || []
+    }
+  } catch (err) {
+    console.error('Failed to load shop data:', err)
+  } finally {
+    shopLoading.value = false
+  }
+}
+
+const createCustomItem = async () => {
+  if (!customItemForm.name || !customItemForm.price) {
+    alert('Please fill in all required fields')
+    return
+  }
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify(customItemForm)
+    })
+
+    if (response.ok) {
+      alert('Item created! It will appear after mod approval.')
+      customItemForm.name = ''
+      customItemForm.description = ''
+      customItemForm.price = 0
+      customItemForm.category = 'misc'
+      await loadShopData(selectedServer.value.id)
+    } else {
+      alert('Failed to create item')
+    }
+  } catch (err) {
+    console.error('Error creating item:', err)
+    alert('Error creating item')
+  }
+}
+
+const approveItem = async (itemId) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/approvals/${itemId}/approve`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
+
+    if (response.ok) {
+      alert('Item approved!')
+      await loadShopData(selectedServer.value.id)
+    } else {
+      alert('Failed to approve item')
+    }
+  } catch (err) {
+    console.error('Error approving item:', err)
+  }
+}
+
+const rejectItem = async (itemId) => {
+  if (!confirm('Are you sure you want to reject this item?')) return
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/approvals/${itemId}/reject`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
+
+    if (response.ok) {
+      alert('Item rejected')
+      await loadShopData(selectedServer.value.id)
+    } else {
+      alert('Failed to reject item')
+    }
+  } catch (err) {
+    console.error('Error rejecting item:', err)
+  }
+}
+
+const copyItemJson = (item) => {
+  const json = JSON.stringify(item, null, 2)
+  navigator.clipboard.writeText(json)
+  alert('Item details copied to clipboard!')
+}
 </script>
 
 <style scoped>
@@ -2458,6 +2705,322 @@ watch(activeSection, (newSection) => {
 
 .info-box strong {
   color: #5170ff;
+}
+
+/* Shop Section */
+.shop-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(81, 112, 255, 0.1);
+}
+
+.tab-btn {
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #999;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.tab-btn.active {
+  color: #5170ff;
+  border-bottom-color: #5170ff;
+}
+
+.tab-btn:hover {
+  color: #7192ff;
+}
+
+.shop-content {
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.shop-content h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.item-card {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-card:hover {
+  border-color: rgba(81, 112, 255, 0.4);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.15) 0%, rgba(139, 92, 246, 0.12) 100%);
+  transform: translateY(-2px);
+}
+
+.item-card.custom {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.item-card.custom:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(139, 92, 246, 0.12) 100%);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.item-header h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  flex: 1;
+}
+
+.item-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+
+.item-status {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(168, 85, 247, 0.2);
+  color: #a855f7;
+}
+
+.item-status.approved {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.item-description {
+  font-size: 13px;
+  color: #bbb;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.item-detail {
+  font-size: 12px;
+  color: #999;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.item-btn {
+  padding: 8px 12px;
+  background: rgba(81, 112, 255, 0.2);
+  border: 1px solid rgba(81, 112, 255, 0.3);
+  border-radius: 6px;
+  color: #5170ff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.item-btn:hover {
+  background: rgba(81, 112, 255, 0.3);
+  border-color: rgba(81, 112, 255, 0.5);
+}
+
+.item-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.approve-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 6px;
+  color: #22c55e;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.approve-btn:hover {
+  background: rgba(34, 197, 94, 0.3);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.reject-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.reject-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ddd;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: rgba(81, 112, 255, 0.4);
+  background: rgba(81, 112, 255, 0.05);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.submit-btn {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #5170ff 0%, #8b5cf6 100%);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(81, 112, 255, 0.3);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.purchases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.purchase-item {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.15);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+}
+
+.purchase-item:hover {
+  background: rgba(81, 112, 255, 0.1);
+  border-color: rgba(81, 112, 255, 0.3);
+}
+
+.purchase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.purchase-item-name {
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+}
+
+.purchase-status {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(251, 146, 60, 0.2);
+  color: #fb923c;
+}
+
+.purchase-status.redeemed {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.purchase-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: #999;
+}
+
+.purchase-details span {
+  display: flex;
+  gap: 4px;
+}
+
+.purchase-details strong {
+  color: #aaa;
 }
 
 .rank-card {
