@@ -839,7 +839,6 @@ const sections = [
   { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-door-open" style="color: #d946ef;"></i>' },
   { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: #3b82f6;"></i>' },
   { id: 'logs', label: 'Activity Logs', icon: '<i class="fas fa-history" style="color: #ef4444;"></i>' },
-  { id: 'shop', label: 'Shop', icon: '<i class="fas fa-store" style="color: #8b5cf6;"></i>' },
 ]
 
 const levelingSettings = reactive({
