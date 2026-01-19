@@ -820,7 +820,8 @@ const userHasPremium = ref(false)
 const fetchPremiumStatus = async () => {
   if (!selectedServer.value?.id) return
   try {
-    const response = await fetch(`${BACKEND_URL}/api/user-premium/${authStore.user?.id}`)
+    const headers = { Authorization: `Bearer ${authStore.token}` }
+    const response = await fetch(`${BACKEND_URL}/api/premium/${selectedServer.value.id}`, { headers })
     if (response.ok) {
       const data = await response.json()
       userHasPremium.value = data.hasPremium || false
