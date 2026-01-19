@@ -655,6 +655,27 @@
               </div>
             </div>
           </section>
+
+          <!-- Activity Logs -->
+          <section v-else-if="activeSection === 'logs'" class="config-section">
+            <h3>Activity Logs</h3>
+            <div class="logs-container">
+              <div v-if="logsLoading" class="loading">Loading logs...</div>
+              <div v-else-if="activityLogs.length > 0" class="logs-list">
+                <div v-for="log in activityLogs" :key="log.timestamp" class="log-entry">
+                  <div class="log-header">
+                    <span class="log-type" :class="`type-${log.event_type}`">{{ formatEventType(log.event_type) }}</span>
+                    <span class="log-time">{{ formatLogTime(log.timestamp) }}</span>
+                  </div>
+                  <div class="log-description">{{ log.description }}</div>
+                  <div v-if="log.details && Object.keys(log.details).length > 0" class="log-details">
+                    <small>{{ JSON.stringify(log.details) }}</small>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="empty">No logs yet</div>
+            </div>
+          </section>
         </main>
       </div>
     </div>
@@ -819,6 +840,7 @@ const sections = [
   { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: #10b981;"></i>' },
   { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-door-open" style="color: #d946ef;"></i>' },
   { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: #3b82f6;"></i>' },
+  { id: 'logs', label: 'Activity Logs', icon: '<i class="fas fa-history" style="color: #ef4444;"></i>' },
 ]
 
 const levelingSettings = reactive({
@@ -876,6 +898,9 @@ const memberGoalsSettings = reactive({
   memberGoalChannelId: '',
   memberGoal: 0,
 })
+
+const activityLogs = ref([])
+const logsLoading = ref(false)
 
 const showChannelModal = ref(false)
 const showMemberModal = ref(false)
@@ -1762,6 +1787,62 @@ watch(
     }
   }
 )
+
+const loadActivityLogs = async (guildId) => {
+  logsLoading.value = true
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/logs/${guildId}?limit=50`, {
+      headers: {
+        'Authorization': `Bearer status-bot-stats-secret-key`
+      }
+    })
+    if (response.ok) {
+      const data = await response.json()
+      activityLogs.value = data.logs.reverse()
+    }
+  } catch (err) {
+    console.error('Failed to load activity logs:', err)
+  } finally {
+    logsLoading.value = false
+  }
+}
+
+const formatEventType = (type) => {
+  const types = {
+    'user_offline': 'User Offline',
+    'user_online': 'User Online',
+    'goal_completed': 'Goal Completed',
+    'currency_given': 'Currency Given',
+    'currency_removed': 'Currency Removed',
+    'xp_given': 'XP Given',
+    'xp_removed': 'XP Removed',
+    'level_up': 'Level Up',
+    'message': 'Message Event',
+  }
+  return types[type] || type
+}
+
+const formatLogTime = (timestamp) => {
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diff = now - date
+  const minutes = Math.floor(diff / 60000)
+  const hours = Math.floor(diff / 3600000)
+  const days = Math.floor(diff / 86400000)
+
+  if (minutes < 1) return 'Just now'
+  if (minutes < 60) return `${minutes}m ago`
+  if (hours < 24) return `${hours}h ago`
+  if (days < 7) return `${days}d ago`
+  
+  return date.toLocaleDateString()
+}
+
+watch(activeSection, (newSection) => {
+  if (newSection === 'logs' && selectedServer.value) {
+    loadActivityLogs(selectedServer.value.id)
+  }
+})
 </script>
 
 <style scoped>
@@ -2243,6 +2324,114 @@ watch(
   text-align: center;
   color: #999;
   padding: 30px;
+}
+
+.logs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(81, 112, 255, 0.1);
+  background: rgba(81, 112, 255, 0.02);
+  transition: background 0.2s;
+}
+
+.log-entry:hover {
+  background: rgba(81, 112, 255, 0.05);
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.log-type {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.log-type.type-user_offline {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.log-type.type-user_online {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.log-type.type-goal_completed {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.log-type.type-currency_given {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.log-type.type-currency_removed {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+.log-type.type-xp_given {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.log-type.type-xp_removed {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.log-type.type-level_up {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+.log-time {
+  font-size: 12px;
+  color: #666;
+}
+
+.log-description {
+  color: #ddd;
+  font-size: 13px;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.log-details {
+  color: #666;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 6px 8px;
+  border-radius: 3px;
+  margin-top: 6px;
+  overflow-x: auto;
 }
 
 .info-box {
