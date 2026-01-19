@@ -167,25 +167,38 @@
                     <p>First to enable the XP system go to the <strong>Leveling</strong> section, toggle in on. Then set up your preferences for the XP rewards. Then, when a user sends a message, or spends time in a voice chat, they earn XP.</p>
                   </div>
 
-                  <!-- Your Rank Card -->
-                  <div class="rank-card">
-                    <h3>Your Rank</h3>
-                    <div class="rank-avatar" :style="{ backgroundImage: userRankData.avatarUrl ? `url('${userRankData.avatarUrl}')` : 'none' }">
-                      {{ !userRankData.avatarUrl ? (authStore.user?.username?.charAt(0) || 'U').toUpperCase() : '' }}
+                  <!-- Rank Card + Shop Grid -->
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <!-- Your Rank Card -->
+                    <div class="rank-card">
+                      <h3>Your Rank</h3>
+                      <div class="rank-avatar" :style="{ backgroundImage: userRankData.avatarUrl ? `url('${userRankData.avatarUrl}')` : 'none' }">
+                        {{ !userRankData.avatarUrl ? (authStore.user?.username?.charAt(0) || 'U').toUpperCase() : '' }}
+                      </div>
+                      <div class="rank-number">#{{ userRankData.rank || '-' }}</div>
+                      <div class="rank-xp">{{ userRankData.xp?.toLocaleString() || 0 }}/{{ userRankData.nextLevelXp?.toLocaleString() || '-' }} XP</div>
+                      <div class="rank-level">Level: <span>{{ userRankData.level || '-' }}</span></div>
+                      <div class="rank-bar">
+                        <div class="rank-bar-fill" :style="{ width: userRankData.progressPercent + '%' }"></div>
+                      </div>
                     </div>
-                    <div class="rank-number">#{{ userRankData.rank || '-' }}</div>
-                    <div class="rank-xp">{{ userRankData.xp?.toLocaleString() || 0 }}/{{ userRankData.nextLevelXp?.toLocaleString() || '-' }} XP</div>
-                    <div class="rank-level">Level: <span>{{ userRankData.level || '-' }}</span></div>
-                    <div class="rank-bar">
-                      <div class="rank-bar-fill" :style="{ width: userRankData.progressPercent + '%' }"></div>
-                    </div>
-                  </div>
 
-                  <!-- Shop Info Box -->
-                  <div class="info-box">
-                    <h3>Server Shop</h3>
-                    <p>Set up your server shop to let members purchase perks like XP boosts, custom roles, and nickname changes.</p>
-                    <button @click="activeSection = 'shop'" class="btn btn-small">Configure Shop</button>
+                    <!-- Server Shop Card -->
+                    <div class="shop-card">
+                      <h3>Server Shop</h3>
+                      <div v-if="overviewShopLoading" class="loading" style="font-size: 12px;">Loading shop...</div>
+                      <div v-else-if="overviewShopItems.length > 0" class="shop-items">
+                        <div v-for="item in overviewShopItems.slice(0, 3)" :key="item.id" class="mini-shop-item">
+                          <div class="item-name">{{ item.name }}</div>
+                          <div class="item-price">{{ item.price }} 💰</div>
+                          <button class="buy-btn" @click="purchaseFromOverview(item)">Buy</button>
+                        </div>
+                      </div>
+                      <div v-else class="empty-shop">
+                        <p>No items available</p>
+                        <button @click="activeSection = 'shop'" class="btn btn-small">Add Items</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1092,6 +1105,10 @@ const customItemForm = reactive({
   category: 'misc'
 })
 const recentPurchases = ref([])
+
+// Overview shop display
+const overviewShopItems = ref([])
+const overviewShopLoading = ref(false)
 
 const activityLogs = ref([])
 const logsLoading = ref(false)
@@ -2045,6 +2062,15 @@ watch(activeSection, (newSection) => {
   if (newSection === 'shop' && selectedServer.value) {
     loadShopData(selectedServer.value.id)
   }
+  if (newSection === 'overview' && selectedServer.value) {
+    loadOverviewShop(selectedServer.value.id)
+  }
+})
+
+watch(shopTab, () => {
+  if (selectedServer.value && shopTab.value === 'purchases') {
+    loadOverviewShop(selectedServer.value.id)
+  }
 })
 
 // Shop Functions
@@ -2071,6 +2097,71 @@ const loadShopData = async (guildId) => {
     console.error('Failed to load shop data:', err)
   } finally {
     shopLoading.value = false
+  }
+}
+
+const loadOverviewShop = async (guildId) => {
+  overviewShopLoading.value = true
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/shop/${guildId}/items`, {
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
+    if (response.ok) {
+      const data = await response.json()
+      overviewShopItems.value = data.items || []
+    }
+  } catch (err) {
+    console.error('Failed to load overview shop:', err)
+  } finally {
+    overviewShopLoading.value = false
+  }
+}
+
+const purchaseFromOverview = async (item) => {
+  if (!confirm(`Purchase "${item.name}" for ${item.price} 💰?`)) {
+    return
+  }
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/purchase`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify({
+        itemId: item.id,
+        userId: authStore.user.id
+      })
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      alert(`Purchase successful!`)
+      
+      // Handle special items
+      if (item.type === 'nickname_change') {
+        nicknameModalData.guildId = selectedServer.value.id
+        nicknameModalData.userId = authStore.user.id
+        nicknameModalData.purchaseId = data.purchaseId
+        showNicknameModal.value = true
+      }
+      
+      // Reload the overview shop
+      await loadOverviewShop(selectedServer.value.id)
+      // Reload recent purchases in shop section
+      if (shopTab.value === 'purchases') {
+        await loadShopData(selectedServer.value.id)
+      }
+    } else {
+      const error = await response.json()
+      alert(`Purchase failed: ${error.message || 'Unknown error'}`)
+    }
+  } catch (err) {
+    console.error('Error purchasing item:', err)
+    alert('Error completing purchase')
   }
 }
 
@@ -3333,6 +3424,81 @@ const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
   transition: width 0.3s ease;
 }
 
+.shop-card {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.shop-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #d4af37;
+}
+
+.shop-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mini-shop-item {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ddd;
+  flex: 1;
+}
+
+.item-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d4af37;
+  white-space: nowrap;
+}
+
+.buy-btn {
+  background: linear-gradient(135deg, #d4af37, #f4d03f);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #111;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.buy-btn:hover {
+  background: linear-gradient(135deg, #f4d03f, #d4af37);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.empty-shop {
+  text-align: center;
+  padding: 20px 10px;
+  color: #999;
+  font-size: 14px;
+}
+
+.empty-shop p {
+  margin-bottom: 12px;
+}
+
 .leaderboard-full {
   max-height: calc(100vh - 280px);
   overflow-y: auto;
@@ -3982,8 +4148,17 @@ const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
     gap: 12px;
   }
 
+  .shop-card {
+    margin-top: 16px;
+    width: 100%;
+  }
+
   /* Leaderboard responsive layout */
   .leaderboard-full {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="grid-template-columns: 1fr 1fr"] {
     grid-template-columns: 1fr !important;
   }
 
