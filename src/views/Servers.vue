@@ -816,10 +816,6 @@ const userHasPremium = ref(false)
 
 const fetchPremiumStatus = async () => {
   if (!selectedServer.value?.id) return
-  if (!authStore.user?.id) {
-    console.warn('User not authenticated yet, skipping premium fetch')
-    return
-  }
   try {
     const response = await fetch(`${BACKEND_URL}/api/user-premium/${authStore.user?.id}`)
     if (response.ok) {
@@ -902,7 +898,6 @@ const memberGoalsSettings = reactive({
 
 const activityLogs = ref([])
 const logsLoading = ref(false)
-
 const showChannelModal = ref(false)
 const showMemberModal = ref(false)
 const showResetModal = ref(false)
@@ -1760,7 +1755,8 @@ watch(
         await Promise.all([
           loadOverviewData(server.id),
           loadLeaderboardData(server.id),
-          loadAllSettings(server.id)
+          loadAllSettings(server.id),
+          fetchPremiumStatus()
         ])
       }
     } else if (!guildId) {
@@ -1784,15 +1780,6 @@ watch(
           activeSection.value = 'overview'
         }
       }
-    }
-  }
-)
-
-watch(
-  () => authStore.user?.id,
-  async (userId) => {
-    if (userId && selectedServer.value?.id) {
-      await fetchPremiumStatus()
     }
   }
 )
