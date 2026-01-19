@@ -25,7 +25,7 @@
           >
             <span v-if="!server.icon">{{ server.name.charAt(0).toUpperCase() }}</span>
           </div>
-          <h3 class="server-name">{{ server.name }}</h3>
+          <h3 class="server-name" :title="server.name">{{ truncateServerName(server.name) }}</h3>
           
           <button
             v-if="server.buttonType === 'configure'"
@@ -60,7 +60,7 @@
         <div class="header-content">
           <img v-if="selectedServer.icon" :src="selectedServer.icon" :alt="selectedServer.name" class="server-icon-header" />
           <div v-else class="server-icon-header-placeholder">{{ selectedServer.name.charAt(0).toUpperCase() }}</div>
-          <h2>{{ selectedServer.name }}</h2>
+          <h2 :title="selectedServer.name">{{ truncateServerName(selectedServer.name) }}</h2>
         </div>
         <!-- Hamburger Menu for Mobile -->
         <button class="mobile-hamburger" @click="isMobileNavOpen = !isMobileNavOpen">
@@ -937,6 +937,13 @@ const levelingFormulas = [
     description: 'Slow increase for early levels - Forgiving at start' 
   }
 ]
+
+const truncateServerName = (name, maxLength = 22) => {
+  if (name.length > maxLength) {
+    return name.substring(0, maxLength) + '...'
+  }
+  return name
+}
 
 const filteredServers = computed(() => {
   return servers.value.filter(server =>
@@ -1971,6 +1978,10 @@ const copyItemJson = (item) => {
   font-weight: 700;
   margin-bottom: 20px;
   color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .server-button {
