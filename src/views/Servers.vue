@@ -816,6 +816,10 @@ const userHasPremium = ref(false)
 
 const fetchPremiumStatus = async () => {
   if (!selectedServer.value?.id) return
+  if (!authStore.user?.id) {
+    console.warn('User not authenticated yet, skipping premium fetch')
+    return
+  }
   try {
     const response = await fetch(`${BACKEND_URL}/api/user-premium/${authStore.user?.id}`)
     if (response.ok) {
@@ -1739,6 +1743,12 @@ const escapeHtml = (text) => {
 
 onMounted(() => {
   loadServers()
+  // Retry fetching premium status after auth loads
+  setTimeout(() => {
+    if (selectedServer.value?.id && authStore.user?.id) {
+      fetchPremiumStatus()
+    }
+  }, 500)
 })
 
 watch(
