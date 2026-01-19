@@ -1743,12 +1743,6 @@ const escapeHtml = (text) => {
 
 onMounted(() => {
   loadServers()
-  // Retry fetching premium status after auth loads
-  setTimeout(() => {
-    if (selectedServer.value?.id && authStore.user?.id) {
-      fetchPremiumStatus()
-    }
-  }, 500)
 })
 
 watch(
@@ -1791,6 +1785,15 @@ watch(
           activeSection.value = 'overview'
         }
       }
+    }
+  }
+)
+
+watch(
+  () => authStore.user?.id,
+  async (userId) => {
+    if (userId && selectedServer.value?.id) {
+      await fetchPremiumStatus()
     }
   }
 )
