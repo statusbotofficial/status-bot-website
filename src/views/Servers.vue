@@ -676,7 +676,7 @@
 
           <!-- Shop Section -->
           <section v-else-if="activeSection === 'shop'" class="config-section">
-            <h3>🛍️ Server Shop Management</h3>
+            <h3>Server Shop</h3>
             
             <!-- Shop Tabs -->
             <div class="shop-tabs">
@@ -705,7 +705,8 @@
 
             <!-- Preset Items -->
             <div v-if="shopTab === 'preset'" class="shop-content">
-              <h4>Preset Shop Items</h4>
+              <h4>Preset Shop Items - Enable & Configure</h4>
+              <p style="font-size: 13px; color: #999; margin-bottom: 16px;">Select preset items to enable in your server shop. Customize prices and settings below.</p>
               <div class="items-grid">
                 <div v-for="item in presetShopItems" :key="item.id" class="item-card">
                   <div class="item-header">
@@ -714,9 +715,12 @@
                   </div>
                   <p class="item-description">{{ item.description }}</p>
                   <div v-if="item.duration_minutes" class="item-detail">
-                    Duration: {{ item.duration_minutes }}  minutes
+                    Duration: {{ item.duration_minutes }} minutes
                   </div>
-                  <button class="item-btn" @click="copyItemJson(item)">View Details</button>
+                  <div class="item-actions">
+                    <button class="item-btn secondary" @click="showPresetConfig(item)">Configure</button>
+                    <button class="item-btn primary" @click="addPresetToShop(item)">Add to Shop</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -899,6 +903,33 @@
       @close="showNicknameModal = false"
       @success="onNicknameSuccess"
     />
+
+    <!-- Preset Config Modal -->
+    <div v-if="showPresetConfigModal && selectedPresetItem" class="modal-overlay" @click="showPresetConfigModal = false">
+      <div class="modal-content" @click.stop>
+        <h3>Configure: {{ selectedPresetItem.name }}</h3>
+        
+        <div class="form-group">
+          <label>Custom Price (leave empty to use default: {{ selectedPresetItem.price }})</label>
+          <input v-model.number="presetConfig.customPrice" type="number" min="1" placeholder="Optional" />
+        </div>
+
+        <div v-if="selectedPresetItem.id === 'custom_role'" class="form-group">
+          <label>Available Roles (optional - leave empty if users can pick any role)</label>
+          <p style="font-size: 12px; color: #999; margin: 0 0 8px 0;">Users will be able to select from roles you create with these prefixes</p>
+          <input 
+            v-model="presetConfig.selectedRole" 
+            type="text" 
+            placeholder="e.g., [Premium] or leave empty for any role"
+          />
+        </div>
+
+        <div class="modal-buttons">
+          <button @click="showPresetConfigModal = false" class="cancel-btn">Cancel</button>
+          <button @click="addPresetToShopWithConfig" class="confirm-btn">Add to Shop</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -1061,6 +1092,13 @@ const showChannelModal = ref(false)
 const showMemberModal = ref(false)
 const showResetModal = ref(false)
 const showLevelingFormulaModal = ref(false)
+const showPresetConfigModal = ref(false)
+const selectedPresetItem = ref(null)
+const presetConfig = reactive({
+  customPrice: null,
+  enabledRoles: [],
+  selectedRole: ''
+})
 const guildChannels = ref([])
 const guildMembers = ref([])
 const selectedChannelIds = ref([])
@@ -2120,6 +2158,64 @@ const onNicknameSuccess = () => {
   alert('Your nickname has been successfully applied!')
   loadShopData(selectedServer.value.id)
 }
+
+const showPresetConfig = (item) => {
+  selectedPresetItem.value = item
+  presetConfig.customPrice = null
+  presetConfig.selectedRole = ''
+  showPresetConfigModal.value = true
+}
+
+const addPresetToShop = (item) => {
+  // Quick add with default settings
+  const price = presetConfig.customPrice || item.price
+  
+  // For items that need config, show config modal
+  if (item.id === 'custom_role' || item.id === 'xp_boost_custom') {
+    showPresetConfig(item)
+    return
+  }
+  
+  // Otherwise add directly
+  addPresetToShopWithConfig(item, price)
+}
+
+const addPresetToShopWithConfig = async (itemToAdd, customPrice) => {
+  const item = itemToAdd || selectedPresetItem.value
+  const price = customPrice || presetConfig.customPrice || item.price
+
+  try {
+    // Create a purchase-like entry that marks the preset as enabled
+    const response = await fetch(`${BACKEND_URL}/api/shop/${selectedServer.value.id}/purchase`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify({
+        itemId: item.id,
+        userId: selectedServer.value.id, // Use guild ID to mark it as enabled
+        price: price,
+        config: {
+          rolePrefix: presetConfig.selectedRole || null
+        }
+      })
+    })
+
+    if (response.ok) {
+      alert(`✅ ${item.name} has been added to your shop!`)
+      showPresetConfigModal.value = false
+      presetConfig.customPrice = null
+      presetConfig.selectedRole = ''
+      await loadShopData(selectedServer.value.id)
+    } else {
+      alert('Failed to add item to shop. Please try again.')
+    }
+  } catch (err) {
+    console.error('Error adding preset to shop:', err)
+    alert('Error adding item to shop')
+  }
+}
 </script>
 
 <style scoped>
@@ -2894,6 +2990,43 @@ const onNicknameSuccess = () => {
   display: flex;
   gap: 8px;
   margin-top: 8px;
+}
+
+.item-btn.primary {
+  flex: 1;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+  border: 1px solid rgba(81, 112, 255, 0.4);
+  border-radius: 6px;
+  color: #5170ff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.item-btn.primary:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.5) 0%, rgba(139, 92, 246, 0.5) 100%);
+  border-color: rgba(81, 112, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.item-btn.secondary {
+  flex: 1;
+  padding: 8px 12px;
+  background: rgba(81, 112, 255, 0.1);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 6px;
+  color: #7192ff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.item-btn.secondary:hover {
+  background: rgba(81, 112, 255, 0.15);
+  border-color: rgba(81, 112, 255, 0.3);
 }
 
 .approve-btn {
