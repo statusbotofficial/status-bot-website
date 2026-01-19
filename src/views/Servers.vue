@@ -1760,8 +1760,7 @@ watch(
         await Promise.all([
           loadOverviewData(server.id),
           loadLeaderboardData(server.id),
-          loadAllSettings(server.id),
-          fetchPremiumStatus()
+          loadAllSettings(server.id)
         ])
       }
     } else if (!guildId) {
