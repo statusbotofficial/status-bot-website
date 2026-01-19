@@ -86,14 +86,15 @@
         <div class="footer-section footer-links-section">
           <h3>Links</h3>
           <div class="footer-links">
-            <router-link to="/terms">Terms</router-link>
-            <router-link to="/privacy">Privacy</router-link>
+            <router-link to="/docs">Docs</router-link>
             <a :href="DISCORD_SERVER_URL" target="_blank">Discord Server</a>
           </div>
         </div>
         <div class="footer-section footer-legal">
           <h3>Legal</h3>
           <div class="legal-content">
+            <router-link to="/terms">Terms</router-link>
+            <router-link to="/privacy">Privacy</router-link>
             <p class="copyright-text">© Status-Bot.xyz. All rights reserved</p>
           </div>
         </div>
