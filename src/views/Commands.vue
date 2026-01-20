@@ -84,23 +84,22 @@ const commands = ref([
   { id: 16, name: '/fish', description: "Fish for valuable catches!", category: 'economy' },
   { id: 17, name: '/roulette', description: "Spin the roulette wheel!", category: 'economy' },
   { id: 18, name: '/heist', description: "Plan a heist to steal from random guild members!", category: 'economy', premium: true },
-  { id: 19, name: '/fortune', description: "Consult a fortune teller for a magical prediction!", category: 'economy' },
-  { id: 20, name: '/duel', description: "Challenge someone to a duel for their fortune!", category: 'economy' },
-  { id: 21, name: '/spin', description: "Spin the mystery wheel for random rewards!", category: 'economy' },
-  { id: 22, name: '/flip', description: "Flip a coin and guess the outcome!", category: 'economy' },
-  { id: 23, name: '/auction', description: "Auction off your items to other players!", category: 'economy', premium: true },
-  { id: 24, name: '/treasure', description: "Hunt for hidden treasure!", category: 'economy', premium: true },
+  { id: 19, name: '/duel', description: "Challenge someone to a duel for their fortune!", category: 'economy' },
+  { id: 20, name: '/spin', description: "Spin the mystery wheel for random rewards!", category: 'economy' },
+  { id: 21, name: '/flip', description: "Flip a coin and guess the outcome!", category: 'economy' },
+  { id: 22, name: '/auction', description: "Auction off your items to other players!", category: 'economy', premium: true },
+  { id: 23, name: '/treasure', description: "Hunt for hidden treasure!", category: 'economy', premium: true },
   
-  { id: 25, name: '/profile', description: "View your global profile and stats.", category: 'misc' },
-  { id: 26, name: '/help', description: "Display all available commands.", category: 'misc' },
-  { id: 27, name: '/invite', description: "Get the bot's invite link.", category: 'misc' },
-  { id: 28, name: '/about', description: "Learn more about Status Bot.", category: 'misc' },
-  { id: 29, name: '/website', description: "Get info about the Status Bot website and features.", category: 'misc' },
-  { id: 30, name: '/info', description: "Get detailed info about a user (roles, permissions, etc).", category: 'misc' },
-  { id: 31, name: '/dad-joke', description: "Get a random dad joke that never repeats.", category: 'misc' },
+  { id: 24, name: '/profile', description: "View your global profile and stats.", category: 'misc' },
+  { id: 25, name: '/help', description: "Display all available commands.", category: 'misc' },
+  { id: 26, name: '/invite', description: "Get the bot's invite link.", category: 'misc' },
+  { id: 27, name: '/about', description: "Learn more about Status Bot.", category: 'misc' },
+  { id: 28, name: '/website', description: "Get info about the Status Bot website and features.", category: 'misc' },
+  { id: 29, name: '/info', description: "Get detailed info about a user (roles, permissions, etc).", category: 'misc' },
+  { id: 30, name: '/dad-joke', description: "Get a random dad joke that never repeats.", category: 'misc' },
   
-  { id: 32, name: '/give', description: "Give XP or balance to a user.", category: 'admin' },
-  { id: 33, name: '/take', description: "Take XP or balance from a user.", category: 'admin' }
+  { id: 31, name: '/give', description: "Give XP or balance to a user.", category: 'admin' },
+  { id: 32, name: '/take', description: "Take XP or balance from a user.", category: 'admin' }
 ])
 
 const filteredCommands = computed(() => {
