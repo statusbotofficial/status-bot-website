@@ -39,13 +39,16 @@
       >
         <div class="command-header">
           <h3>{{ cmd.name }}</h3>
-          <button 
-            class="copy-btn"
-            @click="copyCommand(cmd.name)"
-            :title="`Copy ${cmd.name}`"
-          >
-            <i class="fas fa-copy"></i>
-          </button>
+          <div class="header-controls">
+            <span v-if="cmd.premium" class="premium-badge">Premium</span>
+            <button 
+              class="copy-btn"
+              @click="copyCommand(cmd.name)"
+              :title="`Copy ${cmd.name}`"
+            >
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
         </div>
         <p>{{ cmd.description }}</p>
       </div>
@@ -253,6 +256,25 @@ const copyCommand = async (commandName) => {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.premium-badge {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
 }
 
 .command-card h3 {
