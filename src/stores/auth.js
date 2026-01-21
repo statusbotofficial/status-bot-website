@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoggedIn = computed(() => !!user.value)
 
   const getOAuthURL = () => {
-    const redirectUri = typeof window !== 'undefined' ? window.location.origin + '/' : 'https://status-bot.xyz/'
+    const redirectUri = typeof window !== 'undefined' ? window.location.origin + '/redirect' : 'https://status-bot.xyz/redirect'
     const scopes = ['identify', 'guilds'].join('+')
     return `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`
   }
