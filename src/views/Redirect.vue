@@ -14,7 +14,7 @@ const router = useRouter()
 onMounted(() => {
   setTimeout(() => {
     router.push('/servers')
-  }, 2000)
+  }, 1200)
 })
 </script>
 
