@@ -61,7 +61,7 @@ const currentSection = ref('submit')
 const AUTHORIZED_USER_ID = '1362553254117904496'
 
 const hasReviewAccess = computed(() => {
-  return authStore.user && authStore.user.id === AUTHORIZED_USER_ID
+  return authStore.user && AUTHORIZED_USER_IDS.includes(authStore.user.id)
 })
 
 const canBuild = computed(() => {

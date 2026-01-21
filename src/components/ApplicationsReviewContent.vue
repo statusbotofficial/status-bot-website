@@ -150,11 +150,11 @@ const showModal = ref(false)
 const rejectionReason = ref('')
 const rejectionTarget = ref(null)
 
-// User ID allowed to review applications
-const AUTHORIZED_USER_ID = '1362553254117904496'
+// User IDs allowed to review applications
+const AUTHORIZED_USER_IDS = ['1362553254117904496', '863089744563798046']
 
 const hasReviewAccess = computed(() => {
-  return authStore.user && authStore.user.id === AUTHORIZED_USER_ID
+  return authStore.user && AUTHORIZED_USER_IDS.includes(authStore.user.id)
 })
 
 const availableForms = computed(() => {
