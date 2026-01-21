@@ -233,6 +233,133 @@ const discordServerUrl = DISCORD_SERVER_URL
   margin-bottom: 0;
 }
 
+.server-embed {
+  padding: 40px 50px 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.embed-card {
+  background: rgba(80, 80, 80, 0.3);
+  border: 1px solid rgba(81, 112, 255, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.embed-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.server-icon-large {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2), rgba(81, 112, 255, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.server-icon-large svg {
+  width: 28px;
+  height: 28px;
+}
+
+.embed-title-section {
+  flex: 1;
+}
+
+.embed-title-section h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 3px 0;
+  color: #fff;
+}
+
+.embed-title-section p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.embed-divider {
+  height: 1px;
+  background: rgba(81, 112, 255, 0.1);
+  margin: 15px 0;
+}
+
+.embed-bot-status {
+  padding: 10px 0;
+}
+
+.bot-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.bot-avatar-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.25), rgba(81, 112, 255, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bot-avatar-small svg {
+  width: 20px;
+  height: 20px;
+}
+
+.bot-status-text {
+  flex: 1;
+}
+
+.bot-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.time-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-left: 8px;
+}
+
+.bot-details {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+}
+
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  margin: 0 6px;
+}
+
+.last-update {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
 .status-section {
   padding: 80px 50px;
   background-color: transparent;
