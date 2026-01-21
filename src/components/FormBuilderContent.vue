@@ -760,8 +760,7 @@ onMounted(() => {
 
 .btn-primary,
 .btn-secondary {
-  flex: 1;
-  padding: 12px;
+  padding: 12px 24px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
