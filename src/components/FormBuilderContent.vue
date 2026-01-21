@@ -485,23 +485,28 @@ onMounted(() => {
 }
 
 .btn-action {
-  background: none;
-  border: 1px solid var(--border-color);
+  background: rgba(81, 112, 255, 0.1);
+  border: none;
   width: 32px;
   height: 32px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1rem;
+  color: var(--primary-color);
 }
 
 .btn-action:hover {
-  border-color: var(--primary-color);
+  background: rgba(81, 112, 255, 0.2);
+}
+
+.btn-action.delete {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
 }
 
 .btn-action.delete:hover {
-  background: rgba(255, 107, 107, 0.1);
-  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.2);
 }
 
 .builder-view {
