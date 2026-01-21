@@ -54,7 +54,6 @@
 
         <div class="submissions-list">
           <div v-if="filteredSubmissions.length === 0" class="empty-state">
-            <div class="empty-icon">📊</div>
             <h2>No Applications Found</h2>
             <p>No applications match the selected filters</p>
           </div>

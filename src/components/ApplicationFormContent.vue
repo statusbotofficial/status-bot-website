@@ -6,7 +6,6 @@
     </div>
 
     <div v-else-if="!form && !forms.length" class="empty-state">
-      <div class="empty-icon">📋</div>
       <h2>No Applications Available</h2>
       <p>There are no open staff applications at this time.</p>
     </div>

@@ -19,7 +19,6 @@
       </div>
 
       <div v-else-if="forms.length === 0" class="empty-state">
-        <div class="empty-icon">📝</div>
         <h2>No Forms Yet</h2>
         <p>Create your first staff application form</p>
       </div>
