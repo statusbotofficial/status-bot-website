@@ -25,8 +25,40 @@
     </div>
   </div>
 
-  <section class="server-embed">
-    <img src='https://i.postimg.cc/Pxdx7LzY/Adobe-Express-file-(6).png' alt='Status Bot' class="embed-image">
+  <section class="server-showcase">
+    <div class="showcase-card">
+      <div class="card-header-row">
+        <div class="server-icon">
+          <i class="fas fa-comments"></i>
+        </div>
+        <div class="header-info">
+          <h3>Status Bot Support</h3>
+          <p>Created 11/7/25</p>
+        </div>
+      </div>
+
+      <div class="card-divider"></div>
+
+      <div class="bot-section">
+        <div class="bot-row">
+          <div class="bot-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="bot-info">
+            <div class="bot-header">
+              <span class="bot-username">Status Bot</span>
+              <span class="bot-time">now</span>
+            </div>
+            <div class="bot-status-line">
+              <span class="mention">@Status Bot</span>
+              <span class="status-dot">●</span>
+              <span>Online</span>
+            </div>
+            <div class="last-update">Last updated: just now</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="features">
@@ -204,17 +236,145 @@ const discordServerUrl = DISCORD_SERVER_URL
   margin-bottom: 0;
 }
 
-.server-embed {
-  padding: 40px 50px 80px;
+.server-showcase {
+  padding: 60px 50px 100px;
   display: flex;
   justify-content: center;
 }
 
-.embed-image {
-  max-width: 900px;
+.showcase-card {
+  background: rgba(30, 30, 40, 0.6);
+  border: 2px solid var(--primary-color);
+  border-radius: 16px;
+  padding: 30px;
   width: 100%;
-  height: auto;
-  border-radius: 12px;
+  max-width: 650px;
+  box-shadow: 0 0 30px rgba(81, 112, 255, 0.25);
+  backdrop-filter: blur(10px);
+}
+
+.showcase-card:hover {
+  box-shadow: 0 0 40px rgba(81, 112, 255, 0.35);
+  border-color: rgba(81, 112, 255, 1);
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.server-icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3), rgba(81, 112, 255, 0.15));
+  border: 2px solid rgba(81, 112, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.header-info {
+  flex: 1;
+}
+
+.header-info h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: #fff;
+}
+
+.header-info p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.card-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(81, 112, 255, 0.3), transparent);
+  margin: 20px 0;
+}
+
+.bot-section {
+  padding: 10px 0;
+}
+
+.bot-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.bot-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.35), rgba(81, 112, 255, 0.15));
+  border: 2px solid rgba(81, 112, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.bot-info {
+  flex: 1;
+}
+
+.bot-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.bot-username {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.bot-time {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.bot-status-line {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mention {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.last-update {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
 }
 
 .status-section {
@@ -391,6 +551,18 @@ const discordServerUrl = DISCORD_SERVER_URL
   .stats {
     flex-direction: column;
     gap: 30px;
+  }
+
+  .server-showcase {
+    padding: 40px 20px 60px;
+  }
+
+  .showcase-card {
+    padding: 20px;
+  }
+
+  .header-info h3 {
+    font-size: 1.1rem;
   }
 
   .features {
