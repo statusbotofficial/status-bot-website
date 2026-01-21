@@ -444,7 +444,7 @@ onMounted(() => {
 }
 
 .support-link-card {
-  background-color: rgba(80, 80, 80, 0.05);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.15));
   border: 2px solid var(--primary-color);
   border-radius: 12px;
   padding: 25px;
@@ -456,7 +456,7 @@ onMounted(() => {
 }
 
 .support-link-card:hover {
-  background-color: rgba(80, 80, 80, 0.1);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.6), rgba(80, 80, 80, 0.2));
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(81, 112, 255, 0.15);
 }
@@ -513,7 +513,7 @@ onMounted(() => {
 }
 
 .faq-item {
-  background-color: rgba(80, 80, 80, 0.05);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.15));
   border: 2px solid var(--primary-color);
   padding: 20px;
   border-radius: 12px;
@@ -523,7 +523,7 @@ onMounted(() => {
 }
 
 .faq-item:hover {
-  background-color: rgba(80, 80, 80, 0.1);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.6), rgba(80, 80, 80, 0.2));
 }
 
 .faq-item h4 {
