@@ -25,6 +25,39 @@
     </div>
   </div>
 
+  <section class="server-embed">
+    <div class="embed-card">
+      <div class="embed-header">
+        <div class="server-icon-large">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="color: var(--primary-color);">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+          </svg>
+        </div>
+        <div class="embed-title-section">
+          <h3>Status Bot Support</h3>
+          <p>Created 11/7/25</p>
+        </div>
+      </div>
+      
+      <div class="embed-divider"></div>
+      
+      <div class="embed-bot-status">
+        <div class="bot-info-row">
+          <div class="bot-avatar-small">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="color: var(--primary-color);">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+            </svg>
+          </div>
+          <div class="bot-status-text">
+            <div class="bot-name">Status Bot <span class="time-label">now</span></div>
+            <div class="bot-details">@Status Bot <span class="dot">●</span> Online</div>
+            <div class="last-update">Last updated: just now</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="features">
     <div class="container">
       <h2>Powerful Features</h2>
@@ -49,57 +82,14 @@
   </section>
 
   <section class="status-section">
-    <div class="container">
-      <h2>Status Bot Support Server</h2>
-      <div class="status-card">
-        <div class="card-header">
-          <div class="server-icon">
-            <i class="fas fa-comments"></i>
-          </div>
-          <div class="server-info">
-            <h3>Status Bot Support</h3>
-            <p class="created-date">Created 11/7/25</p>
-          </div>
-          <button class="join-btn" @click="joinServer">Join</button>
-        </div>
-        <div class="card-divider"></div>
-        <div class="card-status">
-          <div class="bot-status">
-            <div class="bot-avatar">
-              <i class="fas fa-robot"></i>
-            </div>
-            <div class="status-content">
-              <div class="status-title">Status Bot</div>
-              <div class="status-dot"></div>
-              <div class="status-text">Status Bot's Status: Online</div>
-              <div class="last-update">Last updated: {{ lastUpdated }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 </template>
 
 <script setup>
 import { DISCORD_INVITE_URL, DISCORD_SERVER_URL } from '../config'
-import { ref, onMounted } from 'vue'
 
 const discordServerUrl = DISCORD_SERVER_URL
-const lastUpdated = ref('just now')
-
-const joinServer = () => {
-  window.open(DISCORD_SERVER_URL, '_blank')
-}
-
-onMounted(() => {
-  // Update timestamp every second
-  const interval = setInterval(() => {
-    lastUpdated.value = 'just now'
-  }, 1000)
-  
-  return () => clearInterval(interval)
-})
 </script>
 
 <style scoped>
@@ -246,162 +236,131 @@ onMounted(() => {
   margin-bottom: 0;
 }
 
-.status-section {
-  padding: 80px 50px;
-  background-color: transparent;
-}
-
-.status-section h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 60px;
-}
-
-.status-card {
-  max-width: 500px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
-  border: 2px solid var(--primary-color);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-}
-
-.status-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 48px rgba(81, 112, 255, 0.2);
-}
-
-.card-header {
-  padding: 25px;
+.server-embed {
+  padding: 40px 50px 80px;
   display: flex;
-  align-items: center;
-  gap: 15px;
-  justify-content: space-between;
+  justify-content: center;
 }
 
-.server-icon {
+.embed-card {
+  background: rgba(80, 80, 80, 0.3);
+  border: 1px solid rgba(81, 112, 255, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.embed-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.server-icon-large {
   width: 50px;
   height: 50px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3), rgba(81, 112, 255, 0.1));
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2), rgba(81, 112, 255, 0.1));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
-  color: var(--primary-color);
   flex-shrink: 0;
 }
 
-.server-info {
-  flex: 1;
-  min-width: 0;
+.server-icon-large svg {
+  width: 28px;
+  height: 28px;
 }
 
-.server-info h3 {
-  font-size: 1.1rem;
+.embed-title-section {
+  flex: 1;
+}
+
+.embed-title-section h3 {
+  font-size: 1.3rem;
   font-weight: 700;
-  margin: 0 0 5px 0;
+  margin: 0 0 3px 0;
   color: #fff;
 }
 
-.created-date {
-  font-size: 0.85rem;
+.embed-title-section p {
+  font-size: 0.9rem;
   color: var(--text-secondary);
   margin: 0;
 }
 
-.join-btn {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
-  border: 1px solid rgba(81, 112, 255, 0.6);
-  color: #fff;
-  padding: 8px 20px;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.join-btn:hover {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
-  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.4);
-  transform: translateY(-1px);
-}
-
-.card-divider {
+.embed-divider {
   height: 1px;
-  background: rgba(81, 112, 255, 0.2);
+  background: rgba(81, 112, 255, 0.1);
+  margin: 15px 0;
 }
 
-.card-status {
-  padding: 25px;
+.embed-bot-status {
+  padding: 10px 0;
 }
 
-.bot-status {
+.bot-info-row {
   display: flex;
-  align-items: center;
-  gap: 15px;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.bot-avatar {
-  width: 45px;
-  height: 45px;
+.bot-avatar-small {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.2));
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.25), rgba(81, 112, 255, 0.1));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  color: var(--primary-color);
   flex-shrink: 0;
 }
 
-.status-content {
+.bot-avatar-small svg {
+  width: 20px;
+  height: 20px;
+}
+
+.bot-status-text {
   flex: 1;
 }
 
-.status-title {
+.bot-name {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #fff;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
-.status-text {
+.time-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-left: 8px;
+}
+
+.bot-details {
   font-size: 0.9rem;
   color: var(--text-secondary);
   margin-bottom: 3px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
-.status-dot {
-  width: 10px;
-  height: 10px;
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #10b981;
-  display: inline-block;
-  animation: pulse 2s infinite;
+  margin: 0 6px;
 }
 
 .last-update {
   font-size: 0.8rem;
   color: var(--text-secondary);
   font-style: italic;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
 }
 
 @media (max-width: 768px) {
@@ -443,20 +402,20 @@ onMounted(() => {
     margin: 10px 0;
   }
 
-  .status-section {
-    padding: 60px 20px;
+  .server-embed {
+    padding: 20px 20px 40px;
   }
 
-  .status-section h2 {
-    font-size: 2rem;
+  .embed-card {
+    max-width: 100%;
   }
 
-  .card-header {
-    flex-wrap: wrap;
+  .embed-header {
+    flex-direction: column;
   }
 
-  .join-btn {
-    flex-basis: 100%;
+  .embed-title-section h3 {
+    font-size: 1.1rem;
   }
 }
 </style>
