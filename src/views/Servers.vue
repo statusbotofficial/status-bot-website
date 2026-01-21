@@ -1913,7 +1913,7 @@ const copyItemJson = (item) => {
   width: 100%;
   max-width: 500px;
   padding: 12px 16px;
-  background: rgba(81, 112, 255, 0.1);
+  background: rgba(80, 80, 80, 0.3);
   border: 2px solid #5170ff;
   border-radius: 8px;
   color: #fff;
@@ -1922,8 +1922,8 @@ const copyItemJson = (item) => {
 
 .search-box:focus {
   outline: none;
-  background: rgba(81, 112, 255, 0.15);
-  box-shadow: 0 0 15px rgba(81, 112, 255, 0.3);
+  background: rgba(80, 80, 80, 0.4);
+  box-shadow: 0 0 15px rgba(81, 112, 255, 0.2);
 }
 
 .loading-container,
@@ -2073,7 +2073,7 @@ const copyItemJson = (item) => {
 }
 
 .back-btn {
-  background: rgba(81, 112, 255, 0.2);
+  background: rgba(80, 80, 80, 0.3);
   border: 2px solid #5170ff;
   color: #fff;
   padding: 10px 20px;
@@ -2088,7 +2088,7 @@ const copyItemJson = (item) => {
 }
 
 .back-btn:hover {
-  background: rgba(81, 112, 255, 0.35);
+  background: rgba(80, 80, 80, 0.45);
 }
 
 .config-container {
@@ -2124,12 +2124,12 @@ const copyItemJson = (item) => {
 }
 
 .nav-btn:hover {
-  background: rgba(81, 112, 255, 0.1);
+  background: rgba(80, 80, 80, 0.3);
   color: #5170ff;
 }
 
 .nav-btn.active {
-  background: rgba(81, 112, 255, 0.1);
+  background: rgba(80, 80, 80, 0.3);
   color: #5170ff;
   border-left: 3px solid #5170ff;
   padding-left: 17px;

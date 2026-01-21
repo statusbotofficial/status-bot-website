@@ -240,7 +240,7 @@ onMounted(() => {
 
 .support-section-old {
   padding: 60px 50px;
-  background: linear-gradient(180deg, rgba(81, 112, 255, 0.05) 0%, rgba(81, 112, 255, 0.02) 100%);
+  background: linear-gradient(180deg, rgba(80, 80, 80, 0.05) 0%, rgba(80, 80, 80, 0.02) 100%);
   border-bottom: 1px solid rgba(81, 112, 255, 0.1);
 }
 
@@ -310,7 +310,7 @@ onMounted(() => {
 
 .support-chat-box {
   width: 100%;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.15));
   border: 2px solid var(--primary-color);
   border-radius: 16px;
   padding: 40px;
@@ -341,12 +341,12 @@ onMounted(() => {
 }
 
 .support-chat-area::-webkit-scrollbar-thumb {
-  background: rgba(81, 112, 255, 0.6);
+  background: rgba(80, 80, 80, 0.6);
   border-radius: 4px;
 }
 
 .support-chat-area::-webkit-scrollbar-thumb:hover {
-  background: rgba(81, 112, 255, 0.8);
+  background: rgba(80, 80, 80, 0.8);
 }
 
 .chat-welcome {
@@ -412,7 +412,7 @@ onMounted(() => {
 }
 
 .suggestion-box {
-  background: rgba(81, 112, 255, 0.1);
+  background: rgba(80, 80, 80, 0.1);
   border: 2px solid rgba(81, 112, 255, 0.3);
   border-radius: 8px;
   padding: 12px 16px;
@@ -425,7 +425,7 @@ onMounted(() => {
 }
 
 .suggestion-box:hover {
-  background: rgba(81, 112, 255, 0.2);
+  background: rgba(80, 80, 80, 0.2);
   border-color: var(--primary-color);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(81, 112, 255, 0.2);
@@ -444,7 +444,7 @@ onMounted(() => {
 }
 
 .support-link-card {
-  background-color: rgba(81, 112, 255, 0.05);
+  background-color: rgba(80, 80, 80, 0.05);
   border: 2px solid var(--primary-color);
   border-radius: 12px;
   padding: 25px;
@@ -456,7 +456,7 @@ onMounted(() => {
 }
 
 .support-link-card:hover {
-  background-color: rgba(81, 112, 255, 0.1);
+  background-color: rgba(80, 80, 80, 0.1);
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(81, 112, 255, 0.15);
 }
@@ -474,7 +474,7 @@ onMounted(() => {
 }
 
 .link-btn {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.6), rgba(80, 80, 80, 0.3));
   border: 2px solid var(--primary-color);
   color: #fff;
   padding: 10px 20px;
@@ -488,7 +488,7 @@ onMounted(() => {
 }
 
 .link-btn:hover {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.8), rgba(80, 80, 80, 0.5));
   box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
 }
 
@@ -513,7 +513,7 @@ onMounted(() => {
 }
 
 .faq-item {
-  background-color: rgba(81, 112, 255, 0.05);
+  background-color: rgba(80, 80, 80, 0.05);
   border: 2px solid var(--primary-color);
   padding: 20px;
   border-radius: 12px;
@@ -523,7 +523,7 @@ onMounted(() => {
 }
 
 .faq-item:hover {
-  background-color: rgba(81, 112, 255, 0.1);
+  background-color: rgba(80, 80, 80, 0.1);
 }
 
 .faq-item h4 {

@@ -475,7 +475,7 @@ onMounted(() => {
 }
 
 .notification-bell:hover {
-  background: rgba(81, 112, 255, 0.15);
+  background: rgba(80, 80, 80, 0.15);
   color: #5170ff;
   transform: scale(1.1);
 }
@@ -576,7 +576,7 @@ onMounted(() => {
 }
 
 .mark-read-btn {
-  background: rgba(81, 112, 255, 0.2);
+  background: rgba(80, 80, 80, 0.2);
   border: 1px solid #5170ff;
   color: #5170ff;
   padding: 4px 12px;
@@ -588,7 +588,7 @@ onMounted(() => {
 }
 
 .mark-read-btn:hover {
-  background: rgba(81, 112, 255, 0.35);
+  background: rgba(80, 80, 80, 0.35);
   color: #fff;
 }
 
