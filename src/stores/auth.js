@@ -57,6 +57,20 @@ export const useAuthStore = defineStore('auth', () => {
       })
       if (response.ok) {
         const userData = await response.json()
+        
+        // Fetch user's guilds and roles
+        try {
+          const guildsResponse = await fetch('https://discord.com/api/v10/users/@me/guilds/Member', {
+            headers: { Authorization: `Bearer ${accessToken}` }
+          })
+          if (guildsResponse.ok) {
+            const guildsData = await guildsResponse.json()
+            userData.guilds = guildsData
+          }
+        } catch (guildError) {
+          console.error('Failed to fetch guild data:', guildError)
+        }
+        
         user.value = userData
         localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(userData))
       }
