@@ -81,9 +81,6 @@
     </div>
   </section>
 
-  <section class="status-section">
-    </div>
-  </section>
 </template>
 
 <script setup>
@@ -236,131 +233,162 @@ const discordServerUrl = DISCORD_SERVER_URL
   margin-bottom: 0;
 }
 
-.server-embed {
-  padding: 40px 50px 80px;
-  display: flex;
-  justify-content: center;
+.status-section {
+  padding: 80px 50px;
+  background-color: transparent;
 }
 
-.embed-card {
-  background: rgba(80, 80, 80, 0.3);
-  border: 1px solid rgba(81, 112, 255, 0.15);
-  border-radius: 12px;
-  padding: 20px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+.status-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 60px;
 }
 
-.embed-header {
+.status-card {
+  max-width: 500px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
+  border: 2px solid var(--primary-color);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.status-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px rgba(81, 112, 255, 0.2);
+}
+
+.card-header {
+  padding: 25px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 15px;
-  margin-bottom: 15px;
+  justify-content: space-between;
 }
 
-.server-icon-large {
+.server-icon {
   width: 50px;
   height: 50px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2), rgba(81, 112, 255, 0.1));
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3), rgba(81, 112, 255, 0.1));
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.8rem;
+  color: var(--primary-color);
   flex-shrink: 0;
 }
 
-.server-icon-large svg {
-  width: 28px;
-  height: 28px;
-}
-
-.embed-title-section {
+.server-info {
   flex: 1;
+  min-width: 0;
 }
 
-.embed-title-section h3 {
-  font-size: 1.3rem;
+.server-info h3 {
+  font-size: 1.1rem;
   font-weight: 700;
-  margin: 0 0 3px 0;
+  margin: 0 0 5px 0;
   color: #fff;
 }
 
-.embed-title-section p {
-  font-size: 0.9rem;
+.created-date {
+  font-size: 0.85rem;
   color: var(--text-secondary);
   margin: 0;
 }
 
-.embed-divider {
-  height: 1px;
-  background: rgba(81, 112, 255, 0.1);
-  margin: 15px 0;
-}
-
-.embed-bot-status {
-  padding: 10px 0;
-}
-
-.bot-info-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.bot-avatar-small {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.25), rgba(81, 112, 255, 0.1));
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.join-btn {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+  border: 1px solid rgba(81, 112, 255, 0.6);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
   flex-shrink: 0;
 }
 
-.bot-avatar-small svg {
-  width: 20px;
-  height: 20px;
+.join-btn:hover {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
+  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.4);
+  transform: translateY(-1px);
 }
 
-.bot-status-text {
+.card-divider {
+  height: 1px;
+  background: rgba(81, 112, 255, 0.2);
+}
+
+.card-status {
+  padding: 25px;
+}
+
+.bot-status {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.bot-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.status-content {
   flex: 1;
 }
 
-.bot-name {
+.status-title {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
-.time-label {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 400;
-  margin-left: 8px;
-}
-
-.bot-details {
+.status-text {
   font-size: 0.9rem;
   color: var(--text-secondary);
   margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
+.status-dot {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #10b981;
-  margin: 0 6px;
+  display: inline-block;
+  animation: pulse 2s infinite;
 }
 
 .last-update {
   font-size: 0.8rem;
   color: var(--text-secondary);
   font-style: italic;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 @media (max-width: 768px) {
@@ -402,20 +430,20 @@ const discordServerUrl = DISCORD_SERVER_URL
     margin: 10px 0;
   }
 
-  .server-embed {
-    padding: 20px 20px 40px;
+  .status-section {
+    padding: 60px 20px;
   }
 
-  .embed-card {
-    max-width: 100%;
+  .status-section h2 {
+    font-size: 2rem;
   }
 
-  .embed-header {
-    flex-direction: column;
+  .card-header {
+    flex-wrap: wrap;
   }
 
-  .embed-title-section h3 {
-    font-size: 1.1rem;
+  .join-btn {
+    flex-basis: 100%;
   }
 }
 </style>
