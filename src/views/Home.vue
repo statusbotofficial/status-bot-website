@@ -27,35 +27,31 @@
 
   <section class="server-showcase">
     <div class="showcase-card">
-      <div class="card-header-row">
-        <div class="server-icon">
-          <i class="fas fa-comments"></i>
+      <div class="card-top">
+        <div class="server-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color: #5170ff; stroke-width: 2; filter: drop-shadow(0 0 6px rgba(81, 112, 255, 0.8));">
+            <path d="M7 4l10 8-10 8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div class="header-info">
+        <div class="top-text">
           <h3>Status Bot Support</h3>
           <p>Created 11/7/25</p>
         </div>
       </div>
 
-      <div class="card-divider"></div>
-
-      <div class="bot-section">
-        <div class="bot-row">
-          <div class="bot-icon">
-            <i class="fas fa-robot"></i>
+      <div class="card-bottom">
+        <div class="bot-avatar-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color: #5170ff; stroke-width: 2; filter: drop-shadow(0 0 6px rgba(81, 112, 255, 0.8));">
+            <path d="M7 4l10 8-10 8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="bot-text">
+          <div class="bot-name-line">
+            <span class="bot-name">Status Bot</span>
+            <span class="bot-time">now</span>
           </div>
-          <div class="bot-info">
-            <div class="bot-header">
-              <span class="bot-username">Status Bot</span>
-              <span class="bot-time">now</span>
-            </div>
-            <div class="bot-status-line">
-              <span class="mention">@Status Bot</span>
-              <span class="status-dot">●</span>
-              <span>Online</span>
-            </div>
-            <div class="last-update">Last updated: just now</div>
-          </div>
+          <div class="status-info">@Status Bot <span class="dot">●</span> Online</div>
+          <div class="last-update">Last updated: just now</div>
         </div>
       </div>
     </div>
@@ -243,101 +239,84 @@ const discordServerUrl = DISCORD_SERVER_URL
 }
 
 .showcase-card {
-  background: rgba(30, 30, 40, 0.6);
+  background: rgba(30, 30, 40, 0.8);
   border: 2px solid var(--primary-color);
-  border-radius: 16px;
-  padding: 30px;
+  border-radius: 12px;
+  padding: 25px;
   width: 100%;
-  max-width: 650px;
-  box-shadow: 0 0 30px rgba(81, 112, 255, 0.25);
-  backdrop-filter: blur(10px);
+  max-width: 600px;
 }
 
-.showcase-card:hover {
-  box-shadow: 0 0 40px rgba(81, 112, 255, 0.35);
-  border-color: rgba(81, 112, 255, 1);
-}
-
-.card-header-row {
+.card-top {
   display: flex;
-  align-items: center;
   gap: 15px;
   margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(81, 112, 255, 0.2);
 }
 
-.server-icon {
-  width: 55px;
-  height: 55px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3), rgba(81, 112, 255, 0.15));
-  border: 2px solid rgba(81, 112, 255, 0.5);
+.server-icon-box {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  border-radius: 8px;
+  background: rgba(81, 112, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
-  color: var(--primary-color);
-  flex-shrink: 0;
 }
 
-.header-info {
-  flex: 1;
+.server-icon-box svg {
+  width: 28px;
+  height: 28px;
 }
 
-.header-info h3 {
-  font-size: 1.2rem;
+.top-text h3 {
+  font-size: 1.1rem;
   font-weight: 700;
-  margin: 0 0 4px 0;
+  margin: 0 0 3px 0;
   color: #fff;
 }
 
-.header-info p {
+.top-text p {
   font-size: 0.9rem;
   color: var(--text-secondary);
   margin: 0;
 }
 
-.card-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(81, 112, 255, 0.3), transparent);
-  margin: 20px 0;
-}
-
-.bot-section {
-  padding: 10px 0;
-}
-
-.bot-row {
+.card-bottom {
   display: flex;
-  align-items: flex-start;
   gap: 15px;
 }
 
-.bot-icon {
-  width: 45px;
-  height: 45px;
+.bot-avatar-box {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.35), rgba(81, 112, 255, 0.15));
-  border: 2px solid rgba(81, 112, 255, 0.4);
+  background: rgba(81, 112, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  color: var(--primary-color);
-  flex-shrink: 0;
 }
 
-.bot-info {
+.bot-avatar-box svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bot-text {
   flex: 1;
 }
 
-.bot-header {
+.bot-name-line {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
-.bot-username {
+.bot-name {
   font-size: 1rem;
   font-weight: 700;
   color: #fff;
@@ -349,26 +328,19 @@ const discordServerUrl = DISCORD_SERVER_URL
   font-weight: 400;
 }
 
-.bot-status-line {
-  font-size: 0.95rem;
+.status-info {
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  margin-bottom: 3px;
 }
 
-.mention {
-  color: var(--primary-color);
-  font-weight: 500;
-}
-
-.status-dot {
+.status-info .dot {
   display: inline-block;
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #10b981;
+  margin: 0 5px;
 }
 
 .last-update {
