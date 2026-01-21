@@ -1943,7 +1943,7 @@ const copyItemJson = (item) => {
   border: 2px solid #5170ff;
   border-radius: 12px;
   padding: 24px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.5), rgba(81, 112, 255, 0.15));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1952,7 +1952,7 @@ const copyItemJson = (item) => {
 }
 
 .server-card:hover {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.5), rgba(81, 112, 255, 0.35));
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.6), rgba(81, 112, 255, 0.25));
   transform: translateY(-5px);
   box-shadow: 0 15px 35px rgba(81, 112, 255, 0.2);
 }
