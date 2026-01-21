@@ -96,6 +96,12 @@
                   <button class="btn-reject" @click="showRejectionModal(submission)">
                     ✗ Reject
                   </button>
+                  <button class="btn-accept" @click="acceptSubmission(submission)">
+                    ✓ Accept
+                  </button>
+                  <button class="btn-decline" @click="declineSubmission(submission)">
+                    ✗ Decline
+                  </button>
                 </div>
               </div>
 
@@ -290,6 +296,50 @@ const approveSubmission = async (submission) => {
   } catch (error) {
     console.error('Error approving application:', error)
     alert('Error approving application')
+  }
+}
+
+const acceptSubmission = async (submission) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/staff/submissions/${submission.id}/accept`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ submissionId: submission.id }),
+    })
+
+    if (response.ok) {
+      await loadSubmissions()
+      alert('User accepted and notified')
+    } else {
+      alert('Failed to accept application')
+    }
+  } catch (error) {
+    console.error('Error accepting application:', error)
+    alert('Error accepting application')
+  }
+}
+
+const declineSubmission = async (submission) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/staff/submissions/${submission.id}/decline`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ submissionId: submission.id }),
+    })
+
+    if (response.ok) {
+      await loadSubmissions()
+      alert('User declined and notified')
+    } else {
+      alert('Failed to decline application')
+    }
+  } catch (error) {
+    console.error('Error declining application:', error)
+    alert('Error declining application')
   }
 }
 
@@ -626,7 +676,9 @@ onMounted(async () => {
 }
 
 .btn-approve,
-.btn-reject {
+.btn-reject,
+.btn-accept,
+.btn-decline {
   flex: 1;
   padding: 10px;
   border: none;
@@ -652,6 +704,24 @@ onMounted(async () => {
 
 .btn-reject:hover {
   background: #ef4444;
+}
+
+.btn-accept {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-accept:hover {
+  background: #2563eb;
+}
+
+.btn-decline {
+  background: #f97316;
+  color: white;
+}
+
+.btn-decline:hover {
+  background: #ea580c;
 }
 
 .rejection-reason p {
