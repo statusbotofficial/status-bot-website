@@ -41,7 +41,7 @@
 
       <!-- Review Applications Section -->
       <div v-if="currentSection === 'review'" class="section-content">
-        <ApplicationsReviewContent />
+        <ApplicationsReviewContent :key="currentSection" />
       </div>
     </div>
   </div>
