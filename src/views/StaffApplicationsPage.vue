@@ -10,7 +10,7 @@
         Submit Application
       </button>
       <button 
-        v-if="hasStaffAccess"
+        v-if="hasReviewAccess"
         class="nav-tab"
         :class="{ active: currentSection === 'builder' }"
         @click="currentSection = 'builder'"
@@ -18,7 +18,7 @@
         Form Builder
       </button>
       <button 
-        v-if="hasStaffAccess"
+        v-if="hasReviewAccess"
         class="nav-tab"
         :class="{ active: currentSection === 'review' }"
         @click="currentSection = 'review'"
@@ -57,22 +57,16 @@ import ApplicationsReviewContent from '../components/ApplicationsReviewContent.v
 const authStore = useAuthStore()
 const currentSection = ref('submit')
 
-const GUILD_ID = '1436334422654980148'
-const REVIEWER_ROLES = ['1436802557111435324', '1436334619250393210']
-const BUILDER_ROLE = '1436334619250393210'
+// User IDs with permissions
+const REVIEWER_IDS = ['1436802557111435324', '1436334619250393210']
+const BUILDER_ID = '1436334619250393210'
 
-const hasStaffAccess = computed(() => {
-  if (!authStore.user?.guilds) return false
-  const guildData = authStore.user.guilds.find(g => g.id === GUILD_ID)
-  if (!guildData) return false
-  return guildData.roles && guildData.roles.some(role => REVIEWER_ROLES.includes(role))
+const hasReviewAccess = computed(() => {
+  return authStore.user && REVIEWER_IDS.includes(authStore.user.id)
 })
 
 const canBuild = computed(() => {
-  if (!authStore.user?.guilds) return false
-  const guildData = authStore.user.guilds.find(g => g.id === GUILD_ID)
-  if (!guildData) return false
-  return guildData.roles && guildData.roles.includes(BUILDER_ROLE)
+  return authStore.user && authStore.user.id === BUILDER_ID
 })
 
 onMounted(() => {
@@ -80,7 +74,7 @@ onMounted(() => {
   if (currentSection.value === 'builder' && !canBuild.value) {
     currentSection.value = 'submit'
   }
-  if (currentSection.value === 'review' && !hasStaffAccess.value) {
+  if (currentSection.value === 'review' && !hasReviewAccess.value) {
     currentSection.value = 'submit'
   }
 })

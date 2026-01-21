@@ -191,14 +191,11 @@ const editingForm = ref({
   questions: [],
 })
 
-const GUILD_ID = '1436334422654980148'
-const BUILDER_ROLE = '1436334619250393210'
+// User ID allowed to create forms
+const BUILDER_ID = '1436334619250393210'
 
 const canCreateForms = () => {
-  if (!authStore.user?.guilds) return false
-  const guildData = authStore.user.guilds.find(g => g.id === GUILD_ID)
-  if (!guildData) return false
-  return guildData.roles && guildData.roles.includes(BUILDER_ROLE)
+  return authStore.user && authStore.user.id === BUILDER_ID
 }
 
 const createNewForm = () => {

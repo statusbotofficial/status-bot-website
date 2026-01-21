@@ -151,14 +151,11 @@ const showModal = ref(false)
 const rejectionReason = ref('')
 const rejectionTarget = ref(null)
 
-const GUILD_ID = '1436334422654980148'
-const REVIEWER_ROLES = ['1436802557111435324', '1436334619250393210']
+// User IDs allowed to review applications
+const REVIEWER_IDS = ['1436802557111435324', '1436334619250393210']
 
 const hasReviewAccess = computed(() => {
-  if (!authStore.user?.guilds) return false
-  const guildData = authStore.user.guilds.find(g => g.id === GUILD_ID)
-  if (!guildData) return false
-  return guildData.roles && guildData.roles.some(role => REVIEWER_ROLES.includes(role))
+  return authStore.user && REVIEWER_IDS.includes(authStore.user.id)
 })
 
 const availableForms = computed(() => {
