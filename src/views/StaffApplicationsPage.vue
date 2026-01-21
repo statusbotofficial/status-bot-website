@@ -57,8 +57,9 @@ import ApplicationsReviewContent from '../components/ApplicationsReviewContent.v
 const authStore = useAuthStore()
 const currentSection = ref('submit')
 
-// User ID with permissions
+// User IDs with permissions
 const AUTHORIZED_USER_ID = '1362553254117904496'
+const AUTHORIZED_USER_IDS = ['1362553254117904496', '863089744563798046']
 
 const hasReviewAccess = computed(() => {
   return authStore.user && AUTHORIZED_USER_IDS.includes(authStore.user.id)
