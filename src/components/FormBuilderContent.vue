@@ -10,7 +10,7 @@
       <div v-if="!currentForm" class="forms-list-view">
       <div class="list-header">
         <h1>Form Builder</h1>
-        <button class="btn-primary" @click="createNewForm">+ Create New Form</button>
+        <button class="btn-primary" @click="createNewForm">Create Form</button>
       </div>
 
       <div v-if="loading" class="loading-state">
@@ -57,7 +57,7 @@
 
     <div v-else class="builder-view">
       <div class="builder-header">
-        <button class="back-btn" @click="currentForm = null">← Back</button>
+        <button class="back-btn" @click="currentForm = null">Back</button>
         <div class="header-info">
           <h1>{{ editingForm.title || 'New Form' }}</h1>
         </div>

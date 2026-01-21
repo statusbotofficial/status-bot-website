@@ -32,7 +32,7 @@
 
     <div v-else class="form-submission">
       <div class="form-header">
-        <button class="back-btn" @click="form = null">← Back</button>
+        <button class="back-btn" @click="form = null">Back</button>
         <div class="form-info">
           <h1>{{ form.title }}</h1>
           <p>{{ form.description }}</p>
