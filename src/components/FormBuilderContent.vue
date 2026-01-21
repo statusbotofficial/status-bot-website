@@ -192,10 +192,10 @@ const editingForm = ref({
 })
 
 // User ID allowed to create forms
-const BUILDER_ID = '1436334619250393210'
+const AUTHORIZED_USER_ID = '1362553254117904496'
 
 const canCreateForms = () => {
-  return authStore.user && authStore.user.id === BUILDER_ID
+  return authStore.user && authStore.user.id === AUTHORIZED_USER_ID
 }
 
 const createNewForm = () => {

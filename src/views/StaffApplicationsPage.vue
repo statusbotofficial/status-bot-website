@@ -57,16 +57,15 @@ import ApplicationsReviewContent from '../components/ApplicationsReviewContent.v
 const authStore = useAuthStore()
 const currentSection = ref('submit')
 
-// User IDs with permissions
-const REVIEWER_IDS = ['1436802557111435324', '1436334619250393210']
-const BUILDER_ID = '1436334619250393210'
+// User ID with permissions
+const AUTHORIZED_USER_ID = '1362553254117904496'
 
 const hasReviewAccess = computed(() => {
-  return authStore.user && REVIEWER_IDS.includes(authStore.user.id)
+  return authStore.user && authStore.user.id === AUTHORIZED_USER_ID
 })
 
 const canBuild = computed(() => {
-  return authStore.user && authStore.user.id === BUILDER_ID
+  return authStore.user && authStore.user.id === AUTHORIZED_USER_ID
 })
 
 onMounted(() => {
