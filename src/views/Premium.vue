@@ -313,7 +313,7 @@ const scrollToFeatures = (plan) => {
   border: 2px solid var(--primary-color);
   border-radius: 16px;
   padding: 30px 24px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -322,7 +322,7 @@ const scrollToFeatures = (plan) => {
 }
 
 .plan-card:hover {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.5), rgba(81, 112, 255, 0.35));
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.35));
   transform: translateY(-5px);
   box-shadow: 0 20px 40px rgba(81, 112, 255, 0.2);
 }
@@ -465,8 +465,8 @@ const scrollToFeatures = (plan) => {
 
 .plan-button:disabled,
 .plan-button.current-plan {
-  background: rgba(81, 112, 255, 0.15);
-  border-color: rgba(81, 112, 255, 0.5);
+  background: rgba(80, 80, 80, 0.15);
+  border-color: rgba(80, 80, 80, 0.5);
   color: var(--text-secondary);
   cursor: not-allowed;
 }
@@ -594,7 +594,7 @@ const scrollToFeatures = (plan) => {
 }
 
 .modal-content {
-  background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(81, 112, 255, 0.05) 100%);
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(80, 80, 80, 0.05) 100%);
   border: 2px solid var(--primary-color);
   border-radius: 20px;
   padding: 50px 40px;

@@ -512,7 +512,7 @@ onMounted(async () => {
 }
 
 .dev-sub-panel {
-  background: rgba(81, 112, 255, 0.05);
+  background: rgba(80, 80, 80, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
   padding: 30px;
@@ -605,12 +605,12 @@ onMounted(async () => {
 }
 
 .type-btn.active {
-  background: rgba(81, 112, 255, 0.2);
+  background: rgba(80, 80, 80, 0.2);
   border-color: #5170ff;
 }
 
 .type-btn:hover {
-  background: rgba(81, 112, 255, 0.1);
+  background: rgba(80, 80, 80, 0.1);
   border-color: rgba(81, 112, 255, 0.4);
 }
 
@@ -664,7 +664,7 @@ onMounted(async () => {
 
 .billing-panel,
 .gifts-container {
-  background: rgba(81, 112, 255, 0.05);
+  background: rgba(80, 80, 80, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
   padding: 25px;
@@ -687,7 +687,7 @@ onMounted(async () => {
 }
 
 .gift-entry:hover {
-  background: rgba(81, 112, 255, 0.08);
+  background: rgba(80, 80, 80, 0.08);
 }
 
 .gift-icon-container {

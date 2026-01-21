@@ -322,7 +322,7 @@ onMounted(() => {
 }
 
 .sidebar-nav {
-  background: rgba(81, 112, 255, 0.05);
+  background: rgba(80, 80, 80, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
   padding: 20px;
@@ -340,7 +340,7 @@ onMounted(() => {
 .sidebar-search {
   width: 100%;
   padding: 10px 12px;
-  background: rgba(81, 112, 255, 0.08);
+  background: rgba(80, 80, 80, 0.08);
   border: 1px solid rgba(81, 112, 255, 0.3);
   border-radius: 8px;
   color: var(--text-primary);
@@ -357,7 +357,7 @@ onMounted(() => {
 .sidebar-search:focus {
   outline: none;
   border-color: #5170ff;
-  background: rgba(81, 112, 255, 0.12);
+  background: rgba(80, 80, 80, 0.12);
   box-shadow: 0 0 0 2px rgba(81, 112, 255, 0.1);
 }
 
@@ -383,7 +383,7 @@ onMounted(() => {
 }
 
 .sidebar-nav a:hover {
-  background: rgba(81, 112, 255, 0.1);
+  background: rgba(80, 80, 80, 0.1);
   color: #5170ff;
   transform: translateX(4px);
 }
@@ -466,7 +466,7 @@ onMounted(() => {
 }
 
 .docs-section code {
-  background-color: rgba(81, 112, 255, 0.1);
+  background-color: rgba(80, 80, 80, 0.1);
   color: #8a9fff;
   padding: 2px 6px;
   border-radius: 4px;

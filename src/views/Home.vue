@@ -165,7 +165,7 @@ const discordServerUrl = DISCORD_SERVER_URL
 }
 
 .feature-card {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
   border: 2px solid var(--primary-color);
   padding: 30px;
   border-radius: 16px;

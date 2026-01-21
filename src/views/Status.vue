@@ -255,7 +255,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 15px;
   padding: 30px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.1) 0%, rgba(81, 112, 255, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.1) 0%, rgba(80, 80, 80, 0.05) 100%);
   border: 2px solid var(--primary-color);
   border-radius: 16px;
   width: 100%;
@@ -342,7 +342,7 @@ onUnmounted(() => {
 }
 
 .stat-card {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.25));
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
   border: 2px solid var(--primary-color);
   border-radius: 20px;
   padding: 30px;
@@ -355,7 +355,7 @@ onUnmounted(() => {
 }
 
 .stat-card:hover {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.5), rgba(81, 112, 255, 0.35));
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.35));
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(81, 112, 255, 0.2);
 }

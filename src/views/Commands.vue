@@ -164,7 +164,7 @@ const copyCommand = async (commandName) => {
 }
 
 .category-btn {
-  background-color: rgba(81, 112, 255, 0.2);
+  background-color: rgba(80, 80, 80, 0.2);
   color: #fff;
   border: 2px solid var(--primary-color);
   padding: 10px 20px;
@@ -176,11 +176,11 @@ const copyCommand = async (commandName) => {
 }
 
 .category-btn:hover {
-  background-color: rgba(81, 112, 255, 0.4);
+  background-color: rgba(80, 80, 80, 0.4);
 }
 
 .category-btn.active {
-  background-color: rgba(81, 112, 255, 0.6);
+  background-color: rgba(80, 80, 80, 0.6);
   box-shadow: 0 0 20px rgba(81, 112, 255, 0.8);
 }
 
@@ -188,7 +188,7 @@ const copyCommand = async (commandName) => {
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: rgba(81, 112, 255, 0.1);
+  background-color: rgba(80, 80, 80, 0.1);
   border: 2px solid var(--primary-color);
   border-radius: 20px;
   padding: 2px 12px;
@@ -222,7 +222,7 @@ const copyCommand = async (commandName) => {
 }
 
 .search-container:focus-within {
-  background-color: rgba(81, 112, 255, 0.2);
+  background-color: rgba(80, 80, 80, 0.2);
   box-shadow: 0 0 15px rgba(81, 112, 255, 0.6);
 }
 
@@ -285,7 +285,7 @@ const copyCommand = async (commandName) => {
 }
 
 .copy-btn {
-  background-color: rgba(81, 112, 255, 0.2);
+  background-color: rgba(80, 80, 80, 0.2);
   border: 1px solid rgba(81, 112, 255, 0.5);
   color: #5170ff;
   width: 36px;
@@ -300,7 +300,7 @@ const copyCommand = async (commandName) => {
 }
 
 .copy-btn:hover {
-  background-color: rgba(81, 112, 255, 0.4);
+  background-color: rgba(80, 80, 80, 0.4);
   border-color: rgba(81, 112, 255, 0.8);
   box-shadow: 0 0 10px rgba(81, 112, 255, 0.6);
 }
