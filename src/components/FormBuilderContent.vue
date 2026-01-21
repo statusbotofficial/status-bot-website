@@ -386,6 +386,10 @@ onMounted(() => {
 
 .list-header h1 {
   font-size: 2.5rem;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .loading-state {
@@ -403,19 +407,18 @@ onMounted(() => {
   padding: 80px 40px;
 }
 
-.empty-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-}
-
 .empty-state h2 {
   font-size: 2rem;
   margin-bottom: 15px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .empty-state p {
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .forms-table {
@@ -541,6 +544,10 @@ onMounted(() => {
 .header-info h1 {
   margin: 0;
   font-size: 2rem;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .header-actions {

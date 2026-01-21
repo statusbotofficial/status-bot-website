@@ -306,34 +306,37 @@ onMounted(() => {
   padding: 80px 40px;
 }
 
-.empty-icon {
-  font-size: 80px;
-  margin-bottom: 20px;
-}
-
 .empty-state h2 {
   font-size: 2rem;
   margin-bottom: 15px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .empty-state p {
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .forms-selection .selection-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .selection-header h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .selection-header p {
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .forms-grid {
@@ -343,7 +346,7 @@ onMounted(() => {
 }
 
 .form-card {
-  background: var(--bg-secondary);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 25px;
@@ -355,6 +358,7 @@ onMounted(() => {
   border-color: var(--primary-color);
   transform: translateY(-4px);
   box-shadow: 0 10px 30px rgba(81, 112, 255, 0.15);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.05) 0%, var(--bg-tertiary) 100%);
 }
 
 .form-card h3 {
@@ -366,6 +370,7 @@ onMounted(() => {
   color: var(--text-secondary);
   margin-bottom: 15px;
   min-height: 40px;
+  font-size: 0.95rem;
 }
 
 .question-count {
@@ -428,13 +433,15 @@ onMounted(() => {
 }
 
 .form-info h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .form-info p {
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .form-content {
