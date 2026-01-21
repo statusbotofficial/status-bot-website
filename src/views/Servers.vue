@@ -3071,7 +3071,7 @@ const copyItemJson = (item) => {
 
 .input-field.textarea {
   min-height: 100px;
-  resize: vertical;
+  resize: none;
   font-family: inherit;
 }
 
