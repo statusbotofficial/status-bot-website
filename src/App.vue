@@ -61,8 +61,7 @@
             <router-link to="/servers" class="dropdown-item">Dashboard</router-link>
             <router-link to="/settings" class="dropdown-item">Settings</router-link>
             <div class="dropdown-divider"></div>
-            <router-link to="/staff/form-builder" class="dropdown-item">Form Builder</router-link>
-            <router-link to="/staff/applications-review" class="dropdown-item">Review Applications</router-link>
+            <router-link to="/staff/applications" class="dropdown-item">Staff Applications</router-link>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item logout" @click="handleLogout" :disabled="isLoggingOut">
               <span v-if="isLoggingOut" class="spinner logout-spinner"></span>

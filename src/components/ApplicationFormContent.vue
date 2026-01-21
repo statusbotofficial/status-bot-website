@@ -1,8 +1,8 @@
 <template>
-  <div class="application-form-container">
+  <div class="form-content-wrapper">
     <div v-if="loading" class="loading-state">
       <div class="spinner"></div>
-      <p>Loading form...</p>
+      <p>Loading forms...</p>
     </div>
 
     <div v-else-if="!form && !forms.length" class="empty-state">
@@ -275,11 +275,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.application-form-container {
-  min-height: calc(100vh - 150px);
-  padding: 40px 30px;
-  max-width: 800px;
-  margin: 0 auto;
+.form-content-wrapper {
+  width: 100%;
 }
 
 .loading-state {
@@ -398,7 +395,6 @@ onMounted(() => {
   background: var(--primary-light);
 }
 
-/* Form Submission */
 .form-submission {
   animation: fadeIn 0.3s ease;
 }
@@ -615,7 +611,6 @@ onMounted(() => {
   animation: spin 0.8s linear infinite;
 }
 
-/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -680,10 +675,6 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .application-form-container {
-    padding: 20px;
-  }
-
   .forms-grid {
     grid-template-columns: 1fr;
   }

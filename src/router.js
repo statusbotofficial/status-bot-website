@@ -11,9 +11,7 @@ import Terms from './views/Terms.vue'
 import Docs from './views/Docs.vue'
 import Dev from './views/Dev.vue'
 import Redirect from './views/Redirect.vue'
-import FormBuilder from './views/FormBuilder.vue'
-import ApplicationForm from './views/ApplicationForm.vue'
-import ApplicationsReview from './views/ApplicationsReview.vue'
+import StaffApplicationsPage from './views/StaffApplicationsPage.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -29,9 +27,7 @@ const routes = [
   { path: '/docs', component: Docs },
   { path: '/dev', component: Dev },
   { path: '/redirect', component: Redirect },
-  { path: '/staff-applications', component: ApplicationForm },
-  { path: '/staff/form-builder', component: FormBuilder },
-  { path: '/staff/applications-review', component: ApplicationsReview },
+  { path: '/staff/applications', component: StaffApplicationsPage },
 ]
 
 const router = createRouter({
