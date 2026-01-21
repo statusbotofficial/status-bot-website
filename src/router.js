@@ -10,6 +10,7 @@ import Privacy from './views/Privacy.vue'
 import Terms from './views/Terms.vue'
 import Docs from './views/Docs.vue'
 import Dev from './views/Dev.vue'
+import Redirect from './views/Redirect.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -24,6 +25,7 @@ const routes = [
   { path: '/terms', component: Terms },
   { path: '/docs', component: Docs },
   { path: '/dev', component: Dev },
+  { path: '/redirect', component: Redirect },
 ]
 
 const router = createRouter({
