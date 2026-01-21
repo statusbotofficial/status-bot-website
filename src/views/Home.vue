@@ -26,9 +26,7 @@
   </div>
 
   <section class="server-embed">
-    <a href='https://postimg.cc/FfnNdH6H' target='_blank'>
-      <img src='https://i.postimg.cc/FfnNdH6H/Adobe-Express-file-(6).png' border='0' alt='Adobe-Express-file-(6)' style="max-width: 100%; height: auto; border-radius: 12px;">
-    </a>
+    <img src='https://i.postimg.cc/Pxdx7LzY/Adobe-Express-file-(6).png' alt='Status Bot' class="embed-image">
   </section>
 
   <section class="features">
@@ -204,6 +202,19 @@ const discordServerUrl = DISCORD_SERVER_URL
 .feature-card p {
   color: var(--text-secondary);
   margin-bottom: 0;
+}
+
+.server-embed {
+  padding: 40px 50px 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.embed-image {
+  max-width: 900px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
 }
 
 .status-section {
