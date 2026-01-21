@@ -474,7 +474,7 @@ onMounted(() => {
 }
 
 .link-btn {
-  background: linear-gradient(135deg, rgba(80, 80, 80, 0.6), rgba(80, 80, 80, 0.3));
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
   border: 2px solid var(--primary-color);
   color: #fff;
   padding: 10px 20px;
@@ -488,7 +488,7 @@ onMounted(() => {
 }
 
 .link-btn:hover {
-  background: linear-gradient(135deg, rgba(80, 80, 80, 0.8), rgba(80, 80, 80, 0.5));
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
   box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
 }
 

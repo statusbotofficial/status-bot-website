@@ -575,7 +575,7 @@ onMounted(async () => {
 }
 
 .sidebar-nav {
-  background: rgba(81, 112, 255, 0.05);
+  background: rgba(80, 80, 80, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
   padding: 20px;
@@ -619,13 +619,13 @@ onMounted(async () => {
 }
 
 .nav-link:hover {
-  background: rgba(81, 112, 255, 0.1);
+  background: rgba(80, 80, 80, 0.1);
   color: #5170ff;
   transform: translateX(4px);
 }
 
 .nav-link.active {
-  background: rgba(81, 112, 255, 0.2);
+  background: rgba(80, 80, 80, 0.2);
   color: #5170ff;
   font-weight: 600;
 }
@@ -677,7 +677,7 @@ onMounted(async () => {
 }
 
 .section-panel.premium-active {
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.08), rgba(81, 112, 255, 0.08));
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.08), rgba(80, 80, 80, 0.08));
   border: 1px solid rgba(74, 222, 128, 0.3);
 }
 
@@ -730,7 +730,7 @@ onMounted(async () => {
 }
 
 .info-value.copy-able:hover {
-  background: rgba(81, 112, 255, 0.1);
+  background: rgba(80, 80, 80, 0.1);
   border-color: rgba(81, 112, 255, 0.3);
 }
 
@@ -891,7 +891,7 @@ onMounted(async () => {
 }
 
 .stat-card {
-  background: rgba(81, 112, 255, 0.08);
+  background: rgba(80, 80, 80, 0.08);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 12px;
   padding: 20px;
@@ -1045,7 +1045,7 @@ onMounted(async () => {
 .feature-tag {
   font-size: 11px;
   padding: 4px 8px;
-  background: rgba(81, 112, 255, 0.2);
+  background: rgba(80, 80, 80, 0.2);
   border: 1px solid rgba(81, 112, 255, 0.3);
   border-radius: 6px;
   color: #8a9fff;
