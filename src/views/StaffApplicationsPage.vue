@@ -1,5 +1,13 @@
 <template>
   <div class="staff-applications-page">
+    <!-- Decorative dots -->
+    <div class="decorative-dots">
+      <div class="dot dot-1"></div>
+      <div class="dot dot-2"></div>
+      <div class="dot dot-3"></div>
+      <div class="dot dot-4"></div>
+    </div>
+
     <!-- Navigation Tabs -->
     <div class="staff-nav-tabs">
       <button 
@@ -89,6 +97,74 @@ onMounted(() => {
   z-index: 2;
 }
 
+.decorative-dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(81, 112, 255, 0.6);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+.dot-1 {
+  top: 15%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.dot-2 {
+  top: 30%;
+  right: 15%;
+  animation-delay: 1s;
+  opacity: 0.7;
+}
+
+.dot-3 {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 2s;
+  opacity: 0.8;
+}
+
+.dot-4 {
+  bottom: 15%;
+  right: 10%;
+  animation-delay: 1.5s;
+  opacity: 0.6;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.6;
+  }
+  25% {
+  position: relative;
+  z-index: 2;
+    transform: translateY(-15px) translateX(10px);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(0px) translateX(20px);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(15px) translateX(10px);
+    opacity: 0.8;
+  }
+}
+
 .staff-nav-tabs {
   display: flex;
   justify-content: center;
@@ -96,6 +172,8 @@ onMounted(() => {
   padding: 40px 20px 30px;
   border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
 }
 
 .nav-tab {
