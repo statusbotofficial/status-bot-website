@@ -1,13 +1,5 @@
 <template>
   <div class="staff-applications-page">
-    <!-- Decorative dots -->
-    <div class="decorative-dots">
-      <div class="dot dot-1"></div>
-      <div class="dot dot-2"></div>
-      <div class="dot dot-3"></div>
-      <div class="dot dot-4"></div>
-    </div>
-
     <!-- Navigation Tabs -->
     <div class="staff-nav-tabs">
       <button 
@@ -97,72 +89,32 @@ onMounted(() => {
   z-index: 2;
 }
 
-.decorative-dots {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: rgba(81, 112, 255, 0.6);
-  border-radius: 50%;
-  animation: float 6s ease-in-out infinite;
-}
-
-.dot-1 {
-  top: 15%;
+.staff-applications-page::before {
+  content: '';
+  position: fixed;
+  top: 20%;
   left: 10%;
-  animation-delay: 0s;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle at 30% 30%, rgba(81, 112, 255, 0.4), rgba(81, 112, 255, 0.1) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
 }
 
-.dot-2 {
-  top: 30%;
-  right: 15%;
-  animation-delay: 1s;
-  opacity: 0.7;
-}
-
-.dot-3 {
+.staff-applications-page::after {
+  content: '';
+  position: fixed;
   bottom: 20%;
-  left: 20%;
-  animation-delay: 2s;
-  opacity: 0.8;
-}
-
-.dot-4 {
-  bottom: 15%;
-  right: 10%;
-  animation-delay: 1.5s;
-  opacity: 0.6;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-    opacity: 0.6;
-  }
-  25% {
-  position: relative;
-  z-index: 2;
-    transform: translateY(-15px) translateX(10px);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateY(0px) translateX(20px);
-    opacity: 0.6;
-  }
-  75% {
-    transform: translateY(15px) translateX(10px);
-    opacity: 0.8;
-  }
+  right: 15%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle at 30% 30%, rgba(81, 112, 255, 0.35), rgba(81, 112, 255, 0.08) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .staff-nav-tabs {
@@ -220,6 +172,8 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  position: relative;
+  z-index: 2;
 }
 
 .section-content {
