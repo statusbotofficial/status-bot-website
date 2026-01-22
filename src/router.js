@@ -12,6 +12,7 @@ import Docs from './views/Docs.vue'
 import Dev from './views/Dev.vue'
 import Redirect from './views/Redirect.vue'
 import StaffApplicationsPage from './views/StaffApplicationsPage.vue'
+import NotFound from './views/NotFound.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -28,6 +29,7 @@ const routes = [
   { path: '/dev', component: Dev },
   { path: '/redirect', component: Redirect },
   { path: '/staff/applications', component: StaffApplicationsPage },
+  { path: '/:pathMatch(.*)*', component: NotFound },
 ]
 
 const router = createRouter({
