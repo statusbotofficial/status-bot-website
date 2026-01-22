@@ -677,96 +677,78 @@
       </div>
     </div>
 
-    <!-- Modals -->
-    <div v-if="showChannelModal" class="modal-overlay" @click="closeChannelModal">
-      <div class="modal-content" @click.stop>
-        <h3>Select Channels</h3>
-        <div class="channel-list">
-          <label v-for="channel in guildChannels" :key="channel.id" class="channel-option">
-            <input
-              type="checkbox"
-              :value="channel.id"
-              v-model="selectedChannelIds"
-            />
-            <span>{{ channel.name }}</span>
-          </label>
-        </div>
-        <div class="modal-buttons">
-          <button @click="confirmChannelSelection" class="confirm-btn">Select</button>
-          <button @click="closeChannelModal" class="cancel-btn">Cancel</button>
-        </div>
-      </div>
-    </div>
+    <!-- Channel Selector Modal -->
+    <Selector
+      :isOpen="showChannelModal"
+      title="Select Channels"
+      :items="guildChannels"
+      v-model="selectedChannelIds"
+      :isRadio="false"
+      searchPlaceholder="Search channels..."
+      @close="closeChannelModal"
+      @confirm="confirmChannelSelection"
+    />
 
-    <div v-if="showMemberModal" class="modal-overlay" @click="closeMemberModal">
-      <div class="modal-content" @click.stop>
-        <h3>Select User</h3>
-        <input
-          v-model="memberSearchQuery"
-          type="text"
-          placeholder="Search members..."
-          class="input-field"
-        />
-        <div class="member-list">
-          <label v-for="member in filteredMembers" :key="member.id" class="member-option-label">
-            <input
-              type="radio"
-              name="selectedMember"
-              :value="member.id"
-              @change="selectMember(member)"
-              class="member-radio"
-            />
-            <img v-if="member.avatar" :src="member.avatar" :alt="member.username" class="avatar-small" />
-            <div class="member-info">
-              <div class="member-username">@{{ member.username }}</div>
-              <div class="member-id">ID: {{ member.id }}</div>
-            </div>
-          </label>
-        </div>
-        <div class="modal-buttons">
-          <button @click="closeMemberModal" class="cancel-btn">Cancel</button>
-        </div>
-      </div>
-    </div>
+    <!-- Member Selector Modal -->
+    <Selector
+      :isOpen="showMemberModal"
+      title="Select User"
+      :items="memberSelectorItems"
+      :isRadio="true"
+      searchPlaceholder="Search members..."
+      @close="closeMemberModal"
+      @confirm="confirmMemberSelection"
+      @update:modelValue="updateSelectedMember"
+    />
 
-    <div v-if="showResetModal" class="modal-overlay" @click="closeResetModal">
-      <div class="modal-content" @click.stop>
-        <h3>{{ resetModalTitle }}</h3>
-        <p>{{ resetModalMessage }}</p>
-        <div class="modal-buttons">
-          <button @click="confirmReset" class="confirm-btn">Confirm</button>
-          <button @click="closeResetModal" class="cancel-btn">Cancel</button>
-        </div>
-      </div>
-    </div>
+    <!-- Reset Confirmation Modal -->
+    <Modal
+      :isOpen="showResetModal"
+      :title="resetModalTitle"
+      :showCloseButton="true"
+      :showConfirm="true"
+      :showCancel="true"
+      confirmText="Confirm"
+      cancelText="Cancel"
+      @close="closeResetModal"
+      @confirm="confirmReset"
+      @cancel="closeResetModal"
+    >
+      <p>{{ resetModalMessage }}</p>
+    </Modal>
 
-    <div v-if="showLevelingFormulaModal" class="modal-overlay" @click="closeLevelingFormulaModal">
-      <div class="modal-content" @click.stop>
-        <h3>Select Leveling Formula</h3>
-        <div class="formula-list">
-          <label 
-            v-for="formula in levelingFormulas" 
-            :key="formula.value" 
-            class="formula-option"
-          >
-            <input
-              type="radio"
-              name="levelingFormula"
-              :value="formula.value"
-              v-model="levelingSettings.levelingType"
-              class="formula-radio"
-            />
-            <div class="formula-info">
-              <div class="formula-name">{{ formula.name }}</div>
-              <div class="formula-description">{{ formula.description }}</div>
-            </div>
-          </label>
-        </div>
-        <div class="modal-buttons">
-          <button @click="closeLevelingFormulaModal" class="confirm-btn">Done</button>
-        </div>
+    <!-- Leveling Formula Modal -->
+    <Modal
+      :isOpen="showLevelingFormulaModal"
+      title="Select Leveling Formula"
+      :showCloseButton="true"
+      :showConfirm="false"
+      :showCancel="false"
+      @close="closeLevelingFormulaModal"
+    >
+      <div class="formula-list">
+        <label 
+          v-for="formula in levelingFormulas" 
+          :key="formula.value" 
+          class="formula-option"
+        >
+          <input
+            type="radio"
+            name="levelingFormula"
+            :value="formula.value"
+            v-model="levelingSettings.levelingType"
+            class="formula-radio"
+          />
+          <div class="formula-info">
+            <div class="formula-name">{{ formula.name }}</div>
+            <div class="formula-description">{{ formula.description }}</div>
+          </div>
+        </label>
       </div>
-    </div>
+      <template #footer>
+        <button @click="closeLevelingFormulaModal" class="btn-done">Done</button>
+      </template>
+    </Modal>
 
   </div>
 </template>
@@ -776,6 +758,8 @@ import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
+import Modal from '../components/Modal.vue'
+import Selector from '../components/Selector.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -1023,6 +1007,15 @@ const filteredMembers = computed(() => {
   )
 })
 
+const memberSelectorItems = computed(() => {
+  return guildMembers.value.map(member => ({
+    id: member.id,
+    name: member.username,
+    description: `ID: ${member.id}`,
+    icon: member.avatar
+  }))
+})
+
 const trackingChannelName = computed(() => {
   if (!statusSettings.trackingChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === statusSettings.trackingChannel)
@@ -1252,6 +1245,13 @@ const loadAllSettings = async (guildId) => {
       fetch(`${BACKEND_URL}/api/welcome/${guildId}/settings`, { headers }),
     ])
 
+    // Check for 401 Unauthorized - token might have expired
+    if (levelingRes.status === 401 || economyRes.status === 401 || statusRes.status === 401 || welcomeRes.status === 401) {
+      authStore.logout()
+      alert('Your session has expired. Please log in again.')
+      return
+    }
+
     if (levelingRes.ok) {
       const data = await levelingRes.json()
       Object.assign(levelingSettings, {
@@ -1315,6 +1315,7 @@ const loadAllSettings = async (guildId) => {
       })
     }
   } catch (error) {
+    console.error('Error loading settings:', error)
   }
 }
 
@@ -1323,6 +1324,13 @@ const loadGuildChannels = async (guildId) => {
     const response = await fetch(`${BACKEND_URL}/api/channels/${guildId}`, {
       headers: { Authorization: `Bearer ${authStore.token}` }
     })
+    
+    if (response.status === 401) {
+      authStore.logout()
+      alert('Your session has expired. Please log in again.')
+      return
+    }
+    
     if (response.ok) {
       const data = await response.json()
       guildChannels.value = (data.channels || []).map(c => ({
@@ -1331,6 +1339,7 @@ const loadGuildChannels = async (guildId) => {
       }))
     }
   } catch (error) {
+    console.error('Error loading guild channels:', error)
   }
 }
 
@@ -1385,6 +1394,18 @@ const openMemberSelector = async () => {
 const selectMember = (member) => {
   statusSettings.userToTrack = member.username
   statusSettings.userToTrackId = member.id
+  closeMemberModal()
+}
+
+const updateSelectedMember = (memberId) => {
+  const member = guildMembers.value.find(m => m.id === memberId)
+  if (member) {
+    statusSettings.userToTrack = member.username
+    statusSettings.userToTrackId = member.id
+  }
+}
+
+const confirmMemberSelection = () => {
   closeMemberModal()
 }
 
@@ -3242,41 +3263,7 @@ const copyItemJson = (item) => {
 }
 
 /* Modals */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: #1a1a1a;
-  border: 2px solid #5170ff;
-  border-radius: 12px;
-  padding: 32px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 0 30px rgba(81, 112, 255, 0.3);
-}
-
-.modal-content h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 12px;
-}
-
-.modal-content p {
-  color: #ccc;
-  margin-bottom: 24px;
-  line-height: 1.5;
-}
+/* Old modal styles are now in Modal.vue component */
 
 .channel-list,
 .member-list {
@@ -3379,6 +3366,30 @@ const copyItemJson = (item) => {
   overflow-y: auto;
 }
 
+.btn-done {
+  background: linear-gradient(135deg, #5170ff 0%, #6b84ff 100%);
+  color: #fff;
+  border: 1px solid rgba(107, 132, 255, 0.5);
+  box-shadow: 0 4px 15px rgba(81, 112, 255, 0.4);
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.btn-done:hover {
+  background: linear-gradient(135deg, #6b84ff 0%, #7d96ff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(81, 112, 255, 0.5);
+}
+
+.btn-done:active {
+  transform: translateY(0);
+}
+
 .formula-option {
   display: flex;
   align-items: flex-start;
@@ -3421,41 +3432,8 @@ const copyItemJson = (item) => {
   font-size: 12px;
   color: #999;
 }
-.modal-buttons {
-  display: flex;
-  gap: 12px;
-}
 
-.confirm-btn,
-.cancel-btn {
-  flex: 1;
-  padding: 12px 20px;
-  border: 2px solid;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.confirm-btn {
-  background: rgba(81, 112, 255, 0.2);
-  border-color: #5170ff;
-  color: #fff;
-}
-
-.confirm-btn:hover {
-  background: rgba(81, 112, 255, 0.35);
-}
-
-.cancel-btn {
-  background: rgba(128, 128, 128, 0.2);
-  border-color: #808080;
-  color: #fff;
-}
-
-.cancel-btn:hover {
-  background: rgba(128, 128, 128, 0.35);
-}
+/* Old modal button styles are now in Modal.vue component */
 
 /* Mobile Hamburger Menu */
 .mobile-hamburger {
