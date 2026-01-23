@@ -381,11 +381,6 @@
                 <input v-model.number="economySettings.robberyChance" type="number" step="0.1" min="0" max="100" class="input-field" :disabled="!userHasPremium" />
               </div>
 
-              <div class="setting-item">
-                <label>Work reward multiplier</label>
-                <input v-model.number="economySettings.workRewardMultiplier" type="number" step="0.1" min="0.1" class="input-field" :disabled="!userHasPremium" />
-              </div>
-
               <div class="button-group">
                 <button @click="saveEconomySettings" class="save-btn" :class="{ 'save-success': economySaveSuccess }" :disabled="economySaveLoading || !userHasPremium">
                   <span v-if="economySaveLoading" class="spinner"></span>
@@ -860,7 +855,6 @@ const economySettings = reactive({
   balanceMultiplier: 1.0,
   dailyInterestRate: 0,
   robberyChance: 50,
-  workRewardMultiplier: 1.0,
 })
 
 const statusSettings = reactive({
