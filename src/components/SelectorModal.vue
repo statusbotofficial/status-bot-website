@@ -191,11 +191,6 @@ const handleClose = () => {
   margin-top: -2px;
 }
 
-.close-btn:hover {
-  color: #ccc;
-  background: rgba(81, 112, 255, 0.08);
-}
-
 .modal-search {
   padding: 16px 24px 0;
 }
