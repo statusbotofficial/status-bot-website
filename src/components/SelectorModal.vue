@@ -188,6 +188,7 @@ const handleClose = () => {
   transition: color 0.2s ease, background 0.2s ease;
   border-radius: 8px;
   flex-shrink: 0;
+  margin-top: -2px;
 }
 
 .close-btn:hover {
@@ -284,22 +285,6 @@ const handleClose = () => {
   cursor: pointer;
   flex-shrink: 0;
   accent-color: #5170ff;
-  border-radius: 50%;
-  appearance: none;
-  -webkit-appearance: none;
-  background-color: rgba(80, 80, 80, 0.3);
-  border: 2px solid rgba(81, 112, 255, 0.4);
-  transition: all 0.2s ease;
-}
-
-.item-input:checked {
-  background-color: #5170ff;
-  border-color: #5170ff;
-  box-shadow: inset 0 0 0 3px #1a1a2e;
-}
-
-.item-input:hover {
-  border-color: #5170ff;
 }
 
 .item-content {
