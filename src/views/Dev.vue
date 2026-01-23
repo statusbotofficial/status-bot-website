@@ -12,7 +12,7 @@
         <div class="dev-sub-panel">
           <h2>Who to send trial to</h2>
           <div class="input-group">
-            <label>User ID</label>
+            <label>User</label>
             <input 
               v-model="trialUserId" 
               type="text" 
