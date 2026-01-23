@@ -186,12 +186,12 @@ const handleClose = () => {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  border-radius: 8px;
 }
 
 .close-btn:hover {
-  color: #fff;
-  background: rgba(81, 112, 255, 0.1);
-  border-radius: 8px;
+  color: #ccc;
+  background: rgba(81, 112, 255, 0.08);
 }
 
 .modal-search {
@@ -227,6 +227,7 @@ const handleClose = () => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-height: 380px;
 }
 
 .modal-items::-webkit-scrollbar {
