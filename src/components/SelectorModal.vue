@@ -185,10 +185,14 @@ const handleClose = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: text-shadow 0.2s ease;
   border-radius: 8px;
   flex-shrink: 0;
   margin-top: -2px;
+}
+
+.close-btn:hover {
+  text-shadow: 0 0 10px rgba(81, 112, 255, 0.6);
 }
 
 .modal-search {
