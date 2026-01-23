@@ -673,56 +673,27 @@
     </div>
 
     <!-- Modals -->
-    <div v-if="showChannelModal" class="modal-overlay" @click="closeChannelModal">
-      <div class="modal-content" @click.stop>
-        <h3>Select Channels</h3>
-        <div class="channel-list">
-          <label v-for="channel in guildChannels" :key="channel.id" class="channel-option">
-            <input
-              type="checkbox"
-              :value="channel.id"
-              v-model="selectedChannelIds"
-            />
-            <span>{{ channel.name }}</span>
-          </label>
-        </div>
-        <div class="modal-buttons">
-          <button @click="confirmChannelSelection" class="confirm-btn">Select</button>
-          <button @click="closeChannelModal" class="cancel-btn">Cancel</button>
-        </div>
-      </div>
-    </div>
+    <SelectorModal
+      :is-open="showChannelModal"
+      title="Select Channels"
+      :items="guildChannels"
+      v-model="selectedChannelIds"
+      :multiple="true"
+      search-placeholder="Search channels..."
+      @close="closeChannelModal"
+      @confirm="confirmChannelSelection"
+    />
 
-    <div v-if="showMemberModal" class="modal-overlay" @click="closeMemberModal">
-      <div class="modal-content" @click.stop>
-        <h3>Select User</h3>
-        <input
-          v-model="memberSearchQuery"
-          type="text"
-          placeholder="Search members..."
-          class="input-field"
-        />
-        <div class="member-list">
-          <label v-for="member in filteredMembers" :key="member.id" class="member-option-label">
-            <input
-              type="radio"
-              name="selectedMember"
-              :value="member.id"
-              @change="selectMember(member)"
-              class="member-radio"
-            />
-            <img v-if="member.avatar" :src="member.avatar" :alt="member.username" class="avatar-small" />
-            <div class="member-info">
-              <div class="member-username">@{{ member.username }}</div>
-              <div class="member-id">ID: {{ member.id }}</div>
-            </div>
-          </label>
-        </div>
-        <div class="modal-buttons">
-          <button @click="closeMemberModal" class="cancel-btn">Cancel</button>
-        </div>
-      </div>
-    </div>
+    <SelectorModal
+      :is-open="showMemberModal"
+      title="Select User"
+      :items="memberSelectorItems"
+      :model-value="statusSettings.userToTrackId ? [statusSettings.userToTrackId] : []"
+      :multiple="false"
+      search-placeholder="Search members..."
+      @close="closeMemberModal"
+      @confirm="handleMemberSelection"
+    />
 
     <div v-if="showResetModal" class="modal-overlay" @click="closeResetModal">
       <div class="modal-content" @click.stop>
@@ -771,6 +742,7 @@ import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
+import SelectorModal from '../components/SelectorModal.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -1015,6 +987,15 @@ const filteredMembers = computed(() => {
   return guildMembers.value.filter(member =>
     member.username.toLowerCase().includes(memberSearchQuery.value.toLowerCase())
   )
+})
+
+const memberSelectorItems = computed(() => {
+  return guildMembers.value.map(member => ({
+    id: member.id,
+    name: member.username,
+    description: `ID: ${member.id}`,
+    icon: member.avatar
+  }))
 })
 
 const trackingChannelName = computed(() => {
@@ -1380,6 +1361,16 @@ const selectMember = (member) => {
   statusSettings.userToTrack = member.username
   statusSettings.userToTrackId = member.id
   closeMemberModal()
+}
+
+const handleMemberSelection = (selectedIds) => {
+  if (selectedIds && selectedIds.length > 0) {
+    const member = guildMembers.value.find(m => m.id === selectedIds[0])
+    if (member) {
+      statusSettings.userToTrack = member.username
+      statusSettings.userToTrackId = member.id
+    }
+  }
 }
 
 const closeMemberModal = () => {
