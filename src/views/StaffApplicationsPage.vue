@@ -57,6 +57,10 @@ import ApplicationsReviewContent from '../components/ApplicationsReviewContent.v
 const authStore = useAuthStore()
 const currentSection = ref('submit')
 
+onMounted(() => {
+  document.title = 'Staff Applications | Status Bot'
+})
+
 // User IDs with permissions
 const AUTHORIZED_USER_ID = '1362553254117904496'
 const AUTHORIZED_USER_IDS = ['1362553254117904496', '863089744563798046']

@@ -1722,6 +1722,7 @@ const escapeHtml = (text) => {
 }
 
 onMounted(() => {
+  document.title = 'Server Dashboard | Status Bot'
   loadServers()
 })
 

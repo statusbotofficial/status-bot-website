@@ -1,3 +1,11 @@
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  document.title = 'Terms of Service | Status Bot'
+})
+</script>
+
 <template>
   <div class="terms-wrapper">
     <div class="terms-container">
