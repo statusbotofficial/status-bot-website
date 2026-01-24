@@ -11,17 +11,27 @@ export const useAuthStore = defineStore('auth', () => {
   const getOAuthURL = () => {
     const redirectUri = typeof window !== 'undefined' ? window.location.origin + '/redirect' : 'https://status-bot.xyz/redirect'
     const scopes = ['identify', 'guilds'].join('+')
-    return `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`
+    console.log('🔐 OAuth URL being generated:')
+    console.log('  Client ID:', DISCORD_CLIENT_ID)
+    console.log('  Redirect URI:', redirectUri)
+    console.log('  Scopes:', scopes)
+    const url = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`
+    console.log('  Full URL:', url.substring(0, 100) + '...')
+    return url
   }
 
   const handleOAuthCallback = () => {
     const hash = window.location.hash
+    console.log('🔄 OAuth callback detected')
+    console.log('  Hash:', hash.substring(0, 100))
     if (hash) {
       const params = new URLSearchParams(hash.substring(1))
       const accessToken = params.get('access_token')
+      console.log('  Extracted token:', accessToken ? accessToken.substring(0, 30) + '...' : 'MISSING')
       if (accessToken) {
         token.value = accessToken
         localStorage.setItem('discordToken', accessToken)
+        console.log('✅ Token stored in localStorage')
         fetchUserData(accessToken)
         window.history.replaceState({}, document.title, window.location.pathname)
       }
