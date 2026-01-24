@@ -491,6 +491,16 @@
                 <toggle-switch v-model="welcomeSettings.useEmbed" />
               </div>
 
+              <div v-if="welcomeSettings.useEmbed" class="setting-item">
+                <label>Preset templates</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button @click="applyWelcomePreset('minimal')" class="preset-btn">Minimal</button>
+                  <button @click="applyWelcomePreset('friendly')" class="preset-btn">Friendly</button>
+                  <button @click="applyWelcomePreset('detailed')" class="preset-btn">Detailed</button>
+                  <button @click="applyWelcomePreset('gaming')" class="preset-btn">Gaming</button>
+                </div>
+              </div>
+
               <div class="info-box">
                 <strong>Available placeholders:</strong>
                 <div style="font-size: 12px; color: #999; margin-top: 8px;">
@@ -518,11 +528,11 @@
               </div>
 
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
-                <label>Description</label>
+                <label>Description (leave blank for none)</label>
                 <textarea
                   v-model="welcomeSettings.embedDescription"
                   class="input-field textarea"
-                  placeholder="Welcome to {servername}! We're glad to have you here."
+                  placeholder="Leave blank for no description..."
                 />
               </div>
 
@@ -567,23 +577,30 @@
               </div>
 
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
-                <label>Custom field (optional)</label>
-                <div style="display: flex; gap: 8px;">
-                  <input
-                    v-model="welcomeSettings.embedFieldName"
-                    type="text"
-                    class="input-field"
-                    placeholder="Field name"
-                    style="flex: 1;"
-                  />
-                  <input
-                    v-model="welcomeSettings.embedFieldValue"
-                    type="text"
-                    class="input-field"
-                    placeholder="Field value"
-                    style="flex: 1;"
-                  />
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <label>Custom fields</label>
+                  <button @click="addWelcomeField" class="small-btn">+ Add Field</button>
                 </div>
+                <div v-if="welcomeSettings.embedFields && welcomeSettings.embedFields.length > 0">
+                  <div v-for="(field, index) in welcomeSettings.embedFields" :key="index" style="display: flex; gap: 8px; margin-bottom: 8px;">
+                    <input
+                      v-model="field.name"
+                      type="text"
+                      class="input-field"
+                      placeholder="Field name"
+                      style="flex: 1;"
+                    />
+                    <input
+                      v-model="field.value"
+                      type="text"
+                      class="input-field"
+                      placeholder="Field value"
+                      style="flex: 2;"
+                    />
+                    <button @click="removeWelcomeField(index)" class="delete-btn" style="padding: 8px 12px;">×</button>
+                  </div>
+                </div>
+                <p v-else style="color: #999; font-size: 12px; margin-top: 8px;">No custom fields added yet</p>
               </div>
 
               <div class="button-group">
@@ -829,13 +846,12 @@ const welcomeSettings = reactive({
   welcomeChannel: '',
   messageText: 'Welcome to {servername}, {user}!',
   embedTitle: 'Welcome!',
-  embedDescription: 'Welcome to {servername}! We\'re glad to have you here.',
+  embedDescription: '',
   embedFooter: 'Thanks for joining!',
   embedThumbnail: '',
   embedImage: '',
   embedColor: '#5170ff',
-  embedFieldName: '',
-  embedFieldValue: '',
+  embedFields: []
 })
 
 const memberGoalsSettings = reactive({
@@ -1253,19 +1269,19 @@ const loadAllSettings = async (guildId) => {
     
     if (welcomeRes.ok) {
       const data = await welcomeRes.json()
+      const embedFields = data.embed_fields ? JSON.parse(data.embed_fields) : []
       Object.assign(welcomeSettings, {
         enabled: data.enabled === true,
         useEmbed: data.use_embed === true,
         welcomeChannel: data.channel_id || '',
         messageText: data.message_text || 'Welcome to {servername}, {user}!',
         embedTitle: data.embed_title || 'Welcome!',
-        embedDescription: data.embed_description || 'Welcome to {servername}! We\'re glad to have you here.',
+        embedDescription: data.embed_description || '',
         embedFooter: data.embed_footer || 'Thanks for joining!',
         embedThumbnail: data.embed_thumbnail || '',
         embedImage: data.embed_image || '',
         embedColor: data.embed_color || '#5170ff',
-        embedFieldName: data.embed_field_name || '',
-        embedFieldValue: data.embed_field_value || ''
+        embedFields: Array.isArray(embedFields) ? embedFields : []
       })
       
       Object.assign(memberGoalsSettings, {
@@ -1541,10 +1557,8 @@ const saveWelcomeSettings = async () => {
       embed_thumbnail: welcomeSettings.embedThumbnail,
       embed_image: welcomeSettings.embedImage,
       embed_color: welcomeSettings.embedColor,
-      embed_field_name: welcomeSettings.embedFieldName,
-      embed_field_value: welcomeSettings.embedFieldValue
+      embed_fields: JSON.stringify(welcomeSettings.embedFields || [])
     }
-    console.log('Saving welcome settings with payload:', payload)
     const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
@@ -1554,14 +1568,11 @@ const saveWelcomeSettings = async () => {
       body: JSON.stringify(payload)
     })
     if (response.ok) {
-      const data = await response.json()
-      console.log('Welcome settings saved successfully:', data)
       resetSaveState(welcomeSaveLoading, welcomeSaveSuccess)
     } else {
       welcomeSaveLoading.value = false
     }
   } catch (error) {
-    console.error('Error saving settings:', error)
     welcomeSaveLoading.value = false
   }
 }
@@ -1625,14 +1636,75 @@ const resetWelcomeSettings = () => {
     welcomeChannel: '',
     messageText: 'Welcome to {servername}, {user}!',
     embedTitle: 'Welcome!',
-    embedDescription: 'Welcome to {servername}! We\'re glad to have you here.',
+    embedDescription: '',
     embedFooter: 'Thanks for joining!',
     embedThumbnail: '',
     embedImage: '',
     embedColor: '#5170ff',
-    embedFieldName: '',
-    embedFieldValue: '',
+    embedFields: []
   })
+}
+
+const addWelcomeField = () => {
+  welcomeSettings.embedFields.push({ name: '', value: '' })
+}
+
+const removeWelcomeField = (index) => {
+  welcomeSettings.embedFields.splice(index, 1)
+}
+
+const applyWelcomePreset = (preset) => {
+  const presets = {
+    minimal: {
+      embedTitle: 'Welcome!',
+      embedDescription: 'Welcome to {servername}!',
+      embedFooter: '',
+      embedThumbnail: '',
+      embedImage: '',
+      embedColor: '#5170ff'
+    },
+    friendly: {
+      embedTitle: 'Welcome to {servername}! 👋',
+      embedDescription: 'We\'re happy to have you here, {user}! Feel free to introduce yourself and explore the server.',
+      embedFooter: 'Thanks for joining!',
+      embedThumbnail: '{server_icon}',
+      embedImage: '',
+      embedColor: '#00ff88'
+    },
+    detailed: {
+      embedTitle: 'Welcome to {servername}!',
+      embedDescription: 'New member joined! {user} is now part of our community. We now have {member_count} members!',
+      embedFooter: 'Member #{members}',
+      embedThumbnail: '{user_icon}',
+      embedImage: '',
+      embedColor: '#5170ff',
+      embedFields: [
+        { name: 'Server Rules', value: 'Check out #rules for important guidelines' },
+        { name: 'Get Roles', value: 'Visit #role-select to customize your experience' }
+      ]
+    },
+    gaming: {
+      embedTitle: '⚔️ Welcome to the Arena, {user}! ⚔️',
+      embedDescription: 'Another warrior joins our ranks! You are member #{members} in {servername}.',
+      embedFooter: 'Let\'s get gaming!',
+      embedThumbnail: '{server_icon}',
+      embedImage: '',
+      embedColor: '#ff6600'
+    }
+  }
+
+  if (presets[preset]) {
+    const presetData = presets[preset]
+    Object.assign(welcomeSettings, {
+      embedTitle: presetData.embedTitle,
+      embedDescription: presetData.embedDescription,
+      embedFooter: presetData.embedFooter,
+      embedThumbnail: presetData.embedThumbnail,
+      embedImage: presetData.embedImage,
+      embedColor: presetData.embedColor,
+      embedFields: presetData.embedFields ? [...presetData.embedFields] : []
+    })
+  }
 }
 
 const saveMemberGoalsSettings = async () => {
@@ -3209,6 +3281,54 @@ const copyItemJson = (item) => {
 }
 
 .reset-btn:hover {
+  background: rgba(220, 53, 69, 0.35);
+}
+
+.preset-btn {
+  padding: 8px 12px;
+  background: rgba(81, 112, 255, 0.15);
+  border: 1px solid rgba(81, 112, 255, 0.4);
+  border-radius: 6px;
+  color: #5170ff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.preset-btn:hover {
+  background: rgba(81, 112, 255, 0.3);
+  border-color: #5170ff;
+}
+
+.small-btn {
+  padding: 6px 12px;
+  background: rgba(81, 112, 255, 0.2);
+  border: 1px solid #5170ff;
+  border-radius: 6px;
+  color: #5170ff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.small-btn:hover {
+  background: rgba(81, 112, 255, 0.35);
+}
+
+.delete-btn {
+  padding: 6px 12px;
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid #dc3545;
+  border-radius: 6px;
+  color: #dc3545;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
   background: rgba(220, 53, 69, 0.35);
 }
 

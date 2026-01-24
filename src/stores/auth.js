@@ -61,6 +61,7 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(userData))
       }
     } catch (error) {
+      // Failed to fetch user data
     }
   }
 
