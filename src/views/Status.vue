@@ -204,15 +204,6 @@ const formatDuration = (startTime, endTime) => {
 onMounted(() => {
   incidents.value = loadIncidents()
   
-  // Resolve any unresolved incidents from previous session (assume they're resolved if not explicitly marked offline)
-  incidents.value.forEach(incident => {
-    if (!incident.resolved && !incident.endTime) {
-      incident.resolved = true
-      incident.endTime = incident.startTime + (24 * 60 * 60 * 1000) // Assume 24h if unknown
-    }
-  })
-  saveIncidents(incidents.value)
-  
   fetchBotStats()
   
   pollInterval = setInterval(() => {
