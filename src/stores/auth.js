@@ -57,7 +57,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const login = () => {
-    window.location.href = getOAuthURL()
+    const url = getOAuthURL()
+    console.log('🔓 FULL OAuth URL:', url)
+    window.location.href = url
   }
 
   const fetchUserData = async (accessToken) => {
