@@ -504,7 +504,7 @@
               <div class="info-box">
                 <strong>Available placeholders:</strong>
                 <div style="font-size: 12px; color: #999; margin-top: 8px;">
-                  {user} • {user_icon} • {servername} • {server_icon} • {members} • {member_count}
+                  {user} • {user_icon} • {server_name} • {server_icon} • {member_count}
                 </div>
               </div>
 
@@ -844,7 +844,7 @@ const welcomeSettings = reactive({
   enabled: true,
   useEmbed: false,
   welcomeChannel: '',
-  messageText: 'Welcome to {servername}, {user}!',
+  messageText: 'Welcome to {server_name}, {user}!',
   embedTitle: 'Welcome!',
   embedDescription: '',
   embedFooter: 'Thanks for joining!',
@@ -1634,7 +1634,7 @@ const resetWelcomeSettings = () => {
     enabled: true,
     useEmbed: false,
     welcomeChannel: '',
-    messageText: 'Welcome to {servername}, {user}!',
+    messageText: 'Welcome to {server_name}, {user}!',
     embedTitle: 'Welcome!',
     embedDescription: '',
     embedFooter: 'Thanks for joining!',
@@ -1664,7 +1664,7 @@ const applyWelcomePreset = (preset) => {
       embedColor: '#5170ff'
     },
     friendly: {
-      embedTitle: 'Welcome to {servername}! 👋',
+      embedTitle: 'Welcome to {server_name}! 👋',
       embedDescription: 'We\'re happy to have you here, {user}! Feel free to introduce yourself and explore the server.',
       embedFooter: 'Thanks for joining!',
       embedThumbnail: '{server_icon}',
