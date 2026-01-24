@@ -17,11 +17,11 @@
       <div class="stats-grid">
         <div class="stat-card">
           <h3>Uptime</h3>
-          <p class="stat-value">{{ uptime }}</p>
+          <p class="stat-value">{{ botStatus === 'offline' ? 'Offline' : uptime }}</p>
         </div>
         <div class="stat-card">
           <h3>Ping</h3>
-          <p class="stat-value">{{ ping }}ms</p>
+          <p class="stat-value">{{ botStatus === 'offline' ? 'Offline' : ping + 'ms' }}</p>
         </div>
         <div class="stat-card">
           <h3>Servers</h3>
@@ -46,11 +46,8 @@
                 <p v-if="incident.resolved">
                   <strong>Duration:</strong> {{ formatDuration(incident.startTime, incident.endTime) }}
                 </p>
-                <p v-else-if="botStatus === 'offline'">
-                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, Date.now()) }} (Ongoing)
-                </p>
                 <p v-else>
-                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, incident.endTime) }}
+                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, Date.now()) }} (Ongoing)
                 </p>
               </div>
             </div>
@@ -206,6 +203,15 @@ const formatDuration = (startTime, endTime) => {
 
 onMounted(() => {
   incidents.value = loadIncidents()
+  
+  // Resolve any unresolved incidents from previous session (assume they're resolved if not explicitly marked offline)
+  incidents.value.forEach(incident => {
+    if (!incident.resolved && !incident.endTime) {
+      incident.resolved = true
+      incident.endTime = incident.startTime + (24 * 60 * 60 * 1000) // Assume 24h if unknown
+    }
+  })
+  saveIncidents(incidents.value)
   
   fetchBotStats()
   
