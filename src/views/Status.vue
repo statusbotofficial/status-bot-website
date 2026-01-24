@@ -46,8 +46,11 @@
                 <p v-if="incident.resolved">
                   <strong>Duration:</strong> {{ formatDuration(incident.startTime, incident.endTime) }}
                 </p>
+                <p v-else-if="botStatus === 'offline'">
+                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, Date.now()) }} (Ongoing)
+                </p>
                 <p v-else>
-                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, Date.now()) }}
+                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, incident.endTime) }}
                 </p>
               </div>
             </div>
@@ -67,6 +70,7 @@ const ping = ref(0)
 const servers = ref(0)
 const incidents = ref([])
 let pollInterval = null
+let durationInterval = null
 
 onMounted(() => {
   document.title = 'Status | Status Bot'
@@ -208,10 +212,16 @@ onMounted(() => {
   pollInterval = setInterval(() => {
     fetchBotStats()
   }, 30000)
+  
+  // Update incident durations in real-time every second
+  durationInterval = setInterval(() => {
+    incidents.value = incidents.value
+  }, 1000)
 })
 
 onUnmounted(() => {
   if (pollInterval) clearInterval(pollInterval)
+  if (durationInterval) clearInterval(durationInterval)
 })
 </script>
 
