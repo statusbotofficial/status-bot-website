@@ -706,33 +706,16 @@
       </div>
     </div>
 
-    <div v-if="showLevelingFormulaModal" class="modal-overlay" @click="closeLevelingFormulaModal">
-      <div class="modal-content" @click.stop>
-        <h3>Select Leveling Formula</h3>
-        <div class="formula-list">
-          <label 
-            v-for="formula in levelingFormulas" 
-            :key="formula.value" 
-            class="formula-option"
-          >
-            <input
-              type="radio"
-              name="levelingFormula"
-              :value="formula.value"
-              v-model="levelingSettings.levelingType"
-              class="formula-radio"
-            />
-            <div class="formula-info">
-              <div class="formula-name">{{ formula.name }}</div>
-              <div class="formula-description">{{ formula.description }}</div>
-            </div>
-          </label>
-        </div>
-        <div class="modal-buttons">
-          <button @click="closeLevelingFormulaModal" class="confirm-btn">Done</button>
-        </div>
-      </div>
-    </div>
+    <SelectorModal 
+      :isOpen="showLevelingFormulaModal"
+      title="Select Leveling Formula"
+      :items="levelingFormulasForModal"
+      :modelValue="[levelingSettings.levelingType]"
+      :multiple="false"
+      :searchable="false"
+      @update:modelValue="(value) => levelingSettings.levelingType = value[0]"
+      @close="closeLevelingFormulaModal"
+    />
 
   </div>
 </template>
@@ -903,6 +886,14 @@ const levelingFormulas = [
     description: 'Slow increase for early levels - Forgiving at start' 
   }
 ]
+
+const levelingFormulasForModal = computed(() => {
+  return levelingFormulas.map(formula => ({
+    id: formula.value,
+    name: formula.name,
+    description: formula.description
+  }))
+})
 
 const truncateServerName = (name, maxLength = 22) => {
   if (name.length > maxLength) {
