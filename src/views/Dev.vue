@@ -142,12 +142,7 @@
 
       <!-- Logged In Users Section -->
       <section class="dev-section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h2>Logged In Users</h2>
-          <button @click="fetchLoggedInUsers" :disabled="refreshingUsers" class="dev-btn" style="margin: 0;">
-            {{ refreshingUsers ? 'Refreshing...' : '🔄 Refresh' }}
-          </button>
-        </div>
+        <h2 style="margin-bottom: 20px;">Logged In Users</h2>
         <div class="logged-in-panel">
           <div v-if="loggedInUsers.length > 0" class="logged-in-list">
             <div class="logged-in-header">
