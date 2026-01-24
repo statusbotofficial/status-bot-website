@@ -98,7 +98,7 @@ const filteredItems = computed(() => {
 
 const handleConfirm = () => {
   emit('update:modelValue', selectedValues.value)
-  emit('confirm')
+  emit('confirm', selectedValues.value)
   handleClose()
 }
 
