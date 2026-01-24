@@ -1331,16 +1331,23 @@ const openMemberSelector = async () => {
   
   if (guildMembers.value.length === 0 && selectedServer.value) {
     try {
+      console.log('🚀 Loading members for guild:', selectedServer.value.id)
       const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
         headers: { Authorization: 'Bearer status-bot-stats-secret-key' }
       })
+      console.log('Response status:', response.status)
+      
       if (response.ok) {
         const data = await response.json()
+        console.log('✅ Members loaded:', data.members?.length)
         guildMembers.value = (data.members || []).map(m => ({
           id: m.id,
           username: m.username,
           avatar: m.avatar
         }))
+      } else {
+        const errorData = await response.json().catch(() => ({}))
+        console.error('❌ Failed to load members:', response.status, errorData)
       }
     } catch (error) {
       console.error('Error fetching guild members:', error)
@@ -1399,6 +1406,10 @@ const saveLevelingSettings = async () => {
   if (!selectedServer.value) return
   setSaveState(levelingSaveLoading, levelingSaveSuccess)
   try {
+    console.log('🚀 Saving leveling settings...')
+    console.log('Token:', authStore.token ? authStore.token.substring(0, 20) + '...' : 'MISSING')
+    console.log('Guild ID:', selectedServer.value.id)
+    
     const response = await fetch(`${BACKEND_URL}/api/leveling/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
@@ -1407,9 +1418,15 @@ const saveLevelingSettings = async () => {
       },
       body: JSON.stringify(levelingSettings)
     })
+    
+    console.log('Response status:', response.status)
+    
     if (response.ok) {
+      console.log('✅ Settings saved successfully')
       resetSaveState(levelingSaveLoading, levelingSaveSuccess)
     } else {
+      const errorData = await response.json().catch(() => ({}))
+      console.error('❌ Save failed:', response.status, errorData)
       levelingSaveLoading.value = false
     }
   } catch (error) {
