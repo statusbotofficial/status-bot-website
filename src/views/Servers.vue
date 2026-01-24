@@ -1355,13 +1355,26 @@ const selectMember = (member) => {
 }
 
 const handleMemberSelection = (selectedIds) => {
+  console.log('👤 Member selection received:')
+  console.log('  selectedIds:', selectedIds)
+  console.log('  guildMembers.value:', guildMembers.value)
+  
   if (selectedIds && selectedIds.length > 0) {
+    console.log('  Looking for member with ID:', selectedIds[0])
     const member = guildMembers.value.find(m => m.id === selectedIds[0])
+    console.log('  Found member:', member)
+    
     if (member) {
       statusSettings.userToTrack = member.username
       statusSettings.userToTrackId = member.id
+      console.log('  ✅ Updated statusSettings to:', statusSettings.userToTrack, statusSettings.userToTrackId)
+    } else {
+      console.warn('  ❌ Member not found in guildMembers')
     }
+  } else {
+    console.warn('  ❌ No IDs selected')
   }
+  closeMemberModal()
 }
 
 const closeMemberModal = () => {
