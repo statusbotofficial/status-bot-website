@@ -1437,13 +1437,13 @@ const saveLevelingSettings = async () => {
   try {
     const payload = {
       enabled: levelingSettings.enabled,
-      leveling_type: levelingSettings.levelingType,
-      xp_per_message: levelingSettings.xpPerMessage,
-      vc_xp_per_minute: levelingSettings.voiceXp,
-      xp_cooldown: levelingSettings.xpCooldown,
-      level_up_message: levelingSettings.levelUpMessage,
-      level_up_channel: levelingSettings.levelUpChannel,
-      allowed_xp_channels: levelingSettings.allowedChannels ? levelingSettings.allowedChannels.split(',').map(c => c.trim()) : []
+      xpPerMessage: levelingSettings.xpPerMessage,
+      voiceXp: levelingSettings.voiceXp,
+      xpCooldown: levelingSettings.xpCooldown,
+      levelUpMessage: levelingSettings.levelUpMessage,
+      levelUpChannel: levelingSettings.levelUpChannel,
+      allowedChannels: levelingSettings.allowedChannels,
+      leveling_type: levelingSettings.levelingType
     }
     const response = await fetch(`${BACKEND_URL}/api/leveling/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -1469,12 +1469,12 @@ const saveEconomySettings = async () => {
   try {
     const payload = {
       enabled: economySettings.enabled,
-      per_message: economySettings.currencyPerMessage,
-      currency_symbol: economySettings.currencySymbol,
-      start: economySettings.startingAmount,
-      balance_multiplier: economySettings.balanceMultiplier || 1.0,
-      daily_interest_rate: economySettings.dailyInterestRate || 0,
-      robbery_chance: economySettings.robberyChance || 50
+      currencyPerMessage: economySettings.currencyPerMessage,
+      currencySymbol: economySettings.currencySymbol,
+      startingAmount: economySettings.startingAmount,
+      balanceMultiplier: economySettings.balanceMultiplier,
+      dailyInterestRate: economySettings.dailyInterestRate,
+      robberyChance: economySettings.robberyChance
     }
     const response = await fetch(`${BACKEND_URL}/api/economy/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -1532,12 +1532,12 @@ const saveStatusSettings = async () => {
     const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 0
     const payload = {
       enabled: statusSettings.enabled,
-      user_id: statusSettings.userToTrackId,
-      channel_id: statusSettings.trackingChannel,
-      delay_seconds: delayValue,
+      userToTrack: statusSettings.userToTrackId,
+      trackingChannel: statusSettings.trackingChannel,
+      delay: delayValue,
       automatic: statusSettings.automatic,
-      use_embed: statusSettings.useEmbed,
-      offline_message: statusSettings.offlineMessage
+      useEmbed: statusSettings.useEmbed,
+      offlineMessage: statusSettings.offlineMessage
     }
     console.log('Saving status settings with payload:', payload)
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
