@@ -513,7 +513,7 @@
                 <textarea
                   v-model="welcomeSettings.messageText"
                   class="input-field textarea"
-                  placeholder="Welcome to {servername}, {user}!"
+                  placeholder="Welcome to {server_name}, {user}!"
                 />
               </div>
 
@@ -1274,7 +1274,7 @@ const loadAllSettings = async (guildId) => {
         enabled: data.enabled === true,
         useEmbed: data.use_embed === true,
         welcomeChannel: data.channel_id || '',
-        messageText: data.message_text || 'Welcome to {servername}, {user}!',
+        messageText: data.message_text || 'Welcome to {server_name}, {user}!',
         embedTitle: data.embed_title || 'Welcome!',
         embedDescription: data.embed_description || '',
         embedFooter: data.embed_footer || 'Thanks for joining!',
@@ -1657,7 +1657,7 @@ const applyWelcomePreset = (preset) => {
   const presets = {
     minimal: {
       embedTitle: 'Welcome!',
-      embedDescription: 'Welcome to {servername}!',
+      embedDescription: 'Welcome to {server_name}!',
       embedFooter: '',
       embedThumbnail: '',
       embedImage: '',
@@ -1672,9 +1672,9 @@ const applyWelcomePreset = (preset) => {
       embedColor: '#00ff88'
     },
     detailed: {
-      embedTitle: 'Welcome to {servername}!',
-      embedDescription: 'New member joined! {user} is now part of our community. We now have {member_count} members!',
-      embedFooter: 'Member #{members}',
+      embedTitle: 'Welcome to {server_name}!',
+      embedDescription: 'A new member has joined! {user} is now part of our community. We now have {member_count} members!',
+      embedFooter: 'You are member #{member_count}',
       embedThumbnail: '{user_icon}',
       embedImage: '',
       embedColor: '#5170ff',
@@ -1685,7 +1685,7 @@ const applyWelcomePreset = (preset) => {
     },
     gaming: {
       embedTitle: '⚔️ Welcome to the Arena, {user}! ⚔️',
-      embedDescription: 'Another warrior joins our ranks! You are member #{members} in {servername}.',
+      embedDescription: 'Another warrior joins our ranks! You are member #{member_count} in {server_name}.',
       embedFooter: 'Let\'s get gaming!',
       embedThumbnail: '{server_icon}',
       embedImage: '',
