@@ -97,8 +97,10 @@ const filteredItems = computed(() => {
 })
 
 const handleConfirm = () => {
-  emit('update:modelValue', selectedValues.value)
-  emit('confirm', selectedValues.value)
+  // Always emit as array, even for single selection
+  const values = Array.isArray(selectedValues.value) ? selectedValues.value : [selectedValues.value]
+  emit('update:modelValue', values)
+  emit('confirm', values)
   handleClose()
 }
 
