@@ -53,12 +53,19 @@ export const useAuthStore = defineStore('auth', () => {
       token.value = storedToken
     }
 
+    // Check if we just came back from OAuth
+    const lastURL = localStorage.getItem('lastOAuthURL')
+    if (lastURL) {
+      console.log('📋 Last OAuth URL used:', lastURL)
+    }
+
     handleOAuthCallback()
   }
 
   const login = () => {
     const url = getOAuthURL()
     console.log('🔓 FULL OAuth URL:', url)
+    localStorage.setItem('lastOAuthURL', url)
     window.location.href = url
   }
 
