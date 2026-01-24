@@ -1241,6 +1241,7 @@ const loadAllSettings = async (guildId) => {
         levelUpChannel: data.level_up_channel || '',
         allowedChannels: Array.isArray(data.allowed_xp_channels) ? data.allowed_xp_channels.join(', ') : ''
       })
+      localStorage.setItem(`leveling_${guildId}`, JSON.stringify(levelingSettings))
     }
     
     if (economyRes.ok) {
@@ -1251,6 +1252,7 @@ const loadAllSettings = async (guildId) => {
         currencySymbol: data.currency_symbol || '💰',
         startingAmount: data.start || 500
       })
+      localStorage.setItem(`economy_${guildId}`, JSON.stringify(economySettings))
     }
     
     if (statusRes.ok) {
@@ -1265,6 +1267,7 @@ const loadAllSettings = async (guildId) => {
         offlineMessage: data.offline_message || 'User is offline',
         messageId: data.message_id || null
       })
+      localStorage.setItem(`status_${guildId}`, JSON.stringify(statusSettings))
     }
     
     if (welcomeRes.ok) {
@@ -1290,8 +1293,26 @@ const loadAllSettings = async (guildId) => {
         memberGoalChannelId: data.member_goal_channel_id || '',
         memberGoal: data.member_goal || 0
       })
+      localStorage.setItem(`welcome_${guildId}`, JSON.stringify(welcomeSettings))
+      localStorage.setItem(`memberGoals_${guildId}`, JSON.stringify(memberGoalsSettings))
     }
   } catch (error) {
+    // Try to load from localStorage as fallback
+    try {
+      const guildId = selectedServer.value?.id
+      if (guildId) {
+        const levelingData = localStorage.getItem(`leveling_${guildId}`)
+        const economyData = localStorage.getItem(`economy_${guildId}`)
+        const statusData = localStorage.getItem(`status_${guildId}`)
+        const welcomeData = localStorage.getItem(`welcome_${guildId}`)
+        
+        if (levelingData) Object.assign(levelingSettings, JSON.parse(levelingData))
+        if (economyData) Object.assign(economySettings, JSON.parse(economyData))
+        if (statusData) Object.assign(statusSettings, JSON.parse(statusData))
+        if (welcomeData) Object.assign(welcomeSettings, JSON.parse(welcomeData))
+      }
+    } catch (e) {
+    }
   }
 }
 
@@ -1808,6 +1829,7 @@ watch(
           loadOverviewData(server.id),
           loadLeaderboardData(server.id),
           loadAllSettings(server.id),
+          loadGuildChannels(server.id),
           fetchPremiumStatus()
         ])
       }
