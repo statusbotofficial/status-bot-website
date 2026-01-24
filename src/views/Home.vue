@@ -51,9 +51,14 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { DISCORD_INVITE_URL, DISCORD_SERVER_URL } from '../config'
 
 const discordServerUrl = DISCORD_SERVER_URL
+
+onMounted(() => {
+  document.title = 'Status Bot'
+})
 </script>
 
 <style scoped>
