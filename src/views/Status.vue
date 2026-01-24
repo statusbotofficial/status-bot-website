@@ -47,7 +47,7 @@
                   <strong>Duration:</strong> {{ formatDuration(incident.startTime, incident.endTime) }}
                 </p>
                 <p v-else>
-                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, Date.now()) }} (ongoing)
+                  <strong>Duration:</strong> {{ formatDuration(incident.startTime, Date.now()) }}
                 </p>
               </div>
             </div>
