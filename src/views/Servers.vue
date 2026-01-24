@@ -1721,7 +1721,7 @@ const updateWelcomePreview = () => {
 }
 
 const inviteBot = (server) => {
-  const DISCORD_CLIENT_ID = '1457454614826848276'
+  const DISCORD_CLIENT_ID = '1464615300740939991'
   const REDIRECT_URI = 'https://status-bot.xyz/redirect'
   const BOT_INVITE_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&permissions=8&scope=bot%20applications.commands`
   window.open(`${BOT_INVITE_URL}&guild_id=${server.id}`, '_blank')
