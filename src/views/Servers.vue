@@ -1250,10 +1250,7 @@ const loadAllSettings = async (guildId) => {
         enabled: data.enabled || false,
         currencyPerMessage: data.per_message || 5,
         currencySymbol: data.currency_symbol || '💰',
-        startingAmount: data.start || 500,
-        balanceMultiplier: data.balance_multiplier || 1.0,
-        dailyInterestRate: data.daily_interest_rate || 0,
-        robberyChance: data.robbery_chance || 50
+        startingAmount: data.start || 500
       })
       localStorage.setItem(`economy_${guildId}`, JSON.stringify(economySettings))
     }
@@ -1435,23 +1432,13 @@ const saveLevelingSettings = async () => {
   if (!selectedServer.value) return
   setSaveState(levelingSaveLoading, levelingSaveSuccess)
   try {
-    const payload = {
-      enabled: levelingSettings.enabled,
-      xpPerMessage: levelingSettings.xpPerMessage,
-      voiceXp: levelingSettings.voiceXp,
-      xpCooldown: levelingSettings.xpCooldown,
-      levelUpMessage: levelingSettings.levelUpMessage,
-      levelUpChannel: levelingSettings.levelUpChannel,
-      allowedChannels: levelingSettings.allowedChannels,
-      leveling_type: levelingSettings.levelingType
-    }
     const response = await fetch(`${BACKEND_URL}/api/leveling/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(levelingSettings)
     })
     if (response.ok) {
       resetSaveState(levelingSaveLoading, levelingSaveSuccess)
@@ -1467,22 +1454,13 @@ const saveEconomySettings = async () => {
   if (!selectedServer.value) return
   setSaveState(economySaveLoading, economySaveSuccess)
   try {
-    const payload = {
-      enabled: economySettings.enabled,
-      currencyPerMessage: economySettings.currencyPerMessage,
-      currencySymbol: economySettings.currencySymbol,
-      startingAmount: economySettings.startingAmount,
-      balanceMultiplier: economySettings.balanceMultiplier,
-      dailyInterestRate: economySettings.dailyInterestRate,
-      robberyChance: economySettings.robberyChance
-    }
     const response = await fetch(`${BACKEND_URL}/api/economy/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(economySettings)
     })
     if (response.ok) {
       resetSaveState(economySaveLoading, economySaveSuccess)
@@ -1529,7 +1507,7 @@ const saveStatusSettings = async () => {
   if (!selectedServer.value) return
   setSaveState(statusSaveLoading, statusSaveSuccess)
   try {
-    const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 0
+    const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 60
     const payload = {
       enabled: statusSettings.enabled,
       userToTrack: statusSettings.userToTrackId,
