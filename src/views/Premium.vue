@@ -251,7 +251,6 @@ onMounted(async () => {
         hasPremium.value = data.hasPremium || false
       }
     } catch (err) {
-      console.error('Error fetching premium status:', err)
     }
   }
 })

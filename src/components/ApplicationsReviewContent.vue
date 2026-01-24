@@ -262,7 +262,6 @@ const confirmReject = async () => {
       alert('Failed to reject application')
     }
   } catch (error) {
-    console.error('Error rejecting application:', error)
     alert('Error rejecting application')
   }
 }
@@ -288,7 +287,6 @@ const approveSubmission = async (submission) => {
       alert('Failed to approve application')
     }
   } catch (error) {
-    console.error('Error approving application:', error)
     alert('Error approving application')
   }
 }
@@ -305,7 +303,6 @@ const loadSubmissions = async () => {
       submissions.value = await response.json()
     }
   } catch (error) {
-    console.error('Error loading submissions:', error)
   }
 }
 
@@ -321,7 +318,6 @@ const loadForms = async () => {
       forms.value = await response.json()
     }
   } catch (error) {
-    console.error('Error loading forms:', error)
   }
 }
 

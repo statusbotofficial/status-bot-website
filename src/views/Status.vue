@@ -96,7 +96,6 @@ const loadIncidents = () => {
     
     return validIncidents
   } catch (error) {
-    console.error('Error loading incidents:', error)
     return []
   }
 }
@@ -105,7 +104,6 @@ const saveIncidents = (incidentsToSave) => {
   try {
     localStorage.setItem('status_incidents', JSON.stringify(incidentsToSave))
   } catch (error) {
-    console.error('Error saving incidents:', error)
   }
 }
 
@@ -151,7 +149,6 @@ const fetchBotStats = async () => {
       }
     }
   } catch (error) {
-    console.error('Error fetching bot stats:', error)
     botStatus.value = 'offline'
   }
 }

@@ -274,7 +274,6 @@ const saveForm = async () => {
       alert('Failed to save form')
     }
   } catch (error) {
-    console.error('Error saving form:', error)
     alert('Error saving form')
   }
 }
@@ -296,7 +295,6 @@ const deleteForm = async (formId) => {
         alert('Failed to delete form')
       }
     } catch (error) {
-      console.error('Error deleting form:', error)
       alert('Error deleting form')
     }
   }
@@ -315,7 +313,6 @@ const loadForms = async () => {
       forms.value = await response.json()
     }
   } catch (error) {
-    console.error('Error loading forms:', error)
   } finally {
     loading.value = false
   }

@@ -774,7 +774,6 @@ const fetchPremiumStatus = async () => {
       userHasPremium.value = data.hasPremium || false
     }
   } catch (err) {
-    console.error('Failed to fetch premium status:', err)
   }
 }
 
@@ -1091,7 +1090,6 @@ const loadServers = async () => {
 
     servers.value = processedServers
   } catch (error) {
-    console.error('Error loading servers:', error)
     servers.value = []
   } finally {
     loading.value = false
@@ -1133,7 +1131,6 @@ const loadOverviewData = async (guildId) => {
       overviewData.value = data.topUsers || []
     }
   } catch (error) {
-    console.error('Error loading overview:', error)
   } finally {
     overviewLoading.value = false
   }
@@ -1152,7 +1149,6 @@ const loadLeaderboardData = async (guildId) => {
       await loadUserRankData(guildId)
     }
   } catch (error) {
-    console.error('Error loading leaderboard:', error)
   } finally {
     leaderboardLoading.value = false
   }
@@ -1203,7 +1199,6 @@ const loadUserRankData = async (guildId) => {
       })
     }
   } catch (error) {
-    console.error('Error loading user rank data:', error)
   }
 }
 
@@ -1343,7 +1338,6 @@ const openMemberSelector = async () => {
         }))
       }
     } catch (error) {
-      console.error('Error fetching guild members:', error)
     }
   }
 }
@@ -1355,24 +1349,13 @@ const selectMember = (member) => {
 }
 
 const handleMemberSelection = (selectedIds) => {
-  console.log('👤 Member selection received:')
-  console.log('  selectedIds:', selectedIds)
-  console.log('  guildMembers.value:', guildMembers.value)
-  
   if (selectedIds && selectedIds.length > 0) {
-    console.log('  Looking for member with ID:', selectedIds[0])
     const member = guildMembers.value.find(m => m.id === selectedIds[0])
-    console.log('  Found member:', member)
     
     if (member) {
       statusSettings.userToTrack = member.username
       statusSettings.userToTrackId = member.id
-      console.log('  ✅ Updated statusSettings to:', statusSettings.userToTrack, statusSettings.userToTrackId)
-    } else {
-      console.warn('  ❌ Member not found in guildMembers')
     }
-  } else {
-    console.warn('  ❌ No IDs selected')
   }
   closeMemberModal()
 }
@@ -1426,7 +1409,6 @@ const saveLevelingSettings = async () => {
       levelingSaveLoading.value = false
     }
   } catch (error) {
-    console.error('Error saving settings:', error)
     levelingSaveLoading.value = false
   }
 }
@@ -1449,19 +1431,12 @@ const saveEconomySettings = async () => {
       economySaveLoading.value = false
     }
   } catch (error) {
-    console.error('Error saving settings:', error)
     economySaveLoading.value = false
   }
 }
 
 const postStatusMessage = async () => {
-  console.log('📤 postStatusMessage check:')
-  console.log('  selectedServer:', selectedServer.value?.id)
-  console.log('  userToTrackId:', statusSettings.userToTrackId)
-  console.log('  trackingChannel:', statusSettings.trackingChannel)
-  
   if (!selectedServer.value || !statusSettings.userToTrackId || !statusSettings.trackingChannel) {
-    console.warn('❌ Missing required fields for posting status message')
     return
   }
 

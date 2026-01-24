@@ -239,7 +239,6 @@ const submitForm = async () => {
       alert('Failed to submit application')
     }
   } catch (error) {
-    console.error('Error submitting form:', error)
     alert('Error submitting application')
   } finally {
     submitting.value = false
@@ -262,7 +261,6 @@ const loadForms = async () => {
       forms.value = await response.json()
     }
   } catch (error) {
-    console.error('Error loading forms:', error)
   } finally {
     loading.value = false
   }

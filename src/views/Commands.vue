@@ -119,7 +119,6 @@ const copyCommand = async (commandName) => {
   try {
     await navigator.clipboard.writeText(commandName)
   } catch (err) {
-    console.error('Failed to copy:', err)
   }
 }
 </script>

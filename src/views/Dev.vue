@@ -393,7 +393,6 @@ const fetchPremiumUsers = async () => {
       premiumUsers.value = users.sort((a, b) => a.userId - b.userId)
     }
   } catch (err) {
-    console.error('Failed to fetch premium users:', err)
   }
 }
 
