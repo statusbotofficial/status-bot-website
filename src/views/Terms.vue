@@ -1,11 +1,3 @@
-<script setup>
-import { onMounted } from 'vue'
-
-onMounted(() => {
-  document.title = 'Terms of Service | Status Bot'
-})
-</script>
-
 <template>
   <div class="terms-wrapper">
     <div class="terms-container">
@@ -66,6 +58,7 @@ import { useAuthStore } from '../stores/auth'
 const authStore = useAuthStore()
 
 onMounted(() => {
+  document.title = 'Terms of Service | Status Bot'
   const storedUser = localStorage.getItem('discordUser')
   if (storedUser) {
     const user = JSON.parse(storedUser)
