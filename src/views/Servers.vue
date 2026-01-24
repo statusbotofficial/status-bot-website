@@ -1442,8 +1442,13 @@ const saveEconomySettings = async () => {
 }
 
 const postStatusMessage = async () => {
+  console.log('📤 postStatusMessage check:')
+  console.log('  selectedServer:', selectedServer.value?.id)
+  console.log('  userToTrackId:', statusSettings.userToTrackId)
+  console.log('  trackingChannel:', statusSettings.trackingChannel)
+  
   if (!selectedServer.value || !statusSettings.userToTrackId || !statusSettings.trackingChannel) {
-    console.warn('Missing required fields for posting status message')
+    console.warn('❌ Missing required fields for posting status message')
     return
   }
 
@@ -1454,6 +1459,7 @@ const postStatusMessage = async () => {
       offline_message: statusSettings.offlineMessage,
       use_embed: statusSettings.useEmbed
     }
+    console.log('📮 Posting status message with payload:', payload)
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
       method: 'POST',
       headers: {
@@ -1465,7 +1471,7 @@ const postStatusMessage = async () => {
     if (!response.ok) {
       console.error('Failed to queue status message:', response.status, response.statusText)
     } else {
-      console.log('Status message queued for posting/updating')
+      console.log('✅ Status message queued for posting/updating')
     }
   } catch (error) {
     console.error('Error queuing status message:', error)
