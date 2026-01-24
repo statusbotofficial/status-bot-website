@@ -178,6 +178,8 @@ const resolveLastIncident = () => {
     lastIncident.resolved = true
     lastIncident.endTime = Date.now()
     saveIncidents(incidents.value)
+    // Force Vue to detect the change by reassigning the array
+    incidents.value = [...incidents.value]
   }
 }
 
