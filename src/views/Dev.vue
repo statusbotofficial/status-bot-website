@@ -140,6 +140,37 @@
         </div>
       </section>
 
+      <!-- Logged In Users Section -->
+      <section class="dev-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2>Logged In Users</h2>
+          <button @click="fetchLoggedInUsers" :disabled="refreshingUsers" class="dev-btn" style="margin: 0;">
+            {{ refreshingUsers ? 'Refreshing...' : '🔄 Refresh' }}
+          </button>
+        </div>
+        <div class="logged-in-panel">
+          <div v-if="loggedInUsers.length > 0" class="logged-in-list">
+            <div class="logged-in-header">
+              <div class="col-user">User ID</div>
+              <div class="col-login">Last Login</div>
+              <div class="col-status">Status</div>
+            </div>
+            <div v-for="user in loggedInUsers" :key="user.id" class="logged-in-entry">
+              <div class="col-user">{{ user.id }}</div>
+              <div class="col-login">{{ formatLoginTime(user.lastLogin) }}</div>
+              <div class="col-status">
+                <span :class="['status-badge', { 'status-active': isRecentLogin(user.lastLogin) }]">
+                  {{ isRecentLogin(user.lastLogin) ? 'Active' : 'Inactive' }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div v-else class="empty-state">
+            <p>No logged-in users found</p>
+          </div>
+        </div>
+      </section>
+
       <!-- Premium Users Section -->
       <section class="dev-section">
         <h2>Premium Users</h2>
@@ -222,6 +253,8 @@ const removeUserIdInput = ref('')
 const removingPremium = ref(false)
 
 const billingHistory = ref([])
+const loggedInUsers = ref([])
+const refreshingUsers = ref(false)
 
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
@@ -450,10 +483,69 @@ const removePremium = async () => {
   // Remove premium functionality disabled
 }
 
+const fetchLoggedInUsers = async () => {
+  refreshingUsers.value = true
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/logged-in-users`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await response.json()
+    
+    if (data.users && Array.isArray(data.users)) {
+      // Sort by most recent login first
+      loggedInUsers.value = data.users.sort((a, b) => {
+        const timeA = new Date(a.lastLogin).getTime()
+        const timeB = new Date(b.lastLogin).getTime()
+        return timeB - timeA
+      })
+    }
+  } catch (err) {
+  } finally {
+    refreshingUsers.value = false
+  }
+}
+
+const formatLoginTime = (timestamp) => {
+  if (!timestamp) return 'Never'
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diff = now - date
+  
+  const minutes = Math.floor(diff / (1000 * 60))
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  
+  if (minutes < 1) return 'Just now'
+  if (minutes < 60) return `${minutes}m ago`
+  if (hours < 24) return `${hours}h ago`
+  if (days < 7) return `${days}d ago`
+  
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const isRecentLogin = (timestamp) => {
+  if (!timestamp) return false
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diff = now - date
+  // Consider "active" if logged in within the last 30 minutes
+  return diff < 30 * 60 * 1000
+}
+
 onMounted(async () => {
   document.title = 'Developer Tools | Status Bot'
   if (isAuthorized.value) {
     await fetchPremiumUsers()
+    await fetchLoggedInUsers()
   }
 })
 </script>
@@ -1010,9 +1102,82 @@ onMounted(async () => {
   box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
 }
 
+.logged-in-panel {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.logged-in-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.logged-in-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 15px;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(81, 112, 255, 0.2);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.logged-in-entry {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 15px;
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(81, 112, 255, 0.1);
+  align-items: center;
+  font-size: 14px;
+}
+
+.logged-in-entry:last-child {
+  border-bottom: none;
+}
+
+.col-login {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.col-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+  background: rgba(107, 114, 128, 0.2);
+  color: #9ca3af;
+}
+
+.status-badge.status-active {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
 @media (max-width: 1023px) {
   .premium-header,
-  .premium-entry {
+  .premium-entry,
+  .logged-in-header,
+  .logged-in-entry {
     grid-template-columns: 1fr;
   }
 }
