@@ -241,6 +241,8 @@ const hasPremium = ref(false)
 const featuresSection = ref(null)
 
 onMounted(async () => {
+  document.title = 'Premium | Status Bot'
+  
   if (authStore.user?.id) {
     try {
       const response = await fetch(`https://status-bot-backend.onrender.com/api/user-premium/${authStore.user.id}`)

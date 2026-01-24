@@ -57,7 +57,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+
+onMounted(() => {
+  document.title = 'Commands | Status Bot'
+})
 
 const activeCategory = ref('all')
 const searchTerm = ref('')

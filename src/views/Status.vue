@@ -68,6 +68,10 @@ const servers = ref(0)
 const incidents = ref([])
 let pollInterval = null
 
+onMounted(() => {
+  document.title = 'Status | Status Bot'
+})
+
 const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 const OFFLINE_THRESHOLD = 5 * 60 * 1000 // 5 minutes
 const INCIDENT_EXPIRY_DAYS = 7

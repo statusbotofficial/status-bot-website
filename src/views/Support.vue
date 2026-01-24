@@ -99,6 +99,10 @@ import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
 
+onMounted(() => {
+  document.title = 'Support | Status Bot'
+})
+
 const isLoggedIn = computed(() => authStore.isLoggedIn)
 const messages = ref([])
 const inputMessage = ref('')
