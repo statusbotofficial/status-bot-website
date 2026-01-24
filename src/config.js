@@ -1,6 +1,6 @@
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://status-bot-backend.onrender.com'
 export const WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL || 'https://status-bot.xyz'
-export const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID || '1436123870158520411'
+export const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID || '1457454614826848276'
 export const DISCORD_SERVER_URL = import.meta.env.VITE_DISCORD_SERVER_URL || 'https://discord.gg/Kd2MckVxED'
 export const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || 'support@example.com'
 export const DOCS_URL = import.meta.env.VITE_DOCS_URL || 'https://docs.status-bot.xyz'
