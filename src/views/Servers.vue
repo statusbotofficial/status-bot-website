@@ -1250,7 +1250,10 @@ const loadAllSettings = async (guildId) => {
         enabled: data.enabled || false,
         currencyPerMessage: data.per_message || 5,
         currencySymbol: data.currency_symbol || '💰',
-        startingAmount: data.start || 500
+        startingAmount: data.start || 500,
+        balanceMultiplier: data.balanceMultiplier || 1.0,
+        dailyInterestRate: data.dailyInterestRate || 0,
+        robberyChance: data.robberyChance || 50
       })
       localStorage.setItem(`economy_${guildId}`, JSON.stringify(economySettings))
     }
@@ -1259,7 +1262,7 @@ const loadAllSettings = async (guildId) => {
       const data = await statusRes.json()
       Object.assign(statusSettings, {
         enabled: data.enabled || false,
-        userToTrack: data.username || '',
+        userToTrack: '',
         userToTrackId: data.user_id || '',
         trackingChannel: data.channel_id || '',
         delay: data.delay_seconds || 0,
