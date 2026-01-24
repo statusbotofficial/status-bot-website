@@ -15,19 +15,59 @@ export const useAuthStore = defineStore('auth', () => {
     console.log('  Client ID:', DISCORD_CLIENT_ID)
     console.log('  Redirect URI:', redirectUri)
     console.log('  Scopes:', scopes)
-    const url = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`
+    const url = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scopes}`
     console.log('  Full URL:', url.substring(0, 100) + '...')
     return url
   }
 
-  const handleOAuthCallback = () => {
+  const handleOAuthCallback = async () => {
     const hash = window.location.hash
+    const search = window.location.search
     console.log('🔄 OAuth callback detected')
     console.log('  Hash:', hash.substring(0, 100))
+    console.log('  Search:', search.substring(0, 100))
+    
+    // Authorization Code flow (new)
+    if (search) {
+      const params = new URLSearchParams(search.substring(1))
+      const code = params.get('code')
+      const error = params.get('error')
+      
+      if (error) {
+        console.error('  Discord OAuth error:', error)
+        return
+      }
+      
+      if (code) {
+        console.log('  Got authorization code, exchanging for token...')
+        try {
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'https://status-bot-backend.onrender.com'}/api/oauth/exchange`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code })
+          })
+          
+          if (response.ok) {
+            const data = await response.json()
+            token.value = data.access_token
+            localStorage.setItem('discordToken', data.access_token)
+            console.log('✅ Token received from backend')
+            await fetchUserData(data.access_token)
+            window.history.replaceState({}, document.title, window.location.pathname)
+          } else {
+            console.error('  Token exchange failed:', response.status)
+          }
+        } catch (err) {
+          console.error('  Token exchange error:', err)
+        }
+      }
+    }
+    
+    // Implicit flow (old) - keep for backwards compatibility
     if (hash) {
       const params = new URLSearchParams(hash.substring(1))
       const accessToken = params.get('access_token')
-      console.log('  Extracted token:', accessToken ? accessToken.substring(0, 30) + '...' : 'MISSING')
+      console.log('  Extracted token from hash:', accessToken ? accessToken.substring(0, 30) + '...' : 'MISSING')
       if (accessToken) {
         token.value = accessToken
         localStorage.setItem('discordToken', accessToken)
