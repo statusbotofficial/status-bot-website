@@ -1250,19 +1250,28 @@ const loadAllSettings = async (guildId) => {
         enabled: data.enabled || false,
         currencyPerMessage: data.per_message || 5,
         currencySymbol: data.currency_symbol || '💰',
-        startingAmount: data.start || 500
+        startingAmount: data.start || 500,
+        balanceMultiplier: data.balance_multiplier || 1.0,
+        dailyInterestRate: data.daily_interest_rate || 0,
+        robberyChance: data.robbery_chance || 50
       })
       localStorage.setItem(`economy_${guildId}`, JSON.stringify(economySettings))
     }
     
     if (statusRes.ok) {
       const data = await statusRes.json()
+      const userId = data.user_id || ''
+      let username = ''
+      if (userId) {
+        const member = guildMembers.value.find(m => m.id === userId)
+        username = member ? member.username : userId
+      }
       Object.assign(statusSettings, {
         enabled: data.enabled || false,
-        userToTrack: data.username || '',
-        userToTrackId: data.user_id || '',
+        userToTrack: username || '',
+        userToTrackId: userId,
         trackingChannel: data.channel_id || '',
-        delay: data.delay_seconds || 0,
+        delay: data.delay_seconds || 60,
         useEmbed: data.use_embed || false,
         offlineMessage: data.offline_message || 'User is offline',
         messageId: data.message_id || null
@@ -1432,13 +1441,23 @@ const saveLevelingSettings = async () => {
   if (!selectedServer.value) return
   setSaveState(levelingSaveLoading, levelingSaveSuccess)
   try {
+    const payload = {
+      enabled: levelingSettings.enabled,
+      xpPerMessage: levelingSettings.xpPerMessage,
+      voiceXp: levelingSettings.voiceXp,
+      xpCooldown: levelingSettings.xpCooldown,
+      levelUpMessage: levelingSettings.levelUpMessage,
+      levelUpChannel: levelingSettings.levelUpChannel,
+      allowedChannels: levelingSettings.allowedChannels,
+      leveling_type: levelingSettings.levelingType
+    }
     const response = await fetch(`${BACKEND_URL}/api/leveling/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       },
-      body: JSON.stringify(levelingSettings)
+      body: JSON.stringify(payload)
     })
     if (response.ok) {
       resetSaveState(levelingSaveLoading, levelingSaveSuccess)
@@ -1510,12 +1529,12 @@ const saveStatusSettings = async () => {
     const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 60
     const payload = {
       enabled: statusSettings.enabled,
-      userToTrack: statusSettings.userToTrackId,
-      trackingChannel: statusSettings.trackingChannel,
-      delay: delayValue,
+      user_id: statusSettings.userToTrackId,
+      channel_id: statusSettings.trackingChannel,
+      delay_seconds: delayValue,
       automatic: statusSettings.automatic,
-      useEmbed: statusSettings.useEmbed,
-      offlineMessage: statusSettings.offlineMessage
+      use_embed: statusSettings.useEmbed,
+      offline_message: statusSettings.offlineMessage
     }
     console.log('Saving status settings with payload:', payload)
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
@@ -1538,12 +1557,18 @@ const saveStatusSettings = async () => {
       if (reloadRes.ok) {
         const data = await reloadRes.json()
         console.log('Reloaded settings from backend:', data)
+        const userId = data.user_id || ''
+        let username = ''
+        if (userId) {
+          const member = guildMembers.value.find(m => m.id === userId)
+          username = member ? member.username : userId
+        }
         Object.assign(statusSettings, {
           enabled: data.enabled === true,
-          userToTrack: data.user_id || '',
-          userToTrackId: data.user_id || '',
+          userToTrack: username || '',
+          userToTrackId: userId,
           trackingChannel: data.channel_id || '',
-          delay: data.delay_seconds || 0,
+          delay: data.delay_seconds || 60,
           useEmbed: data.use_embed === true,
           automatic: data.automatic === true,
           offlineMessage: data.offline_message || 'User is offline',
