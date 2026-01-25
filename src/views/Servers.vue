@@ -1435,13 +1435,23 @@ const saveLevelingSettings = async () => {
   if (!selectedServer.value) return
   setSaveState(levelingSaveLoading, levelingSaveSuccess)
   try {
+    const payload = {
+      enabled: levelingSettings.enabled,
+      leveling_type: levelingSettings.levelingType,
+      xp_per_message: levelingSettings.xpPerMessage,
+      vc_xp_per_minute: levelingSettings.voiceXp,
+      xp_cooldown: levelingSettings.xpCooldown,
+      level_up_message: levelingSettings.levelUpMessage,
+      level_up_channel: levelingSettings.levelUpChannel,
+      allowed_xp_channels: levelingSettings.allowedChannels ? levelingSettings.allowedChannels.split(',').map(c => c.trim()) : []
+    }
     const response = await fetch(`${BACKEND_URL}/api/leveling/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       },
-      body: JSON.stringify(levelingSettings)
+      body: JSON.stringify(payload)
     })
     if (response.ok) {
       resetSaveState(levelingSaveLoading, levelingSaveSuccess)
@@ -1457,13 +1467,22 @@ const saveEconomySettings = async () => {
   if (!selectedServer.value) return
   setSaveState(economySaveLoading, economySaveSuccess)
   try {
+    const payload = {
+      enabled: economySettings.enabled,
+      per_message: economySettings.currencyPerMessage,
+      currency_symbol: economySettings.currencySymbol,
+      start: economySettings.startingAmount,
+      balanceMultiplier: economySettings.balanceMultiplier || 1.0,
+      dailyInterestRate: economySettings.dailyInterestRate || 0,
+      robberyChance: economySettings.robberyChance || 50
+    }
     const response = await fetch(`${BACKEND_URL}/api/economy/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       },
-      body: JSON.stringify(economySettings)
+      body: JSON.stringify(payload)
     })
     if (response.ok) {
       resetSaveState(economySaveLoading, economySaveSuccess)
@@ -1510,7 +1529,7 @@ const saveStatusSettings = async () => {
   if (!selectedServer.value) return
   setSaveState(statusSaveLoading, statusSaveSuccess)
   try {
-    const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 60
+    const delayValue = statusSettings.delay ? parseInt(statusSettings.delay) : 0
     const payload = {
       enabled: statusSettings.enabled,
       userToTrack: statusSettings.userToTrackId,
