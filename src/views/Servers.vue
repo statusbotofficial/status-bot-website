@@ -293,14 +293,25 @@
               <div class="setting-item">
                 <label>Level up channel</label>
                 <div class="channel-selector">
-                  <i v-if="levelingChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
-                  <input
-                    type="text"
-                    :value="levelingChannelName"
-                    placeholder="None selected"
-                    disabled
-                    class="input-field"
-                  />
+                  <div v-if="levelingChannelIsVoice" class="input-wrapper">
+                    <i class="fas fa-volume-up"></i>
+                    <input
+                      type="text"
+                      :value="levelingChannelName"
+                      placeholder="None selected"
+                      disabled
+                      class="input-field input-with-icon"
+                    />
+                  </div>
+                  <template v-else>
+                    <input
+                      type="text"
+                      :value="levelingChannelName"
+                      placeholder="None selected"
+                      disabled
+                      class="input-field"
+                    />
+                  </template>
                   <button @click="openChannelSelector('levelingSettings', 'levelUpChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -418,14 +429,25 @@
               <div class="setting-item">
                 <label>Channel to post in</label>
                 <div class="channel-selector">
-                  <i v-if="trackingChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
-                  <input
-                    type="text"
-                    :value="trackingChannelName"
-                    placeholder="None selected"
-                    disabled
-                    class="input-field"
-                  />
+                  <div v-if="trackingChannelIsVoice" class="input-wrapper">
+                    <i class="fas fa-volume-up"></i>
+                    <input
+                      type="text"
+                      :value="trackingChannelName"
+                      placeholder="None selected"
+                      disabled
+                      class="input-field input-with-icon"
+                    />
+                  </div>
+                  <template v-else>
+                    <input
+                      type="text"
+                      :value="trackingChannelName"
+                      placeholder="None selected"
+                      disabled
+                      class="input-field"
+                    />
+                  </template>
                   <button @click="openChannelSelector('statusSettings', 'trackingChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -477,14 +499,25 @@
               <div class="setting-item">
                 <label>Welcome channel</label>
                 <div class="channel-selector">
-                  <i v-if="welcomeChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
-                  <input
-                    v-model="welcomeChannelName"
-                    type="text"
-                    placeholder="None selected"
-                    disabled
-                    class="input-field"
-                  />
+                  <div v-if="welcomeChannelIsVoice" class="input-wrapper">
+                    <i class="fas fa-volume-up"></i>
+                    <input
+                      v-model="welcomeChannelName"
+                      type="text"
+                      placeholder="None selected"
+                      disabled
+                      class="input-field input-with-icon"
+                    />
+                  </div>
+                  <template v-else>
+                    <input
+                      v-model="welcomeChannelName"
+                      type="text"
+                      placeholder="None selected"
+                      disabled
+                      class="input-field"
+                    />
+                  </template>
                   <button @click="openChannelSelector('welcomeSettings', 'welcomeChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -628,14 +661,25 @@
               <div class="setting-item">
                 <label>Member Count Channel</label>
                 <div class="channel-selector">
-                  <i v-if="memberCountChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
-                  <input 
-                    v-model="memberCountChannelName" 
-                    type="text" 
-                    class="input-field" 
-                    disabled 
-                    placeholder="Select channel..." 
-                  />
+                  <div v-if="memberCountChannelIsVoice" class="input-wrapper">
+                    <i class="fas fa-volume-up"></i>
+                    <input 
+                      v-model="memberCountChannelName" 
+                      type="text" 
+                      class="input-field input-with-icon" 
+                      disabled 
+                      placeholder="Select channel..." 
+                    />
+                  </div>
+                  <template v-else>
+                    <input 
+                      v-model="memberCountChannelName" 
+                      type="text" 
+                      class="input-field" 
+                      disabled 
+                      placeholder="Select channel..." 
+                    />
+                  </template>
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberCountChannelId')" class="select-btn">+</button>
                 </div>
                 <small>Channel name will display as: "Members: 150"</small>
@@ -644,14 +688,25 @@
               <div class="setting-item">
                 <label>Member Goal Channel</label>
                 <div class="channel-selector">
-                  <i v-if="memberGoalChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
-                  <input 
-                    v-model="memberGoalChannelName" 
-                    type="text" 
-                    class="input-field" 
-                    disabled 
-                    placeholder="Select channel..." 
-                  />
+                  <div v-if="memberGoalChannelIsVoice" class="input-wrapper">
+                    <i class="fas fa-volume-up"></i>
+                    <input 
+                      v-model="memberGoalChannelName" 
+                      type="text" 
+                      class="input-field input-with-icon" 
+                      disabled 
+                      placeholder="Select channel..." 
+                    />
+                  </div>
+                  <template v-else>
+                    <input 
+                      v-model="memberGoalChannelName" 
+                      type="text" 
+                      class="input-field" 
+                      disabled 
+                      placeholder="Select channel..." 
+                    />
+                  </template>
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberGoalChannelId')" class="select-btn">+</button>
                 </div>
                 <small>Channel will display goal countdown or completion status</small>
@@ -3214,6 +3269,25 @@ const copyItemJson = (item) => {
 
 .channel-selector .input-field {
   flex: 1;
+}
+
+.input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 12px;
+  color: #666;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.input-with-icon {
+  padding-left: 36px !important;
 }
 
 .select-btn {
