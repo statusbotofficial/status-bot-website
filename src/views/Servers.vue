@@ -3928,47 +3928,22 @@ const copyItemJson = (item) => {
     gap: 20px !important;
   }
 
-  .leaderboard {
-    gap: 12px;
-  }
-
   .leaderboard-item {
-    padding: 16px 14px;
+    padding: 12px;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
 
-  .leaderboard-item .user-info {
-    margin-top: 8px;
-  }
-
-  .leaderboard-item .username {
-    font-size: 14px;
-  }
-
-  .leaderboard-item .level {
-    font-size: 12px;
-  }
-
   .leaderboard-item .stats {
     width: 100%;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    justify-items: center;
+    gap: 8px;
   }
 
   .leaderboard-item .stat-item {
     flex-direction: column;
-    gap: 3px;
-  }
-
-  .leaderboard-item .label {
-    font-size: 11px;
-  }
-
-  .leaderboard-item .value {
-    font-size: 13px;
+    gap: 4px;
   }
 
   .info-box,
@@ -4027,22 +4002,58 @@ const copyItemJson = (item) => {
     font-size: 14px;
   }
 
+  .leaderboard {
+    gap: 12px;
+  }
+
   .leaderboard-item {
-    flex-wrap: wrap;
+    padding: 14px 12px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .leaderboard-item .user-info {
     width: 100%;
+    margin-top: 8px;
+  }
+
+  .leaderboard-item .username {
+    font-size: 13px;
+  }
+
+  .leaderboard-item .level {
+    font-size: 11px;
   }
 
   .leaderboard-item .stats {
     grid-template-columns: 1fr 1fr;
     width: 100%;
+    gap: 8px;
+    justify-items: center;
+    margin-top: 8px;
+  }
+
+  .leaderboard-item .stat-item {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .leaderboard-item .label {
+    font-size: 10px;
+  }
+
+  .leaderboard-item .value {
+    font-size: 12px;
   }
 
   .avatar {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .rank {
+    font-size: 14px;
   }
 
   .button-group {
