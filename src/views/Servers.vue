@@ -293,6 +293,7 @@
               <div class="setting-item">
                 <label>Level up channel</label>
                 <div class="channel-selector">
+                  <i v-if="levelingChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <input
                     type="text"
                     :value="levelingChannelName"
@@ -300,7 +301,6 @@
                     disabled
                     class="input-field"
                   />
-                  <i v-if="levelingChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('levelingSettings', 'levelUpChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -418,6 +418,7 @@
               <div class="setting-item">
                 <label>Channel to post in</label>
                 <div class="channel-selector">
+                  <i v-if="trackingChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <input
                     type="text"
                     :value="trackingChannelName"
@@ -425,7 +426,6 @@
                     disabled
                     class="input-field"
                   />
-                  <i v-if="trackingChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('statusSettings', 'trackingChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -477,6 +477,7 @@
               <div class="setting-item">
                 <label>Welcome channel</label>
                 <div class="channel-selector">
+                  <i v-if="welcomeChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <input
                     v-model="welcomeChannelName"
                     type="text"
@@ -484,7 +485,6 @@
                     disabled
                     class="input-field"
                   />
-                  <i v-if="welcomeChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('welcomeSettings', 'welcomeChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -628,6 +628,7 @@
               <div class="setting-item">
                 <label>Member Count Channel</label>
                 <div class="channel-selector">
+                  <i v-if="memberCountChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <input 
                     v-model="memberCountChannelName" 
                     type="text" 
@@ -635,7 +636,6 @@
                     disabled 
                     placeholder="Select channel..." 
                   />
-                  <i v-if="memberCountChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberCountChannelId')" class="select-btn">+</button>
                 </div>
                 <small>Channel name will display as: "Members: 150"</small>
@@ -644,6 +644,7 @@
               <div class="setting-item">
                 <label>Member Goal Channel</label>
                 <div class="channel-selector">
+                  <i v-if="memberGoalChannelIsVoice" class="fas fa-volume-up" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <input 
                     v-model="memberGoalChannelName" 
                     type="text" 
@@ -651,7 +652,6 @@
                     disabled 
                     placeholder="Select channel..." 
                   />
-                  <i v-if="memberGoalChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberGoalChannelId')" class="select-btn">+</button>
                 </div>
                 <small>Channel will display goal countdown or completion status</small>
