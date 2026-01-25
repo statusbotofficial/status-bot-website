@@ -89,8 +89,9 @@
 
         <!-- Main Content -->
         <main class="config-main">
-          <!-- Overview -->
-          <section v-if="activeSection === 'overview'" class="config-section">
+          <Transition name="section-fade" mode="out-in">
+            <!-- Overview -->
+            <section v-if="activeSection === 'overview'" class="config-section" key="overview">
             <div class="overview-container">
               <!-- Server Stats -->
               <div class="stats-grid">
@@ -186,7 +187,7 @@
           </section>
 
           <!-- Leaderboard Page -->
-          <section v-else-if="activeSection === 'leaderboard'" class="config-section">
+          <section v-else-if="activeSection === 'leaderboard'" class="config-section" key="leaderboard">
             <div style="display: grid; grid-template-columns: 1fr 500px; gap: 40px; align-items: start;">
               <!-- Main Leaderboard -->
               <div>
@@ -254,7 +255,7 @@
           </section>
 
           <!-- Leveling -->
-          <section v-else-if="activeSection === 'leveling'" class="config-section">
+          <section v-else-if="activeSection === 'leveling'" class="config-section" key="leveling">
             <h3>Leveling Settings</h3>
             <div class="settings-box">
               <div class="setting-item">
@@ -355,7 +356,7 @@
           </section>
 
           <!-- Economy -->
-          <section v-else-if="activeSection === 'economy'" class="config-section">
+          <section v-else-if="activeSection === 'economy'" class="config-section" key="economy">
             <h3>Economy System <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></h3>
             <div class="settings-box">
               <div class="setting-item">
@@ -404,7 +405,7 @@
           </section>
 
           <!-- Status Tracking -->
-          <section v-else-if="activeSection === 'status-tracking'" class="config-section">
+          <section v-else-if="activeSection === 'status-tracking'" class="config-section" key="status-tracking">
             <h3>Status Tracking</h3>
             <div class="settings-box">
               <div class="setting-item">
@@ -488,7 +489,7 @@
           </section>
 
           <!-- Welcome -->
-          <section v-else-if="activeSection === 'welcome'" class="config-section">
+          <section v-else-if="activeSection === 'welcome'" class="config-section" key="welcome">
             <h3>Welcome Messages</h3>
             <div class="settings-box">
               <div class="setting-item">
@@ -650,7 +651,7 @@
           </section>
 
           <!-- Member Goals -->
-          <section v-else-if="activeSection === 'member-goals'" class="config-section">
+          <section v-else-if="activeSection === 'member-goals'" class="config-section" key="member-goals">
             <h3>Member Goals</h3>
             <div class="settings-box">
               <div class="setting-item">
@@ -729,7 +730,7 @@
           </section>
 
           <!-- Activity Logs -->
-          <section v-else-if="activeSection === 'logs'" class="config-section">
+          <section v-else-if="activeSection === 'logs'" class="config-section" key="logs">
             <h3>Activity Logs</h3>
             <div class="logs-container">
               <div v-if="logsLoading" class="loading">Loading logs...</div>
@@ -745,6 +746,7 @@
               <div v-else class="empty">No logs yet</div>
             </div>
           </section>
+          </Transition>
         </main>
       </div>
     </div>
@@ -4017,5 +4019,27 @@ input:disabled {
   color: #666;
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+/* Section Transition Animations */
+.section-fade-enter-active,
+.section-fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.section-fade-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.section-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.section-fade-enter-to,
+.section-fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
