@@ -1083,29 +1083,4 @@ main {
   z-index: 999;
   box-shadow: 0 0 10px rgba(81, 112, 255, 0.6);
 }
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(81, 112, 255, 0.5);
-  border-radius: 5px;
-  transition: background 0.2s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(81, 112, 255, 0.8);
-}
-
-/* Firefox Scrollbar */
-* {
-  scrollbar-color: rgba(81, 112, 255, 0.5) transparent;
-  scrollbar-width: thin;
-}
 </style>
