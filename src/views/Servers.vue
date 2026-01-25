@@ -794,27 +794,12 @@
       @close="closeLevelingFormulaModal"
     />
 
-    <!-- Placeholders Modal -->
-    <div v-if="showPlaceholdersModal" class="modal-overlay" @click="showPlaceholdersModal = false">
-      <div class="modal-content placeholders-modal" @click.stop>
-        <div class="modal-header">
-          <h3>Available Placeholders</h3>
-          <button class="modal-close" @click="showPlaceholdersModal = false">×</button>
-        </div>
-        <div class="placeholders-list">
-          <div v-for="placeholder in placeholders" :key="placeholder.name" class="placeholder-item">
-            <div class="placeholder-info">
-              <code class="placeholder-name">{{ placeholder.name }}</code>
-              <p class="placeholder-description">{{ placeholder.description }}</p>
-            </div>
-            <button @click="copyPlaceholder(placeholder.name)" class="copy-btn">
-              <i class="fas fa-copy"></i>
-              Copy
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <PlaceholdersModal 
+      :isOpen="showPlaceholdersModal"
+      title="Available Placeholders"
+      :placeholders="placeholders"
+      @close="showPlaceholdersModal = false"
+    />
 
   </div>
 </template>
@@ -825,6 +810,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 import SelectorModal from '../components/SelectorModal.vue'
+import PlaceholdersModal from '../components/PlaceholdersModal.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -4127,108 +4113,4 @@ input[type="number"] {
   background: rgba(81, 112, 255, 0.25);
   border-color: rgba(81, 112, 255, 0.5);
 }
-
-/* Placeholders Modal */
-.placeholders-modal {
-  max-width: 600px;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  color: #999;
-  font-size: 28px;
-  cursor: pointer;
-  padding: 0;
-  transition: color 0.2s ease;
-}
-
-.modal-close:hover {
-  color: #fff;
-}
-
-.placeholders-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.placeholder-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.placeholder-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.placeholder-info {
-  flex: 1;
-}
-
-.placeholder-name {
-  display: block;
-  color: #5170ff;
-  font-family: 'Monaco', 'Courier New', monospace;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  background: rgba(81, 112, 255, 0.15);
-  padding: 4px 8px;
-  border-radius: 4px;
-  width: fit-content;
-}
-
-.placeholder-description {
-  color: #999;
-  font-size: 13px;
-  margin: 4px 0 0 0;
-}
-
-.copy-btn {
-  padding: 8px 12px;
-  background: rgba(81, 112, 255, 0.15);
-  border: 1px solid rgba(81, 112, 255, 0.3);
-  border-radius: 6px;
-  color: #5170ff;
-  font-weight: 500;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.copy-btn:hover {
-  background: rgba(81, 112, 255, 0.25);
-  border-color: rgba(81, 112, 255, 0.5);
-}
-
 </style>
