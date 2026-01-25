@@ -54,39 +54,62 @@ const copyPlaceholder = (placeholder) => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .placeholders-modal {
-  background: #2a2a2e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 2px solid #5170ff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(81, 112, 255, 0.2);
   max-width: 600px;
   width: 90%;
   max-height: 80vh;
-  overflow-y: auto;
-  padding: 24px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px;
+  border-bottom: 1px solid rgba(81, 112, 255, 0.2);
 }
 
 .modal-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
   margin: 0;
   color: #fff;
-  font-size: 18px;
-  font-weight: 600;
 }
 
 .close-btn {
@@ -96,38 +119,62 @@ const copyPlaceholder = (placeholder) => {
   font-size: 28px;
   cursor: pointer;
   padding: 0;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s ease;
+  transition: text-shadow 0.2s ease;
+  border-radius: 8px;
+  flex-shrink: 0;
+  margin-top: -2px;
 }
 
 .close-btn:hover {
-  color: #fff;
+  text-shadow: 0 0 10px rgba(81, 112, 255, 0.6);
 }
 
 .placeholders-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+  max-height: 400px;
+}
+
+.placeholders-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.placeholders-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.placeholders-list::-webkit-scrollbar-thumb {
+  background: rgba(81, 112, 255, 0.3);
+  border-radius: 3px;
+}
+
+.placeholders-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(81, 112, 255, 0.5);
 }
 
 .placeholder-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  padding: 12px 14px;
+  background: rgba(80, 80, 80, 0.2);
+  border: 1px solid transparent;
+  border-radius: 10px;
   transition: all 0.2s ease;
 }
 
 .placeholder-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(80, 80, 80, 0.4);
+  border-color: rgba(81, 112, 255, 0.3);
 }
 
 .placeholder-info {
@@ -154,12 +201,12 @@ const copyPlaceholder = (placeholder) => {
 }
 
 .copy-btn {
-  padding: 8px 12px;
-  background: rgba(81, 112, 255, 0.15);
+  padding: 8px 16px;
+  background: rgba(80, 80, 80, 0.5);
   border: 1px solid rgba(81, 112, 255, 0.3);
-  border-radius: 6px;
-  color: #5170ff;
-  font-weight: 500;
+  border-radius: 8px;
+  color: #ccc;
+  font-weight: 600;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -171,7 +218,13 @@ const copyPlaceholder = (placeholder) => {
 }
 
 .copy-btn:hover {
-  background: rgba(81, 112, 255, 0.25);
+  background: rgba(80, 80, 80, 0.7);
+  color: #fff;
+  transform: translateY(-2px);
   border-color: rgba(81, 112, 255, 0.5);
+}
+
+.copy-btn:active {
+  transform: translateY(0);
 }
 </style>
