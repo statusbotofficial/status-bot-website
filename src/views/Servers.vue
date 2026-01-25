@@ -3216,8 +3216,8 @@ const copyItemJson = (item) => {
 }
 
 .settings-box {
-  background: rgba(30, 30, 35, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 35, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   padding: 20px;
   display: flex;
@@ -3239,9 +3239,9 @@ const copyItemJson = (item) => {
 
 .input-field {
   padding: 10px 12px;
-  background: rgba(81, 112, 255, 0.2);
-  border: 2px solid #5170ff;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
   color: #fff;
   font-weight: 500;
   font-size: 14px;
@@ -3250,11 +3250,14 @@ const copyItemJson = (item) => {
 }
 
 .input-field:hover {
-  background: rgba(81, 112, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .input-field:focus {
-  box-shadow: 0 0 12px rgba(81, 112, 255, 0.4);
+  background: rgba(81, 112, 255, 0.1);
+  border-color: #5170ff;
+  box-shadow: 0 0 0 3px rgba(81, 112, 255, 0.2);
 }
 
 .input-field.textarea {
@@ -3384,30 +3387,34 @@ const copyItemJson = (item) => {
 .button-group {
   display: flex;
   gap: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(81, 112, 255, 0.2);
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  align-items: center;
 }
 
 .save-btn {
-  flex: 1;
-  padding: 12px 20px;
-  background: rgba(81, 112, 255, 0.2);
-  border: 2px solid #5170ff;
-  border-radius: 8px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #5170ff 0%, #5170ff 100%);
+  border: none;
+  border-radius: 6px;
   color: #fff;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex: 0 1 auto;
 }
 
 .save-btn:hover {
-  background: rgba(81, 112, 255, 0.35);
+  background: linear-gradient(135deg, #6080ff 0%, #6080ff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.4);
 }
 
 .save-btn.save-success {
-  background: rgba(74, 222, 128, 0.2);
-  border-color: #4ade80;
-  color: #4ade80;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  border: none;
+  color: #fff;
 }
 
 .save-btn:disabled {
@@ -3434,18 +3441,21 @@ const copyItemJson = (item) => {
 }
 
 .reset-btn {
-  padding: 12px 20px;
-  background: rgba(220, 53, 69, 0.2);
-  border: 2px solid #dc3545;
-  border-radius: 8px;
-  color: #dc3545;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #999;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .reset-btn:hover {
-  background: rgba(220, 53, 69, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ccc;
 }
 
 .preset-btn {
@@ -3467,8 +3477,8 @@ const copyItemJson = (item) => {
 
 .small-btn {
   padding: 6px 12px;
-  background: rgba(81, 112, 255, 0.2);
-  border: 1px solid #5170ff;
+  background: rgba(81, 112, 255, 0.15);
+  border: 1px solid rgba(81, 112, 255, 0.3);
   border-radius: 6px;
   color: #5170ff;
   font-weight: 500;
@@ -3478,7 +3488,8 @@ const copyItemJson = (item) => {
 }
 
 .small-btn:hover {
-  background: rgba(81, 112, 255, 0.35);
+  background: rgba(81, 112, 255, 0.25);
+  border-color: rgba(81, 112, 255, 0.5);
 }
 
 .delete-btn {
