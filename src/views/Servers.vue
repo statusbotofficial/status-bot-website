@@ -190,45 +190,43 @@
           <section v-else-if="activeSection === 'leaderboard'" class="config-section" key="leaderboard">
             <div style="display: grid; grid-template-columns: 1fr 500px; gap: 40px; align-items: start;">
               <!-- Main Leaderboard -->
-              <div>
-                <h3>Leaderboard</h3>
-                <div class="settings-box">
-                  <div v-if="leaderboardLoading" class="loading">Loading leaderboard...</div>
-                  <div v-else-if="leaderboardData.length > 0" class="leaderboard leaderboard-full">
-                    <div
-                      v-for="(user, idx) in leaderboardData"
-                      :key="user.id"
-                      class="leaderboard-item"
-                      :class="getMedalClass(idx)"
-                    >
-                      <span class="rank" :class="getMedalClass(idx)"><template v-if="idx === 0"><i class="fas fa-medal" style="color: #ffd700;"></i></template><template v-else-if="idx === 1"><i class="fas fa-medal" style="color: #c0c0c0;"></i></template><template v-else-if="idx === 2"><i class="fas fa-medal" style="color: #cd7f32;"></i></template><template v-else>#{{ idx + 1 }}</template></span>
-                      <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
-                      <div class="user-info">
-                        <p class="username">{{ user.username }}</p>
-                        <p class="level">Level {{ user.level || 0 }}</p>
+              <div class="settings-box">
+                <h3 style="margin: 0 0 16px 0;">Leaderboard</h3>
+                <div v-if="leaderboardLoading" class="loading">Loading leaderboard...</div>
+                <div v-else-if="leaderboardData.length > 0" class="leaderboard leaderboard-full">
+                  <div
+                    v-for="(user, idx) in leaderboardData"
+                    :key="user.id"
+                    class="leaderboard-item"
+                    :class="getMedalClass(idx)"
+                  >
+                    <span class="rank" :class="getMedalClass(idx)"><template v-if="idx === 0"><i class="fas fa-medal" style="color: #ffd700;"></i></template><template v-else-if="idx === 1"><i class="fas fa-medal" style="color: #c0c0c0;"></i></template><template v-else-if="idx === 2"><i class="fas fa-medal" style="color: #cd7f32;"></i></template><template v-else>#{{ idx + 1 }}</template></span>
+                    <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
+                    <div class="user-info">
+                      <p class="username">{{ user.username }}</p>
+                      <p class="level">Level {{ user.level || 0 }}</p>
+                    </div>
+                    <div class="stats">
+                      <div class="stat-item">
+                        <span class="label">XP</span>
+                        <span class="value xp-color">{{ (user.xp || 0).toLocaleString() }}</span>
                       </div>
-                      <div class="stats">
-                        <div class="stat-item">
-                          <span class="label">XP</span>
-                          <span class="value xp-color">{{ (user.xp || 0).toLocaleString() }}</span>
-                        </div>
-                        <div class="stat-item">
-                          <span class="label">Balance</span>
-                          <span class="value balance-color">{{ (user.balance || 0).toLocaleString() }}</span>
-                        </div>
-                        <div class="stat-item">
-                          <span class="label">Voice</span>
-                          <span class="value voice-color">{{ user.voiceTime || 0 }}m</span>
-                        </div>
-                        <div class="stat-item">
-                          <span class="label">Msgs</span>
-                          <span class="value msg-color">{{ (user.messages || 0).toLocaleString() }}</span>
-                        </div>
+                      <div class="stat-item">
+                        <span class="label">Balance</span>
+                        <span class="value balance-color">{{ (user.balance || 0).toLocaleString() }}</span>
+                      </div>
+                      <div class="stat-item">
+                        <span class="label">Voice</span>
+                        <span class="value voice-color">{{ user.voiceTime || 0 }}m</span>
+                      </div>
+                      <div class="stat-item">
+                        <span class="label">Msgs</span>
+                        <span class="value msg-color">{{ (user.messages || 0).toLocaleString() }}</span>
                       </div>
                     </div>
                   </div>
-                  <div v-else class="empty">No leaderboard data available. Users will appear here once they start earning XP!</div>
                 </div>
+                <div v-else class="empty">No leaderboard data available. Users will appear here once they start earning XP!</div>
               </div>
 
               <!-- Right Sidebar: Info Box + Rank Card -->
@@ -3938,7 +3936,8 @@ const copyItemJson = (item) => {
   .leaderboard-item .stats {
     width: 100%;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
+    justify-items: center;
   }
 
   .leaderboard-item .stat-item {
@@ -4002,20 +4001,21 @@ const copyItemJson = (item) => {
     font-size: 14px;
   }
 
-  .leaderboard {
-    gap: 12px;
-  }
-
   .leaderboard-item {
-    padding: 14px 12px;
+    padding: 14px 10px;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 10px;
+  }
+
+  .leaderboard-item .rank {
+    font-size: 14px;
+    min-width: 32px;
   }
 
   .leaderboard-item .user-info {
     width: 100%;
-    margin-top: 8px;
   }
 
   .leaderboard-item .username {
@@ -4023,37 +4023,33 @@ const copyItemJson = (item) => {
   }
 
   .leaderboard-item .level {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .leaderboard-item .stats {
-    grid-template-columns: 1fr 1fr;
     width: 100%;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
     justify-items: center;
-    margin-top: 8px;
   }
 
   .leaderboard-item .stat-item {
     flex-direction: column;
+    align-items: center;
     gap: 3px;
   }
 
   .leaderboard-item .label {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .leaderboard-item .value {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .avatar {
-    width: 36px;
-    height: 36px;
-  }
-
-  .rank {
-    font-size: 14px;
+    width: 44px;
+    height: 44px;
   }
 
   .button-group {
