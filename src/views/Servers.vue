@@ -1007,19 +1007,25 @@ const memberSelectorItems = computed(() => {
 const trackingChannelName = computed(() => {
   if (!statusSettings.trackingChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === statusSettings.trackingChannel)
-  return channel ? channel.name : statusSettings.trackingChannel
+  if (!channel) return statusSettings.trackingChannel
+  const icon = channel.type === 'voice' ? '🔊' : '#'
+  return `${icon} ${channel.name}`
 })
 
 const levelingChannelName = computed(() => {
   if (!levelingSettings.levelUpChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === levelingSettings.levelUpChannel)
-  return channel ? channel.name : levelingSettings.levelUpChannel
+  if (!channel) return levelingSettings.levelUpChannel
+  const icon = channel.type === 'voice' ? '🔊' : '#'
+  return `${icon} ${channel.name}`
 })
 
 const welcomeChannelName = computed(() => {
   if (!welcomeSettings.welcomeChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === welcomeSettings.welcomeChannel)
-  return channel ? channel.name : welcomeSettings.welcomeChannel
+  if (!channel) return welcomeSettings.welcomeChannel
+  const icon = channel.type === 'voice' ? '🔊' : '#'
+  return `${icon} ${channel.name}`
 })
 
 const trackedUserName = computed(() => {
@@ -1055,7 +1061,9 @@ const allowedChannelsDisplay = computed(() => {
   return channelIds
     .map(id => {
       const channel = guildChannels.value.find(c => c.id === id)
-      return channel ? channel.name : id
+      if (!channel) return id
+      const icon = channel.type === 'voice' ? '🔊' : '#'
+      return `${icon} ${channel.name}`
     })
     .filter(Boolean)
     .join(', ')
