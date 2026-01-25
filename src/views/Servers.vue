@@ -629,7 +629,7 @@
                     v-model="memberCountChannelName" 
                     type="text" 
                     class="input-field" 
-                    readonly 
+                    disabled 
                     placeholder="Select channel..." 
                   />
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberCountChannelId')" class="select-btn">+</button>
@@ -644,7 +644,7 @@
                     v-model="memberGoalChannelName" 
                     type="text" 
                     class="input-field" 
-                    readonly 
+                    disabled 
                     placeholder="Select channel..." 
                   />
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberGoalChannelId')" class="select-btn">+</button>
@@ -1031,13 +1031,17 @@ const trackedUserName = computed(() => {
 const memberCountChannelName = computed(() => {
   if (!memberGoalsSettings.memberCountChannelId) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === memberGoalsSettings.memberCountChannelId)
-  return channel ? channel.name : memberGoalsSettings.memberCountChannelId
+  if (!channel) return memberGoalsSettings.memberCountChannelId
+  const icon = channel.type === 'voice' ? '🔊' : '#'
+  return `${icon} ${channel.name}`
 })
 
 const memberGoalChannelName = computed(() => {
   if (!memberGoalsSettings.memberGoalChannelId) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === memberGoalsSettings.memberGoalChannelId)
-  return channel ? channel.name : memberGoalsSettings.memberGoalChannelId
+  if (!channel) return memberGoalsSettings.memberGoalChannelId
+  const icon = channel.type === 'voice' ? '🔊' : '#'
+  return `${icon} ${channel.name}`
 })
 
 const allowedChannelsDisplay = computed(() => {
@@ -1334,7 +1338,8 @@ const loadGuildChannels = async (guildId) => {
       const data = await response.json()
       guildChannels.value = (data.channels || []).map(c => ({
         id: c.id,
-        name: c.name || 'Unknown Channel'
+        name: c.name || 'Unknown Channel',
+        type: c.type || 'text'
       }))
     }
   } catch (error) {
