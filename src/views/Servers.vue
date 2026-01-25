@@ -230,7 +230,7 @@
               </div>
 
               <!-- Right Sidebar: Info Box + Rank Card -->
-              <div style="display: flex; flex-direction: column; gap: 40px; margin-top: 54px;">
+              <div style="display: flex; flex-direction: column; gap: 24px; margin-top: 54px;">
                 <!-- How XP Works Info Box -->
                 <div class="info-box">
                   <h3>How XP works</h3>
@@ -2421,18 +2421,17 @@ const copyItemJson = (item) => {
 .leaderboard {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
-.user-row,
 .leaderboard-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 16px;
+  padding: 18px 20px;
   background: rgba(81, 112, 255, 0.05);
   border: 1px solid rgba(81, 112, 255, 0.15);
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .leaderboard-item.gold {
@@ -2469,8 +2468,8 @@ const copyItemJson = (item) => {
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -3183,7 +3182,7 @@ const copyItemJson = (item) => {
 }
 
 .leaderboard-full {
-  max-height: calc(100vh - 280px);
+  max-height: calc(100vh - 180px);
   overflow-y: auto;
   padding-right: 10px;
 }
@@ -3937,7 +3936,8 @@ const copyItemJson = (item) => {
   .leaderboard-item .stats {
     width: 100%;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
+    justify-items: center;
   }
 
   .leaderboard-item .stat-item {
@@ -4015,8 +4015,8 @@ const copyItemJson = (item) => {
   }
 
   .avatar {
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
   }
 
   .button-group {
