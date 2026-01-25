@@ -192,41 +192,43 @@
               <!-- Main Leaderboard -->
               <div>
                 <h3>Leaderboard</h3>
-                <div v-if="leaderboardLoading" class="loading">Loading leaderboard...</div>
-                <div v-else-if="leaderboardData.length > 0" class="leaderboard leaderboard-full">
-                  <div
-                    v-for="(user, idx) in leaderboardData"
-                    :key="user.id"
-                    class="leaderboard-item"
-                    :class="getMedalClass(idx)"
-                  >
-                    <span class="rank" :class="getMedalClass(idx)"><template v-if="idx === 0"><i class="fas fa-medal" style="color: #ffd700;"></i></template><template v-else-if="idx === 1"><i class="fas fa-medal" style="color: #c0c0c0;"></i></template><template v-else-if="idx === 2"><i class="fas fa-medal" style="color: #cd7f32;"></i></template><template v-else>#{{ idx + 1 }}</template></span>
-                    <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
-                    <div class="user-info">
-                      <p class="username">{{ user.username }}</p>
-                      <p class="level">Level {{ user.level || 0 }}</p>
-                    </div>
-                    <div class="stats">
-                      <div class="stat-item">
-                        <span class="label">XP</span>
-                        <span class="value xp-color">{{ (user.xp || 0).toLocaleString() }}</span>
+                <div class="settings-box">
+                  <div v-if="leaderboardLoading" class="loading">Loading leaderboard...</div>
+                  <div v-else-if="leaderboardData.length > 0" class="leaderboard leaderboard-full">
+                    <div
+                      v-for="(user, idx) in leaderboardData"
+                      :key="user.id"
+                      class="leaderboard-item"
+                      :class="getMedalClass(idx)"
+                    >
+                      <span class="rank" :class="getMedalClass(idx)"><template v-if="idx === 0"><i class="fas fa-medal" style="color: #ffd700;"></i></template><template v-else-if="idx === 1"><i class="fas fa-medal" style="color: #c0c0c0;"></i></template><template v-else-if="idx === 2"><i class="fas fa-medal" style="color: #cd7f32;"></i></template><template v-else>#{{ idx + 1 }}</template></span>
+                      <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="avatar" />
+                      <div class="user-info">
+                        <p class="username">{{ user.username }}</p>
+                        <p class="level">Level {{ user.level || 0 }}</p>
                       </div>
-                      <div class="stat-item">
-                        <span class="label">Balance</span>
-                        <span class="value balance-color">{{ (user.balance || 0).toLocaleString() }}</span>
-                      </div>
-                      <div class="stat-item">
-                        <span class="label">Voice</span>
-                        <span class="value voice-color">{{ user.voiceTime || 0 }}m</span>
-                      </div>
-                      <div class="stat-item">
-                        <span class="label">Msgs</span>
-                        <span class="value msg-color">{{ (user.messages || 0).toLocaleString() }}</span>
+                      <div class="stats">
+                        <div class="stat-item">
+                          <span class="label">XP</span>
+                          <span class="value xp-color">{{ (user.xp || 0).toLocaleString() }}</span>
+                        </div>
+                        <div class="stat-item">
+                          <span class="label">Balance</span>
+                          <span class="value balance-color">{{ (user.balance || 0).toLocaleString() }}</span>
+                        </div>
+                        <div class="stat-item">
+                          <span class="label">Voice</span>
+                          <span class="value voice-color">{{ user.voiceTime || 0 }}m</span>
+                        </div>
+                        <div class="stat-item">
+                          <span class="label">Msgs</span>
+                          <span class="value msg-color">{{ (user.messages || 0).toLocaleString() }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div v-else class="empty">No leaderboard data available. Users will appear here once they start earning XP!</div>
                 </div>
-                <div v-else class="empty">No leaderboard data available. Users will appear here once they start earning XP!</div>
               </div>
 
               <!-- Right Sidebar: Info Box + Rank Card -->
@@ -3926,11 +3928,27 @@ const copyItemJson = (item) => {
     gap: 20px !important;
   }
 
+  .leaderboard {
+    gap: 12px;
+  }
+
   .leaderboard-item {
-    padding: 12px;
+    padding: 16px 14px;
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+
+  .leaderboard-item .user-info {
+    margin-top: 8px;
+  }
+
+  .leaderboard-item .username {
+    font-size: 14px;
+  }
+
+  .leaderboard-item .level {
+    font-size: 12px;
   }
 
   .leaderboard-item .stats {
@@ -3942,7 +3960,15 @@ const copyItemJson = (item) => {
 
   .leaderboard-item .stat-item {
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
+  }
+
+  .leaderboard-item .label {
+    font-size: 11px;
+  }
+
+  .leaderboard-item .value {
+    font-size: 13px;
   }
 
   .info-box,
@@ -4015,8 +4041,8 @@ const copyItemJson = (item) => {
   }
 
   .avatar {
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
   }
 
   .button-group {
