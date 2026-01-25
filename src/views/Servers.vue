@@ -300,6 +300,7 @@
                     disabled
                     class="input-field"
                   />
+                  <i v-if="levelingChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('levelingSettings', 'levelUpChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -424,6 +425,7 @@
                     disabled
                     class="input-field"
                   />
+                  <i v-if="trackingChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('statusSettings', 'trackingChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -482,6 +484,7 @@
                     disabled
                     class="input-field"
                   />
+                  <i v-if="welcomeChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('welcomeSettings', 'welcomeChannel')" class="select-btn">+</button>
                 </div>
               </div>
@@ -632,6 +635,7 @@
                     disabled 
                     placeholder="Select channel..." 
                   />
+                  <i v-if="memberCountChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberCountChannelId')" class="select-btn">+</button>
                 </div>
                 <small>Channel name will display as: "Members: 150"</small>
@@ -647,6 +651,7 @@
                     disabled 
                     placeholder="Select channel..." 
                   />
+                  <i v-if="memberGoalChannelIsVoice" class="fas fa-microphone" style="color: #5170ff; font-size: 16px; width: 50px; display: flex; align-items: center; justify-content: center;"></i>
                   <button @click="openChannelSelector('memberGoalsSettings', 'memberGoalChannelId')" class="select-btn">+</button>
                 </div>
                 <small>Channel will display goal countdown or completion status</small>
@@ -1008,24 +1013,21 @@ const trackingChannelName = computed(() => {
   if (!statusSettings.trackingChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === statusSettings.trackingChannel)
   if (!channel) return statusSettings.trackingChannel
-  const icon = channel.type === 'voice' ? '🔊' : '#'
-  return `${icon} ${channel.name}`
+  return channel.type === 'voice' ? channel.name : `# ${channel.name}`
 })
 
 const levelingChannelName = computed(() => {
   if (!levelingSettings.levelUpChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === levelingSettings.levelUpChannel)
   if (!channel) return levelingSettings.levelUpChannel
-  const icon = channel.type === 'voice' ? '🔊' : '#'
-  return `${icon} ${channel.name}`
+  return channel.type === 'voice' ? channel.name : `# ${channel.name}`
 })
 
 const welcomeChannelName = computed(() => {
   if (!welcomeSettings.welcomeChannel) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === welcomeSettings.welcomeChannel)
   if (!channel) return welcomeSettings.welcomeChannel
-  const icon = channel.type === 'voice' ? '🔊' : '#'
-  return `${icon} ${channel.name}`
+  return channel.type === 'voice' ? channel.name : `# ${channel.name}`
 })
 
 const trackedUserName = computed(() => {
@@ -1038,16 +1040,40 @@ const memberCountChannelName = computed(() => {
   if (!memberGoalsSettings.memberCountChannelId) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === memberGoalsSettings.memberCountChannelId)
   if (!channel) return memberGoalsSettings.memberCountChannelId
-  const icon = channel.type === 'voice' ? '🔊' : '#'
-  return `${icon} ${channel.name}`
+  return channel.type === 'voice' ? channel.name : `# ${channel.name}`
 })
 
 const memberGoalChannelName = computed(() => {
   if (!memberGoalsSettings.memberGoalChannelId) return 'None selected'
   const channel = guildChannels.value.find(c => c.id === memberGoalsSettings.memberGoalChannelId)
   if (!channel) return memberGoalsSettings.memberGoalChannelId
-  const icon = channel.type === 'voice' ? '🔊' : '#'
-  return `${icon} ${channel.name}`
+  return channel.type === 'voice' ? channel.name : `# ${channel.name}`
+})
+
+// Channel type icons for display next to inputs
+const trackingChannelIsVoice = computed(() => {
+  const channel = guildChannels.value.find(c => c.id === statusSettings.trackingChannel)
+  return channel?.type === 'voice'
+})
+
+const levelingChannelIsVoice = computed(() => {
+  const channel = guildChannels.value.find(c => c.id === levelingSettings.levelUpChannel)
+  return channel?.type === 'voice'
+})
+
+const welcomeChannelIsVoice = computed(() => {
+  const channel = guildChannels.value.find(c => c.id === welcomeSettings.welcomeChannel)
+  return channel?.type === 'voice'
+})
+
+const memberCountChannelIsVoice = computed(() => {
+  const channel = guildChannels.value.find(c => c.id === memberGoalsSettings.memberCountChannelId)
+  return channel?.type === 'voice'
+})
+
+const memberGoalChannelIsVoice = computed(() => {
+  const channel = guildChannels.value.find(c => c.id === memberGoalsSettings.memberGoalChannelId)
+  return channel?.type === 'voice'
 })
 
 const allowedChannelsDisplay = computed(() => {
@@ -1062,8 +1088,7 @@ const allowedChannelsDisplay = computed(() => {
     .map(id => {
       const channel = guildChannels.value.find(c => c.id === id)
       if (!channel) return id
-      const icon = channel.type === 'voice' ? '🔊' : '#'
-      return `${icon} ${channel.name}`
+      return channel.type === 'voice' ? channel.name : `# ${channel.name}`
     })
     .filter(Boolean)
     .join(', ')
