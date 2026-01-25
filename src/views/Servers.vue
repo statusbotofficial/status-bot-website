@@ -190,8 +190,8 @@
           <section v-else-if="activeSection === 'leaderboard'" class="config-section" key="leaderboard">
             <div style="display: grid; grid-template-columns: 1fr 500px; gap: 40px; align-items: start;">
               <!-- Main Leaderboard -->
-              <div class="settings-box">
-                <h3 style="margin: 0 0 16px 0;">Leaderboard</h3>
+              <div>
+                <h3>Leaderboard</h3>
                 <div v-if="leaderboardLoading" class="loading">Loading leaderboard...</div>
                 <div v-else-if="leaderboardData.length > 0" class="leaderboard leaderboard-full">
                   <div
@@ -4002,49 +4002,16 @@ const copyItemJson = (item) => {
   }
 
   .leaderboard-item {
-    padding: 14px 10px;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .leaderboard-item .rank {
-    font-size: 14px;
-    min-width: 32px;
+    flex-wrap: wrap;
   }
 
   .leaderboard-item .user-info {
     width: 100%;
   }
 
-  .leaderboard-item .username {
-    font-size: 13px;
-  }
-
-  .leaderboard-item .level {
-    font-size: 12px;
-  }
-
   .leaderboard-item .stats {
-    width: 100%;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    justify-items: center;
-  }
-
-  .leaderboard-item .stat-item {
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-  }
-
-  .leaderboard-item .label {
-    font-size: 11px;
-  }
-
-  .leaderboard-item .value {
-    font-size: 13px;
+    width: 100%;
   }
 
   .avatar {
