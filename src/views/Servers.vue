@@ -858,12 +858,12 @@ const BACKEND_URL = 'https://status-bot-backend.onrender.com'
 
 const sections = [
   { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: white;"></i>' },
-  { id: 'leaderboard', label: 'Leaderboard', icon: '<i class="fas fa-trophy" style="color: #fbbf24;"></i>' },
-  { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: #5170ff;"></i>' },
-  { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: #fbbf24;"></i>' },
-  { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: #10b981;"></i>' },
-  { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-door-open" style="color: #d946ef;"></i>' },
-  { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: #3b82f6;"></i>' },
+  { id: 'leaderboard', label: 'Leaderboard', icon: '<i class="fas fa-trophy" style="color: white;"></i>' },
+  { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: white;"></i>' },
+  { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: white;"></i>' },
+  { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: white;"></i>' },
+  { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-door-open" style="color: white;"></i>' },
+  { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: white;"></i>' },
   { id: 'logs', label: 'Activity Logs', icon: '<i class="fas fa-history" style="color: #ef4444;"></i>' },
 ]
 
@@ -2322,22 +2322,25 @@ const copyItemJson = (item) => {
   font-size: 18px;
   min-width: 24px;
   text-align: center;
-  color: #5170ff;
+  color: white;
 }
 
 .nav-icon i {
   font-size: 18px;
-  color: #5170ff;
+  color: white;
 }
 
 .config-main {
   flex: 1;
-  padding: 40px 50px;
+  padding: 40px;
   overflow-y: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .config-section {
-  max-width: 1000px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .config-section h3 {
@@ -3211,13 +3214,13 @@ const copyItemJson = (item) => {
 }
 
 .settings-box {
-  background: rgba(81, 112, 255, 0.05);
-  border: 1px solid rgba(81, 112, 255, 0.2);
-  border-radius: 12px;
-  padding: 24px;
+  background: rgba(30, 30, 35, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .setting-item {
