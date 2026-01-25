@@ -98,12 +98,11 @@ const commands = ref([
   { id: 25, name: '/help', description: "Display all available commands.", category: 'misc' },
   { id: 26, name: '/invite', description: "Get the bot's invite link.", category: 'misc' },
   { id: 27, name: '/about', description: "Learn more about Status Bot.", category: 'misc' },
-  { id: 28, name: '/website', description: "Get info about the Status Bot website and features.", category: 'misc' },
-  { id: 29, name: '/info', description: "Get detailed info about a user (roles, permissions, etc).", category: 'misc' },
-  { id: 30, name: '/dad-joke', description: "Get a random dad joke that never repeats.", category: 'misc' },
+  { id: 28, name: '/info', description: "Get detailed info about a user (roles, permissions, etc).", category: 'misc' },
+  { id: 29, name: '/dad-joke', description: "Get a random dad joke that never repeats.", category: 'misc' },
   
-  { id: 31, name: '/give', description: "Give XP or balance to a user.", category: 'admin' },
-  { id: 32, name: '/take', description: "Take XP or balance from a user.", category: 'admin' }
+  { id: 30, name: '/give', description: "Give XP or balance to a user.", category: 'admin' },
+  { id: 31, name: '/take', description: "Take XP or balance from a user.", category: 'admin' }
 ])
 
 const filteredCommands = computed(() => {
