@@ -251,7 +251,23 @@
                   <div class="gift-icon-container"><i class="fas fa-gift"></i></div>
                   <div class="gift-details">
                     <div class="gift-name">{{ gift.name }}</div>
-                    <div class="gift-code">Code: <span>{{ gift.code }}</span></div>
+                    <div class="gift-code">
+                      Code: 
+                      <span 
+                        @click="toggleCodeVisibility(gift.id)"
+                        class="gift-code-text"
+                        :class="{ revealed: revealedCodes[gift.id] }"
+                      >
+                        {{ revealedCodes[gift.id] ? gift.code.replace(/\|\|/g, '') : '••••••••' }}
+                      </span>
+                      <button 
+                        @click="toggleCodeVisibility(gift.id)"
+                        class="code-reveal-btn"
+                        :title="revealedCodes[gift.id] ? 'Hide code' : 'Show code'"
+                      >
+                        <i :class="revealedCodes[gift.id] ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                      </button>
+                    </div>
                     <div class="gift-expiry" v-if="gift.premiumExpiresAt">
                       Expires: {{ new Date(gift.premiumExpiresAt).toLocaleDateString() }}
                     </div>
@@ -318,6 +334,7 @@ const hasPremium = ref(false)
 const premiumExpiryDate = ref(null)
 const loadingGifts = ref(false)
 const gifts = ref([])
+const revealedCodes = ref({})
 const currentTheme = ref('default')
 const notificationPrefs = ref({
   updates: true,
@@ -402,6 +419,10 @@ const loadGifts = async () => {
   } finally {
     loadingGifts.value = false
   }
+}
+
+const toggleCodeVisibility = (giftId) => {
+  revealedCodes.value[giftId] = !revealedCodes.value[giftId]
 }
 
 const claimGift = async (giftId) => {
@@ -1247,12 +1268,42 @@ onMounted(async () => {
   font-size: 14px;
   color: var(--text-secondary);
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.gift-code span {
+.gift-code-text {
   font-weight: 600;
   color: #fff;
   font-family: monospace;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+  user-select: none;
+}
+
+.gift-code-text:hover {
+  background: rgba(81, 112, 255, 0.2);
+}
+
+.gift-code-text.revealed {
+  background: rgba(75, 255, 183, 0.1);
+}
+
+.code-reveal-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 6px;
+  transition: color 0.2s ease;
+}
+
+.code-reveal-btn:hover {
+  color: var(--primary-color);
 }
 
 .gift-expiry {
