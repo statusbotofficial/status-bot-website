@@ -74,16 +74,44 @@
         <!-- Sidebar (Hidden on Mobile unless menu is open) -->
         <aside class="config-sidebar" :class="{ 'mobile-open': isMobileNavOpen }">
           <nav class="config-nav">
-            <button
-              v-for="section in filteredSections"
-              :key="section.id"
-              class="nav-btn"
-              :class="{ active: activeSection === section.id }"
-              @click="activeSection = section.id; isMobileNavOpen = false"
-            >
-              <span class="nav-icon" v-html="section.icon"></span>
-              <span>{{ section.label }}</span>
-            </button>
+            <template v-for="section in filteredSections" :key="section.id">
+              <!-- Parent button -->
+              <button
+                v-if="section.children"
+                class="nav-btn parent-btn"
+                :class="{ active: expandedSections.includes(section.id) }"
+                @click="toggleExpandSection(section.id); isMobileNavOpen = false"
+              >
+                <span class="nav-icon" v-html="section.icon"></span>
+                <span>{{ section.label }}</span>
+                <span class="expand-icon" :class="{ expanded: expandedSections.includes(section.id) }">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </button>
+              <!-- Non-expandable button -->
+              <button
+                v-else
+                class="nav-btn"
+                :class="{ active: activeSection === section.id }"
+                @click="activeSection = section.id; isMobileNavOpen = false"
+              >
+                <span class="nav-icon" v-html="section.icon"></span>
+                <span>{{ section.label }}</span>
+              </button>
+              <!-- Child buttons -->
+              <template v-if="section.children && expandedSections.includes(section.id)">
+                <button
+                  v-for="child in section.children"
+                  :key="child.id"
+                  class="nav-btn child-btn"
+                  :class="{ active: activeSection === child.id }"
+                  @click="activeSection = child.id; isMobileNavOpen = false"
+                >
+                  <span class="nav-icon" v-html="child.icon"></span>
+                  <span>{{ child.label }}</span>
+                </button>
+              </template>
+            </template>
           </nav>
         </aside>
 
@@ -648,6 +676,150 @@
             </div>
           </section>
 
+          <!-- Leave Messages -->
+          <section v-else-if="activeSection === 'leave'" class="config-section" key="leave">
+            <h3>Leave Messages</h3>
+            <div class="settings-box">
+              <div class="setting-item">
+                <label>Enable Leave Messages</label>
+                <toggle-switch v-model="leaveSettings.enabled" />
+              </div>
+
+              <div class="setting-item">
+                <label>Leave channel</label>
+                <div class="channel-selector">
+                  <div v-if="leaveSettings.leaveChannel" class="channel-display">
+                    <span>#{{ leaveSettings.leaveChannel }}</span>
+                    <button @click="leaveSettings.leaveChannel = ''" class="remove-btn">×</button>
+                  </div>
+                  <div v-else class="channel-display empty">
+                    <span>Select a channel...</span>
+                  </div>
+                  <button @click="openChannelSelector('leaveSettings', 'leaveChannel')" class="select-btn">+</button>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <label>Use Embed</label>
+                <toggle-switch v-model="leaveSettings.useEmbed" />
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Embed Presets</label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button @click="applyLeavePreset('minimal')" class="preset-btn">Minimal</button>
+                  <button @click="applyLeavePreset('friendly')" class="preset-btn">Friendly</button>
+                  <button @click="applyLeavePreset('detailed')" class="preset-btn">Detailed</button>
+                  <button @click="applyLeavePreset('sad')" class="preset-btn">Sad</button>
+                </div>
+              </div>
+
+              <div v-if="!leaveSettings.useEmbed" class="setting-item">
+                <label>Leave Message</label>
+                <textarea
+                  v-model="leaveSettings.messageText"
+                  class="input-field"
+                  placeholder="Goodbye {user}!"
+                  rows="3"
+                ></textarea>
+                <small>Use {user}, {server_name}, {member_count} as placeholders</small>
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Embed Title</label>
+                <input
+                  v-model="leaveSettings.embedTitle"
+                  type="text"
+                  class="input-field"
+                  placeholder="Member Left"
+                />
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Embed Description</label>
+                <textarea
+                  v-model="leaveSettings.embedDescription"
+                  class="input-field"
+                  placeholder="Description..."
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Embed Footer</label>
+                <input
+                  v-model="leaveSettings.embedFooter"
+                  type="text"
+                  class="input-field"
+                  placeholder="Footer text..."
+                />
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Embed Color</label>
+                <input
+                  v-model="leaveSettings.embedColor"
+                  type="color"
+                  class="color-input"
+                />
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Embed Thumbnail URL</label>
+                <input
+                  v-model="leaveSettings.embedThumbnail"
+                  type="text"
+                  class="input-field"
+                  placeholder="Image URL..."
+                />
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Embed Image URL</label>
+                <input
+                  v-model="leaveSettings.embedImage"
+                  type="text"
+                  class="input-field"
+                  placeholder="Image URL..."
+                />
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Embed Fields</label>
+                <div style="margin-bottom: 8px;">
+                  <button @click="addLeaveField" class="small-btn">+ Add Field</button>
+                </div>
+                <div v-if="leaveSettings.embedFields && leaveSettings.embedFields.length > 0">
+                  <div v-for="(field, index) in leaveSettings.embedFields" :key="index" style="display: flex; gap: 8px; margin-bottom: 8px;">
+                    <input
+                      v-model="field.name"
+                      type="text"
+                      class="input-field"
+                      placeholder="Field name"
+                      style="flex: 1;"
+                    />
+                    <input
+                      v-model="field.value"
+                      type="text"
+                      class="input-field"
+                      placeholder="Field value"
+                      style="flex: 2;"
+                    />
+                    <button @click="leaveSettings.embedFields.splice(index, 1)" class="remove-btn">×</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="button-group">
+                <button @click="saveLeaveSettings" class="save-btn" :class="{ 'save-success': leaveSaveSuccess }" :disabled="leaveSaveLoading">
+                  <span v-if="leaveSaveLoading" class="spinner"></span>
+                  {{ leaveSaveSuccess ? '✓ Saved Successfully' : leaveSaveLoading ? 'Saving...' : 'Save' }}
+                </button>
+                <button @click="resetLeaveSettings" class="reset-btn">Reset</button>
+              </div>
+            </div>
+          </section>
+
           <!-- Member Goals -->
           <section v-else-if="activeSection === 'member-goals'" class="config-section" key="member-goals">
             <h3>Member Goals</h3>
@@ -823,6 +995,7 @@ const servers = ref([])
 const selectedServer = ref(null)
 const searchQuery = ref('')
 const activeSection = ref('overview')
+const expandedSections = ref([])
 const overviewData = ref([])
 const leaderboardData = ref([])
 
@@ -843,6 +1016,8 @@ const statusSaveSuccess = ref(false)
 const statusSaveLoading = ref(false)
 const welcomeSaveSuccess = ref(false)
 const welcomeSaveLoading = ref(false)
+const leaveSaveSuccess = ref(false)
+const leaveSaveLoading = ref(false)
 const memberGoalsSaveSuccess = ref(false)
 const memberGoalsSaveLoading = ref(false)
 
@@ -870,7 +1045,15 @@ const sections = [
   { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: white;"></i>' },
   { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: white;"></i>' },
   { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: white;"></i>' },
-  { id: 'welcome', label: 'Welcome', icon: '<i class="fas fa-door-open" style="color: white;"></i>' },
+  { 
+    id: 'welcome-parent', 
+    label: 'Welcome', 
+    icon: '<i class="fas fa-door-open" style="color: white;"></i>',
+    children: [
+      { id: 'welcome', label: 'Welcome Messages', icon: '<i class="fas fa-envelope" style="color: white;"></i>' },
+      { id: 'leave', label: 'Leave Messages', icon: '<i class="fas fa-sign-out-alt" style="color: white;"></i>' }
+    ]
+  },
   { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: white;"></i>' },
   { id: 'logs', label: 'Activity Logs', icon: '<i class="fas fa-history" style="color: #ef4444;"></i>' },
 ]
@@ -916,6 +1099,20 @@ const welcomeSettings = reactive({
   embedTitle: 'Welcome!',
   embedDescription: '',
   embedFooter: 'Thanks for joining!',
+  embedThumbnail: '',
+  embedImage: '',
+  embedColor: '#5170ff',
+  embedFields: []
+})
+
+const leaveSettings = reactive({
+  enabled: true,
+  useEmbed: false,
+  leaveChannel: '',
+  messageText: 'Goodbye {user}!',
+  embedTitle: 'Member Left',
+  embedDescription: '',
+  embedFooter: '',
   embedThumbnail: '',
   embedImage: '',
   embedColor: '#5170ff',
@@ -1331,11 +1528,12 @@ const loadAllSettings = async (guildId) => {
   try {
     const headers = { Authorization: `Bearer ${authStore.token}` }
     
-    const [levelingRes, economyRes, statusRes, welcomeRes] = await Promise.all([
+    const [levelingRes, economyRes, statusRes, welcomeRes, leaveRes] = await Promise.all([
       fetch(`${BACKEND_URL}/api/leveling/${guildId}/settings`, { headers }),
       fetch(`${BACKEND_URL}/api/economy/${guildId}/settings`, { headers }),
       fetch(`${BACKEND_URL}/api/status/${guildId}/settings`, { headers }),
       fetch(`${BACKEND_URL}/api/welcome/${guildId}/settings`, { headers }),
+      fetch(`${BACKEND_URL}/api/leave/${guildId}/settings`, { headers }),
     ])
 
     if (levelingRes.ok) {
@@ -1413,6 +1611,25 @@ const loadAllSettings = async (guildId) => {
       })
       localStorage.setItem(`welcome_${guildId}`, JSON.stringify(welcomeSettings))
       localStorage.setItem(`memberGoals_${guildId}`, JSON.stringify(memberGoalsSettings))
+    }
+
+    if (leaveRes.ok) {
+      const data = await leaveRes.json()
+      const embedFields = data.embed_fields ? JSON.parse(data.embed_fields) : []
+      Object.assign(leaveSettings, {
+        enabled: data.enabled === true,
+        useEmbed: data.use_embed === true,
+        leaveChannel: data.channel_id || '',
+        messageText: data.message_text || 'Goodbye {user}!',
+        embedTitle: data.embed_title || 'Member Left',
+        embedDescription: data.embed_description || '',
+        embedFooter: data.embed_footer || '',
+        embedThumbnail: data.embed_thumbnail || '',
+        embedImage: data.embed_image || '',
+        embedColor: data.embed_color || '#5170ff',
+        embedFields: Array.isArray(embedFields) ? embedFields : []
+      })
+      localStorage.setItem(`leave_${guildId}`, JSON.stringify(leaveSettings))
     }
   } catch (error) {
     // Try to load from localStorage as fallback
@@ -1545,6 +1762,15 @@ const resetSaveState = (loadingRef, successRef) => {
   setTimeout(() => {
     successRef.value = false
   }, 2000)
+}
+
+const toggleExpandSection = (sectionId) => {
+  const index = expandedSections.value.indexOf(sectionId)
+  if (index > -1) {
+    expandedSections.value.splice(index, 1)
+  } else {
+    expandedSections.value.push(sectionId)
+  }
 }
 
 const saveLevelingSettings = async () => {
@@ -1860,6 +2086,145 @@ const applyWelcomePreset = (preset) => {
       embedColor: presetData.embedColor,
       embedFields: presetData.embedFields ? [...presetData.embedFields] : []
     })
+  }
+}
+
+const resetLeaveSettings = () => {
+  Object.assign(leaveSettings, {
+    enabled: true,
+    useEmbed: false,
+    leaveChannel: '',
+    messageText: 'Goodbye {user}!',
+    embedTitle: 'Member Left',
+    embedDescription: '',
+    embedFooter: '',
+    embedThumbnail: '',
+    embedImage: '',
+    embedColor: '#5170ff',
+    embedFields: []
+  })
+}
+
+const addLeaveField = () => {
+  leaveSettings.embedFields.push({ name: '', value: '' })
+}
+
+const removeLeaveField = (index) => {
+  leaveSettings.embedFields.splice(index, 1)
+}
+
+const applyLeavePreset = (preset) => {
+  const presets = {
+    minimal: {
+      embedTitle: 'Member Left',
+      embedDescription: '{user} has left {server_name}.',
+      embedFooter: '',
+      embedThumbnail: '',
+      embedImage: '',
+      embedColor: '#5170ff'
+    },
+    friendly: {
+      embedTitle: 'Goodbye {user}! 👋',
+      embedDescription: 'We\'ll miss you! Come back soon.',
+      embedFooter: 'See you next time!',
+      embedThumbnail: '',
+      embedImage: '',
+      embedColor: '#ff6b6b'
+    },
+    detailed: {
+      embedTitle: 'Member Left',
+      embedDescription: '{user} has left the server. We now have {member_count} members.',
+      embedFooter: 'We hope to see them again!',
+      embedThumbnail: '',
+      embedImage: '',
+      embedColor: '#5170ff'
+    },
+    sad: {
+      embedTitle: '😢 {user} has left us 😢',
+      embedDescription: 'We\'re sad to see {user} go. {server_name} now has {member_count} members.',
+      embedFooter: 'We hope to see you again!',
+      embedThumbnail: '',
+      embedImage: '',
+      embedColor: '#ff6b6b'
+    }
+  }
+
+  if (presets[preset]) {
+    const presetData = presets[preset]
+    Object.assign(leaveSettings, {
+      embedTitle: presetData.embedTitle,
+      embedDescription: presetData.embedDescription,
+      embedFooter: presetData.embedFooter,
+      embedThumbnail: presetData.embedThumbnail,
+      embedImage: presetData.embedImage,
+      embedColor: presetData.embedColor,
+      embedFields: presetData.embedFields ? [...presetData.embedFields] : []
+    })
+  }
+}
+
+const saveLeaveSettings = async () => {
+  if (!selectedServer.value) return
+  setSaveState(leaveSaveLoading, leaveSaveSuccess)
+  try {
+    const payload = {
+      enabled: leaveSettings.enabled,
+      use_embed: leaveSettings.useEmbed,
+      channel_id: leaveSettings.leaveChannel,
+      message_text: leaveSettings.messageText,
+      embed_title: leaveSettings.embedTitle,
+      embed_description: leaveSettings.embedDescription,
+      embed_footer: leaveSettings.embedFooter,
+      embed_thumbnail: leaveSettings.embedThumbnail,
+      embed_image: leaveSettings.embedImage,
+      embed_color: leaveSettings.embedColor,
+      embed_fields: JSON.stringify(leaveSettings.embedFields)
+    }
+    const response = await fetch(`${BACKEND_URL}/api/leave/${selectedServer.value.id}/settings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify(payload)
+    })
+    if (response.ok) {
+      console.log('Leave settings saved')
+      leaveSaveSuccess.value = true
+      setTimeout(() => { leaveSaveSuccess.value = false }, 3000)
+    }
+  } catch (error) {
+    console.error('Error saving leave settings:', error)
+  } finally {
+    leaveSaveLoading.value = false
+  }
+}
+
+const loadLeaveSettings = async (guildId) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/leave/${guildId}/settings`, {
+      headers: {
+        'Authorization': `Bearer ${authStore.token}`
+      }
+    })
+    if (response.ok) {
+      const data = await response.json()
+      Object.assign(leaveSettings, {
+        enabled: data.enabled,
+        useEmbed: data.use_embed,
+        leaveChannel: data.channel_id,
+        messageText: data.message_text,
+        embedTitle: data.embed_title,
+        embedDescription: data.embed_description,
+        embedFooter: data.embed_footer,
+        embedThumbnail: data.embed_thumbnail,
+        embedImage: data.embed_image,
+        embedColor: data.embed_color,
+        embedFields: data.embed_fields ? JSON.parse(data.embed_fields) : []
+      })
+    }
+  } catch (error) {
+    console.error('Error loading leave settings:', error)
   }
 }
 
@@ -2344,6 +2709,40 @@ const copyItemJson = (item) => {
   color: #5170ff;
   border-left: 3px solid #5170ff;
   padding-left: 17px;
+}
+
+.parent-btn {
+  position: relative;
+}
+
+.expand-icon {
+  margin-left: auto;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expand-icon.expanded {
+  transform: rotate(180deg);
+}
+
+.child-btn {
+  padding-left: 50px;
+  color: #888;
+}
+
+.child-btn:hover {
+  background: rgba(80, 80, 80, 0.2);
+  color: #5170ff;
+}
+
+.child-btn.active {
+  background: rgba(80, 80, 80, 0.3);
+  color: #5170ff;
+  border-left: 3px solid #5170ff;
+  padding-left: 47px;
 }
 
 .nav-icon {
