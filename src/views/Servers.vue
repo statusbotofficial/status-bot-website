@@ -2139,10 +2139,6 @@ const addLeaveField = () => {
   leaveSettings.embedFields.push({ name: '', value: '' })
 }
 
-const removeLeaveField = (index) => {
-  leaveSettings.embedFields.splice(index, 1)
-}
-
 const applyLeavePreset = (preset) => {
   const presets = {
     minimal: {
