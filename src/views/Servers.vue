@@ -688,25 +688,37 @@
               <div class="setting-item">
                 <label>Leave channel</label>
                 <div class="channel-selector">
-                  <div v-if="leaveSettings.leaveChannel" class="channel-display">
-                    <span>#{{ leaveSettings.leaveChannel }}</span>
-                    <button @click="leaveSettings.leaveChannel = ''" class="remove-btn">×</button>
+                  <div v-if="leaveChannelIsVoice" class="input-wrapper">
+                    <i class="fas fa-volume-up"></i>
+                    <input
+                      v-model="leaveChannelName"
+                      type="text"
+                      placeholder="None selected"
+                      disabled
+                      class="input-field input-with-icon"
+                    />
                   </div>
-                  <div v-else class="channel-display empty">
-                    <span>Select a channel...</span>
-                  </div>
+                  <template v-else>
+                    <input
+                      v-model="leaveChannelName"
+                      type="text"
+                      placeholder="None selected"
+                      disabled
+                      class="input-field"
+                    />
+                  </template>
                   <button @click="openChannelSelector('leaveSettings', 'leaveChannel')" class="select-btn">+</button>
                 </div>
               </div>
 
               <div class="setting-item">
-                <label>Use Embed</label>
+                <label>Use embed format</label>
                 <toggle-switch v-model="leaveSettings.useEmbed" />
               </div>
 
               <div v-if="leaveSettings.useEmbed" class="setting-item">
-                <label>Embed Presets</label>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <label>Preset templates</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                   <button @click="applyLeavePreset('minimal')" class="preset-btn">Minimal</button>
                   <button @click="applyLeavePreset('friendly')" class="preset-btn">Friendly</button>
                   <button @click="applyLeavePreset('detailed')" class="preset-btn">Detailed</button>
@@ -714,19 +726,22 @@
                 </div>
               </div>
 
+              <button @click="showPlaceholdersModal = true" class="placeholders-btn">
+                <i class="fas fa-code"></i>
+                Available Placeholders
+              </button>
+
               <div v-if="!leaveSettings.useEmbed" class="setting-item">
-                <label>Leave Message</label>
+                <label>Message text</label>
                 <textarea
                   v-model="leaveSettings.messageText"
-                  class="input-field"
+                  class="input-field textarea"
                   placeholder="Goodbye {user}!"
-                  rows="3"
-                ></textarea>
-                <small>Use {user}, {server_name}, {member_count} as placeholders</small>
+                />
               </div>
 
               <div v-if="leaveSettings.useEmbed" class="setting-item">
-                <label>Embed Title</label>
+                <label>Embed title</label>
                 <input
                   v-model="leaveSettings.embedTitle"
                   type="text"
@@ -736,57 +751,57 @@
               </div>
 
               <div v-if="leaveSettings.useEmbed" class="setting-item">
-                <label>Embed Description</label>
+                <label>Description (leave blank for none)</label>
                 <textarea
                   v-model="leaveSettings.embedDescription"
-                  class="input-field"
-                  placeholder="Description..."
-                  rows="3"
-                ></textarea>
-              </div>
-
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
-                <label>Embed Footer</label>
-                <input
-                  v-model="leaveSettings.embedFooter"
-                  type="text"
-                  class="input-field"
-                  placeholder="Footer text..."
+                  class="input-field textarea"
+                  placeholder="Leave blank for no description..."
                 />
               </div>
 
               <div v-if="leaveSettings.useEmbed" class="setting-item">
-                <label>Embed Color</label>
-                <input
-                  v-model="leaveSettings.embedColor"
-                  type="color"
-                  class="color-input"
-                />
-              </div>
-
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
-                <label>Embed Thumbnail URL</label>
+                <label>Thumbnail URL (small image, right side)</label>
                 <input
                   v-model="leaveSettings.embedThumbnail"
                   type="text"
                   class="input-field"
-                  placeholder="Image URL..."
+                  placeholder="https://example.com/thumbnail.png"
                 />
               </div>
 
               <div v-if="leaveSettings.useEmbed" class="setting-item">
-                <label>Embed Image URL</label>
+                <label>Image URL (large image, bottom)</label>
                 <input
                   v-model="leaveSettings.embedImage"
                   type="text"
                   class="input-field"
-                  placeholder="Image URL..."
+                  placeholder="https://example.com/image.png"
                 />
               </div>
 
               <div v-if="leaveSettings.useEmbed" class="setting-item">
-                <label>Embed Fields</label>
-                <div style="margin-bottom: 8px;">
+                <label>Embed color (hex)</label>
+                <input
+                  v-model="leaveSettings.embedColor"
+                  type="text"
+                  class="input-field"
+                  placeholder="#5170ff"
+                />
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <label>Footer</label>
+                <input
+                  v-model="leaveSettings.embedFooter"
+                  type="text"
+                  class="input-field"
+                  placeholder=""
+                />
+              </div>
+
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <label>Custom fields</label>
                   <button @click="addLeaveField" class="small-btn">+ Add Field</button>
                 </div>
                 <div v-if="leaveSettings.embedFields && leaveSettings.embedFields.length > 0">
@@ -805,9 +820,10 @@
                       placeholder="Field value"
                       style="flex: 2;"
                     />
-                    <button @click="leaveSettings.embedFields.splice(index, 1)" class="remove-btn">×</button>
+                    <button @click="removeLeaveField(index)" class="delete-btn" style="padding: 8px 12px;">×</button>
                   </div>
                 </div>
+                <p v-else style="color: #999; font-size: 12px; margin-top: 8px;">No custom fields added yet</p>
               </div>
 
               <div class="button-group">
@@ -1333,6 +1349,21 @@ const levelingChannelIsVoice = computed(() => {
 const welcomeChannelIsVoice = computed(() => {
   const channel = guildChannels.value.find(c => c.id === welcomeSettings.welcomeChannel)
   return channel?.type === 'voice'
+})
+
+const welcomeChannelName = computed(() => {
+  const channel = guildChannels.value.find(c => c.id === welcomeSettings.welcomeChannel)
+  return channel ? (channel.type === 'voice' ? channel.name : `# ${channel.name}`) : 'None selected'
+})
+
+const leaveChannelIsVoice = computed(() => {
+  const channel = guildChannels.value.find(c => c.id === leaveSettings.leaveChannel)
+  return channel?.type === 'voice'
+})
+
+const leaveChannelName = computed(() => {
+  const channel = guildChannels.value.find(c => c.id === leaveSettings.leaveChannel)
+  return channel ? (channel.type === 'voice' ? channel.name : `# ${channel.name}`) : 'None selected'
 })
 
 const memberCountChannelIsVoice = computed(() => {
@@ -2033,6 +2064,10 @@ const addWelcomeField = () => {
 
 const removeWelcomeField = (index) => {
   welcomeSettings.embedFields.splice(index, 1)
+}
+
+const removeLeaveField = (index) => {
+  leaveSettings.embedFields.splice(index, 1)
 }
 
 const applyWelcomePreset = (preset) => {
