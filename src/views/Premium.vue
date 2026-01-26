@@ -111,11 +111,6 @@
         </div>
         <div class="table-body">
           <div class="table-row">
-            <div class="table-feature-name">Basic commands</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
-          </div>
-          <div class="table-row">
             <div class="table-feature-name">Status tracking</div>
             <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
             <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
@@ -126,18 +121,8 @@
             <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row">
-            <div class="table-feature-name">Economy mini-games</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
-          </div>
-          <div class="table-row">
-            <div class="table-feature-name">Community support</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
-          </div>
-          <div class="table-row">
-            <div class="table-feature-name">Voice chat XP</div>
-            <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
+            <div class="table-feature-name">Economy</div>
+            <div class="table-cell"><span class="x-icon"><i class="fas fa-cross" style="color: #10b981;"></i></span></div>
             <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row premium-feature">
@@ -151,7 +136,7 @@
             <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row premium-feature">
-            <div class="table-feature-name">Luck boost in economy</div>
+            <div class="table-feature-name">Luck boost</div>
             <div class="table-cell"><span class="x-icon">✕</span></div>
             <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
