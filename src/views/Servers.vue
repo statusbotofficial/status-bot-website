@@ -800,11 +800,11 @@
               </div>
 
               <div class="setting-item">
-                <label>Use image format <span style="color: #fbbf24;">(Premium)</span></label>
+                <label>Use image format <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
                 <toggle-switch v-model="leaveSettings.useImageFormat" />
               </div>
 
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
+              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <label>Preset templates</label>
                 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                   <button @click="applyLeavePreset('minimal')" class="preset-btn">Minimal</button>
@@ -814,12 +814,12 @@
                 </div>
               </div>
 
-              <button @click="showPlaceholdersModal = true" class="placeholders-btn">
+              <button v-if="!leaveSettings.useImageFormat" @click="showPlaceholdersModal = true" class="placeholders-btn">
                 <i class="fas fa-code"></i>
                 Available Placeholders
               </button>
 
-              <div v-if="!leaveSettings.useEmbed" class="setting-item">
+              <div v-if="!leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <label>Message text</label>
                 <textarea
                   v-model="leaveSettings.messageText"
@@ -828,7 +828,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
+              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <label>Embed title</label>
                 <input
                   v-model="leaveSettings.embedTitle"
@@ -838,7 +838,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
+              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <label>Description (leave blank for none)</label>
                 <textarea
                   v-model="leaveSettings.embedDescription"
@@ -847,7 +847,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
+              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <label>Thumbnail URL (small image, right side)</label>
                 <input
                   v-model="leaveSettings.embedThumbnail"
@@ -857,7 +857,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
+              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <label>Image URL (large image, bottom)</label>
                 <input
                   v-model="leaveSettings.embedImage"
@@ -867,7 +867,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
+              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <label>Embed color (hex)</label>
                 <input
                   v-model="leaveSettings.embedColor"
@@ -877,7 +877,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
+              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <label>Footer</label>
                 <input
                   v-model="leaveSettings.embedFooter"
@@ -887,7 +887,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed" class="setting-item">
+              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                   <label>Custom fields</label>
                   <button @click="addLeaveField" class="small-btn">+ Add Field</button>
@@ -961,7 +961,7 @@
                 </div>
 
                 <div class="setting-item">
-                  <label>Additional Image URL (optional)</label>
+                  <label>Additional Image URL (optional) <span style="color: #999; font-size: 12px; font-weight: normal;">(620x240)</span></label>
                   <input
                     v-model="leaveSettings.imageImage"
                     type="text"
@@ -973,8 +973,8 @@
 
                 <!-- Image Preview -->
                 <div class="setting-item">
-                  <label>Preview</label>
-                  <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; max-width: 600px; position: relative; overflow: hidden; aspect-ratio: 16/9;">
+                  <label>Preview <span style="color: #999; font-size: 12px; font-weight: normal;">(620x240)</span></label>
+                  <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
                     <img 
                       :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
                       :alt="leaveSettings.imageTitle"
