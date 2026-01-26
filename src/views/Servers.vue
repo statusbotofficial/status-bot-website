@@ -1351,11 +1351,6 @@ const welcomeChannelIsVoice = computed(() => {
   return channel?.type === 'voice'
 })
 
-const welcomeChannelName = computed(() => {
-  const channel = guildChannels.value.find(c => c.id === welcomeSettings.welcomeChannel)
-  return channel ? (channel.type === 'voice' ? channel.name : `# ${channel.name}`) : 'None selected'
-})
-
 const leaveChannelIsVoice = computed(() => {
   const channel = guildChannels.value.find(c => c.id === leaveSettings.leaveChannel)
   return channel?.type === 'voice'
