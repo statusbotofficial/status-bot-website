@@ -507,6 +507,10 @@
               </div>
 
               <div class="button-group">
+                <button @click="forceUpdateStatus" class="update-btn" :disabled="statusUpdateLoading">
+                  <span v-if="statusUpdateLoading" class="spinner"></span>
+                  {{ statusUpdateLoading ? 'Updating...' : 'Update Status 🔄️' }}
+                </button>
                 <button @click="saveStatusSettings" class="save-btn" :class="{ 'save-success': statusSaveSuccess }" :disabled="statusSaveLoading">
                   <span v-if="statusSaveLoading" class="spinner"></span>
                   {{ statusSaveSuccess ? '✓ Saved Successfully' : statusSaveLoading ? 'Saving...' : 'Save' }}
@@ -1030,6 +1034,7 @@ const economySaveSuccess = ref(false)
 const economySaveLoading = ref(false)
 const statusSaveSuccess = ref(false)
 const statusSaveLoading = ref(false)
+const statusUpdateLoading = ref(false)
 const welcomeSaveSuccess = ref(false)
 const welcomeSaveLoading = ref(false)
 const leaveSaveSuccess = ref(false)
@@ -1947,6 +1952,39 @@ const saveStatusSettings = async () => {
   } catch (error) {
     console.error('Error saving settings:', error)
     statusSaveLoading.value = false
+  }
+}
+
+const forceUpdateStatus = async () => {
+  if (!selectedServer.value || !statusSettings.userToTrackId) {
+    alert('Please select a user to track first')
+    return
+  }
+  
+  statusUpdateLoading.value = true
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/force-update`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authStore.token}`
+      },
+      body: JSON.stringify({
+        user_id: statusSettings.userToTrackId
+      })
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      alert(`✅ Status updated: ${data.status || 'Updated'}`)
+    } else {
+      alert('❌ Failed to update status')
+    }
+  } catch (error) {
+    console.error('Error forcing status update:', error)
+    alert('❌ Error updating status')
+  } finally {
+    statusUpdateLoading.value = false
   }
 }
 
@@ -3868,6 +3906,30 @@ const copyItemJson = (item) => {
 }
 
 .save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.update-btn {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #f59e0b 0%, #f59e0b 100%);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 0 1 auto;
+}
+
+.update-btn:hover {
+  background: linear-gradient(135deg, #fbb34f 0%, #fbb34f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.update-btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
