@@ -1063,7 +1063,7 @@ const sections = [
   { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: white;"></i>' },
   { 
     id: 'welcome-parent', 
-    label: 'Welcome', 
+    label: 'Welcome & Leave Messages', 
     icon: '<i class="fas fa-door-open" style="color: white;"></i>',
     children: [
       { id: 'welcome', label: 'Welcome Messages', icon: '<i class="fas fa-envelope" style="color: white;"></i>' },
