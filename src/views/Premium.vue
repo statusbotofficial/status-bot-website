@@ -122,7 +122,7 @@
           </div>
           <div class="table-row">
             <div class="table-feature-name">Economy</div>
-            <div class="table-cell"><span class="x-icon"><i class="fas fa-cross" style="color: #10b981;"></i></span></div>
+            <div class="table-cell"><span class="x-icon"><i class="fas fa-x"></i></span></div>
             <div class="table-cell"><span class="check-icon"><i class="fas fa-check" style="color: #10b981;"></i></span></div>
           </div>
           <div class="table-row premium-feature">
