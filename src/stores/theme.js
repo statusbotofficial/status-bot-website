@@ -62,6 +62,21 @@ const THEMES = {
     '--border-color': '#2a2a2a',
     '--text-primary': '#ffffff',
     '--text-secondary': '#d1d5db',
+  },
+  icicle: {
+    name: 'Icicle',
+    '--primary-color': '#3b82f6',
+    '--primary-light': '#60a5fa',
+    '--bg-primary': '#0f1419',
+    '--bg-secondary': '#1e2a3a',
+    '--bg-tertiary': '#2d3748',
+    '--accent-gradient-1': '#7dd3fc',
+    '--accent-gradient-2': '#0ea5e9',
+    '--glow-color-1': 'rgba(59, 130, 246, 0.4)',
+    '--glow-color-2': 'rgba(14, 165, 233, 0.35)',
+    '--border-color': '#374151',
+    '--text-primary': '#ffffff',
+    '--text-secondary': '#e5e7eb',
   }
 }
 
