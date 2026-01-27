@@ -434,6 +434,8 @@ const themes = themeStore.getAvailableThemes().reduce((acc, theme) => {
     name: theme.name, 
     preview: theme.id === 'light' 
       ? 'linear-gradient(135deg, #5170ff 0%, #ffffff 100%)' 
+      : theme.id === 'sunset'
+      ? 'linear-gradient(135deg, #ff6b35 0%, #d946ef 50%, #2a1810 100%)'
       : 'linear-gradient(135deg, #5170ff 0%, #111111 100%)'
   }
   return acc
