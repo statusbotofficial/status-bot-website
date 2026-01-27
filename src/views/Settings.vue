@@ -298,21 +298,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
+import { useThemeStore } from '../stores/theme'
 
 const authStore = useAuthStore()
+const themeStore = useThemeStore()
 
 const BACKEND_URL = 'https://backend-nwct.onrender.com'
 const SECRET_KEY = 'status-bot-stats-secret-key'
-
-const themes = {
-  default: { name: 'Default', preview: 'linear-gradient(135deg, #5170ff 0%, #111111 100%)' },
-  light: { name: 'Light', preview: 'linear-gradient(135deg, #5170ff 0%, #ffffff 100%)' }
-}
-
-const themeColorMap = {
-  default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' },
-  light: { primary: '#5170ff', bg: '#ffffff', text: '#000000' }
-}
 
 const activeSection = ref('account')
 const discordUser = ref(null)
@@ -434,19 +426,18 @@ const claimGift = async (giftId) => {
 const selectTheme = (themeName) => {
   currentTheme.value = themeName
   localStorage.setItem('site_theme', themeName)
-  applyTheme(themeName)
+  themeStore.applyTheme(themeName)
 }
 
-const applyTheme = (themeName) => {
-  const theme = themes[themeName]
-  if (!theme) return
-
-  const themeColors = themeColorMap[themeName] || themeColorMap.default
-  const root = document.documentElement
-  root.style.setProperty('--primary-color', themeColors.primary)
-  root.style.setProperty('--bg-primary', themeColors.bg)
-  root.style.setProperty('--text-primary', themeColors.text)
-}
+const themes = themeStore.getAvailableThemes().reduce((acc, theme) => {
+  acc[theme.id] = { 
+    name: theme.name, 
+    preview: theme.id === 'light' 
+      ? 'linear-gradient(135deg, #5170ff 0%, #ffffff 100%)' 
+      : 'linear-gradient(135deg, #5170ff 0%, #111111 100%)'
+  }
+  return acc
+}, {})
 
 const saveNotificationPrefs = async () => {
   localStorage.setItem('notificationPrefs', JSON.stringify(notificationPrefs.value))
@@ -508,7 +499,7 @@ onMounted(async () => {
 
   const savedTheme = localStorage.getItem('site_theme') || 'default'
   currentTheme.value = savedTheme
-  applyTheme(savedTheme)
+  themeStore.applyTheme(savedTheme)
 
   const savedPrefs = localStorage.getItem('notificationPrefs')
   if (savedPrefs) {
