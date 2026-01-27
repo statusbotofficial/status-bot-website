@@ -1526,27 +1526,7 @@ const updateLanguage = async () => {
     // Update language store immediately
     languageStore.setLanguage(selectedLanguage.value)
     
-    // Save to backend if user is authenticated
-    if (authStore.user && selectedServer.value) {
-      const response = await fetch(`${BACKEND_URL}/api/user/language`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${SECRET_KEY}`
-        },
-        body: JSON.stringify({
-          userId: authStore.user.id,
-          guildId: selectedServer.value.id,
-          language: selectedLanguage.value
-        })
-      })
-      
-      if (response.ok) {
-        console.log('Language saved to backend successfully')
-      }
-    }
-    
-    // Navigate to refresh the route instead of reloading the page
+    // Skip backend save - just do router navigation
     const currentRoute = route.fullPath
     console.log('Navigating from:', currentRoute)
     
@@ -1567,30 +1547,9 @@ const updateLanguage = async () => {
 }
 
 const loadUserLanguage = async () => {
-  if (!authStore.user) {
-    selectedLanguage.value = languageStore.currentLanguage
-    return
-  }
-  
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/user/language/${authStore.user.id}`, {
-      headers: {
-        'Authorization': `Bearer ${SECRET_KEY}`
-      }
-    })
-    
-    if (response.ok) {
-      const data = await response.json()
-      selectedLanguage.value = data.language || 'en'
-      languageStore.setLanguage(selectedLanguage.value)
-    } else {
-      // Fallback to localStorage
-      selectedLanguage.value = languageStore.currentLanguage
-    }
-  } catch (error) {
-    console.error('Error loading user language:', error)
-    selectedLanguage.value = languageStore.currentLanguage
-  }
+  // Disabled - language functionality removed
+  selectedLanguage.value = 'en'
+  return
 }
 
 // Language helper functions
