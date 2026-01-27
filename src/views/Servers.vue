@@ -1061,11 +1061,11 @@ const fetchPremiumStatus = async () => {
 const BACKEND_URL = 'https://backend-nwct.onrender.com'
 
 const sections = [
-  { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: white;"></i>' },
-  { id: 'leaderboard', label: 'Leaderboard', icon: '<i class="fas fa-trophy" style="color: white;"></i>' },
-  { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: white;"></i>' },
-  { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: white;"></i>' },
-  { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: white;"></i>' },
+  { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: var(--text-primary);"></i>' },
+  { id: 'leaderboard', label: 'Leaderboard', icon: '<i class="fas fa-trophy" style="color: var(--text-primary);"></i>' },
+  { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: var(--text-primary);"></i>' },
+  { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: var(--text-primary);"></i>' },
+  { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: var(--text-primary);"></i>' },
   { 
     id: 'welcome-parent', 
     label: 'Welcome & Leave Messages', 
@@ -2569,7 +2569,7 @@ const copyItemJson = (item) => {
 .loading-container,
 .empty-state {
   text-align: center;
-  color: #999;
+  color: var(--text-secondary);
   padding: 60px 20px;
 }
 
@@ -2753,7 +2753,7 @@ const copyItemJson = (item) => {
   padding: 12px 20px;
   background: transparent;
   border: none;
-  color: #aaa;
+  color: var(--text-secondary);
   text-align: left;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2794,7 +2794,7 @@ const copyItemJson = (item) => {
 
 .child-btn {
   padding-left: 50px;
-  color: #888;
+  color: var(--text-secondary);
 }
 
 .child-btn:hover {
@@ -2961,7 +2961,7 @@ const copyItemJson = (item) => {
 
 .level {
   font-size: 12px;
-  color: #888;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -2986,7 +2986,7 @@ const copyItemJson = (item) => {
 }
 
 .stat-item .label {
-  color: #888;
+  color: var(--text-secondary);
   text-transform: uppercase;
 }
 
@@ -3013,7 +3013,7 @@ const copyItemJson = (item) => {
 .loading,
 .empty {
   text-align: center;
-  color: #999;
+  color: var(--text-secondary);
   padding: 30px;
 }
 
@@ -3112,14 +3112,14 @@ const copyItemJson = (item) => {
 }
 
 .log-description {
-  color: #ddd;
+  color: var(--text-secondary);
   font-size: 13px;
   margin-bottom: 4px;
   line-height: 1.4;
 }
 
 .log-details {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 11px;
   background: rgba(0, 0, 0, 0.1);
   padding: 6px 8px;
@@ -3168,7 +3168,7 @@ const copyItemJson = (item) => {
   background: transparent;
   border: none;
   border-bottom: 3px solid transparent;
-  color: #999;
+  color: var(--text-secondary);
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -3280,7 +3280,7 @@ const copyItemJson = (item) => {
 
 .item-detail {
   font-size: 12px;
-  color: #999;
+  color: var(--text-secondary);
   background: rgba(0, 0, 0, 0.2);
   padding: 8px 10px;
   border-radius: 6px;
@@ -3393,7 +3393,7 @@ const copyItemJson = (item) => {
 .form-group label {
   font-size: 13px;
   font-weight: 600;
-  color: #ddd;
+  color: var(--text-secondary);
 }
 
 .form-group input,
@@ -3534,7 +3534,7 @@ const copyItemJson = (item) => {
   flex-wrap: wrap;
   gap: 16px;
   font-size: 12px;
-  color: #999;
+  color: var(--text-secondary);
 }
 
 .purchase-details span {
@@ -3543,7 +3543,7 @@ const copyItemJson = (item) => {
 }
 
 .purchase-details strong {
-  color: #aaa;
+  color: var(--text-primary);
 }
 
 .purchase-actions {
@@ -3612,14 +3612,14 @@ const copyItemJson = (item) => {
 .rank-xp {
   font-size: 18px;
   font-weight: 700;
-  color: #ccc;
+  color: var(--text-secondary);
   margin-bottom: 8px;
 }
 
 .rank-level {
   font-size: 14px;
   font-weight: 600;
-  color: #999;
+  color: var(--text-secondary);
   margin-bottom: 12px;
 }
 
@@ -3691,7 +3691,7 @@ const copyItemJson = (item) => {
 
 .stat-label {
   font-size: 13px;
-  color: #999;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 4px;
@@ -3755,7 +3755,7 @@ const copyItemJson = (item) => {
 }
 
 .input-field:disabled {
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .channel-selector {
@@ -3777,7 +3777,7 @@ const copyItemJson = (item) => {
 .input-wrapper i {
   position: absolute;
   left: 12px;
-  color: #666;
+  color: var(--text-secondary);
   font-size: 14px;
   pointer-events: none;
 }
@@ -3814,12 +3814,12 @@ const copyItemJson = (item) => {
 
 .preview-title {
   font-size: 12px;
-  color: #999;
+  color: var(--text-secondary);
   margin-bottom: 8px;
 }
 
 .preview-content {
-  color: #ddd;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -3852,7 +3852,7 @@ const copyItemJson = (item) => {
 }
 
 .embed-description {
-  color: #ddd;
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.5;
   margin: 0;
@@ -3866,7 +3866,7 @@ const copyItemJson = (item) => {
 
 .embed-footer {
   font-size: 12px;
-  color: #999;
+  color: var(--text-secondary);
   margin-top: 8px;
   padding-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -3957,7 +3957,7 @@ const copyItemJson = (item) => {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
-  color: #999;
+  color: var(--text-secondary);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -3967,7 +3967,7 @@ const copyItemJson = (item) => {
 .reset-btn:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.3);
-  color: #ccc;
+  color: var(--text-primary);
 }
 
 .preset-btn {
@@ -4051,7 +4051,7 @@ const copyItemJson = (item) => {
 }
 
 .modal-content p {
-  color: #ccc;
+  color: var(--text-secondary);
   margin-bottom: 24px;
   line-height: 1.5;
 }
@@ -4135,7 +4135,7 @@ const copyItemJson = (item) => {
 
 .member-id {
   font-size: 12px;
-  color: #999;
+  color: var(--text-secondary);
 }
 
 .member-option {
@@ -4197,7 +4197,7 @@ const copyItemJson = (item) => {
 
 .formula-description {
   font-size: 12px;
-  color: #999;
+  color: var(--text-secondary);
 }
 .modal-buttons {
   display: flex;
