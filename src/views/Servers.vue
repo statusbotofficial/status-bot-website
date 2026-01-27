@@ -122,27 +122,20 @@
             <section v-if="activeSection === 'overview'" class="config-section" key="overview">
             <div class="overview-container">
               <!-- Language Selector -->
-              <div class="language-selector-section">
-                <div class="language-selector">
-                  <label for="language-select">🌐 Bot Language</label>
-                  <select 
-                    id="language-select" 
-                    v-model="selectedLanguage" 
-                    @change="updateLanguage"
-                    class="language-dropdown"
-                  >
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                    <option value="fr">Français</option>
-                    <option value="de">Deutsch</option>
-                    <option value="pt">Português</option>
-                    <option value="ru">Русский</option>
-                    <option value="zh">中文</option>
-                    <option value="ja">日本語</option>
-                    <option value="ko">한국어</option>
-                    <option value="ar">العربية</option>
-                  </select>
-                  <p class="language-note">This will change the bot's responses and website language for you.</p>
+              <div class="stats-grid" style="margin-bottom: 20px;">
+                <div class="stat-box language-selector-box">
+                  <div class="stat-icon"><i class="fas fa-globe" style="color: #3b82f6;"></i></div>
+                  <div class="stat-content">
+                    <div class="stat-label">{{ languageStore.t('dashboard.botLanguage') }}</div>
+                    <button 
+                      @click="showLanguageModal = true"
+                      class="language-dropdown-btn"
+                    >
+                      {{ getLanguageName(selectedLanguage) }}
+                      <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-note">{{ languageStore.t('dashboard.languageNote') }}</div>
+                  </div>
                 </div>
               </div>
 
@@ -1011,6 +1004,28 @@
       @close="closeLevelingFormulaModal"
     />
 
+    <SelectorModal 
+      :is-open="showLanguageModal"
+      title="Select Language"
+      :items="languageOptions"
+      :model-value="[selectedLanguage]"
+      :multiple="false"
+      search-placeholder="Search languages..."
+      @close="closeLanguageModal"
+      @confirm="handleLanguageSelection"
+    />
+
+    <SelectorModal 
+      :is-open="showLanguageModal"
+      title="Select Language"
+      :items="languageOptions"
+      :model-value="[selectedLanguage]"
+      :multiple="false"
+      search-placeholder="Search languages..."
+      @close="closeLanguageModal"
+      @confirm="handleLanguageSelection"
+    />
+
     <PlaceholdersModal 
       :isOpen="showPlaceholdersModal"
       title="Available Placeholders"
@@ -1022,7 +1037,7 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted, watch } from 'vue'
+import { ref, computed, reactive, onMounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useLanguageStore } from '../stores/language'
@@ -1042,6 +1057,7 @@ const servers = ref([])
 const selectedServer = ref(null)
 const searchQuery = ref('')
 const selectedLanguage = ref('en')
+const showLanguageModal = ref(false)
 const activeSection = ref('overview')
 const expandedSections = ref([])
 const overviewData = ref([])
@@ -1506,8 +1522,11 @@ const updateLanguage = async () => {
   if (!selectedServer.value || !authStore.user) return
   
   try {
-    // Update language store first
-    languageStore.setLanguage(selectedLanguage.value)
+    // Update language store first for immediate UI update
+    await languageStore.setLanguage(selectedLanguage.value)
+    
+    // Force reactive update by triggering a re-render
+    await nextTick()
     
     // Save to backend
     const response = await fetch(`${BACKEND_URL}/api/user/language`, {
@@ -1556,6 +1575,37 @@ const loadUserLanguage = async () => {
     console.error('Error loading user language:', error)
     selectedLanguage.value = languageStore.currentLanguage
   }
+}
+
+// Language helper functions
+const languageOptions = computed(() => [
+  { id: 'en', name: 'English', icon: '🇺🇸' },
+  { id: 'es', name: 'Español', icon: '🇪🇸' },
+  { id: 'fr', name: 'Français', icon: '🇫🇷' },
+  { id: 'de', name: 'Deutsch', icon: '🇩🇪' },
+  { id: 'pt', name: 'Português', icon: '🇵🇹' },
+  { id: 'ru', name: 'Русский', icon: '🇷🇺' },
+  { id: 'zh', name: '中文', icon: '🇨🇳' },
+  { id: 'ja', name: '日本語', icon: '🇯🇵' },
+  { id: 'ko', name: '한국어', icon: '🇰🇷' },
+  { id: 'ar', name: 'العربية', icon: '🇸🇦' }
+])
+
+const getLanguageName = (langCode) => {
+  const lang = languageOptions.value.find(l => l.id === langCode)
+  return lang ? `${lang.icon} ${lang.name}` : '🇺🇸 English'
+}
+
+const closeLanguageModal = () => {
+  showLanguageModal.value = false
+}
+
+const handleLanguageSelection = (selection) => {
+  if (selection && selection.length > 0) {
+    selectedLanguage.value = selection[0]
+    updateLanguage()
+  }
+  closeLanguageModal()
 }
 
 const loadOverviewData = async (guildId) => {
@@ -2473,6 +2523,17 @@ onMounted(() => {
   loadServers()
   loadUserLanguage()
 })
+
+// Watch for language changes to ensure reactivity
+watch(
+  () => languageStore.currentLanguage,
+  (newLang) => {
+    // Force update selectedLanguage when store changes
+    if (selectedLanguage.value !== newLang) {
+      selectedLanguage.value = newLang
+    }
+  }
+)
 
 watch(
   () => route.params.guildId,
@@ -4644,56 +4705,52 @@ input[type="number"] {
 }
 
 /* Language Selector Styles */
-.language-selector-section {
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  padding: 25px;
-  margin-bottom: 30px;
+.language-selector-box {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
 }
 
-.language-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.language-selector-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%);
+  pointer-events: none;
 }
 
-.language-selector label {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.language-dropdown {
-  padding: 12px 16px;
+.language-dropdown-btn {
   background: var(--bg-tertiary);
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
   color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 4px;
 }
 
-.language-dropdown:hover {
-  border-color: var(--primary-color);
+.language-dropdown-btn:hover {
   background: var(--bg-primary);
-}
-
-.language-dropdown:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(81, 112, 255, 0.1);
+  transform: translateY(-1px);
 }
 
 .language-note {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
-  margin: 0;
+  margin-top: 4px;
+  opacity: 0.8;
   font-style: italic;
 }
 
