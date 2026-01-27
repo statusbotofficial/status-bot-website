@@ -32,6 +32,21 @@ const THEMES = {
     '--border-color': '#888888',
     '--text-primary': '#000000',
     '--text-secondary': '#333333',
+  },
+  sunset: {
+    name: 'Sunset',
+    '--primary-color': '#ff6b35',
+    '--primary-light': '#ff7b47',
+    '--bg-primary': '#2a1810',
+    '--bg-secondary': '#3d241a',
+    '--bg-tertiary': '#4d2d20',
+    '--accent-gradient-1': '#ffb085',
+    '--accent-gradient-2': '#d946ef',
+    '--glow-color-1': 'rgba(255, 107, 53, 0.4)',
+    '--glow-color-2': 'rgba(217, 70, 239, 0.35)',
+    '--border-color': '#5d3f2a',
+    '--text-primary': '#ffb085',
+    '--text-secondary': '#d4a574',
   }
 }
 
