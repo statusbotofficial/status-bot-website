@@ -480,7 +480,7 @@ onMounted(() => {
 .link-btn {
   background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
   border: 2px solid var(--primary-color);
-  color: #fff;
+  color: var(--text-primary);
   padding: 10px 20px;
   border-radius: 20px;
   font-weight: 600;
@@ -534,7 +534,7 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 700;
   margin: 0;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .faq-item .toggle {

@@ -250,7 +250,7 @@ onUnmounted(() => {
   font-size: 56px;
   font-weight: 900;
   margin: 0;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .status-header p {

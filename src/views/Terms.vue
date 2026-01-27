@@ -93,7 +93,7 @@ onMounted(() => {
   font-size: 56px;
   font-weight: 900;
   margin: 0;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .terms-header p {
@@ -118,7 +118,7 @@ onMounted(() => {
 .terms-section h2 {
   font-size: 28px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 20px;
 }
 
