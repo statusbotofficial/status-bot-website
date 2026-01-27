@@ -77,6 +77,21 @@ const THEMES = {
     '--border-color': '#374151',
     '--text-primary': '#ffffff',
     '--text-secondary': '#e5e7eb',
+  },
+  lime: {
+    name: 'Lime',
+    '--primary-color': '#84cc16',
+    '--primary-light': '#a3e635',
+    '--bg-primary': '#0f1a0f',
+    '--bg-secondary': '#1a2b1a',
+    '--bg-tertiary': '#253425',
+    '--accent-gradient-1': '#bef264',
+    '--accent-gradient-2': '#22c55e',
+    '--glow-color-1': 'rgba(132, 204, 22, 0.4)',
+    '--glow-color-2': 'rgba(34, 197, 94, 0.35)',
+    '--border-color': '#374e37',
+    '--text-primary': '#ffffff',
+    '--text-secondary': '#e5e7eb',
   }
 }
 
