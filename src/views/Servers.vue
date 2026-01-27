@@ -93,7 +93,7 @@
                 v-else
                 class="nav-btn"
                 :class="{ active: activeSection === section.id }"
-                @click="activeSection = section.id; isMobileNavOpen = false"
+                @click="setActiveSection(section.id); isMobileNavOpen = false"
               >
                 <span class="nav-icon" v-html="section.icon"></span>
                 <span>{{ section.label }}</span>
@@ -105,7 +105,7 @@
                   :key="child.id"
                   class="nav-btn child-btn"
                   :class="{ active: activeSection === child.id }"
-                  @click="activeSection = child.id; isMobileNavOpen = false"
+                  @click="setActiveSection(child.id); isMobileNavOpen = false"
                 >
                   <span class="nav-icon" v-html="child.icon"></span>
                   <span>{{ child.label }}</span>
@@ -1014,7 +1014,17 @@ const leaderboardLoading = ref(false)
 const servers = ref([])
 const selectedServer = ref(null)
 const searchQuery = ref('')
-const activeSection = ref('overview')
+const activeSection = ref(route.query.section || 'overview')
+
+// Function to update active section and URL
+const setActiveSection = (sectionId) => {
+  activeSection.value = sectionId
+  // Update URL with section parameter
+  router.push({
+    path: route.path,
+    query: { ...route.query, section: sectionId }
+  })
+}
 const expandedSections = ref([])
 const overviewData = ref([])
 const leaderboardData = ref([])
@@ -2393,11 +2403,17 @@ onMounted(async () => {
     const server = servers.value.find(s => s.id === guildId)
     if (server) {
       selectedServer.value = server
-      if (server.buttonType === 'view') {
+      
+      // Set active section from URL query parameter, or default based on server type
+      const urlSection = route.query.section
+      if (urlSection) {
+        activeSection.value = urlSection
+      } else if (server.buttonType === 'view') {
         activeSection.value = 'overview'
       } else if (server.buttonType === 'configure') {
         activeSection.value = 'overview'
       }
+      
       // Load all the server-specific data
       await Promise.all([
         loadOverviewData(server.id),
@@ -2417,11 +2433,17 @@ watch(
       const server = servers.value.find(s => s.id === guildId)
       if (server && (!selectedServer.value || selectedServer.value.id !== server.id)) {
         selectedServer.value = server
-        if (server.buttonType === 'view') {
+        
+        // Set active section from URL query parameter, or default based on server type
+        const urlSection = route.query.section
+        if (urlSection) {
+          activeSection.value = urlSection
+        } else if (server.buttonType === 'view') {
           activeSection.value = 'overview'
         } else if (server.buttonType === 'configure') {
           activeSection.value = 'overview'
         }
+        
         await Promise.all([
           loadOverviewData(server.id),
           loadLeaderboardData(server.id),
@@ -2445,12 +2467,29 @@ watch(
       const server = servers.value.find(s => s.id === guildId)
       if (server) {
         selectedServer.value = server
-        if (server.buttonType === 'view') {
+        
+        // Set active section from URL query parameter, or default based on server type
+        const urlSection = route.query.section
+        if (urlSection) {
+          activeSection.value = urlSection
+        } else if (server.buttonType === 'view') {
           activeSection.value = 'overview'
         } else if (server.buttonType === 'configure') {
           activeSection.value = 'overview'
         }
       }
+    }
+  }
+)
+
+// Watch for URL query section changes (for browser back/forward navigation)
+watch(
+  () => route.query.section,
+  (newSection) => {
+    if (newSection && selectedServer.value) {
+      activeSection.value = newSection
+    } else if (selectedServer.value && !newSection) {
+      activeSection.value = 'overview'
     }
   }
 )
