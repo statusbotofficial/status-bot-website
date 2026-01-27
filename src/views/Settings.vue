@@ -548,7 +548,7 @@ onMounted(async () => {
   font-size: 56px;
   font-weight: 900;
   margin: 0;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .settings-header p {
@@ -650,7 +650,7 @@ onMounted(async () => {
 .settings-section h2 {
   font-size: 32px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
@@ -682,7 +682,7 @@ onMounted(async () => {
 .panel-header {
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 20px;
   padding-bottom: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -711,7 +711,7 @@ onMounted(async () => {
 
 .info-value {
   font-size: 15px;
-  color: #fff;
+  color: var(--text-primary);
   word-break: break-all;
   padding: 10px;
   background: rgba(255, 255, 255, 0.05);
@@ -756,7 +756,7 @@ onMounted(async () => {
 
 .session-name {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .session-time {
@@ -828,7 +828,7 @@ onMounted(async () => {
 .premium-cta h3 {
   font-size: 20px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
@@ -871,7 +871,7 @@ onMounted(async () => {
 
 .feature-name {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -914,7 +914,7 @@ onMounted(async () => {
 .stat-value {
   font-size: 24px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 /* Activity history */
@@ -935,7 +935,7 @@ onMounted(async () => {
 
 .history-time {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -986,7 +986,7 @@ onMounted(async () => {
 .server-name {
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
   flex: 1;
   word-break: break-word;
 }
@@ -1022,7 +1022,7 @@ onMounted(async () => {
 }
 
 .stat .value {
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -1093,7 +1093,7 @@ onMounted(async () => {
 
 .preference-name {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 15px;
 }
 
@@ -1252,7 +1252,7 @@ onMounted(async () => {
 
 .gift-code-text {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-family: monospace;
   cursor: pointer;
   padding: 2px 6px;

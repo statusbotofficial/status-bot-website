@@ -41,8 +41,6 @@ export const useThemeStore = defineStore('theme', () => {
   const applyTheme = (themeName) => {
     if (!THEMES[themeName]) return
     
-    console.log('Applying theme:', themeName, THEMES[themeName])
-    
     currentTheme.value = themeName
     localStorage.setItem(THEME_STORAGE_KEY, themeName)
     
@@ -51,7 +49,6 @@ export const useThemeStore = defineStore('theme', () => {
     
     Object.entries(theme).forEach(([key, value]) => {
       if (key !== 'name') {
-        console.log('Setting CSS variable:', key, '=', value)
         root.style.setProperty(key, value)
       }
     })
