@@ -305,27 +305,27 @@ const BACKEND_URL = 'https://backend-nwct.onrender.com'
 const SECRET_KEY = 'status-bot-stats-secret-key'
 
 const themes = {
-  default: { name: 'Default', preview: 'linear-gradient(135deg, #ffffff 0%, #2630b6 100%)' },
-  dark: { name: 'Dark', preview: 'linear-gradient(135deg, #0b0b0b 0%, #2b2b2b 100%)' },
-  light: { name: 'Light', preview: '#ffffff' },
-  sunset: { name: 'Sunset', preview: 'linear-gradient(135deg, #ffb86b 0%, #7e4bb8 100%)' },
-  obsidian: { name: 'Obsidian', preview: 'linear-gradient(135deg, #0b0b0b 0%, #4d4d4d 100%)' },
-  saphire: { name: 'Sapphire', preview: 'linear-gradient(135deg, #00b0ff 0%, #0b3cff 100%)' },
-  parrot: { name: 'Parrot', preview: 'linear-gradient(135deg, #69f0ae 0%, #00bcd4 100%)' },
+  default: { name: 'Default', preview: 'linear-gradient(135deg, #5170ff 0%, #2630b6 100%)' },
+  dark: { name: 'Dark', preview: 'linear-gradient(135deg, #000000 0%, #2b2b2b 100%)' },
+  light: { name: 'Light', preview: 'linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%)' },
+  sunset: { name: 'Sunset', preview: 'linear-gradient(135deg, #ff9f43 0%, #b86bff 100%)' },
+  obsidian: { name: 'Obsidian', preview: 'linear-gradient(135deg, #0b0b0b 0%, #8e44ad 100%)' },
+  sapphire: { name: 'Sapphire', preview: 'linear-gradient(135deg, #0b3cff 0%, #5ba3ff 100%)' },
+  parrot: { name: 'Parrot', preview: 'linear-gradient(135deg, #00bcd4 0%, #ffe066 100%)' },
   icicle: { name: 'Icicle', preview: 'linear-gradient(135deg, #e0f7fa 0%, #8ec5ff 100%)' },
-  lime: { name: 'Lime', preview: 'linear-gradient(135deg, #b0ff6d 0%, #7be35a 100%)' }
+  lime: { name: 'Lime', preview: 'linear-gradient(135deg, #b0ff6d 0%, #eaffb0 100%)' }
 }
 
 const themeColorMap = {
   default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' },
-  dark: { primary: '#4d4d4d', bg: '#000000', text: '#cccccc' },
-  light: { primary: '#0066cc', bg: '#ffffff', text: '#000000' },
-  sunset: { primary: '#ff7f50', bg: '#1a0f0a', text: '#fff5e6' },
-  obsidian: { primary: '#708090', bg: '#0b0b0b', text: '#e8e8e8' },
-  saphire: { primary: '#0b3cff', bg: '#0a0a1a', text: '#e0e8ff' },
-  parrot: { primary: '#00bcd4', bg: '#0a1a1a', text: '#e0fff5' },
-  icicle: { primary: '#00bfff', bg: '#0f1a2e', text: '#e0f7ff' },
-  lime: { primary: '#7be35a', bg: '#0a1a00', text: '#e8ffe0' }
+  dark: { primary: '#888888', bg: '#000000', text: '#cccccc' },
+  light: { primary: '#2630b6', bg: '#ffffff', text: '#000000' },
+  sunset: { primary: '#ff9f43', bg: '#ffb6b6', text: '#7e4bb8' },
+  obsidian: { primary: '#8e44ad', bg: '#0b0b0b', text: '#e8e8e8' },
+  sapphire: { primary: '#0b3cff', bg: '#0a1628', text: '#e0e8ff' },
+  parrot: { primary: '#00bcd4', bg: '#eafffa', text: '#ffe066' },
+  icicle: { primary: '#5ba3ff', bg: '#0a1420', text: '#e0f7ff' },
+  lime: { primary: '#b0ff6d', bg: '#eaffb0', text: '#333333' }
 }
 
 const activeSection = ref('account')
@@ -1192,7 +1192,7 @@ onMounted(async () => {
   width: 80px;
   height: 80px;
   border-radius: 12px;
-  border: 2px solid transparent;
+  border: 2px solid var(--border-color, rgba(81, 112, 255, 0.15));
   transition: all 0.2s ease;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -1204,8 +1204,8 @@ onMounted(async () => {
 }
 
 .swatch.active {
-  border-color: #5170ff;
-  box-shadow: 0 0 0 3px rgba(81, 112, 255, 0.3);
+  border-color: var(--primary-color, #5170ff);
+  box-shadow: 0 0 0 3px var(--glow-color-1, rgba(81, 112, 255, 0.3));
 }
 
 .swatch-label {
