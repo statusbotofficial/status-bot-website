@@ -715,19 +715,8 @@
               </div>
 
               <div v-if="welcomeSettings.useImageFormat" class="setting-item">
-                <label>Additional Image URL (optional)</label>
-                <input
-                  v-model="welcomeSettings.imageImage"
-                  type="text"
-                  class="input-field"
-                  placeholder="https://example.com/image.png"
-                />
-                <small style="color: #999; display: block; margin-top: 4px;">Image to display on the welcome card</small>
-              </div>
-
-              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
                 <label>Preview</label>
-                <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; max-width: 600px; position: relative; overflow: hidden; aspect-ratio: 16/9;">
+                <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
                   <img 
                     :src="welcomeSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
                     :alt="welcomeSettings.imageTitle"
@@ -920,7 +909,7 @@
                   v-model="leaveSettings.imageBackgroundUrl"
                   type="text"
                   class="input-field"
-                  placeholder="https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png"
+                  placeholder="https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png"
                 />
                 <small style="color: #999; display: block; margin-top: 4px;">Default: Official Status Bot background</small>
               </div>
@@ -945,19 +934,8 @@
               </div>
 
               <div v-if="leaveSettings.useImageFormat" class="setting-item">
-                <label>Additional Image URL (optional)</label>
-                <input
-                  v-model="leaveSettings.imageImage"
-                  type="text"
-                  class="input-field"
-                  placeholder="https://example.com/image.png"
-                />
-                <small style="color: #999; display: block; margin-top: 4px;">Image to display on the leave card</small>
-              </div>
-
-              <div v-if="leaveSettings.useImageFormat" class="setting-item">
                 <label>Preview</label>
-                <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; max-width: 600px; position: relative; overflow: hidden; aspect-ratio: 16/9;">
+                <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
                   <img 
                     :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
                     :alt="leaveSettings.imageTitle"
@@ -1267,8 +1245,7 @@ const welcomeSettings = reactive({
   embedFields: [],
   imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
   imageTitle: 'Welcome!',
-  imageDescription: 'Welcome to {server_name}, {user}!',
-  imageImage: ''
+  imageDescription: 'Welcome to {server_name}, {user}!'
 })
 
 const leaveSettings = reactive({
@@ -1284,10 +1261,9 @@ const leaveSettings = reactive({
   embedImage: '',
   embedColor: '#5170ff',
   embedFields: [],
-  imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+  imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
   imageTitle: 'Member Left',
-  imageDescription: 'Goodbye {user}!',
-  imageImage: ''
+  imageDescription: 'Goodbye {user}!'
 })
 
 const memberGoalsSettings = reactive({
@@ -1785,8 +1761,7 @@ const loadAllSettings = async (guildId) => {
         embedFields: Array.isArray(embedFields) ? embedFields : [],
         imageBackgroundUrl: data.image_background_url || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
         imageTitle: data.image_title || 'Welcome!',
-        imageDescription: data.image_description || 'Welcome to {server_name}, {user}!',
-        imageImage: data.image_image || ''
+        imageDescription: data.image_description || 'Welcome to {server_name}, {user}!'
       })
       
       Object.assign(memberGoalsSettings, {
@@ -2162,8 +2137,7 @@ const saveWelcomeSettings = async () => {
       embed_fields: JSON.stringify(welcomeSettings.embedFields || []),
       image_background_url: welcomeSettings.imageBackgroundUrl,
       image_title: welcomeSettings.imageTitle,
-      image_description: welcomeSettings.imageDescription,
-      image_image: welcomeSettings.imageImage
+      image_description: welcomeSettings.imageDescription
     }
     const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -2251,8 +2225,7 @@ const resetWelcomeSettings = () => {
     embedFields: [],
     imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
     imageTitle: 'Welcome!',
-    imageDescription: 'Welcome to {server_name}, {user}!',
-    imageImage: ''
+    imageDescription: 'Welcome to {server_name}, {user}!'
   })
 }
 
@@ -2336,10 +2309,9 @@ const resetLeaveSettings = () => {
     embedImage: '',
     embedColor: '#5170ff',
     embedFields: [],
-    imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+    imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
     imageTitle: 'Member Left',
-    imageDescription: 'Goodbye {user}!',
-    imageImage: ''
+    imageDescription: 'Goodbye {user}!'
   })
 }
 
@@ -2424,17 +2396,17 @@ const applyWelcomeImagePreset = (preset) => {
 const applyLeaveImagePreset = (preset) => {
   const presets = {
     minimal: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+      imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
       imageTitle: 'Member Left',
       imageDescription: '{user} has left {server_name}.'
     },
     friendly: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+      imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
       imageTitle: 'Goodbye {user}! 👋',
       imageDescription: 'We\'ll miss you! Come back soon.'
     },
     detailed: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+      imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
       imageTitle: 'Member Left',
       imageDescription: '{user} has left. {server_name} now has {member_count} members.'
     }
@@ -2464,8 +2436,7 @@ const saveLeaveSettings = async () => {
       embed_fields: JSON.stringify(leaveSettings.embedFields),
       image_background_url: leaveSettings.imageBackgroundUrl,
       image_title: leaveSettings.imageTitle,
-      image_description: leaveSettings.imageDescription,
-      image_image: leaveSettings.imageImage
+      image_description: leaveSettings.imageDescription
     }
     const response = await fetch(`${BACKEND_URL}/api/leave/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -2509,10 +2480,9 @@ const loadLeaveSettings = async (guildId) => {
         embedImage: data.embed_image,
         embedColor: data.embed_color,
         embedFields: data.embed_fields ? JSON.parse(data.embed_fields) : [],
-        imageBackgroundUrl: data.image_background_url || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+        imageBackgroundUrl: data.image_background_url || 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
         imageTitle: data.image_title || 'Member Left',
-        imageDescription: data.image_description || '{user} has left {server_name}',
-        imageImage: data.image_image || ''
+        imageDescription: data.image_description || '{user} has left {server_name}'
       })
     }
   } catch (error) {
