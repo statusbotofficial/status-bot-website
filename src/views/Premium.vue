@@ -240,7 +240,7 @@ onMounted(async () => {
   
   if (authStore.user?.id) {
     try {
-      const response = await fetch(`https://status-bot-backend.onrender.com/api/user-premium/${authStore.user.id}`)
+      const response = await fetch(`https://backend-nwct.onrender.com/api/user-premium/${authStore.user.id}`)
       if (response.ok) {
         const data = await response.json()
         hasPremium.value = data.hasPremium || false

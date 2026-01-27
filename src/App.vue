@@ -174,7 +174,7 @@ const markNotificationsAsRead = async () => {
   try {
     if (authStore.user?.id) {
       const SECRET_KEY = 'status-bot-stats-secret-key'
-      await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
+      await fetch(`https://backend-nwct.onrender.com/api/user/${authStore.user.id}/notifications/read`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
       })
@@ -239,7 +239,7 @@ const loadNotifications = async () => {
 
     if (authStore.user?.id) {
       const SECRET_KEY = 'status-bot-stats-secret-key'
-      const response = await fetch(`https://status-bot-backend.onrender.com/api/user/${authStore.user.id}/notifications`, {
+      const response = await fetch(`https://backend-nwct.onrender.com/api/user/${authStore.user.id}/notifications`, {
         headers: { 'Authorization': `Bearer ${SECRET_KEY}` }
       })
       if (response.ok) {

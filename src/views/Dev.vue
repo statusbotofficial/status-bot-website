@@ -224,7 +224,7 @@ import { useAuthStore } from '../stores/auth'
 const authStore = useAuthStore()
 
 const AUTHORIZED_USER_ID = '1362553254117904496'
-const BACKEND_URL = 'https://status-bot-backend.onrender.com'
+const BACKEND_URL = 'https://backend-nwct.onrender.com'
 const SECRET_KEY = 'status-bot-stats-secret-key'
 
 const trialUserId = ref('')

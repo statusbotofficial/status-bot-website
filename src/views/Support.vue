@@ -143,7 +143,7 @@ const faqs = ref([
   }
 ])
 
-const BACKEND_URL = 'https://status-bot-backend.onrender.com'
+const BACKEND_URL = 'https://backend-nwct.onrender.com'
 const CHAT_STORAGE_KEY = 'supportChatHistory'
 const CHAT_STORAGE_USER_KEY = (userId) => `${CHAT_STORAGE_KEY}_${userId}`
 

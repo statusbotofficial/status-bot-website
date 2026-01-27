@@ -73,7 +73,7 @@ onMounted(() => {
   document.title = 'Status | Status Bot'
 })
 
-const BACKEND_URL = 'https://status-bot-backend.onrender.com'
+const BACKEND_URL = 'https://backend-nwct.onrender.com'
 const OFFLINE_THRESHOLD = 5 * 60 * 1000 // 5 minutes
 const INCIDENT_EXPIRY_DAYS = 7
 

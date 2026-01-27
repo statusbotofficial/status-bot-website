@@ -1,4 +1,4 @@
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://status-bot-backend.onrender.com'
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend-nwct.onrender.com'
 export const WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL || 'https://status-bot.xyz'
 export const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID || '1436123870158520411'
 export const DISCORD_SERVER_URL = import.meta.env.VITE_DISCORD_SERVER_URL || 'https://discord.gg/Kd2MckVxED'

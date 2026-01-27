@@ -301,7 +301,7 @@ import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
 
-const BACKEND_URL = 'https://status-bot-backend.onrender.com'
+const BACKEND_URL = 'https://backend-nwct.onrender.com'
 const SECRET_KEY = 'status-bot-stats-secret-key'
 
 const themes = {

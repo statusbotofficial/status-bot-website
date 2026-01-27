@@ -1058,7 +1058,7 @@ const fetchPremiumStatus = async () => {
   }
 }
 
-const BACKEND_URL = 'https://status-bot-backend.onrender.com'
+const BACKEND_URL = 'https://backend-nwct.onrender.com'
 
 const sections = [
   { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: white;"></i>' },
