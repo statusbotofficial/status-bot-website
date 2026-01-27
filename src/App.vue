@@ -482,7 +482,7 @@ onMounted(() => {
 
 .notification-bell:hover {
   background: rgba(80, 80, 80, 0.15);
-  color: #5170ff;
+  color: var(--primary-color);
   transform: scale(1.1);
 }
 
@@ -583,8 +583,8 @@ onMounted(() => {
 
 .mark-read-btn {
   background: rgba(80, 80, 80, 0.2);
-  border: 1px solid #5170ff;
-  color: #5170ff;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
   padding: 4px 12px;
   border-radius: 6px;
   cursor: pointer;
@@ -595,7 +595,7 @@ onMounted(() => {
 
 .mark-read-btn:hover {
   background: rgba(80, 80, 80, 0.35);
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .close-btn {
@@ -657,7 +657,7 @@ onMounted(() => {
 }
 
 .login-btn {
-  color: #fff;
+  color: var(--text-primary);
   padding: 10px 25px;
   border-radius: 8px;
   font-weight: 600;
@@ -670,7 +670,7 @@ onMounted(() => {
 }
 
 .user-btn {
-  color: #fff;
+  color: var(--text-primary);
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 600;

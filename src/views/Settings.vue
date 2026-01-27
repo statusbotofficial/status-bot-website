@@ -573,8 +573,8 @@ onMounted(async () => {
 }
 
 .sidebar-nav {
-  background: rgba(80, 80, 80, 0.05);
-  border: 1px solid rgba(81, 112, 255, 0.2);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 20px;
 }
@@ -662,8 +662,8 @@ onMounted(async () => {
 
 /* Cards and panels */
 .section-panel {
-  background: rgba(81, 112, 255, 0.05);
-  border: 1px solid rgba(81, 112, 255, 0.2);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 25px;
@@ -675,8 +675,8 @@ onMounted(async () => {
 }
 
 .section-panel.premium-active {
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.08), rgba(80, 80, 80, 0.08));
-  border: 1px solid rgba(74, 222, 128, 0.3);
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.15), var(--bg-secondary));
+  border: 1px solid rgba(74, 222, 128, 0.4);
 }
 
 .panel-header {
@@ -1433,8 +1433,8 @@ onMounted(async () => {
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(81, 112, 255, 0.2);
-  border-top-color: #5170ff;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--primary-color);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -1461,8 +1461,8 @@ onMounted(async () => {
 
 .btn-primary {
   background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
-  border: 2px solid #5170ff;
-  color: #fff;
+  border: 2px solid var(--primary-color);
+  color: var(--text-primary);
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -1486,7 +1486,7 @@ onMounted(async () => {
 .btn-secondary {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .btn-secondary:hover:not(:disabled) {
