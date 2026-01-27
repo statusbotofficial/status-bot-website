@@ -1525,11 +1525,6 @@ const updateLanguage = async () => {
     // Update language store immediately
     languageStore.setLanguage(selectedLanguage.value)
     
-    // Force page refresh to show language changes
-    setTimeout(() => {
-      window.location.reload()
-    }, 100)
-    
     // Save to backend if user is authenticated
     if (authStore.user && selectedServer.value) {
       const response = await fetch(`${BACKEND_URL}/api/user/language`, {
@@ -1548,6 +1543,22 @@ const updateLanguage = async () => {
       if (response.ok) {
         console.log('Language saved to backend successfully')
       }
+    }
+    
+    // Navigate to refresh the route instead of reloading the page
+    const currentRoute = route.fullPath
+    console.log('Navigating from:', currentRoute)
+    
+    // Store current server to restore after navigation
+    const currentServerId = selectedServer.value?.id
+    
+    await router.push('/servers')
+    await nextTick()
+    
+    if (currentServerId) {
+      await router.push(`/servers/${currentServerId}`)
+    } else {
+      await router.push(currentRoute)
     }
   } catch (error) {
     console.error('Error updating language:', error)
@@ -2533,10 +2544,54 @@ const copyPlaceholder = (placeholder) => {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
   document.title = 'Dashboard | Status Bot'
-  loadServers()
-  loadUserLanguage()
+  
+  try {
+    await loadServers()
+    await loadUserLanguage()
+    
+    // Wait a bit more for servers to be populated
+    await nextTick()
+    
+    // Handle direct URL access after servers are loaded
+    const guildId = route.params.guildId
+    console.log('Route guildId:', guildId)
+    console.log('Servers loaded:', servers.value.length)
+    
+    if (guildId && servers.value.length > 0) {
+      const server = servers.value.find(s => s.id === guildId)
+      console.log('Found server:', server?.name)
+      
+      if (server) {
+        selectedServer.value = server
+        if (server.buttonType === 'view') {
+          activeSection.value = 'overview'
+        } else if (server.buttonType === 'configure') {
+          activeSection.value = 'overview'
+        }
+        
+        console.log('Loading server data for:', server.name)
+        await Promise.all([
+          loadOverviewData(server.id),
+          loadLeaderboardData(server.id),
+          loadAllSettings(server.id),
+          loadGuildChannels(server.id),
+          fetchPremiumStatus()
+        ])
+        console.log('Server data loaded successfully')
+      } else {
+        console.log('Server not found, redirecting to /servers')
+        router.push('/servers')
+      }
+    } else if (guildId && servers.value.length === 0) {
+      console.log('No servers loaded, redirecting to /servers')
+      router.push('/servers')
+    }
+  } catch (error) {
+    console.error('Error in onMounted:', error)
+    router.push('/servers')
+  }
 })
 
 // Watch for language changes to ensure reactivity
