@@ -575,12 +575,21 @@
                 </div>
               </div>
 
+              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
+                <label>Preset templates</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button @click="applyWelcomeImagePreset('minimal')" class="preset-btn">Minimal</button>
+                  <button @click="applyWelcomeImagePreset('friendly')" class="preset-btn">Friendly</button>
+                  <button @click="applyWelcomeImagePreset('detailed')" class="preset-btn">Detailed</button>
+                </div>
+              </div>
+
               <button @click="showPlaceholdersModal = true" class="placeholders-btn">
                 <i class="fas fa-code"></i>
                 Available Placeholders
               </button>
 
-              <div v-if="!welcomeSettings.useEmbed" class="setting-item">
+              <div v-if="!welcomeSettings.useEmbed && !welcomeSettings.useImageFormat" class="setting-item">
                 <label>Message text</label>
                 <textarea
                   v-model="welcomeSettings.messageText"
@@ -675,76 +684,58 @@
                 <p v-else style="color: #999; font-size: 12px; margin-top: 8px;">No custom fields added yet</p>
               </div>
 
-              <!-- Image Format Section -->
-              <div v-if="welcomeSettings.useImageFormat" style="border-top: 1px solid #333; padding-top: 20px; margin-top: 20px;">
-                <div class="setting-item">
-                  <label>Image Presets</label>
-                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                    <button @click="applyWelcomeImagePreset('minimal')" class="preset-btn">Minimal</button>
-                    <button @click="applyWelcomeImagePreset('friendly')" class="preset-btn">Friendly</button>
-                    <button @click="applyWelcomeImagePreset('detailed')" class="preset-btn">Detailed</button>
-                  </div>
-                </div>
+              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
+                <label>Background Image URL</label>
+                <input
+                  v-model="welcomeSettings.imageBackgroundUrl"
+                  type="text"
+                  class="input-field"
+                  placeholder="https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png"
+                />
+                <small style="color: #999; display: block; margin-top: 4px;">Default: Official Status Bot background</small>
+              </div>
 
-                <button @click="showPlaceholdersModal = true" class="placeholders-btn">
-                  <i class="fas fa-code"></i>
-                  Available Placeholders
-                </button>
+              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
+                <label>Title</label>
+                <input
+                  v-model="welcomeSettings.imageTitle"
+                  type="text"
+                  class="input-field"
+                  placeholder="Welcome!"
+                />
+              </div>
 
-                <div class="setting-item">
-                  <label>Background Image URL</label>
-                  <input
-                    v-model="welcomeSettings.imageBackgroundUrl"
-                    type="text"
-                    class="input-field"
-                    placeholder="https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png"
+              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
+                <label>Description</label>
+                <textarea
+                  v-model="welcomeSettings.imageDescription"
+                  class="input-field textarea"
+                  placeholder="Welcome to {server_name}, {user}!"
+                />
+              </div>
+
+              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
+                <label>Additional Image URL (optional)</label>
+                <input
+                  v-model="welcomeSettings.imageImage"
+                  type="text"
+                  class="input-field"
+                  placeholder="https://example.com/image.png"
+                />
+                <small style="color: #999; display: block; margin-top: 4px;">Image to display on the welcome card</small>
+              </div>
+
+              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
+                <label>Preview</label>
+                <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; max-width: 600px; position: relative; overflow: hidden; aspect-ratio: 16/9;">
+                  <img 
+                    :src="welcomeSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
+                    :alt="welcomeSettings.imageTitle"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
                   />
-                  <small style="color: #999; display: block; margin-top: 4px;">Default: Official Status Bot background</small>
-                </div>
-
-                <div class="setting-item">
-                  <label>Title</label>
-                  <input
-                    v-model="welcomeSettings.imageTitle"
-                    type="text"
-                    class="input-field"
-                    placeholder="Welcome!"
-                  />
-                </div>
-
-                <div class="setting-item">
-                  <label>Description</label>
-                  <textarea
-                    v-model="welcomeSettings.imageDescription"
-                    class="input-field textarea"
-                    placeholder="Welcome to {server_name}, {user}!"
-                  />
-                </div>
-
-                <div class="setting-item">
-                  <label>Additional Image URL (optional)</label>
-                  <input
-                    v-model="welcomeSettings.imageImage"
-                    type="text"
-                    class="input-field"
-                    placeholder="https://example.com/image.png"
-                  />
-                  <small style="color: #999; display: block; margin-top: 4px;">Image to display on the welcome card</small>
-                </div>
-
-                <!-- Image Preview -->
-                <div class="setting-item">
-                  <label>Preview</label>
-                  <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; max-width: 600px; position: relative; overflow: hidden; aspect-ratio: 16/9;">
-                    <img 
-                      :src="welcomeSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
-                      :alt="welcomeSettings.imageTitle"
-                      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
-                    />
-                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 1;">
-                      <h2 style="color: white; margin: 0 0 10px 0; text-align: center; font-size: 28px;">{{ welcomeSettings.imageTitle || 'Welcome!' }}</h2>
-                      <p style="color: #e5e7eb; margin: 0; text-align: center; font-size: 16px;">{{ welcomeSettings.imageDescription || 'Welcome to {server_name}, {user}!' }}</p>
-                    </div>
+                  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 1;">
+                    <h2 style="color: white; margin: 0 0 10px 0; text-align: center; font-size: 28px;">{{ welcomeSettings.imageTitle || 'Welcome!' }}</h2>
+                    <p style="color: #e5e7eb; margin: 0; text-align: center; font-size: 16px;">{{ welcomeSettings.imageDescription || 'Welcome to {server_name}, {user}!' }}</p>
                   </div>
                 </div>
               </div>
@@ -804,7 +795,7 @@
                 <toggle-switch v-model="leaveSettings.useImageFormat" :disabled="!userHasPremium" />
               </div>
 
-              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
                 <label>Preset templates</label>
                 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                   <button @click="applyLeavePreset('minimal')" class="preset-btn">Minimal</button>
@@ -814,12 +805,12 @@
                 </div>
               </div>
 
-              <button v-if="!leaveSettings.useImageFormat" @click="showPlaceholdersModal = true" class="placeholders-btn">
+              <button @click="showPlaceholdersModal = true" class="placeholders-btn">
                 <i class="fas fa-code"></i>
                 Available Placeholders
               </button>
 
-              <div v-if="!leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="!leaveSettings.useEmbed" class="setting-item">
                 <label>Message text</label>
                 <textarea
                   v-model="leaveSettings.messageText"
@@ -828,7 +819,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
                 <label>Embed title</label>
                 <input
                   v-model="leaveSettings.embedTitle"
@@ -838,7 +829,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
                 <label>Description (leave blank for none)</label>
                 <textarea
                   v-model="leaveSettings.embedDescription"
@@ -847,7 +838,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
                 <label>Thumbnail URL (small image, right side)</label>
                 <input
                   v-model="leaveSettings.embedThumbnail"
@@ -857,7 +848,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
                 <label>Image URL (large image, bottom)</label>
                 <input
                   v-model="leaveSettings.embedImage"
@@ -867,7 +858,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
                 <label>Embed color (hex)</label>
                 <input
                   v-model="leaveSettings.embedColor"
@@ -877,7 +868,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
                 <label>Footer</label>
                 <input
                   v-model="leaveSettings.embedFooter"
@@ -887,7 +878,7 @@
                 />
               </div>
 
-              <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
+              <div v-if="leaveSettings.useEmbed" class="setting-item">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                   <label>Custom fields</label>
                   <button @click="addLeaveField" class="small-btn">+ Add Field</button>
@@ -914,75 +905,67 @@
                 <p v-else style="color: #999; font-size: 12px; margin-top: 8px;">No custom fields added yet</p>
               </div>
 
-              <!-- Image Format Section -->
-              <div v-if="leaveSettings.useImageFormat" style="border-top: 1px solid #333; padding-top: 20px; margin-top: 20px;">
-                <div class="setting-item">
-                  <label>Image Presets</label>
-                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                    <button @click="applyLeaveImagePreset('minimal')" class="preset-btn">Minimal</button>
-                    <button @click="applyLeaveImagePreset('friendly')" class="preset-btn">Friendly</button>
-                    <button @click="applyLeaveImagePreset('detailed')" class="preset-btn">Detailed</button>
-                  </div>
+              <div v-if="leaveSettings.useImageFormat" class="setting-item">
+                <label>Preset templates</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button @click="applyLeaveImagePreset('minimal')" class="preset-btn">Minimal</button>
+                  <button @click="applyLeaveImagePreset('friendly')" class="preset-btn">Friendly</button>
+                  <button @click="applyLeaveImagePreset('detailed')" class="preset-btn">Detailed</button>
                 </div>
+              </div>
 
-                <button @click="showPlaceholdersModal = true" class="placeholders-btn">
-                  <i class="fas fa-code"></i>
-                  Available Placeholders
-                </button>
+              <div v-if="leaveSettings.useImageFormat" class="setting-item">
+                <label>Background Image URL</label>
+                <input
+                  v-model="leaveSettings.imageBackgroundUrl"
+                  type="text"
+                  class="input-field"
+                  placeholder="https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png"
+                />
+                <small style="color: #999; display: block; margin-top: 4px;">Default: Official Status Bot background</small>
+              </div>
 
-                <div class="setting-item" style="margin-top: 12px;">
-                  <label>Background Image URL</label>
-                  <input
-                    v-model="leaveSettings.imageBackgroundUrl"
-                    type="text"
-                    class="input-field"
-                    placeholder="https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png"
+              <div v-if="leaveSettings.useImageFormat" class="setting-item">
+                <label>Title</label>
+                <input
+                  v-model="leaveSettings.imageTitle"
+                  type="text"
+                  class="input-field"
+                  placeholder="Member Left!"
+                />
+              </div>
+
+              <div v-if="leaveSettings.useImageFormat" class="setting-item">
+                <label>Description</label>
+                <textarea
+                  v-model="leaveSettings.imageDescription"
+                  class="input-field textarea"
+                  placeholder="Goodbye {user}!"
+                />
+              </div>
+
+              <div v-if="leaveSettings.useImageFormat" class="setting-item">
+                <label>Additional Image URL (optional)</label>
+                <input
+                  v-model="leaveSettings.imageImage"
+                  type="text"
+                  class="input-field"
+                  placeholder="https://example.com/image.png"
+                />
+                <small style="color: #999; display: block; margin-top: 4px;">Image to display on the leave card</small>
+              </div>
+
+              <div v-if="leaveSettings.useImageFormat" class="setting-item">
+                <label>Preview</label>
+                <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; max-width: 600px; position: relative; overflow: hidden; aspect-ratio: 16/9;">
+                  <img 
+                    :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
+                    :alt="leaveSettings.imageTitle"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
                   />
-                  <small style="color: #999; display: block; margin-top: 4px;">Default: Official Status Bot background</small>
-                </div>
-
-                <div class="setting-item">
-                  <label>Title</label>
-                  <input
-                    v-model="leaveSettings.imageTitle"
-                    type="text"
-                    class="input-field"
-                    placeholder="Member Left!"
-                  />
-                </div>
-
-                <div class="setting-item">
-                  <label>Description</label>
-                  <textarea
-                    v-model="leaveSettings.imageDescription"
-                    class="input-field textarea"
-                    placeholder="Goodbye {user}!"
-                  />
-                </div>
-
-                <div class="setting-item">
-                  <label>Additional Image URL (optional) <span style="color: #999; font-size: 12px; font-weight: normal;">(620x240)</span></label>
-                  <input
-                    v-model="leaveSettings.imageImage"
-                    type="text"
-                    class="input-field"
-                    placeholder="https://example.com/image.png"
-                  />
-                  <small style="color: #999; display: block; margin-top: 4px;">Image to display on the leave card</small>
-                </div>
-
-                <div class="setting-item">
-                  <label>Preview <span style="color: #999; font-size: 12px; font-weight: normal;">(620x240)</span></label>
-                  <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
-                    <img 
-                      :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
-                      :alt="leaveSettings.imageTitle"
-                      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
-                    />
-                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 1;">
-                      <h2 style="color: white; margin: 0 0 10px 0; text-align: center; font-size: 28px;">{{ leaveSettings.imageTitle || 'Member Left' }}</h2>
-                      <p style="color: #e5e7eb; margin: 0; text-align: center; font-size: 16px;">{{ leaveSettings.imageDescription || 'Goodbye {user}!' }}</p>
-                    </div>
+                  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 1;">
+                    <h2 style="color: white; margin: 0 0 10px 0; text-align: center; font-size: 28px;">{{ leaveSettings.imageTitle || 'Member Left' }}</h2>
+                    <p style="color: #e5e7eb; margin: 0; text-align: center; font-size: 16px;">{{ leaveSettings.imageDescription || 'Goodbye {user}!' }}</p>
                   </div>
                 </div>
               </div>
@@ -1284,7 +1267,7 @@ const welcomeSettings = reactive({
   embedFields: [],
   imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
   imageTitle: 'Welcome!',
-  imageDescription: '',
+  imageDescription: 'Welcome to {server_name}, {user}!',
   imageImage: ''
 })
 
@@ -1303,7 +1286,7 @@ const leaveSettings = reactive({
   embedFields: [],
   imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
   imageTitle: 'Member Left',
-  imageDescription: '',
+  imageDescription: 'Goodbye {user}!',
   imageImage: ''
 })
 
@@ -1802,7 +1785,7 @@ const loadAllSettings = async (guildId) => {
         embedFields: Array.isArray(embedFields) ? embedFields : [],
         imageBackgroundUrl: data.image_background_url || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
         imageTitle: data.image_title || 'Welcome!',
-        imageDescription: data.image_description || '',
+        imageDescription: data.image_description || 'Welcome to {server_name}, {user}!',
         imageImage: data.image_image || ''
       })
       
@@ -1822,7 +1805,6 @@ const loadAllSettings = async (guildId) => {
       Object.assign(leaveSettings, {
         enabled: data.enabled === true,
         useEmbed: data.use_embed === true,
-        useImageFormat: data.use_image_format === true,
         leaveChannel: data.channel_id || '',
         messageText: data.message_text || 'Goodbye {user}!',
         embedTitle: data.embed_title || 'Member Left',
@@ -1831,11 +1813,7 @@ const loadAllSettings = async (guildId) => {
         embedThumbnail: data.embed_thumbnail || '',
         embedImage: data.embed_image || '',
         embedColor: data.embed_color || '#5170ff',
-        embedFields: Array.isArray(embedFields) ? embedFields : [],
-        imageBackgroundUrl: data.image_background_url || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-        imageTitle: data.image_title || 'Member Left',
-        imageDescription: data.image_description || '',
-        imageImage: data.image_image || ''
+        embedFields: Array.isArray(embedFields) ? embedFields : []
       })
       localStorage.setItem(`leave_${guildId}`, JSON.stringify(leaveSettings))
     }
@@ -2261,6 +2239,7 @@ const resetWelcomeSettings = () => {
   Object.assign(welcomeSettings, {
     enabled: true,
     useEmbed: false,
+    useImageFormat: false,
     welcomeChannel: '',
     messageText: 'Welcome to {server_name}, {user}!',
     embedTitle: 'Welcome!',
@@ -2269,7 +2248,11 @@ const resetWelcomeSettings = () => {
     embedThumbnail: '',
     embedImage: '',
     embedColor: '#5170ff',
-    embedFields: []
+    embedFields: [],
+    imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+    imageTitle: 'Welcome!',
+    imageDescription: 'Welcome to {server_name}, {user}!',
+    imageImage: ''
   })
 }
 
@@ -2339,39 +2322,11 @@ const applyWelcomePreset = (preset) => {
   }
 }
 
-const applyWelcomeImagePreset = (preset) => {
-  const presets = {
-    minimal: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-      imageTitle: 'Welcome!',
-      imageDescription: 'Welcome to {server_name}!'
-    },
-    friendly: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-      imageTitle: 'Welcome to {server_name}! 👋',
-      imageDescription: 'We\'re happy to have you here, {user}!'
-    },
-    detailed: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-      imageTitle: 'Welcome to {server_name}!',
-      imageDescription: 'A new member has joined! {user} is now member #{member_count}!'
-    }
-  }
-
-  if (presets[preset]) {
-    const presetData = presets[preset]
-    Object.assign(welcomeSettings, {
-      imageBackgroundUrl: presetData.imageBackgroundUrl,
-      imageTitle: presetData.imageTitle,
-      imageDescription: presetData.imageDescription
-    })
-  }
-}
-
 const resetLeaveSettings = () => {
   Object.assign(leaveSettings, {
     enabled: true,
     useEmbed: false,
+    useImageFormat: false,
     leaveChannel: '',
     messageText: 'Goodbye {user}!',
     embedTitle: 'Member Left',
@@ -2380,7 +2335,11 @@ const resetLeaveSettings = () => {
     embedThumbnail: '',
     embedImage: '',
     embedColor: '#5170ff',
-    embedFields: []
+    embedFields: [],
+    imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+    imageTitle: 'Member Left',
+    imageDescription: 'Goodbye {user}!',
+    imageImage: ''
   })
 }
 
@@ -2438,6 +2397,30 @@ const applyLeavePreset = (preset) => {
   }
 }
 
+const applyWelcomeImagePreset = (preset) => {
+  const presets = {
+    minimal: {
+      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+      imageTitle: 'Welcome!',
+      imageDescription: 'Welcome to {server_name}!'
+    },
+    friendly: {
+      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+      imageTitle: 'Welcome to {server_name}! 👋',
+      imageDescription: 'We\'re happy to have you here, {user}! Feel free to explore!'
+    },
+    detailed: {
+      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+      imageTitle: 'Welcome to {server_name}!',
+      imageDescription: 'Welcome {user}! You are member #{member_count} of our community.'
+    }
+  }
+
+  if (presets[preset]) {
+    Object.assign(welcomeSettings, presets[preset])
+  }
+}
+
 const applyLeaveImagePreset = (preset) => {
   const presets = {
     minimal: {
@@ -2453,17 +2436,12 @@ const applyLeaveImagePreset = (preset) => {
     detailed: {
       imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
       imageTitle: 'Member Left',
-      imageDescription: '{user} has left the server. We now have {member_count} members.'
+      imageDescription: '{user} has left. {server_name} now has {member_count} members.'
     }
   }
 
   if (presets[preset]) {
-    const presetData = presets[preset]
-    Object.assign(leaveSettings, {
-      imageBackgroundUrl: presetData.imageBackgroundUrl,
-      imageTitle: presetData.imageTitle,
-      imageDescription: presetData.imageDescription
-    })
+    Object.assign(leaveSettings, presets[preset])
   }
 }
 
@@ -2521,6 +2499,7 @@ const loadLeaveSettings = async (guildId) => {
       Object.assign(leaveSettings, {
         enabled: data.enabled,
         useEmbed: data.use_embed,
+        useImageFormat: data.use_image_format === true,
         leaveChannel: data.channel_id,
         messageText: data.message_text,
         embedTitle: data.embed_title,
@@ -2529,7 +2508,11 @@ const loadLeaveSettings = async (guildId) => {
         embedThumbnail: data.embed_thumbnail,
         embedImage: data.embed_image,
         embedColor: data.embed_color,
-        embedFields: data.embed_fields ? JSON.parse(data.embed_fields) : []
+        embedFields: data.embed_fields ? JSON.parse(data.embed_fields) : [],
+        imageBackgroundUrl: data.image_background_url || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
+        imageTitle: data.image_title || 'Member Left',
+        imageDescription: data.image_description || '{user} has left {server_name}',
+        imageImage: data.image_image || ''
       })
     }
   } catch (error) {
