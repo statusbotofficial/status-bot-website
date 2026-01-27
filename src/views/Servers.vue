@@ -1103,6 +1103,7 @@ const fetchPremiumStatus = async () => {
 }
 
 const BACKEND_URL = 'https://backend-nwct.onrender.com'
+const SECRET_KEY = 'status-bot-stats-secret-key'
 
 const sections = [
   { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: var(--text-primary);"></i>' },
