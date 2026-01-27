@@ -305,11 +305,13 @@ const BACKEND_URL = 'https://backend-nwct.onrender.com'
 const SECRET_KEY = 'status-bot-stats-secret-key'
 
 const themes = {
-  default: { name: 'Default', preview: 'linear-gradient(135deg, #5170ff 0%, #111111 100%)' }
+  default: { name: 'Default', preview: 'linear-gradient(135deg, #5170ff 0%, #111111 100%)' },
+  light: { name: 'Light', preview: 'linear-gradient(135deg, #5170ff 0%, #ffffff 100%)' }
 }
 
 const themeColorMap = {
-  default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' }
+  default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' },
+  light: { primary: '#5170ff', bg: '#ffffff', text: '#000000' }
 }
 
 const activeSection = ref('account')

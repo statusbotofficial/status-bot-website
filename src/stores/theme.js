@@ -15,6 +15,21 @@ const THEMES = {
     '--glow-color-1': 'rgba(81, 112, 255, 0.4)',
     '--glow-color-2': 'rgba(81, 112, 255, 0.35)',
     '--border-color': '#333333',
+  },
+  light: {
+    name: 'Light',
+    '--primary-color': '#5170ff',
+    '--primary-light': '#4162ff',
+    '--bg-primary': '#ffffff',
+    '--bg-secondary': '#f5f5f5',
+    '--bg-tertiary': '#e5e5e5',
+    '--accent-gradient-1': '#000000',
+    '--accent-gradient-2': '#2630b6',
+    '--glow-color-1': 'rgba(81, 112, 255, 0.15)',
+    '--glow-color-2': 'rgba(81, 112, 255, 0.1)',
+    '--border-color': '#cccccc',
+    '--text-primary': '#000000',
+    '--text-secondary': '#555555',
   }
 }
 
