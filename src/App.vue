@@ -110,9 +110,11 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from './stores/auth'
+import { useThemeStore } from './stores/theme'
 import { DISCORD_INVITE_URL } from './config'
 
 const authStore = useAuthStore()
+const themeStore = useThemeStore()
 const router = useRouter()
 
 // UI state
@@ -330,6 +332,7 @@ const completeProgressBar = () => {
 
 onMounted(() => {
   authStore.initializeAuth()
+  themeStore.initializeTheme()
   loadNotifications()
 
   router.beforeEach((to, from, next) => {
