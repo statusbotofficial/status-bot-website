@@ -7,7 +7,7 @@
         <span></span>
       </button>
       <div class="logo">
-        <img src="/Status Bot Logo.png" alt="Status Bot Logo">
+        <img :src="logoSrc" alt="Status Bot Logo">
       </div>
       <nav class="nav" :class="{ show: menuOpen }">
         <ul class="nav-menu">
@@ -136,6 +136,10 @@ const userAvatar = computed(() => {
     return `https://cdn.discordapp.com/avatars/${authStore.user.id}/${authStore.user.avatar}.png?size=32`
   }
   return ''
+})
+
+const logoSrc = computed(() => {
+  return themeStore.currentTheme === 'light' ? '/Status Bot Logo (Black).png' : '/Status Bot Logo.png'
 })
 
 const toggleMenu = () => {
