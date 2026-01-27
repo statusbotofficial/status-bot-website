@@ -971,10 +971,9 @@
                   <small style="color: #999; display: block; margin-top: 4px;">Image to display on the leave card</small>
                 </div>
 
-                <!-- Image Preview -->
                 <div class="setting-item">
                   <label>Preview <span style="color: #999; font-size: 12px; font-weight: normal;">(620x240)</span></label>
-                  <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; max-width: 620px; position: relative; overflow: hidden; aspect-ratio: 16/9;">
+                  <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
                     <img 
                       :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
                       :alt="leaveSettings.imageTitle"
@@ -3956,14 +3955,14 @@ const copyItemJson = (item) => {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 32px;
 }
 
 .setting-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 28px;
 }
 
 .setting-item label {
