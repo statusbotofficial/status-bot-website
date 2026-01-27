@@ -2383,9 +2383,31 @@ const copyPlaceholder = (placeholder) => {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
   document.title = 'Dashboard | Status Bot'
-  loadServers()
+  await loadServers()
+  
+  // After servers are loaded, check if we have a guildId in the route
+  const guildId = route.params.guildId
+  if (guildId && servers.value.length > 0) {
+    const server = servers.value.find(s => s.id === guildId)
+    if (server) {
+      selectedServer.value = server
+      if (server.buttonType === 'view') {
+        activeSection.value = 'overview'
+      } else if (server.buttonType === 'configure') {
+        activeSection.value = 'overview'
+      }
+      // Load all the server-specific data
+      await Promise.all([
+        loadOverviewData(server.id),
+        loadLeaderboardData(server.id),
+        loadAllSettings(server.id),
+        loadGuildChannels(server.id),
+        fetchPremiumStatus()
+      ])
+    }
+  }
 })
 
 watch(
@@ -2393,7 +2415,7 @@ watch(
   async (guildId) => {
     if (guildId && servers.value.length > 0) {
       const server = servers.value.find(s => s.id === guildId)
-      if (server) {
+      if (server && (!selectedServer.value || selectedServer.value.id !== server.id)) {
         selectedServer.value = server
         if (server.buttonType === 'view') {
           activeSection.value = 'overview'
