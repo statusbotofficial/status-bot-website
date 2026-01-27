@@ -158,7 +158,7 @@ const loadChatHistory = () => {
       messages.value = JSON.parse(saved)
       setTimeout(() => scrollChatToBottom(), 100)
     } catch (e) {
-      console.error('Error loading chat history:', e)
+      // Error loading chat history
       messages.value = []
     }
   }
@@ -218,7 +218,7 @@ const sendMessage = async () => {
     })
     saveChatHistory()
   } catch (error) {
-    console.error('Error getting AI response:', error)
+    // Error getting AI response
     messages.value.push({
       text: 'Sorry, I encountered an error. Please try again or contact support at our <a href="https://discord.gg/Kd2MckVxED" target="_blank">Discord server</a>.',
       sender: 'ai'

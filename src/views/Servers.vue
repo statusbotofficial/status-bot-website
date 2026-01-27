@@ -1880,7 +1880,7 @@ const postStatusMessage = async () => {
       offline_message: statusSettings.offlineMessage,
       use_embed: statusSettings.useEmbed
     }
-    console.log('📮 Posting status message with payload:', payload)
+    // Posting status message with payload
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/post`, {
       method: 'POST',
       headers: {
@@ -1890,12 +1890,12 @@ const postStatusMessage = async () => {
       body: JSON.stringify(payload)
     })
     if (!response.ok) {
-      console.error('Failed to queue status message:', response.status, response.statusText)
+      // Failed to queue status message
     } else {
-      console.log('✅ Status message queued for posting/updating')
+      // Status message queued for posting/updating
     }
   } catch (error) {
-    console.error('Error queuing status message:', error)
+    // Error queuing status message
   }
 }
 
@@ -1913,7 +1913,7 @@ const saveStatusSettings = async () => {
       use_embed: statusSettings.useEmbed,
       offline_message: statusSettings.offlineMessage
     }
-    console.log('Saving status settings with payload:', payload)
+    // Saving status settings with payload
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/settings`, {
       method: 'POST',
       headers: {
@@ -1923,7 +1923,7 @@ const saveStatusSettings = async () => {
       body: JSON.stringify(payload)
     })
     if (response.ok) {
-      console.log('Settings saved, posting message...')
+      // Settings saved, posting message...
       await postStatusMessage()
       
       await new Promise(resolve => setTimeout(resolve, 2500))
@@ -1933,7 +1933,7 @@ const saveStatusSettings = async () => {
       })
       if (reloadRes.ok) {
         const data = await reloadRes.json()
-        console.log('Reloaded settings from backend:', data)
+        // Reloaded settings from backend
         const userId = data.user_id || ''
         let username = ''
         if (userId) {
@@ -1951,16 +1951,16 @@ const saveStatusSettings = async () => {
           offlineMessage: data.offline_message || 'User is offline',
           messageId: data.message_id || null
         })
-        console.log('Settings reloaded with messageId:', data.message_id)
+        // Settings reloaded with messageId
       }
       
       resetSaveState(statusSaveLoading, statusSaveSuccess)
     } else {
-      console.error('Failed to save settings:', response.status)
+      // Failed to save settings
       statusSaveLoading.value = false
     }
   } catch (error) {
-    console.error('Error saving settings:', error)
+    // Error saving settings
     statusSaveLoading.value = false
   }
 }
@@ -1991,7 +1991,7 @@ const forceUpdateStatus = async () => {
       alert('❌ Failed to update status')
     }
   } catch (error) {
-    console.error('Error forcing status update:', error)
+    // Error forcing status update
     alert('❌ Error updating status')
   } finally {
     statusUpdateLoading.value = false
@@ -2059,14 +2059,14 @@ const resetEconomyBalances = async () => {
       headers: { Authorization: `Bearer ${authStore.token}` }
     })
     const data = await response.json()
-    console.log('Reset response:', response.status, data)
+    // Reset response
     if (response.ok) {
       alert(`Economy balances reset! ${data.usersReset} users reset to ${data.startingAmount}`)
     } else {
       alert(`Error: ${data.error || 'Unknown error'}`)
     }
   } catch (error) {
-    console.error('Error resetting balances:', error)
+    // Error resetting balances
     alert(`Error: ${error.message}`)
   }
 }
@@ -2263,12 +2263,12 @@ const saveLeaveSettings = async () => {
       body: JSON.stringify(payload)
     })
     if (response.ok) {
-      console.log('Leave settings saved')
+      // Leave settings saved
       leaveSaveSuccess.value = true
       setTimeout(() => { leaveSaveSuccess.value = false }, 3000)
     }
   } catch (error) {
-    console.error('Error saving leave settings:', error)
+    // Error saving leave settings
   } finally {
     leaveSaveLoading.value = false
   }
@@ -2298,7 +2298,7 @@ const loadLeaveSettings = async (guildId) => {
       })
     }
   } catch (error) {
-    console.error('Error loading leave settings:', error)
+    // Error loading leave settings
   }
 }
 
@@ -2312,7 +2312,7 @@ const saveMemberGoalsSettings = async () => {
       member_goal_channel_id: memberGoalsSettings.memberGoalChannelId,
       member_goal: memberGoalsSettings.memberGoal
     }
-    console.log('Saving member goals settings with payload:', payload)
+    // Saving member goals settings with payload
     const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/member-goals`, {
       method: 'POST',
       headers: {
@@ -2323,13 +2323,13 @@ const saveMemberGoalsSettings = async () => {
     })
     if (response.ok) {
       const data = await response.json()
-      console.log('Member goals settings saved successfully:', data)
+      // Member goals settings saved successfully
       resetSaveState(memberGoalsSaveLoading, memberGoalsSaveSuccess)
     } else {
       memberGoalsSaveLoading.value = false
     }
   } catch (error) {
-    console.error('Error saving member goals settings:', error)
+    // Error saving member goals settings
     memberGoalsSaveLoading.value = false
   }
 }
@@ -2507,7 +2507,7 @@ const loadActivityLogs = async (guildId) => {
       activityLogs.value = data.logs.reverse()
     }
   } catch (err) {
-    console.error('Failed to load activity logs:', err)
+    // Failed to load activity logs
   } finally {
     logsLoading.value = false
   }
