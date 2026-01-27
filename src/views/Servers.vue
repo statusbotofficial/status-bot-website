@@ -2556,7 +2556,7 @@ const copyItemJson = (item) => {
   background: rgba(80, 80, 80, 0.3);
   border: 2px solid #5170ff;
   border-radius: 8px;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 30px;
 }
 
@@ -2610,14 +2610,14 @@ const copyItemJson = (item) => {
   justify-content: center;
   font-weight: 700;
   font-size: 24px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .server-name {
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 20px;
-  color: #fff;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2638,25 +2638,25 @@ const copyItemJson = (item) => {
 .server-button.configure {
   background: linear-gradient(135deg, rgba(59, 91, 219, 0.8), rgba(59, 91, 219, 0.5));
   border-color: #3b5bdb;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .server-button.view {
   background: linear-gradient(135deg, rgba(128, 128, 128, 0.8), rgba(128, 128, 128, 0.5));
   border-color: #808080;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .server-button.invite-bot {
   background: linear-gradient(135deg, rgba(92, 184, 92, 0.8), rgba(92, 184, 92, 0.5));
   border-color: #5cb85c;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .server-button.no-access {
   background: linear-gradient(135deg, rgba(220, 53, 69, 0.8), rgba(220, 53, 69, 0.5));
   border-color: #dc3545;
-  color: #fff;
+  color: var(--text-primary);
   cursor: not-allowed;
 }
 
@@ -2701,21 +2701,21 @@ const copyItemJson = (item) => {
   justify-content: center;
   font-weight: 700;
   font-size: 20px;
-  color: #fff;
+  color: var(--text-primary);
   object-fit: cover;
 }
 
 .config-header h2 {
   font-size: 28px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .back-btn {
   background: rgba(80, 80, 80, 0.3);
   border: 2px solid #5170ff;
-  color: #fff;
+  color: var(--text-primary);
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
@@ -2813,12 +2813,12 @@ const copyItemJson = (item) => {
   font-size: 18px;
   min-width: 24px;
   text-align: center;
-  color: white;
+  color: var(--text-primary);
 }
 
 .nav-icon i {
   font-size: 18px;
-  color: white;
+  color: var(--text-primary);
 }
 
 .config-main {
@@ -2838,7 +2838,7 @@ const copyItemJson = (item) => {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 30px;
-  color: #fff;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -2873,7 +2873,7 @@ const copyItemJson = (item) => {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 20px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .overview-panel h3::before {
@@ -2951,7 +2951,7 @@ const copyItemJson = (item) => {
 
 .username {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3197,7 +3197,7 @@ const copyItemJson = (item) => {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 16px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .items-grid {
@@ -3244,7 +3244,7 @@ const copyItemJson = (item) => {
 .item-header h5 {
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   margin: 0;
   flex: 1;
 }
@@ -3403,7 +3403,7 @@ const copyItemJson = (item) => {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 6px;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 13px;
   font-family: inherit;
   transition: all 0.2s ease;
@@ -3420,7 +3420,7 @@ const copyItemJson = (item) => {
 
 .form-group select option {
   background: #1a1a2e;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .form-group input:focus,
@@ -3441,7 +3441,7 @@ const copyItemJson = (item) => {
   background: linear-gradient(135deg, #5170ff 0%, #8b5cf6 100%);
   border: none;
   border-radius: 6px;
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -3510,7 +3510,7 @@ const copyItemJson = (item) => {
 
 .purchase-item-name {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -3700,7 +3700,7 @@ const copyItemJson = (item) => {
 .stat-value {
   font-size: 24px;
   font-weight: 800;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .settings-box {
@@ -3721,7 +3721,7 @@ const copyItemJson = (item) => {
 
 .setting-item label {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 15px;
 }
 
@@ -3730,7 +3730,7 @@ const copyItemJson = (item) => {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 500;
   font-size: 14px;
   outline: none;
@@ -3792,7 +3792,7 @@ const copyItemJson = (item) => {
   background: rgba(81, 112, 255, 0.2);
   border: 2px solid #5170ff;
   border-radius: 8px;
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -3885,7 +3885,7 @@ const copyItemJson = (item) => {
   background: linear-gradient(135deg, #5170ff 0%, #5170ff 100%);
   border: none;
   border-radius: 6px;
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -3902,7 +3902,7 @@ const copyItemJson = (item) => {
 .save-btn.save-success {
   background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
   border: none;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .save-btn:disabled {
@@ -3915,7 +3915,7 @@ const copyItemJson = (item) => {
   background: linear-gradient(135deg, #f59e0b 0%, #f59e0b 100%);
   border: none;
   border-radius: 6px;
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -3940,7 +3940,7 @@ const copyItemJson = (item) => {
   height: 14px;
   margin-right: 8px;
   border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #fff;
+  border-top-color: var(--text-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   vertical-align: middle;
@@ -4129,7 +4129,7 @@ const copyItemJson = (item) => {
 
 .member-username {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -4191,7 +4191,7 @@ const copyItemJson = (item) => {
 
 .formula-name {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -4218,7 +4218,7 @@ const copyItemJson = (item) => {
 .confirm-btn {
   background: rgba(81, 112, 255, 0.2);
   border-color: #5170ff;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .confirm-btn:hover {
@@ -4228,7 +4228,7 @@ const copyItemJson = (item) => {
 .cancel-btn {
   background: rgba(128, 128, 128, 0.2);
   border-color: #808080;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .cancel-btn:hover {
@@ -4241,7 +4241,7 @@ const copyItemJson = (item) => {
   flex-direction: column;
   background: rgba(81, 112, 255, 0.2);
   border: 2px solid #5170ff;
-  color: #fff;
+  color: var(--text-primary);
   padding: 10px 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -4260,7 +4260,7 @@ const copyItemJson = (item) => {
 .mobile-hamburger span {
   width: 24px;
   height: 2px;
-  background: #fff;
+  background: var(--text-primary);
   border-radius: 1px;
   transition: all 0.3s ease;
 }

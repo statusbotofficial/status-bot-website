@@ -396,7 +396,7 @@ onMounted(() => {
   font-size: 56px;
   font-weight: 900;
   margin: 0;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .docs-header p {
@@ -421,7 +421,7 @@ onMounted(() => {
 .docs-section h2 {
   font-size: 28px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 20px;
 }
 
@@ -461,7 +461,7 @@ onMounted(() => {
 }
 
 .docs-section strong {
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
