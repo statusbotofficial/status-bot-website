@@ -23,15 +23,15 @@ const THEMES = {
     '--primary-color': '#5170ff',
     '--primary-light': '#4162ff',
     '--bg-primary': '#ffffff',
-    '--bg-secondary': '#e5e5e5',
-    '--bg-tertiary': '#d0d0d0',
+    '--bg-secondary': '#d5d5d5',
+    '--bg-tertiary': '#c0c0c0',
     '--accent-gradient-1': '#000000',
     '--accent-gradient-2': '#2630b6',
     '--glow-color-1': 'rgba(81, 112, 255, 0.15)',
     '--glow-color-2': 'rgba(81, 112, 255, 0.1)',
-    '--border-color': '#b0b0b0',
+    '--border-color': '#999999',
     '--text-primary': '#000000',
-    '--text-secondary': '#444444',
+    '--text-secondary': '#333333',
   }
 }
 
