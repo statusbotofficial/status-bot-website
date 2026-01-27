@@ -560,11 +560,6 @@
                 <toggle-switch v-model="welcomeSettings.useEmbed" />
               </div>
 
-              <div class="setting-item">
-                <label>Use image format <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
-                <toggle-switch v-model="welcomeSettings.useImageFormat" :disabled="!userHasPremium" />
-              </div>
-
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
                 <label>Preset templates</label>
                 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -575,21 +570,12 @@
                 </div>
               </div>
 
-              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
-                <label>Preset templates</label>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                  <button @click="applyWelcomeImagePreset('minimal')" class="preset-btn">Minimal</button>
-                  <button @click="applyWelcomeImagePreset('friendly')" class="preset-btn">Friendly</button>
-                  <button @click="applyWelcomeImagePreset('detailed')" class="preset-btn">Detailed</button>
-                </div>
-              </div>
-
               <button @click="showPlaceholdersModal = true" class="placeholders-btn">
                 <i class="fas fa-code"></i>
                 Available Placeholders
               </button>
 
-              <div v-if="!welcomeSettings.useEmbed && !welcomeSettings.useImageFormat" class="setting-item">
+              <div v-if="!welcomeSettings.useEmbed" class="setting-item">
                 <label>Message text</label>
                 <textarea
                   v-model="welcomeSettings.messageText"
@@ -684,58 +670,6 @@
                 <p v-else style="color: #999; font-size: 12px; margin-top: 8px;">No custom fields added yet</p>
               </div>
 
-              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
-                <label>Background Image URL (620x240)</label>
-                <input
-                  v-model="welcomeSettings.imageBackgroundUrl"
-                  type="text"
-                  class="input-field"
-                  placeholder="https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png"
-                />
-              </div>
-
-              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
-                <label>Title</label>
-                <input
-                  v-model="welcomeSettings.imageTitle"
-                  type="text"
-                  class="input-field"
-                  placeholder="Welcome!"
-                />
-              </div>
-
-              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
-                <label>Description</label>
-                <textarea
-                  v-model="welcomeSettings.imageDescription"
-                  class="input-field textarea"
-                  placeholder="Welcome to {server_name}, {user}!"
-                />
-              </div>
-
-              <div v-if="welcomeSettings.useImageFormat" class="setting-item">
-                <label>Preview</label>
-                <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
-                  <img 
-                    :src="welcomeSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
-                    :alt="welcomeSettings.imageTitle"
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
-                  />
-                  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 1;">
-                    <!-- Discord Avatar with white outline -->
-                    <div style="margin-bottom: 20px; position: relative;">
-                      <img 
-                        src="https://cdn.discordapp.com/embed/avatars/0.png"
-                        :alt="'Avatar'"
-                        style="width: 84px; height: 84px; border-radius: 50%; border: 6px solid white; object-fit: cover;"
-                      />
-                    </div>
-                    <h2 style="color: white; margin: 0 0 10px 0; text-align: center; font-size: 28px;">{{ welcomeSettings.imageTitle || 'Welcome!' }}</h2>
-                    <p style="color: #e5e7eb; margin: 0; text-align: center; font-size: 16px;">{{ welcomeSettings.imageDescription || 'Welcome to {server_name}, {user}!' }}</p>
-                  </div>
-                </div>
-              </div>
-
               <div class="button-group">
                 <button @click="saveWelcomeSettings" class="save-btn" :class="{ 'save-success': welcomeSaveSuccess }" :disabled="welcomeSaveLoading">
                   <span v-if="welcomeSaveLoading" class="spinner"></span>
@@ -784,11 +718,6 @@
               <div class="setting-item">
                 <label>Use embed format</label>
                 <toggle-switch v-model="leaveSettings.useEmbed" />
-              </div>
-
-              <div class="setting-item">
-                <label>Use image format <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
-                <toggle-switch v-model="leaveSettings.useImageFormat" :disabled="!userHasPremium" />
               </div>
 
               <div v-if="leaveSettings.useEmbed" class="setting-item">
@@ -899,67 +828,6 @@
                   </div>
                 </div>
                 <p v-else style="color: #999; font-size: 12px; margin-top: 8px;">No custom fields added yet</p>
-              </div>
-
-              <div v-if="leaveSettings.useImageFormat" class="setting-item">
-                <label>Preset templates</label>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                  <button @click="applyLeaveImagePreset('minimal')" class="preset-btn">Minimal</button>
-                  <button @click="applyLeaveImagePreset('friendly')" class="preset-btn">Friendly</button>
-                  <button @click="applyLeaveImagePreset('detailed')" class="preset-btn">Detailed</button>
-                </div>
-              </div>
-
-              <div v-if="leaveSettings.useImageFormat" class="setting-item">
-                <label>Background Image URL (620x240)</label>
-                <input
-                  v-model="leaveSettings.imageBackgroundUrl"
-                  type="text"
-                  class="input-field"
-                  placeholder="https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png"
-                />
-              </div>
-
-              <div v-if="leaveSettings.useImageFormat" class="setting-item">
-                <label>Title</label>
-                <input
-                  v-model="leaveSettings.imageTitle"
-                  type="text"
-                  class="input-field"
-                  placeholder="Member Left!"
-                />
-              </div>
-
-              <div v-if="leaveSettings.useImageFormat" class="setting-item">
-                <label>Description</label>
-                <textarea
-                  v-model="leaveSettings.imageDescription"
-                  class="input-field textarea"
-                  placeholder="Goodbye {user}!"
-                />
-              </div>
-
-              <div v-if="leaveSettings.useImageFormat" class="setting-item">
-                <label>Preview</label>
-                <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
-                  <img 
-                    :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png'"
-                    :alt="leaveSettings.imageTitle"
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
-                  />
-                  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 1;">
-                    <!-- Discord Avatar with white outline -->
-                    <div style="margin-bottom: 20px; position: relative;">
-                      <img 
-                        src="https://cdn.discordapp.com/embed/avatars/0.png"
-                        :alt="'Avatar'"
-                        style="width: 84px; height: 84px; border-radius: 50%; border: 6px solid white; object-fit: cover;"
-                      />
-                    </div>
-                    <h2 style="color: white; margin: 0 0 10px 0; text-align: center; font-size: 28px;">{{ leaveSettings.imageTitle || 'Member Left' }}</h2>
-                    <p style="color: #e5e7eb; margin: 0; text-align: center; font-size: 16px;">{{ leaveSettings.imageDescription || 'Goodbye {user}!' }}</p>
-                  </div>
-                </div>
               </div>
 
               <div class="button-group">
@@ -1247,7 +1115,6 @@ const statusSettings = reactive({
 const welcomeSettings = reactive({
   enabled: true,
   useEmbed: false,
-  useImageFormat: false,
   welcomeChannel: '',
   messageText: 'Welcome to {server_name}, {user}!',
   embedTitle: 'Welcome!',
@@ -1256,16 +1123,12 @@ const welcomeSettings = reactive({
   embedThumbnail: '',
   embedImage: '',
   embedColor: '#5170ff',
-  embedFields: [],
-  imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-  imageTitle: 'Welcome!',
-  imageDescription: 'Welcome to {server_name}, {user}!'
+  embedFields: []
 })
 
 const leaveSettings = reactive({
   enabled: true,
   useEmbed: false,
-  useImageFormat: false,
   leaveChannel: '',
   messageText: 'Goodbye {user}!',
   embedTitle: 'Member Left',
@@ -1274,10 +1137,7 @@ const leaveSettings = reactive({
   embedThumbnail: '',
   embedImage: '',
   embedColor: '#5170ff',
-  embedFields: [],
-  imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
-  imageTitle: 'Member Left',
-  imageDescription: 'Goodbye {user}!'
+  embedFields: []
 })
 
 const memberGoalsSettings = reactive({
@@ -1763,7 +1623,6 @@ const loadAllSettings = async (guildId) => {
       Object.assign(welcomeSettings, {
         enabled: data.enabled === true,
         useEmbed: data.use_embed === true,
-        useImageFormat: data.use_image_format === true,
         welcomeChannel: data.channel_id || '',
         messageText: data.message_text || 'Welcome to {server_name}, {user}!',
         embedTitle: data.embed_title || 'Welcome!',
@@ -1772,10 +1631,7 @@ const loadAllSettings = async (guildId) => {
         embedThumbnail: data.embed_thumbnail || '',
         embedImage: data.embed_image || '',
         embedColor: data.embed_color || '#5170ff',
-        embedFields: Array.isArray(embedFields) ? embedFields : [],
-        imageBackgroundUrl: data.image_background_url || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-        imageTitle: data.image_title || 'Welcome!',
-        imageDescription: data.image_description || 'Welcome to {server_name}, {user}!'
+        embedFields: Array.isArray(embedFields) ? embedFields : []
       })
       
       Object.assign(memberGoalsSettings, {
@@ -2139,7 +1995,6 @@ const saveWelcomeSettings = async () => {
     const payload = {
       enabled: welcomeSettings.enabled,
       use_embed: welcomeSettings.useEmbed,
-      use_image_format: welcomeSettings.useImageFormat,
       channel_id: welcomeSettings.welcomeChannel,
       message_text: welcomeSettings.messageText,
       embed_title: welcomeSettings.embedTitle,
@@ -2148,10 +2003,7 @@ const saveWelcomeSettings = async () => {
       embed_thumbnail: welcomeSettings.embedThumbnail,
       embed_image: welcomeSettings.embedImage,
       embed_color: welcomeSettings.embedColor,
-      embed_fields: JSON.stringify(welcomeSettings.embedFields || []),
-      image_background_url: welcomeSettings.imageBackgroundUrl,
-      image_title: welcomeSettings.imageTitle,
-      image_description: welcomeSettings.imageDescription
+      embed_fields: JSON.stringify(welcomeSettings.embedFields || [])
     }
     const response = await fetch(`${BACKEND_URL}/api/welcome/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -2227,7 +2079,6 @@ const resetWelcomeSettings = () => {
   Object.assign(welcomeSettings, {
     enabled: true,
     useEmbed: false,
-    useImageFormat: false,
     welcomeChannel: '',
     messageText: 'Welcome to {server_name}, {user}!',
     embedTitle: 'Welcome!',
@@ -2236,10 +2087,7 @@ const resetWelcomeSettings = () => {
     embedThumbnail: '',
     embedImage: '',
     embedColor: '#5170ff',
-    embedFields: [],
-    imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-    imageTitle: 'Welcome!',
-    imageDescription: 'Welcome to {server_name}, {user}!'
+    embedFields: []
   })
 }
 
@@ -2313,7 +2161,6 @@ const resetLeaveSettings = () => {
   Object.assign(leaveSettings, {
     enabled: true,
     useEmbed: false,
-    useImageFormat: false,
     leaveChannel: '',
     messageText: 'Goodbye {user}!',
     embedTitle: 'Member Left',
@@ -2322,10 +2169,7 @@ const resetLeaveSettings = () => {
     embedThumbnail: '',
     embedImage: '',
     embedColor: '#5170ff',
-    embedFields: [],
-    imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
-    imageTitle: 'Member Left',
-    imageDescription: 'Goodbye {user}!'
+    embedFields: []
   })
 }
 
@@ -2383,54 +2227,6 @@ const applyLeavePreset = (preset) => {
   }
 }
 
-const applyWelcomeImagePreset = (preset) => {
-  const presets = {
-    minimal: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-      imageTitle: 'Welcome!',
-      imageDescription: 'Welcome to {server_name}!'
-    },
-    friendly: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-      imageTitle: 'Welcome to {server_name}! 👋',
-      imageDescription: 'We\'re happy to have you here, {user}! Feel free to explore!'
-    },
-    detailed: {
-      imageBackgroundUrl: 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png',
-      imageTitle: 'Welcome to {server_name}!',
-      imageDescription: 'Welcome {user}! You are member #{member_count} of our community.'
-    }
-  }
-
-  if (presets[preset]) {
-    Object.assign(welcomeSettings, presets[preset])
-  }
-}
-
-const applyLeaveImagePreset = (preset) => {
-  const presets = {
-    minimal: {
-      imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
-      imageTitle: 'Member Left',
-      imageDescription: '{user} has left {server_name}.'
-    },
-    friendly: {
-      imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
-      imageTitle: 'Goodbye {user}! 👋',
-      imageDescription: 'We\'ll miss you! Come back soon.'
-    },
-    detailed: {
-      imageBackgroundUrl: 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
-      imageTitle: 'Member Left',
-      imageDescription: '{user} has left. {server_name} now has {member_count} members.'
-    }
-  }
-
-  if (presets[preset]) {
-    Object.assign(leaveSettings, presets[preset])
-  }
-}
-
 const saveLeaveSettings = async () => {
   if (!selectedServer.value) return
   setSaveState(leaveSaveLoading, leaveSaveSuccess)
@@ -2438,7 +2234,6 @@ const saveLeaveSettings = async () => {
     const payload = {
       enabled: leaveSettings.enabled,
       use_embed: leaveSettings.useEmbed,
-      use_image_format: leaveSettings.useImageFormat,
       channel_id: leaveSettings.leaveChannel,
       message_text: leaveSettings.messageText,
       embed_title: leaveSettings.embedTitle,
@@ -2447,10 +2242,7 @@ const saveLeaveSettings = async () => {
       embed_thumbnail: leaveSettings.embedThumbnail,
       embed_image: leaveSettings.embedImage,
       embed_color: leaveSettings.embedColor,
-      embed_fields: JSON.stringify(leaveSettings.embedFields),
-      image_background_url: leaveSettings.imageBackgroundUrl,
-      image_title: leaveSettings.imageTitle,
-      image_description: leaveSettings.imageDescription
+      embed_fields: JSON.stringify(leaveSettings.embedFields)
     }
     const response = await fetch(`${BACKEND_URL}/api/leave/${selectedServer.value.id}/settings`, {
       method: 'POST',
@@ -2484,7 +2276,6 @@ const loadLeaveSettings = async (guildId) => {
       Object.assign(leaveSettings, {
         enabled: data.enabled,
         useEmbed: data.use_embed,
-        useImageFormat: data.use_image_format === true,
         leaveChannel: data.channel_id,
         messageText: data.message_text,
         embedTitle: data.embed_title,
@@ -2493,10 +2284,7 @@ const loadLeaveSettings = async (guildId) => {
         embedThumbnail: data.embed_thumbnail,
         embedImage: data.embed_image,
         embedColor: data.embed_color,
-        embedFields: data.embed_fields ? JSON.parse(data.embed_fields) : [],
-        imageBackgroundUrl: data.image_background_url || 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png',
-        imageTitle: data.image_title || 'Member Left',
-        imageDescription: data.image_description || '{user} has left {server_name}'
+        embedFields: data.embed_fields ? JSON.parse(data.embed_fields) : []
       })
     }
   } catch (error) {

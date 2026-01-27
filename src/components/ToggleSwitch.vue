@@ -1,6 +1,6 @@
 <template>
-  <label class="toggle-switch" :class="{ disabled: disabled }">
-    <input type="checkbox" :checked="modelValue" @change="$emit('update:modelValue', $event.target.checked)" :disabled="disabled" />
+  <label class="toggle-switch">
+    <input type="checkbox" :checked="modelValue" @change="$emit('update:modelValue', $event.target.checked)" />
     <div class="switch">
       <div class="dot"></div>
     </div>
@@ -12,10 +12,6 @@ defineProps({
   modelValue: {
     type: Boolean,
     required: true
-  },
-  disabled: {
-    type: Boolean,
-    default: false
   }
 })
 
@@ -68,14 +64,5 @@ defineEmits(['update:modelValue'])
 .toggle-switch input:not(:checked) ~ .switch {
   background: rgba(81, 112, 255, 0.3);
   border-color: rgba(81, 112, 255, 0.3);
-}
-
-.toggle-switch.disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.toggle-switch.disabled .switch {
-  cursor: not-allowed;
 }
 </style>
