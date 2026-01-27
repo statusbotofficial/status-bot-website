@@ -930,7 +930,7 @@
                   Available Placeholders
                 </button>
 
-                <div class="setting-item">
+                <div class="setting-item" style="margin-top: 12px;">
                   <label>Background Image URL</label>
                   <input
                     v-model="leaveSettings.imageBackgroundUrl"
@@ -3955,14 +3955,13 @@ const copyItemJson = (item) => {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 20px;
 }
 
 .setting-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 28px;
 }
 
 .setting-item label {
