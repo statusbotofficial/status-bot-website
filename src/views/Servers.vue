@@ -2515,12 +2515,12 @@ const copyItemJson = (item) => {
 
 .login-required h2 {
   font-size: 32px;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 
 .login-required p {
-  color: #999;
+  color: var(--text-secondary);
   font-size: 16px;
 }
 

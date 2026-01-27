@@ -1137,7 +1137,7 @@ onMounted(async () => {
   width: 22px;
   left: 2px;
   bottom: 2px;
-  background-color: #fff;
+  background-color: var(--text-primary);
   transition: 0.3s;
   border-radius: 50%;
 }
@@ -1394,7 +1394,7 @@ onMounted(async () => {
   border-bottom: 1px solid var(--border-color);
   font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .modal-content {
@@ -1497,7 +1497,7 @@ onMounted(async () => {
 .btn-danger {
   background: linear-gradient(135deg, rgba(255, 94, 94, 0.8), rgba(255, 94, 94, 0.5));
   border: 2px solid #ff5e5e;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .btn-danger:hover:not(:disabled) {
