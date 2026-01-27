@@ -685,7 +685,7 @@
               </div>
 
               <div v-if="welcomeSettings.useImageFormat" class="setting-item">
-                <label>Background Image URL</label>
+                <label>Background Image URL (620x240)</label>
                 <input
                   v-model="welcomeSettings.imageBackgroundUrl"
                   type="text"
@@ -722,6 +722,14 @@
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
                   />
                   <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 1;">
+                    <!-- Discord Avatar with white outline -->
+                    <div style="margin-bottom: 20px; position: relative;">
+                      <img 
+                        src="https://cdn.discordapp.com/embed/avatars/0.png"
+                        :alt="'Avatar'"
+                        style="width: 84px; height: 84px; border-radius: 50%; border: 6px solid white; object-fit: cover;"
+                      />
+                    </div>
                     <h2 style="color: white; margin: 0 0 10px 0; text-align: center; font-size: 28px;">{{ welcomeSettings.imageTitle || 'Welcome!' }}</h2>
                     <p style="color: #e5e7eb; margin: 0; text-align: center; font-size: 16px;">{{ welcomeSettings.imageDescription || 'Welcome to {server_name}, {user}!' }}</p>
                   </div>
@@ -903,7 +911,7 @@
               </div>
 
               <div v-if="leaveSettings.useImageFormat" class="setting-item">
-                <label>Background Image URL</label>
+                <label>Background Image URL (620x240)</label>
                 <input
                   v-model="leaveSettings.imageBackgroundUrl"
                   type="text"
@@ -935,11 +943,19 @@
                 <label>Preview</label>
                 <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
                   <img 
-                    :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
+                    :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png'"
                     :alt="leaveSettings.imageTitle"
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
                   />
                   <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; z-index: 1;">
+                    <!-- Discord Avatar with white outline -->
+                    <div style="margin-bottom: 20px; position: relative;">
+                      <img 
+                        src="https://cdn.discordapp.com/embed/avatars/0.png"
+                        :alt="'Avatar'"
+                        style="width: 84px; height: 84px; border-radius: 50%; border: 6px solid white; object-fit: cover;"
+                      />
+                    </div>
                     <h2 style="color: white; margin: 0 0 10px 0; text-align: center; font-size: 28px;">{{ leaveSettings.imageTitle || 'Member Left' }}</h2>
                     <p style="color: #e5e7eb; margin: 0; text-align: center; font-size: 16px;">{{ leaveSettings.imageDescription || 'Goodbye {user}!' }}</p>
                   </div>
