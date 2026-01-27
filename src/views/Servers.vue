@@ -126,7 +126,7 @@
                 <div class="stat-box language-selector-box">
                   <div class="stat-icon"><i class="fas fa-globe" style="color: #3b82f6;"></i></div>
                   <div class="stat-content">
-                    <div class="stat-label">{{ languageStore.t('dashboard.botLanguage') }}</div>
+                    <div class="stat-label">Bot Language</div>
                     <button 
                       @click="showLanguageModal = true"
                       class="language-dropdown-btn"
@@ -134,7 +134,7 @@
                       {{ getLanguageName(selectedLanguage) }}
                       <i class="fas fa-chevron-down"></i>
                     </button>
-                    <div class="language-note">{{ languageStore.t('dashboard.languageNote') }}</div>
+                    <div class="language-note">Changes bot responses and website language</div>
                   </div>
                 </div>
               </div>
@@ -1519,31 +1519,35 @@ const selectServer = async (server) => {
 
 // Language functions
 const updateLanguage = async () => {
-  if (!selectedServer.value || !authStore.user) return
-  
   try {
-    // Update language store first for immediate UI update
-    await languageStore.setLanguage(selectedLanguage.value)
+    console.log('Updating language to:', selectedLanguage.value)
     
-    // Force reactive update by triggering a re-render
-    await nextTick()
+    // Update language store immediately
+    languageStore.setLanguage(selectedLanguage.value)
     
-    // Save to backend
-    const response = await fetch(`${BACKEND_URL}/api/user/language`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SECRET_KEY}`
-      },
-      body: JSON.stringify({
-        userId: authStore.user.id,
-        guildId: selectedServer.value.id,
-        language: selectedLanguage.value
+    // Force page refresh to show language changes
+    setTimeout(() => {
+      window.location.reload()
+    }, 100)
+    
+    // Save to backend if user is authenticated
+    if (authStore.user && selectedServer.value) {
+      const response = await fetch(`${BACKEND_URL}/api/user/language`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SECRET_KEY}`
+        },
+        body: JSON.stringify({
+          userId: authStore.user.id,
+          guildId: selectedServer.value.id,
+          language: selectedLanguage.value
+        })
       })
-    })
-    
-    if (response.ok) {
-      console.log('Language updated successfully')
+      
+      if (response.ok) {
+        console.log('Language saved to backend successfully')
+      }
     }
   } catch (error) {
     console.error('Error updating language:', error)
@@ -1579,21 +1583,32 @@ const loadUserLanguage = async () => {
 
 // Language helper functions
 const languageOptions = computed(() => [
-  { id: 'en', name: 'English', icon: '🇺🇸' },
-  { id: 'es', name: 'Español', icon: '🇪🇸' },
-  { id: 'fr', name: 'Français', icon: '🇫🇷' },
-  { id: 'de', name: 'Deutsch', icon: '🇩🇪' },
-  { id: 'pt', name: 'Português', icon: '🇵🇹' },
-  { id: 'ru', name: 'Русский', icon: '🇷🇺' },
-  { id: 'zh', name: '中文', icon: '🇨🇳' },
-  { id: 'ja', name: '日本語', icon: '🇯🇵' },
-  { id: 'ko', name: '한국어', icon: '🇰🇷' },
-  { id: 'ar', name: 'العربية', icon: '🇸🇦' }
+  { id: 'en', name: 'English' },
+  { id: 'es', name: 'Español' },
+  { id: 'fr', name: 'Français' },
+  { id: 'de', name: 'Deutsch' },
+  { id: 'pt', name: 'Português' },
+  { id: 'ru', name: 'Русский' },
+  { id: 'zh', name: '中文' },
+  { id: 'ja', name: '日本語' },
+  { id: 'ko', name: '한국어' },
+  { id: 'ar', name: 'العربية' }
 ])
 
 const getLanguageName = (langCode) => {
-  const lang = languageOptions.value.find(l => l.id === langCode)
-  return lang ? `${lang.icon} ${lang.name}` : '🇺🇸 English'
+  const languages = {
+    'en': 'English',
+    'es': 'Español', 
+    'fr': 'Français',
+    'de': 'Deutsch',
+    'pt': 'Português',
+    'ru': 'Русский',
+    'zh': '中文',
+    'ja': '日本語',
+    'ko': '한국어',
+    'ar': 'العربية'
+  }
+  return languages[langCode] || 'English'
 }
 
 const closeLanguageModal = () => {
