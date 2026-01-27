@@ -121,24 +121,6 @@
             <!-- Overview -->
             <section v-if="activeSection === 'overview'" class="config-section" key="overview">
             <div class="overview-container">
-              <!-- Language Selector -->
-              <div class="stats-grid" style="margin-bottom: 20px;">
-                <div class="stat-box language-selector-box">
-                  <div class="stat-icon"><i class="fas fa-globe" style="color: #3b82f6;"></i></div>
-                  <div class="stat-content">
-                    <div class="stat-label">Bot Language</div>
-                    <button 
-                      @click="showLanguageModal = true"
-                      class="language-dropdown-btn"
-                    >
-                      {{ getLanguageName(selectedLanguage) }}
-                      <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="language-note">Changes bot responses and website language</div>
-                  </div>
-                </div>
-              </div>
-
               <!-- Server Stats -->
               <div class="stats-grid">
                 <div class="stat-box">
@@ -1004,28 +986,6 @@
       @close="closeLevelingFormulaModal"
     />
 
-    <SelectorModal 
-      :is-open="showLanguageModal"
-      title="Select Language"
-      :items="languageOptions"
-      :model-value="[selectedLanguage]"
-      :multiple="false"
-      search-placeholder="Search languages..."
-      @close="closeLanguageModal"
-      @confirm="handleLanguageSelection"
-    />
-
-    <SelectorModal 
-      :is-open="showLanguageModal"
-      title="Select Language"
-      :items="languageOptions"
-      :model-value="[selectedLanguage]"
-      :multiple="false"
-      search-placeholder="Search languages..."
-      @close="closeLanguageModal"
-      @confirm="handleLanguageSelection"
-    />
-
     <PlaceholdersModal 
       :isOpen="showPlaceholdersModal"
       title="Available Placeholders"
@@ -1037,16 +997,14 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import { useLanguageStore } from '../stores/language'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 import SelectorModal from '../components/SelectorModal.vue'
 import PlaceholdersModal from '../components/PlaceholdersModal.vue'
 
 const authStore = useAuthStore()
-const languageStore = useLanguageStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -1056,8 +1014,6 @@ const leaderboardLoading = ref(false)
 const servers = ref([])
 const selectedServer = ref(null)
 const searchQuery = ref('')
-const selectedLanguage = ref('en')
-const showLanguageModal = ref(false)
 const activeSection = ref('overview')
 const expandedSections = ref([])
 const overviewData = ref([])
@@ -1103,7 +1059,6 @@ const fetchPremiumStatus = async () => {
 }
 
 const BACKEND_URL = 'https://backend-nwct.onrender.com'
-const SECRET_KEY = 'status-bot-stats-secret-key'
 
 const sections = [
   { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: var(--text-primary);"></i>' },
@@ -1516,82 +1471,6 @@ const selectServer = async (server) => {
     username: u.username,
     avatar: u.avatar
   }))
-}
-
-// Language functions
-const updateLanguage = async () => {
-  try {
-    console.log('Updating language to:', selectedLanguage.value)
-    
-    // Update language store immediately
-    languageStore.setLanguage(selectedLanguage.value)
-    
-    // Skip backend save - just do router navigation
-    const currentRoute = route.fullPath
-    console.log('Navigating from:', currentRoute)
-    
-    // Store current server to restore after navigation
-    const currentServerId = selectedServer.value?.id
-    
-    await router.push('/servers')
-    await nextTick()
-    
-    if (currentServerId) {
-      await router.push(`/servers/${currentServerId}`)
-    } else {
-      await router.push(currentRoute)
-    }
-  } catch (error) {
-    console.error('Error updating language:', error)
-  }
-}
-
-const loadUserLanguage = async () => {
-  // Disabled - language functionality removed
-  selectedLanguage.value = 'en'
-  return
-}
-
-// Language helper functions
-const languageOptions = computed(() => [
-  { id: 'en', name: 'English' },
-  { id: 'es', name: 'Español' },
-  { id: 'fr', name: 'Français' },
-  { id: 'de', name: 'Deutsch' },
-  { id: 'pt', name: 'Português' },
-  { id: 'ru', name: 'Русский' },
-  { id: 'zh', name: '中文' },
-  { id: 'ja', name: '日本語' },
-  { id: 'ko', name: '한국어' },
-  { id: 'ar', name: 'العربية' }
-])
-
-const getLanguageName = (langCode) => {
-  const languages = {
-    'en': 'English',
-    'es': 'Español', 
-    'fr': 'Français',
-    'de': 'Deutsch',
-    'pt': 'Português',
-    'ru': 'Русский',
-    'zh': '中文',
-    'ja': '日本語',
-    'ko': '한국어',
-    'ar': 'العربية'
-  }
-  return languages[langCode] || 'English'
-}
-
-const closeLanguageModal = () => {
-  showLanguageModal.value = false
-}
-
-const handleLanguageSelection = (selection) => {
-  if (selection && selection.length > 0) {
-    selectedLanguage.value = selection[0]
-    updateLanguage()
-  }
-  closeLanguageModal()
 }
 
 const loadOverviewData = async (guildId) => {
@@ -2504,66 +2383,10 @@ const copyPlaceholder = (placeholder) => {
   })
 }
 
-onMounted(async () => {
+onMounted(() => {
   document.title = 'Dashboard | Status Bot'
-  
-  try {
-    await loadServers()
-    await loadUserLanguage()
-    
-    // Wait a bit more for servers to be populated
-    await nextTick()
-    
-    // Handle direct URL access after servers are loaded
-    const guildId = route.params.guildId
-    console.log('Route guildId:', guildId)
-    console.log('Servers loaded:', servers.value.length)
-    
-    if (guildId && servers.value.length > 0) {
-      const server = servers.value.find(s => s.id === guildId)
-      console.log('Found server:', server?.name)
-      
-      if (server) {
-        selectedServer.value = server
-        if (server.buttonType === 'view') {
-          activeSection.value = 'overview'
-        } else if (server.buttonType === 'configure') {
-          activeSection.value = 'overview'
-        }
-        
-        console.log('Loading server data for:', server.name)
-        await Promise.all([
-          loadOverviewData(server.id),
-          loadLeaderboardData(server.id),
-          loadAllSettings(server.id),
-          loadGuildChannels(server.id),
-          fetchPremiumStatus()
-        ])
-        console.log('Server data loaded successfully')
-      } else {
-        console.log('Server not found, redirecting to /servers')
-        router.push('/servers')
-      }
-    } else if (guildId && servers.value.length === 0) {
-      console.log('No servers loaded, redirecting to /servers')
-      router.push('/servers')
-    }
-  } catch (error) {
-    console.error('Error in onMounted:', error)
-    router.push('/servers')
-  }
+  loadServers()
 })
-
-// Watch for language changes to ensure reactivity
-watch(
-  () => languageStore.currentLanguage,
-  (newLang) => {
-    // Force update selectedLanguage when store changes
-    if (selectedLanguage.value !== newLang) {
-      selectedLanguage.value = newLang
-    }
-  }
-)
 
 watch(
   () => route.params.guildId,
@@ -4732,56 +4555,6 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
-}
-
-/* Language Selector Styles */
-.language-selector-box {
-  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-  border: 1px solid var(--border-color);
-  position: relative;
-  overflow: hidden;
-}
-
-.language-selector-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, transparent 100%);
-  pointer-events: none;
-}
-
-.language-dropdown-btn {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 8px 12px;
-  color: var(--text-primary);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 4px;
-}
-
-.language-dropdown-btn:hover {
-  background: var(--bg-primary);
-  border-color: var(--primary-color);
-  transform: translateY(-1px);
-}
-
-.language-note {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-  opacity: 0.8;
-  font-style: italic;
 }
 
 /* Section Transition Animations */
