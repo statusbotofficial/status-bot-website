@@ -305,27 +305,11 @@ const BACKEND_URL = 'https://backend-nwct.onrender.com'
 const SECRET_KEY = 'status-bot-stats-secret-key'
 
 const themes = {
-  default: { name: 'Default', preview: 'linear-gradient(135deg, #5170ff 0%, #2630b6 100%)' },
-  dark: { name: 'Dark', preview: 'linear-gradient(135deg, #000000 0%, #2b2b2b 100%)' },
-  light: { name: 'Light', preview: 'linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%)' },
-  sunset: { name: 'Sunset', preview: 'linear-gradient(135deg, #ff9f43 0%, #b86bff 100%)' },
-  obsidian: { name: 'Obsidian', preview: 'linear-gradient(135deg, #0b0b0b 0%, #8e44ad 100%)' },
-  sapphire: { name: 'Sapphire', preview: 'linear-gradient(135deg, #0b3cff 0%, #5ba3ff 100%)' },
-  parrot: { name: 'Parrot', preview: 'linear-gradient(135deg, #00bcd4 0%, #ffe066 100%)' },
-  icicle: { name: 'Icicle', preview: 'linear-gradient(135deg, #e0f7fa 0%, #8ec5ff 100%)' },
-  lime: { name: 'Lime', preview: 'linear-gradient(135deg, #b0ff6d 0%, #eaffb0 100%)' }
+  default: { name: 'Default', preview: 'linear-gradient(135deg, #5170ff 0%, #111111 100%)' }
 }
 
 const themeColorMap = {
-  default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' },
-  dark: { primary: '#888888', bg: '#000000', text: '#cccccc' },
-  light: { primary: '#2630b6', bg: '#ffffff', text: '#000000' },
-  sunset: { primary: '#ff9f43', bg: '#ffb6b6', text: '#7e4bb8' },
-  obsidian: { primary: '#8e44ad', bg: '#0b0b0b', text: '#e8e8e8' },
-  sapphire: { primary: '#0b3cff', bg: '#0a1628', text: '#e0e8ff' },
-  parrot: { primary: '#00bcd4', bg: '#eafffa', text: '#ffe066' },
-  icicle: { primary: '#5ba3ff', bg: '#0a1420', text: '#e0f7ff' },
-  lime: { primary: '#b0ff6d', bg: '#eaffb0', text: '#333333' }
+  default: { primary: '#5170ff', bg: '#0d0d0d', text: '#ffffff' }
 }
 
 const activeSection = ref('account')
