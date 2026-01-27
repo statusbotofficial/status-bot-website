@@ -15,6 +15,8 @@ const THEMES = {
     '--glow-color-1': 'rgba(81, 112, 255, 0.4)',
     '--glow-color-2': 'rgba(81, 112, 255, 0.35)',
     '--border-color': '#333333',
+    '--text-primary': '#ffffff',
+    '--text-secondary': '#aaaaaa',
   },
   light: {
     name: 'Light',
