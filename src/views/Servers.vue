@@ -692,7 +692,6 @@
                   class="input-field"
                   placeholder="https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png"
                 />
-                <small style="color: #999; display: block; margin-top: 4px;">Default: Official Status Bot background</small>
               </div>
 
               <div v-if="welcomeSettings.useImageFormat" class="setting-item">
@@ -911,7 +910,6 @@
                   class="input-field"
                   placeholder="https://i.postimg.cc/G3MWCBkB/Your-paragraph-text-(45).png"
                 />
-                <small style="color: #999; display: block; margin-top: 4px;">Default: Official Status Bot background</small>
               </div>
 
               <div v-if="leaveSettings.useImageFormat" class="setting-item">
