@@ -198,7 +198,13 @@ const sendMessage = async () => {
     const response = await fetch(`${BACKEND_URL}/api/support/ai`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({ 
+        message: text,
+        user: authStore.user ? {
+          id: authStore.user.id,
+          username: authStore.user.username
+        } : null
+      })
     })
 
     if (!response.ok) throw new Error('Failed to get response')
