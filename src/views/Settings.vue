@@ -436,6 +436,8 @@ const themes = themeStore.getAvailableThemes().reduce((acc, theme) => {
       ? 'linear-gradient(135deg, #5170ff 0%, #ffffff 100%)' 
       : theme.id === 'sunset'
       ? 'linear-gradient(135deg, #ff6b35 0%, #d946ef 50%, #2a1810 100%)'
+      : theme.id === 'obsidian'
+      ? 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #0f0814 100%)'
       : 'linear-gradient(135deg, #5170ff 0%, #111111 100%)'
   }
   return acc

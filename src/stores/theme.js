@@ -47,6 +47,21 @@ const THEMES = {
     '--border-color': '#3a2a22',
     '--text-primary': '#ffffff',
     '--text-secondary': '#cccccc',
+  },
+  obsidian: {
+    name: 'Obsidian',
+    '--primary-color': '#8b5cf6',
+    '--primary-light': '#a78bfa',
+    '--bg-primary': '#0f0814',
+    '--bg-secondary': '#1a0f26',
+    '--bg-tertiary': '#251838',
+    '--accent-gradient-1': '#c4b5fd',
+    '--accent-gradient-2': '#7c3aed',
+    '--glow-color-1': 'rgba(139, 92, 246, 0.4)',
+    '--glow-color-2': 'rgba(124, 58, 237, 0.35)',
+    '--border-color': '#4c1d95',
+    '--text-primary': '#ffffff',
+    '--text-secondary': '#d1d5db',
   }
 }
 
