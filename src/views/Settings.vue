@@ -1466,14 +1466,14 @@ onMounted(async () => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-  border: 2px solid var(--primary-color);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
+  border: 2px solid #5170ff;
   color: var(--text-primary);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
-  box-shadow: 0 8px 20px var(--glow-color-1);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.8));
+  box-shadow: 0 8px 20px rgba(81, 112, 255, 0.3);
   transform: translateY(-2px);
 }
 
