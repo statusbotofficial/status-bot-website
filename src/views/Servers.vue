@@ -2543,7 +2543,7 @@ const copyItemJson = (item) => {
   font-size: 48px;
   font-weight: 800;
   margin-bottom: 30px;
-  background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
