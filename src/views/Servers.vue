@@ -1069,13 +1069,13 @@ const sections = [
   { 
     id: 'welcome-parent', 
     label: 'Welcome & Leave Messages', 
-    icon: '<i class="fas fa-door-open" style="color: white;"></i>',
+    icon: '<i class="fas fa-door-open" style="color: var(--text-primary);"></i>',
     children: [
-      { id: 'welcome', label: 'Welcome Messages', icon: '<i class="fas fa-envelope" style="color: white;"></i>' },
-      { id: 'leave', label: 'Leave Messages', icon: '<i class="fas fa-sign-out-alt" style="color: white;"></i>' }
+      { id: 'welcome', label: 'Welcome Messages', icon: '<i class="fas fa-envelope" style="color: var(--text-primary);"></i>' },
+      { id: 'leave', label: 'Leave Messages', icon: '<i class="fas fa-sign-out-alt" style="color: var(--text-primary);"></i>' }
     ]
   },
-  { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: white;"></i>' },
+  { id: 'member-goals', label: 'Member Goals', icon: '<i class="fas fa-users" style="color: var(--text-primary);"></i>' },
   { id: 'logs', label: 'Activity Logs', icon: '<i class="fas fa-history" style="color: #ef4444;"></i>' },
 ]
 

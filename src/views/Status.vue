@@ -385,7 +385,7 @@ onUnmounted(() => {
   font-size: 32px;
   font-weight: 900;
   margin: 0;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .incidents-section {
@@ -419,7 +419,7 @@ onUnmounted(() => {
 
 .no-incidents p {
   font-size: 16px;
-  color: #aaa;
+  color: var(--text-secondary);
   margin: 0;
   font-weight: 500;
 }
@@ -463,12 +463,12 @@ onUnmounted(() => {
 
 .incident-time {
   font-size: 12px;
-  color: #999;
+  color: var(--text-secondary);
 }
 
 .incident-details {
   font-size: 13px;
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 .incident-details p {

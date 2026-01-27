@@ -1291,7 +1291,7 @@ onMounted(async () => {
 .claim-btn {
   padding: 10px 20px;
   background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.5));
-  color: white;
+  color: var(--text-primary);
   border: 1px solid rgba(81, 112, 255, 0.5);
   border-radius: 8px;
   cursor: pointer;
@@ -1334,7 +1334,7 @@ onMounted(async () => {
 
 .privacy-name {
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -1410,7 +1410,7 @@ onMounted(async () => {
 }
 
 .modal-content strong {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .modal-footer {
@@ -1474,7 +1474,7 @@ onMounted(async () => {
 .btn-danger {
   background: linear-gradient(135deg, rgba(255, 68, 68, 0.8), rgba(255, 68, 68, 0.5));
   border: 2px solid #ff4444;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .btn-danger:hover:not(:disabled) {

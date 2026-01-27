@@ -158,7 +158,7 @@ onMounted(() => {
 }
 
 .terms-section strong {
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
 }
 

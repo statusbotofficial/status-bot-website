@@ -602,13 +602,13 @@ onMounted(() => {
 .message-content.user {
   background-color: rgba(81, 112, 255, 0.4);
   border: 1px solid var(--primary-color);
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .message-content.ai {
   background-color: rgba(50, 50, 70, 0.6);
   border: 1px solid #444;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .support-input-container {
@@ -623,7 +623,7 @@ onMounted(() => {
   border: 2px solid var(--primary-color);
   border-radius: 12px;
   padding: 12px 18px;
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 500;
   font-size: 15px;
   transition: all 0.3s ease;
@@ -635,7 +635,7 @@ onMounted(() => {
 }
 
 .support-input::placeholder {
-  color: #888;
+  color: var(--text-secondary);
 }
 
 .support-input:focus {
@@ -661,7 +661,7 @@ onMounted(() => {
 
 .support-send-btn:hover:not(:disabled) {
   transform: scale(1.1);
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .support-send-btn:active:not(:disabled) {
@@ -669,7 +669,7 @@ onMounted(() => {
 }
 
 .support-send-btn:disabled {
-  color: #555;
+  color: var(--text-secondary);
   cursor: not-allowed;
   opacity: 0.5;
 }
