@@ -561,8 +561,8 @@
               </div>
 
               <div class="setting-item">
-                <label>Use image format <span style="color: #fbbf24;">(Premium)</span></label>
-                <toggle-switch v-model="welcomeSettings.useImageFormat" />
+                <label>Use image format <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
+                <toggle-switch v-model="welcomeSettings.useImageFormat" :disabled="!userHasPremium" />
               </div>
 
               <div v-if="welcomeSettings.useEmbed" class="setting-item">
@@ -801,7 +801,7 @@
 
               <div class="setting-item">
                 <label>Use image format <span v-if="!userHasPremium" class="premium-badge"><i class="fas fa-star"></i> Premium</span></label>
-                <toggle-switch v-model="leaveSettings.useImageFormat" />
+                <toggle-switch v-model="leaveSettings.useImageFormat" :disabled="!userHasPremium" />
               </div>
 
               <div v-if="leaveSettings.useEmbed && !leaveSettings.useImageFormat" class="setting-item">
@@ -974,7 +974,7 @@
                 <!-- Image Preview -->
                 <div class="setting-item">
                   <label>Preview <span style="color: #999; font-size: 12px; font-weight: normal;">(620x240)</span></label>
-                  <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; width: 620px; height: 240px; position: relative; overflow: hidden;">
+                  <div style="background: #1f2937; border-radius: 6px; padding: 20px; margin-top: 12px; max-width: 620px; position: relative; overflow: hidden; aspect-ratio: 16/9;">
                     <img 
                       :src="leaveSettings.imageBackgroundUrl || 'https://i.postimg.cc/02T7Mfpm/Your-paragraph-text-(44).png'"
                       :alt="leaveSettings.imageTitle"
@@ -3963,6 +3963,7 @@ const copyItemJson = (item) => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 16px;
 }
 
 .setting-item label {
