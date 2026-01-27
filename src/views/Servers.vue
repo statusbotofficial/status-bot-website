@@ -121,6 +121,31 @@
             <!-- Overview -->
             <section v-if="activeSection === 'overview'" class="config-section" key="overview">
             <div class="overview-container">
+              <!-- Language Selector -->
+              <div class="language-selector-section">
+                <div class="language-selector">
+                  <label for="language-select">🌐 Bot Language</label>
+                  <select 
+                    id="language-select" 
+                    v-model="selectedLanguage" 
+                    @change="updateLanguage"
+                    class="language-dropdown"
+                  >
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="pt">Português</option>
+                    <option value="ru">Русский</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                    <option value="ar">العربية</option>
+                  </select>
+                  <p class="language-note">This will change the bot's responses and website language for you.</p>
+                </div>
+              </div>
+
               <!-- Server Stats -->
               <div class="stats-grid">
                 <div class="stat-box">
@@ -1000,11 +1025,13 @@
 import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { useLanguageStore } from '../stores/language'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 import SelectorModal from '../components/SelectorModal.vue'
 import PlaceholdersModal from '../components/PlaceholdersModal.vue'
 
 const authStore = useAuthStore()
+const languageStore = useLanguageStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -1014,6 +1041,7 @@ const leaderboardLoading = ref(false)
 const servers = ref([])
 const selectedServer = ref(null)
 const searchQuery = ref('')
+const selectedLanguage = ref('en')
 const activeSection = ref('overview')
 const expandedSections = ref([])
 const overviewData = ref([])
@@ -1471,6 +1499,63 @@ const selectServer = async (server) => {
     username: u.username,
     avatar: u.avatar
   }))
+}
+
+// Language functions
+const updateLanguage = async () => {
+  if (!selectedServer.value || !authStore.user) return
+  
+  try {
+    // Update language store first
+    languageStore.setLanguage(selectedLanguage.value)
+    
+    // Save to backend
+    const response = await fetch(`${BACKEND_URL}/api/user/language`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SECRET_KEY}`
+      },
+      body: JSON.stringify({
+        userId: authStore.user.id,
+        guildId: selectedServer.value.id,
+        language: selectedLanguage.value
+      })
+    })
+    
+    if (response.ok) {
+      console.log('Language updated successfully')
+    }
+  } catch (error) {
+    console.error('Error updating language:', error)
+  }
+}
+
+const loadUserLanguage = async () => {
+  if (!authStore.user) {
+    selectedLanguage.value = languageStore.currentLanguage
+    return
+  }
+  
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/user/language/${authStore.user.id}`, {
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`
+      }
+    })
+    
+    if (response.ok) {
+      const data = await response.json()
+      selectedLanguage.value = data.language || 'en'
+      languageStore.setLanguage(selectedLanguage.value)
+    } else {
+      // Fallback to localStorage
+      selectedLanguage.value = languageStore.currentLanguage
+    }
+  } catch (error) {
+    console.error('Error loading user language:', error)
+    selectedLanguage.value = languageStore.currentLanguage
+  }
 }
 
 const loadOverviewData = async (guildId) => {
@@ -2386,6 +2471,7 @@ const copyPlaceholder = (placeholder) => {
 onMounted(() => {
   document.title = 'Dashboard | Status Bot'
   loadServers()
+  loadUserLanguage()
 })
 
 watch(
@@ -4555,6 +4641,60 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+/* Language Selector Styles */
+.language-selector-section {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+  border: 1px solid var(--border-color);
+}
+
+.language-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.language-selector label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.language-dropdown {
+  padding: 12px 16px;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.language-dropdown:hover {
+  border-color: var(--primary-color);
+  background: var(--bg-primary);
+}
+
+.language-dropdown:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(81, 112, 255, 0.1);
+}
+
+.language-note {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+  font-style: italic;
 }
 
 /* Section Transition Animations */
