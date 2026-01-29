@@ -205,6 +205,59 @@
           </div>
         </div>
       </section>
+
+      <!-- Announcement Management Section -->
+      <section class="dev-section">
+        <h2>Announcement Management</h2>
+        <div class="announcement-panel">
+          <div v-if="loadingAnnouncements" class="loading-state">
+            <p>Loading announcements...</p>
+          </div>
+          <div v-else class="announcement-list">
+            <div v-if="announcements.length > 0">
+              <h3>Active Announcements ({{ announcements.length }})</h3>
+              <div class="announcement-selector">
+                <select v-model="selectedAnnouncementId" class="dev-select">
+                  <option value="">Select announcement to remove...</option>
+                  <option v-for="announcement in announcements" :key="announcement.id" :value="announcement.id">
+                    {{ announcement.title }} - {{ announcement.type }} ({{ formatDate(announcement.timestamp) }})
+                  </option>
+                </select>
+                <button 
+                  @click="removeAnnouncement" 
+                  :disabled="!selectedAnnouncementId || removingAnnouncement" 
+                  class="dev-btn remove-btn"
+                >
+                  {{ removingAnnouncement ? 'Removing...' : 'Remove Selected' }}
+                </button>
+              </div>
+              
+              <div v-if="selectedAnnouncementId && selectedAnnouncement" class="announcement-preview">
+                <h4>Preview:</h4>
+                <div class="announcement-card">
+                  <h5>{{ selectedAnnouncement.title }}</h5>
+                  <p>{{ selectedAnnouncement.message }}</p>
+                  <div class="announcement-meta">
+                    <span class="announcement-type">{{ selectedAnnouncement.type }}</span>
+                    <span class="announcement-date">{{ formatDate(selectedAnnouncement.timestamp) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else class="empty-state">
+              <p>No active announcements</p>
+              <small>All announcements are now persistent - they won't expire automatically</small>
+            </div>
+          </div>
+
+          <div class="announcement-stats">
+            <div class="stat-card">
+              <h4>Total Persistent</h4>
+              <span class="stat-number">{{ announcements.length }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
   <div v-else class="unauthorized">
@@ -250,6 +303,16 @@ const removingPremium = ref(false)
 const billingHistory = ref([])
 const loggedInUsers = ref([])
 const refreshingUsers = ref(false)
+
+// Announcement Management
+const announcements = ref([])
+const selectedAnnouncementId = ref('')
+const loadingAnnouncements = ref(false)
+const removingAnnouncement = ref(false)
+
+const selectedAnnouncement = computed(() => {
+  return announcements.value.find(ann => ann.id === selectedAnnouncementId.value)
+})
 
 const isAuthorized = computed(() => {
   return authStore.user?.id === AUTHORIZED_USER_ID
@@ -536,11 +599,72 @@ const isRecentLogin = (timestamp) => {
   return diff < 30 * 60 * 1000
 }
 
+// Announcement Management Methods
+const fetchAnnouncements = async () => {
+  loadingAnnouncements.value = true
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/announcements`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await response.json()
+    
+    if (response.ok && data.announcements) {
+      announcements.value = data.announcements
+    }
+  } catch (err) {
+    console.error('Error fetching announcements:', err)
+  } finally {
+    loadingAnnouncements.value = false
+  }
+}
+
+const removeAnnouncement = async () => {
+  if (!selectedAnnouncementId.value) {
+    alert('Please select an announcement to remove')
+    return
+  }
+  
+  if (!confirm('Are you sure you want to remove this announcement?')) {
+    return
+  }
+  
+  removingAnnouncement.value = true
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/announcements/${selectedAnnouncementId.value}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    
+    if (response.ok) {
+      // Refresh the announcements list
+      await fetchAnnouncements()
+      selectedAnnouncementId.value = ''
+      alert('Announcement removed successfully!')
+    } else {
+      const data = await response.json()
+      alert(`Error removing announcement: ${data.message || 'Unknown error'}`)
+    }
+  } catch (err) {
+    console.error('Error removing announcement:', err)
+    alert('Error removing announcement. Check console for details.')
+  } finally {
+    removingAnnouncement.value = false
+  }
+}
+
 onMounted(async () => {
   document.title = 'Developer Tools | Status Bot'
   if (isAuthorized.value) {
     await fetchPremiumUsers()
     await fetchLoggedInUsers()
+    await fetchAnnouncements()
   }
 })
 </script>
@@ -1168,12 +1292,92 @@ onMounted(async () => {
   color: #22c55e;
 }
 
+/* Announcement Management */
+.announcement-panel {
+  background: rgba(255, 165, 0, 0.05);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.announcement-selector {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.announcement-selector .dev-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.announcement-preview {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  border-radius: 8px;
+}
+
+.announcement-card {
+  background: rgba(255, 165, 0, 0.05);
+  border: 1px solid rgba(255, 165, 0, 0.15);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.announcement-card h5 {
+  color: #ffa500;
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.announcement-card p {
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.announcement-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 12px;
+}
+
+.announcement-type {
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.announcement-date {
+  color: var(--text-secondary);
+}
+
+.loading-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 1023px) {
   .premium-header,
   .premium-entry,
   .logged-in-header,
   .logged-in-entry {
     grid-template-columns: 1fr;
+  }
+  
+  .announcement-selector {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 </style>
