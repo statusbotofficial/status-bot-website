@@ -1977,7 +1977,7 @@ const forceUpdateStatus = async () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${authStore.token}`
+        Authorization: 'Bearer status-bot-stats-secret-key'
       },
       body: JSON.stringify({
         user_id: statusSettings.userToTrackId
