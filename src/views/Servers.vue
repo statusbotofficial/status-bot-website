@@ -1971,6 +1971,11 @@ const forceUpdateStatus = async () => {
     return
   }
   
+  console.log('Force update request:', {
+    guildId: selectedServer.value.id,
+    user_id: statusSettings.userToTrackId
+  })
+  
   statusUpdateLoading.value = true
   try {
     const response = await fetch(`${BACKEND_URL}/api/status/${selectedServer.value.id}/force-update`, {
