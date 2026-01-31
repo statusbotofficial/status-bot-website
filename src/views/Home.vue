@@ -288,32 +288,7 @@ const authStore = useAuthStore()
 const discordServerUrl = DISCORD_SERVER_URL
 
 // Testimonials Management State
-const testimonials = ref([
-  {
-    id: 1,
-    authorName: "Alex",
-    authorAvatar: "A",
-    authorRole: "Server Owner",
-    stars: 5,
-    comment: "Absolutely amazing bot! The status tracking features are incredible and helped our community stay organized. The uptime is fantastic too!"
-  },
-  {
-    id: 2,
-    authorName: "Sarah",
-    authorAvatar: "S",
-    authorRole: "Community Manager", 
-    stars: 5,
-    comment: "Status Bot has been a game-changer for our Discord server. Love the real-time updates and clean interface."
-  },
-  {
-    id: 3,
-    authorName: "Mike",
-    authorAvatar: "M",
-    authorRole: "Moderator",
-    stars: 4,
-    comment: "Great bot with excellent features. The developer is very responsive and constantly improving it."
-  }
-])
+const testimonials = ref([])
 
 const showTestimonialForm = ref(false)
 const editingTestimonial = ref(null)
@@ -325,13 +300,53 @@ const testimonialForm = ref({
   comment: ''
 })
 
-// Admin check - replace with your actual Discord ID (get it from Discord Developer mode)
+// Admin check - replace with your actual Discord user ID
 const isAdmin = computed(() => {
-  // Temporarily allowing admin access for testing - replace 'YOUR_DISCORD_ID' with your actual Discord user ID
-  return authStore.user?.id === 'YOUR_DISCORD_ID' || true // Remove "|| true" once you have your real Discord ID
+  // Replace 'YOUR_DISCORD_ID' with your actual Discord user ID
+  return authStore.user?.id === 'YOUR_DISCORD_ID'
 })
 
 const canManageTestimonials = computed(() => isAdmin.value)
+
+// Load testimonials from backend
+const loadTestimonials = async () => {
+  try {
+    const response = await fetch('/api/testimonials')
+    if (response.ok) {
+      const data = await response.json()
+      testimonials.value = data
+    }
+  } catch (error) {
+    console.error('Failed to load testimonials:', error)
+    // Fallback to default testimonials if backend fails
+    testimonials.value = [
+      {
+        id: 1,
+        authorName: "Alex",
+        authorAvatar: "A",
+        authorRole: "Server Owner",
+        stars: 5,
+        comment: "Absolutely amazing bot! The status tracking features are incredible and helped our community stay organized. The uptime is fantastic too!"
+      },
+      {
+        id: 2,
+        authorName: "Sarah",
+        authorAvatar: "S",
+        authorRole: "Community Manager", 
+        stars: 5,
+        comment: "Status Bot has been a game-changer for our Discord server. Love the real-time updates and clean interface."
+      },
+      {
+        id: 3,
+        authorName: "Mike",
+        authorAvatar: "M",
+        authorRole: "Moderator",
+        stars: 4,
+        comment: "Great bot with excellent features. The developer is very responsive and constantly improving it."
+      }
+    ]
+  }
+}
 
 // Testimonial Management Methods
 const openTestimonialForm = () => {
@@ -358,48 +373,93 @@ const editTestimonial = (testimonial) => {
   showTestimonialForm.value = true
 }
 
-const deleteTestimonial = (id) => {
+const deleteTestimonial = async (id) => {
   if (confirm('Are you sure you want to delete this testimonial?')) {
-    const index = testimonials.value.findIndex(t => t.id === id)
-    if (index > -1) {
-      testimonials.value.splice(index, 1)
+    try {
+      const response = await fetch(`/api/testimonials/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      
+      if (response.ok) {
+        // Remove from local array
+        const index = testimonials.value.findIndex(t => t.id === id)
+        if (index > -1) {
+          testimonials.value.splice(index, 1)
+        }
+      } else {
+        alert('Failed to delete testimonial')
+      }
+    } catch (error) {
+      console.error('Failed to delete testimonial:', error)
+      alert('Failed to delete testimonial')
     }
   }
 }
 
-const saveTestimonial = () => {
+const saveTestimonial = async () => {
   if (!testimonialForm.value.authorName || !testimonialForm.value.comment) {
     alert('Please fill in all required fields')
     return
   }
 
-  if (editingTestimonial.value) {
-    // Edit existing testimonial
-    const index = testimonials.value.findIndex(t => t.id === editingTestimonial.value)
-    if (index > -1) {
-      testimonials.value[index] = {
-        ...testimonials.value[index],
-        authorName: testimonialForm.value.authorName,
-        authorAvatar: testimonialForm.value.authorAvatar || testimonialForm.value.authorName.charAt(0).toUpperCase(),
-        authorRole: testimonialForm.value.authorRole || 'Community Member',
-        stars: testimonialForm.value.stars,
-        comment: testimonialForm.value.comment
-      }
-    }
-  } else {
-    // Add new testimonial
-    const newId = Math.max(...testimonials.value.map(t => t.id)) + 1
-    testimonials.value.push({
-      id: newId,
-      authorName: testimonialForm.value.authorName,
-      authorAvatar: testimonialForm.value.authorAvatar || testimonialForm.value.authorName.charAt(0).toUpperCase(),
-      authorRole: testimonialForm.value.authorRole || 'Community Member',
-      stars: testimonialForm.value.stars,
-      comment: testimonialForm.value.comment
-    })
+  const testimonialData = {
+    authorName: testimonialForm.value.authorName,
+    authorAvatar: testimonialForm.value.authorAvatar || testimonialForm.value.authorName.charAt(0).toUpperCase(),
+    authorRole: testimonialForm.value.authorRole || 'Community Member',
+    stars: testimonialForm.value.stars,
+    comment: testimonialForm.value.comment
   }
 
-  cancelTestimonialForm()
+  try {
+    let response
+    if (editingTestimonial.value) {
+      // Update existing testimonial
+      response = await fetch(`/api/testimonials/${editingTestimonial.value}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(testimonialData)
+      })
+    } else {
+      // Create new testimonial
+      response = await fetch('/api/testimonials', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authStore.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(testimonialData)
+      })
+    }
+
+    if (response.ok) {
+      const updatedTestimonial = await response.json()
+      
+      if (editingTestimonial.value) {
+        // Update existing in local array
+        const index = testimonials.value.findIndex(t => t.id === editingTestimonial.value)
+        if (index > -1) {
+          testimonials.value[index] = updatedTestimonial
+        }
+      } else {
+        // Add new to local array
+        testimonials.value.push(updatedTestimonial)
+      }
+      
+      cancelTestimonialForm()
+    } else {
+      alert('Failed to save testimonial')
+    }
+  } catch (error) {
+    console.error('Failed to save testimonial:', error)
+    alert('Failed to save testimonial')
+  }
 }
 
 const cancelTestimonialForm = () => {
@@ -420,6 +480,7 @@ const generateStars = (rating) => {
 
 onMounted(() => {
   document.title = 'Status Bot'
+  loadTestimonials()
 })
 </script>
 
