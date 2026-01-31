@@ -100,6 +100,15 @@
                   <li><a href="#status-updates" @click.prevent="scrollToSection('status-updates')">
                     <i class="fas fa-chart-line"></i> Leveling System
                   </a></li>
+                  <li><a href="#status-tracking" @click.prevent="scrollToSection('status-tracking')">
+                    <i class="fas fa-circle"></i> Status Tracking
+                  </a></li>
+                  <li><a href="#economy-system" @click.prevent="scrollToSection('economy-system')">
+                    <i class="fas fa-coins"></i> Economy System
+                  </a></li>
+                  <li><a href="#welcome-system" @click.prevent="scrollToSection('welcome-system')">
+                    <i class="fas fa-door-open"></i> Welcome Messages
+                  </a></li>
                   <li><a href="#premium" @click.prevent="scrollToSection('premium')">
                     <i class="fas fa-crown"></i> Premium Features
                   </a></li>
@@ -278,22 +287,6 @@
                 <h3>Welcome Messages</h3>
                 <p>Customize welcome embeds for new members with images, titles, descriptions, and member goal tracking.</p>
               </div>
-              
-              <div class="feature-card">
-                <div class="card-icon">
-                  <i class="fas fa-cogs" style="color: #6b7280;"></i>
-                </div>
-                <h3>Server Management</h3>
-                <p>Per-guild configuration for all features. Enable/disable systems as needed, customize channels and settings.</p>
-              </div>
-              
-              <div class="feature-card">
-                <div class="card-icon">
-                  <i class="fas fa-crown" style="color: #fbbf24;"></i>
-                </div>
-                <h3>Premium System</h3>
-                <p>Unlock exclusive features with premium memberships including enhanced limits and priority support.</p>
-              </div>
             </div>
           </section>
 
@@ -312,11 +305,11 @@
                   <div class="command-list">
                     <div class="command-item">
                       <div class="command-name">/rank</div>
-                      <div class="command-desc">View your current level, XP progress, and rank in the server</div>
+                      <div class="command-desc">View a user's rank card</div>
                     </div>
                     <div class="command-item">
                       <div class="command-name">/leaderboard</div>
-                      <div class="command-desc">See the top leveled members in your server</div>
+                      <div class="command-desc">View the server leaderboard</div>
                     </div>
                   </div>
                 </div>
@@ -326,27 +319,87 @@
                   <div class="command-list">
                     <div class="command-item">
                       <div class="command-name">/balance</div>
-                      <div class="command-desc">Check your or another user's currency balance</div>
+                      <div class="command-desc">Check your balance</div>
                     </div>
                     <div class="command-item">
                       <div class="command-name">/pay</div>
-                      <div class="command-desc">Send currency to another server member</div>
+                      <div class="command-desc">Pay another user</div>
                     </div>
                     <div class="command-item">
                       <div class="command-name">/daily</div>
-                      <div class="command-desc">Claim your daily currency reward with streak bonuses</div>
+                      <div class="command-desc">Claim your daily reward</div>
                     </div>
                     <div class="command-item">
                       <div class="command-name">/slots</div>
-                      <div class="command-desc">Play slots for currency</div>
+                      <div class="command-desc">Play the slot machine</div>
                     </div>
                     <div class="command-item">
                       <div class="command-name">/blackjack</div>
-                      <div class="command-desc">Play blackjack against the dealer</div>
+                      <div class="command-desc">Play blackjack against the dealer!</div>
                     </div>
                     <div class="command-item">
-                      <div class="command-name">/coinflip</div>
-                      <div class="command-desc">Flip a coin for currency</div>
+                      <div class="command-name">/clicker</div>
+                      <div class="command-desc">Click to earn currency!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/lootbox</div>
+                      <div class="command-desc">Roll a lootbox for rare rewards!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/robbery</div>
+                      <div class="command-desc">Attempt to rob another user!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/invest</div>
+                      <div class="command-desc">Invest money to earn daily interest</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/withdraw</div>
+                      <div class="command-desc">Withdraw your investment</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/interest</div>
+                      <div class="command-desc">Check your investment and earned interest</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/dice</div>
+                      <div class="command-desc">Roll the dice and bet on your luck!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/mine</div>
+                      <div class="command-desc">Mine for rare gems and currency!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/fish</div>
+                      <div class="command-desc">Fish for valuable catches!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/roulette</div>
+                      <div class="command-desc">Spin the roulette wheel!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/heist</div>
+                      <div class="command-desc">Plan a heist to steal from random guild members!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/lottery</div>
+                      <div class="command-desc">Buy a lottery ticket for a chance to win big!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/duel</div>
+                      <div class="command-desc">Challenge someone to a duel for their fortune!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/spin</div>
+                      <div class="command-desc">Spin the mystery wheel for random rewards!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/flip</div>
+                      <div class="command-desc">Flip a coin and guess the outcome!</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/auction</div>
+                      <div class="command-desc">Auction off your items to other players!</div>
                     </div>
                   </div>
                 </div>
@@ -356,15 +409,41 @@
                   <div class="command-list">
                     <div class="command-item">
                       <div class="command-name">/profile</div>
-                      <div class="command-desc">View your server profile with stats and achievements</div>
+                      <div class="command-desc">View your global profile</div>
                     </div>
                     <div class="command-item">
                       <div class="command-name">/help</div>
-                      <div class="command-desc">Display all available commands</div>
+                      <div class="command-desc">Show all available commands and their usage</div>
                     </div>
                     <div class="command-item">
                       <div class="command-name">/invite</div>
-                      <div class="command-desc">Get the invite link to add Status Bot to another server</div>
+                      <div class="command-desc">Get the bot's invite link</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/about</div>
+                      <div class="command-desc">Learn more about Status Bot</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/info</div>
+                      <div class="command-desc">Get detailed info about a user</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/dad-joke</div>
+                      <div class="command-desc">Get a random dad joke</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="command-group">
+                  <h3><i class="fas fa-shield-alt"></i> Admin Commands</h3>
+                  <div class="command-list">
+                    <div class="command-item">
+                      <div class="command-name">/give</div>
+                      <div class="command-desc">Give XP or balance to a user</div>
+                    </div>
+                    <div class="command-item">
+                      <div class="command-name">/take</div>
+                      <div class="command-desc">Take XP or balance from a user</div>
                     </div>
                   </div>
                 </div>
@@ -379,6 +458,21 @@
               <div class="section-badge">Setup</div>
             </div>
             <div class="config-cards">
+              <div class="config-card">
+                <div class="config-header">
+                  <h3><i class="fas fa-circle"></i> Status Tracking</h3>
+                </div>
+                <div class="config-content">
+                  <ul class="config-list">
+                    <li>Select users to track status changes for</li>
+                    <li>Set update delay for tracking frequency</li>
+                    <li>Configure tracking channel for notifications</li>
+                    <li>Customize offline messages and automatic updates</li>
+                    <li>Choose between simple messages or rich embeds</li>
+                  </ul>
+                </div>
+              </div>
+
               <div class="config-card">
                 <div class="config-header">
                   <h3><i class="fas fa-chart-line"></i> Leveling System</h3>
@@ -403,6 +497,21 @@
                     <li>Set currency earned per message</li>
                     <li>Customize your currency symbol</li>
                     <li>Control which mini-games are available</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="config-card">
+                <div class="config-header">
+                  <h3><i class="fas fa-door-open"></i> Welcome Messages</h3>
+                </div>
+                <div class="config-content">
+                  <ul class="config-list">
+                    <li>Design custom welcome embeds for new members</li>
+                    <li>Set welcome channel and customize message content</li>
+                    <li>Add images, titles, and descriptions</li>
+                    <li>Track member count and goals automatically</li>
+                    <li>Use placeholders for dynamic content</li>
                   </ul>
                 </div>
               </div>
@@ -464,6 +573,112 @@
                     <span class="title-range">350+</span>
                     <span class="title-name omniscient">OMNISCIENT</span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Status Tracking System -->
+          <section class="content-section" id="status-tracking">
+            <div class="section-header">
+              <h2>Status Tracking System</h2>
+              <div class="section-badge">System</div>
+            </div>
+            <div class="content-card">
+              <p>Track user status changes in real-time with customizable notifications:</p>
+              
+              <div class="level-info">
+                <div class="level-item">
+                  <h4>Real-Time Monitoring</h4>
+                  <p>Automatically detect when tracked users go online, idle, DND, or offline.</p>
+                </div>
+                <div class="level-item">
+                  <h4>Custom Messages</h4>
+                  <p>Set personalized offline messages and choose between simple text or rich embeds.</p>
+                </div>
+                <div class="level-item">
+                  <h4>Multiple Users</h4>
+                  <p>Track multiple users simultaneously with individual settings for each.</p>
+                </div>
+                <div class="level-item">
+                  <h4>Channel Control</h4>
+                  <p>Direct status updates to specific channels with configurable delays.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Economy System -->
+          <section class="content-section" id="economy-system">
+            <div class="section-header">
+              <h2>Economy System</h2>
+              <div class="section-badge">System</div>
+            </div>
+            <div class="content-card">
+              <p>Create a thriving server economy with currency, games, and rewards:</p>
+              
+              <div class="economy-features">
+                <div class="economy-section">
+                  <h4>Currency Earning</h4>
+                  <div class="currency-methods">
+                    <span class="currency-method">Messages</span>
+                    <span class="currency-method">Daily Rewards</span>
+                    <span class="currency-method">Mini-Games</span>
+                    <span class="currency-method">Investments</span>
+                  </div>
+                </div>
+                
+                <div class="economy-section">
+                  <h4>Available Games</h4>
+                  <div class="games-grid">
+                    <div class="game-item">🎰 Slots</div>
+                    <div class="game-item">🃏 Blackjack</div>
+                    <div class="game-item">🎲 Dice</div>
+                    <div class="game-item">🪙 Coinflip</div>
+                    <div class="game-item">📦 Lootbox</div>
+                    <div class="game-item">🔨 Mining</div>
+                    <div class="game-item">🎣 Fishing</div>
+                    <div class="game-item">🎡 Roulette</div>
+                    <div class="game-item">⚔️ Dueling</div>
+                    <div class="game-item">🏆 Heists</div>
+                    <div class="game-item">🎪 Spin Wheel</div>
+                    <div class="game-item">🎟️ Lottery</div>
+                  </div>
+                </div>
+
+                <div class="economy-section">
+                  <h4>Advanced Features</h4>
+                  <p>Investment system with daily interest, robbery mechanics, and auction house for trading items between players.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Welcome Messages System -->
+          <section class="content-section" id="welcome-system">
+            <div class="section-header">
+              <h2>Welcome Messages System</h2>
+              <div class="section-badge">System</div>
+            </div>
+            <div class="content-card">
+              <p>Greet new members with beautiful, customizable welcome messages:</p>
+              
+              <div class="welcome-features">
+                <div class="welcome-item">
+                  <h4>Rich Embeds</h4>
+                  <p>Create stunning welcome cards with custom colors, images, titles, and descriptions.</p>
+                </div>
+                <div class="welcome-item">
+                  <h4>Dynamic Placeholders</h4>
+                  <p>Use placeholders like <code>{user}</code>, <code>{server}</code>, and <code>{member_count}</code> for personalized messages.</p>
+                </div>
+                <div class="welcome-item">
+                  <h4>Member Tracking</h4>
+                  <p>Automatically update voice channels with current member count and member goals.</p>
+                </div>
+                <div class="welcome-item">
+                  <h4>Goal Progress</h4>
+                  <p>Set member count goals and track progress with dynamic channel names.</p>
                 </div>
               </div>
             </div>
@@ -1270,14 +1485,24 @@ onMounted(() => {
   letter-spacing: 0.5px;
 }
 
-.title-name.newbie { background: rgba(156, 163, 175, 0.2); color: #9ca3af; }
-.title-name.rookie { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
-.title-name.hunter { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
-.title-name.assassin { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
-.title-name.elite { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-.title-name.apex { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-.title-name.emperor { background: rgba(217, 70, 239, 0.2); color: #d946ef; }
-.title-name.omniscient { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+.title-name.newbie { background: rgba(115, 115, 115, 0.2); color: #737373; }
+.title-name.rookie { background: rgba(0, 191, 99, 0.2); color: #00bf63; }
+.title-name.hunter { background: rgba(255, 145, 77, 0.2); color: #ff914d; }
+.title-name.assassin { background: rgba(0, 0, 0, 0.2); color: #000000; border: 1px solid rgba(255, 255, 255, 0.1); }
+.title-name.elite { background: rgba(0, 74, 173, 0.2); color: #004aad; }
+.title-name.apex { background: rgba(255, 0, 0, 0.2); color: #ff0000; }
+.title-name.emperor { 
+  background: linear-gradient(45deg, rgba(255, 222, 89, 0.2), rgba(255, 145, 77, 0.2)); 
+  color: #ffde59;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+.title-name.omniscient { 
+  background: linear-gradient(45deg, rgba(169, 227, 255, 0.2), rgba(255, 170, 255, 0.2), rgba(255, 171, 240, 0.2)); 
+  color: #A9E3FF;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
 
 /* Premium Card */
 .premium-card {
@@ -1703,6 +1928,98 @@ onMounted(() => {
   .command-name {
     min-width: auto;
     align-self: flex-start;
+  }
+}
+
+/* Economy System Styles */
+.economy-features {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.economy-section h4 {
+  margin-bottom: 15px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.currency-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.currency-method {
+  background: rgba(81, 112, 255, 0.1);
+  color: #5170ff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.game-item {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Welcome System Styles */
+.welcome-features {
+  display: grid;
+  gap: 25px;
+}
+
+.welcome-item h4 {
+  margin-bottom: 10px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.welcome-item p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.welcome-item code {
+  background: rgba(81, 112, 255, 0.1);
+  color: #5170ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+/* Responsive adjustments for new sections */
+@media (max-width: 768px) {
+  .games-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  
+  .game-item {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .currency-methods {
+    gap: 8px;
+  }
+  
+  .currency-method {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 }
 </style>
