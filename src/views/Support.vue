@@ -320,39 +320,29 @@ onMounted(() => {
 
 .support-chat-box {
   width: 100%;
-  background: rgba(17, 17, 17, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(81, 112, 255, 0.3);
-  border-radius: 24px;
+  background: rgba(25, 25, 35, 0.95);
+  border: 1px solid rgba(81, 112, 255, 0.4);
+  border-radius: 16px;
   padding: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .support-chat-area {
   width: 100%;
-  height: 400px;
-  background: rgba(0, 0, 0, 0.2);
+  height: 350px;
+  background: rgba(15, 15, 25, 0.5);
   border-radius: 0;
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
   scroll-behavior: smooth;
-  position: relative;
-}
-
-.support-chat-area::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(81, 112, 255, 0.5), transparent);
+  border-top: 1px solid rgba(81, 112, 255, 0.2);
+  border-bottom: 1px solid rgba(81, 112, 255, 0.2);
 }
 
 .support-chat-area::-webkit-scrollbar {
@@ -413,82 +403,71 @@ onMounted(() => {
   text-align: center;
   color: var(--text-secondary);
   font-size: 16px;
-  gap: 24px;
-  padding: 40px 20px;
+  gap: 20px;
+  padding: 30px 15px;
 }
 
 .welcome-icon {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2), rgba(139, 92, 246, 0.2));
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.3), rgba(139, 92, 246, 0.3));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: gentle-pulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse-glow {
+@keyframes gentle-pulse {
   0%, 100% { 
     transform: scale(1);
-    box-shadow: 0 0 20px rgba(81, 112, 255, 0.3);
+    opacity: 0.8;
   }
   50% { 
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(81, 112, 255, 0.5);
+    transform: scale(1.02);
+    opacity: 1;
   }
 }
 
 .welcome-icon i {
-  font-size: 32px;
+  font-size: 24px;
   color: #5170ff;
 }
 
 .suggestion-boxes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
   width: 100%;
-  max-width: 700px;
-  margin-top: 20px;
+  max-width: 600px;
+  margin-top: 16px;
 }
 
 .suggestion-box {
-  background: rgba(81, 112, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(81, 112, 255, 0.3);
-  border-radius: 12px;
-  padding: 16px 20px;
+  background: rgba(81, 112, 255, 0.15);
+  border: 1px solid rgba(81, 112, 255, 0.4);
+  border-radius: 10px;
+  padding: 12px 16px;
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   text-align: left;
-  position: relative;
-  overflow: hidden;
-}
-
-.suggestion-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .suggestion-box:hover {
-  background: rgba(81, 112, 255, 0.2);
+  background: rgba(81, 112, 255, 0.25);
   border-color: rgba(81, 112, 255, 0.6);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(81, 112, 255, 0.25);
+  transform: translateY(-1px);
 }
 
-.suggestion-box:hover::before {
-  left: 100%;
+.suggestion-box:active {
+  transform: translateY(0);
+  background: rgba(81, 112, 255, 0.3);
 }
 
 .support-links-section {
@@ -647,20 +626,19 @@ onMounted(() => {
 }
 
 .message-content {
-  max-width: 75%;
-  padding: 14px 18px;
-  border-radius: 18px;
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 16px;
   word-wrap: break-word;
   font-size: 14px;
-  line-height: 1.6;
-  position: relative;
-  animation: messageSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1.5;
+  animation: fadeIn 0.2s ease-out;
 }
 
-@keyframes messageSlideIn {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
@@ -669,72 +647,42 @@ onMounted(() => {
 }
 
 .message-content.user {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.6));
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(81, 112, 255, 0.7));
   color: #ffffff;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(81, 112, 255, 0.3);
   margin-left: auto;
-}
-
-.message-content.user::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: -6px;
-  width: 0;
-  height: 0;
-  border-left: 8px solid rgba(81, 112, 255, 0.8);
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  transform: translateY(-50%);
+  border-top-right-radius: 4px;
 }
 
 .message-content.ai {
-  background: rgba(40, 40, 50, 0.9);
-  border: 1px solid rgba(100, 100, 120, 0.3);
+  background: rgba(40, 40, 50, 0.8);
+  border: 1px solid rgba(100, 100, 120, 0.4);
   color: var(--text-primary);
-  backdrop-filter: blur(10px);
-}
-
-.message-content.ai::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: -6px;
-  width: 0;
-  height: 0;
-  border-right: 8px solid rgba(40, 40, 50, 0.9);
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  transform: translateY(-50%);
+  border-top-left-radius: 4px;
 }
 
 .support-input-container {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-end;
-  padding: 24px;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(81, 112, 255, 0.2);
+  padding: 20px;
+  background: rgba(20, 20, 30, 0.6);
 }
 
 .support-input {
   flex: 1;
   background: rgba(81, 112, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(81, 112, 255, 0.3);
-  border-radius: 20px;
-  padding: 16px 20px;
+  border: 1px solid rgba(81, 112, 255, 0.4);
+  border-radius: 16px;
+  padding: 14px 18px;
   color: var(--text-primary);
   font-weight: 500;
   font-size: 15px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   font-family: 'Fredoka', inherit;
   resize: none;
-  max-height: 120px;
+  max-height: 100px;
   overflow: hidden;
-  vertical-align: middle;
+  min-height: 48px;
 }
 
 .support-input::placeholder {
@@ -744,45 +692,41 @@ onMounted(() => {
 .support-input:focus {
   outline: none;
   background: rgba(81, 112, 255, 0.15);
-  border-color: rgba(81, 112, 255, 0.6);
-  box-shadow: 0 0 0 3px rgba(81, 112, 255, 0.1), 0 8px 25px rgba(81, 112, 255, 0.15);
-  transform: translateY(-1px);
+  border-color: rgba(81, 112, 255, 0.7);
+  box-shadow: 0 0 0 2px rgba(81, 112, 255, 0.2);
 }
 
 .support-send-btn {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.8), rgba(139, 92, 246, 0.8));
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(81, 112, 255, 0.4);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.9), rgba(81, 112, 255, 0.8));
+  border: 1px solid rgba(81, 112, 255, 0.5);
   color: #ffffff;
   cursor: pointer;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 20px;
-  height: 52px;
-  width: 52px;
+  transition: all 0.2s ease;
+  font-size: 18px;
+  height: 48px;
+  width: 48px;
   border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(81, 112, 255, 0.3);
+  flex-shrink: 0;
 }
 
 .support-send-btn:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(81, 112, 255, 0.4);
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(139, 92, 246, 1));
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1), rgba(81, 112, 255, 0.9));
+  transform: scale(1.05);
 }
 
 .support-send-btn:active:not(:disabled) {
-  transform: translateY(-1px) scale(0.98);
+  transform: scale(0.95);
 }
 
 .support-send-btn:disabled {
-  background: rgba(100, 100, 120, 0.3);
+  background: rgba(100, 100, 120, 0.4);
   color: var(--text-secondary);
   cursor: not-allowed;
-  opacity: 0.5;
-  box-shadow: none;
+  opacity: 0.6;
 }
 
 @media (max-width: 1024px) {
@@ -843,65 +787,66 @@ onMounted(() => {
   }
 
   .support-chat-area {
-    height: 320px;
-    padding: 20px;
+    height: 280px;
+    padding: 16px;
   }
 
   .chat-welcome {
-    padding: 30px 15px;
-    gap: 20px;
+    padding: 20px 10px;
+    gap: 16px;
   }
 
   .welcome-icon {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 
   .welcome-icon i {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .suggestion-boxes {
     grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 16px;
+    gap: 8px;
+    margin-top: 12px;
   }
 
   .suggestion-box {
-    padding: 14px 16px;
+    padding: 12px 14px;
     font-size: 13px;
+    min-height: 40px;
   }
 
   .message-content {
     max-width: 85%;
-    font-size: 13px;
-    padding: 12px 16px;
+    font-size: 14px;
+    padding: 10px 14px;
   }
 
   .support-input-container {
-    padding: 20px;
-    gap: 10px;
+    padding: 16px;
+    gap: 8px;
   }
 
   .support-input {
-    padding: 14px 18px;
+    padding: 12px 16px;
     font-size: 14px;
-    border-radius: 18px;
+    min-height: 44px;
   }
 
   .support-send-btn {
-    height: 48px;
-    width: 48px;
-    font-size: 18px;
+    height: 44px;
+    width: 44px;
+    font-size: 16px;
   }
 
   .support-links-grid {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 16px;
   }
 
   .support-link-card {
-    padding: 20px;
+    padding: 18px;
   }
 
   .faq-section {
@@ -914,7 +859,7 @@ onMounted(() => {
   }
 
   .faq-item {
-    padding: 18px;
+    padding: 16px;
   }
 
   .faq-item h4 {
@@ -922,8 +867,8 @@ onMounted(() => {
   }
 
   .faq-item .toggle {
-    right: 15px;
-    top: 15px;
+    right: 16px;
+    top: 16px;
   }
 
   .faq-item .answer {
