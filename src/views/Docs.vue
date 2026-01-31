@@ -1516,13 +1516,13 @@ onMounted(() => {
 .title-name.elite { background: rgba(0, 74, 173, 0.2); color: #004aad; }
 .title-name.apex { background: rgba(255, 0, 0, 0.2); color: #ff0000; }
 .title-name.emperor { 
-  background: linear-gradient(45deg, rgba(255, 222, 89, 0.5), rgba(255, 145, 77, 0.5)); 
-  color: #000000;
+  background: linear-gradient(45deg, rgba(255, 222, 89, 0.2), rgba(255, 145, 77, 0.2)); 
+  color: #eeb45e;
   font-weight: 600;
 }
 .title-name.omniscient { 
-  background: linear-gradient(45deg, rgba(169, 227, 255, 0.5), rgba(255, 170, 255, 0.5), rgba(255, 171, 240, 0.5)); 
-  color: #000000;
+  background: linear-gradient(45deg, rgba(169, 227, 255, 0.2), rgba(255, 170, 255, 0.2), rgba(255, 171, 240, 0.2)); 
+  color: #b9f1ff;
   font-weight: 600;
 }
 
