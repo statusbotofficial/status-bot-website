@@ -958,7 +958,6 @@ onMounted(() => {
 /* Quick Start */
 .quick-start {
   padding: 60px 50px;
-  background: var(--bg-primary);
 }
 
 .quick-start h2 {
@@ -1134,7 +1133,6 @@ onMounted(() => {
 /* Content */
 .docs-content {
   padding: 40px 50px;
-  background: var(--bg-primary);
 }
 
 .content-section {
