@@ -587,20 +587,32 @@
             <div class="content-card">
               <p>Track user status changes in real-time with customizable notifications:</p>
               
-              <div class="level-info">
-                <div class="level-item">
+              <div class="status-tracking-grid">
+                <div class="status-feature-card">
+                  <div class="status-icon">
+                    <i class="fas fa-circle pulsing-dot"></i>
+                  </div>
                   <h4>Real-Time Monitoring</h4>
                   <p>Automatically detect when tracked users go online, idle, DND, or offline.</p>
                 </div>
-                <div class="level-item">
+                <div class="status-feature-card">
+                  <div class="status-icon">
+                    <i class="fas fa-comment-alt"></i>
+                  </div>
                   <h4>Custom Messages</h4>
                   <p>Set personalized offline messages and choose between simple text or rich embeds.</p>
                 </div>
-                <div class="level-item">
+                <div class="status-feature-card">
+                  <div class="status-icon">
+                    <i class="fas fa-users"></i>
+                  </div>
                   <h4>Multiple Users</h4>
                   <p>Track multiple users simultaneously with individual settings for each.</p>
                 </div>
-                <div class="level-item">
+                <div class="status-feature-card">
+                  <div class="status-icon">
+                    <i class="fas fa-hashtag"></i>
+                  </div>
                   <h4>Channel Control</h4>
                   <p>Direct status updates to specific channels with configurable delays.</p>
                 </div>
@@ -619,7 +631,7 @@
               
               <div class="economy-features">
                 <div class="economy-section">
-                  <h4>Currency Earning</h4>
+                  <h4>Earn Currency From:</h4>
                   <div class="currency-methods">
                     <span class="currency-method">Messages</span>
                     <span class="currency-method">Daily Rewards</span>
@@ -663,20 +675,32 @@
             <div class="content-card">
               <p>Greet new members with beautiful, customizable welcome messages:</p>
               
-              <div class="welcome-features">
-                <div class="welcome-item">
+              <div class="welcome-features-grid">
+                <div class="welcome-feature-card">
+                  <div class="welcome-icon">
+                    <i class="fas fa-palette"></i>
+                  </div>
                   <h4>Rich Embeds</h4>
                   <p>Create stunning welcome cards with custom colors, images, titles, and descriptions.</p>
                 </div>
-                <div class="welcome-item">
+                <div class="welcome-feature-card">
+                  <div class="welcome-icon">
+                    <i class="fas fa-code"></i>
+                  </div>
                   <h4>Dynamic Placeholders</h4>
                   <p>Use placeholders like <code>{user}</code>, <code>{server}</code>, and <code>{member_count}</code> for personalized messages.</p>
                 </div>
-                <div class="welcome-item">
+                <div class="welcome-feature-card">
+                  <div class="welcome-icon">
+                    <i class="fas fa-chart-line"></i>
+                  </div>
                   <h4>Member Tracking</h4>
                   <p>Automatically update voice channels with current member count and member goals.</p>
                 </div>
-                <div class="welcome-item">
+                <div class="welcome-feature-card">
+                  <div class="welcome-icon">
+                    <i class="fas fa-bullseye"></i>
+                  </div>
                   <h4>Goal Progress</h4>
                   <p>Set member count goals and track progress with dynamic channel names.</p>
                 </div>
@@ -1488,20 +1512,18 @@ onMounted(() => {
 .title-name.newbie { background: rgba(115, 115, 115, 0.2); color: #737373; }
 .title-name.rookie { background: rgba(0, 191, 99, 0.2); color: #00bf63; }
 .title-name.hunter { background: rgba(255, 145, 77, 0.2); color: #ff914d; }
-.title-name.assassin { background: rgba(0, 0, 0, 0.2); color: #000000; border: 1px solid rgba(255, 255, 255, 0.1); }
+.title-name.assassin { background: rgba(255, 255, 255, 0.9); color: #000000; border: 1px solid rgba(0, 0, 0, 0.1); }
 .title-name.elite { background: rgba(0, 74, 173, 0.2); color: #004aad; }
 .title-name.apex { background: rgba(255, 0, 0, 0.2); color: #ff0000; }
 .title-name.emperor { 
-  background: linear-gradient(45deg, rgba(255, 222, 89, 0.2), rgba(255, 145, 77, 0.2)); 
-  color: #ffde59;
-  background-clip: text;
-  -webkit-background-clip: text;
+  background: linear-gradient(45deg, #ffde59, #ff914d); 
+  color: #000000;
+  font-weight: 600;
 }
 .title-name.omniscient { 
-  background: linear-gradient(45deg, rgba(169, 227, 255, 0.2), rgba(255, 170, 255, 0.2), rgba(255, 171, 240, 0.2)); 
-  color: #A9E3FF;
-  background-clip: text;
-  -webkit-background-clip: text;
+  background: linear-gradient(45deg, #A9E3FF, #FFAAFF, #FFABF0); 
+  color: #000000;
+  font-weight: 600;
 }
 
 /* Premium Card */
@@ -1975,27 +1997,117 @@ onMounted(() => {
   border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
-/* Welcome System Styles */
-.welcome-features {
+/* Status Tracking System Styles */
+.status-tracking-grid {
   display: grid;
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
 }
 
-.welcome-item h4 {
+.status-feature-card {
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.status-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.status-icon {
+  width: 50px;
+  height: 50px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 20px;
+  color: #10b981;
+}
+
+.pulsing-dot {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.status-feature-card h4 {
   margin-bottom: 10px;
   color: var(--text-primary);
   font-weight: 600;
 }
 
-.welcome-item p {
+.status-feature-card p {
   margin: 0;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
+  font-size: 14px;
 }
 
-.welcome-item code {
-  background: rgba(81, 112, 255, 0.1);
-  color: #5170ff;
+/* Welcome System Styles */
+.welcome-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.welcome-feature-card {
+  background: rgba(139, 92, 246, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.welcome-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.welcome-icon {
+  width: 50px;
+  height: 50px;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 20px;
+  color: #8b5cf6;
+}
+
+.welcome-feature-card h4 {
+  margin-bottom: 10px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.welcome-feature-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.welcome-feature-card code {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 13px;
@@ -2020,6 +2132,25 @@ onMounted(() => {
   .currency-method {
     padding: 6px 12px;
     font-size: 13px;
+  }
+  
+  .status-tracking-grid,
+  .welcome-features-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .status-feature-card,
+  .welcome-feature-card {
+    padding: 15px;
+  }
+  
+  .status-icon,
+  .welcome-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    margin-bottom: 12px;
   }
 }
 </style>
