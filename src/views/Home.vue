@@ -126,9 +126,9 @@ onMounted(() => {
 }
 
 .docs-btn {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 1) 0%, rgba(5, 150, 105, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
   color: #fff;
-  border-color: rgba(16, 185, 129, 0.8);
+  border-color: rgba(81, 112, 255, 0.8);
 }
 
 .discord-btn:hover {
@@ -138,7 +138,7 @@ onMounted(() => {
 
 .docs-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 24px rgba(81, 112, 255, 0.4);
 }
 
 .discord-icon {
