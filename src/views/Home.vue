@@ -332,6 +332,8 @@ onMounted(() => {
     0 8px 0 currentColor,
     8px 8px 0 currentColor;
 }
+
+.social-proof {
   margin-top: 40px;
 }
 
