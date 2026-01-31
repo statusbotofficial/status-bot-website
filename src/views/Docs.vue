@@ -94,6 +94,18 @@
               </div>
 
               <div class="nav-section">
+                <div class="nav-title">Configuration</div>
+                <ul class="nav-list">
+                  <li><a href="#setup-monitoring" @click.prevent="scrollToSection('setup-monitoring')">
+                    <i class="fas fa-wrench"></i> Server Setup
+                  </a></li>
+                  <li><a href="#command-reference" @click.prevent="scrollToSection('command-reference')">
+                    <i class="fas fa-code"></i> Commands
+                  </a></li>
+                </ul>
+              </div>
+
+              <div class="nav-section">
                 <div class="nav-title">Features</div>
                 <ul class="nav-list">
                   <li><a href="#core-features" @click.prevent="scrollToSection('core-features')">
@@ -118,25 +130,10 @@
               </div>
 
               <div class="nav-section">
-                <div class="nav-title">Configuration</div>
-                <ul class="nav-list">
-                  <li><a href="#setup-monitoring" @click.prevent="scrollToSection('setup-monitoring')">
-                    <i class="fas fa-wrench"></i> Server Setup
-                  </a></li>
-                  <li><a href="#command-reference" @click.prevent="scrollToSection('command-reference')">
-                    <i class="fas fa-code"></i> Commands
-                  </a></li>
-                </ul>
-              </div>
-
-              <div class="nav-section">
                 <div class="nav-title">Support</div>
                 <ul class="nav-list">
                   <li><a href="#troubleshooting" @click.prevent="scrollToSection('troubleshooting')">
                     <i class="fas fa-tools"></i> Troubleshooting
-                  </a></li>
-                  <li><a href="#best-practices" @click.prevent="scrollToSection('best-practices')">
-                    <i class="fas fa-lightbulb"></i> Best Practices
                   </a></li>
                   <li><a href="#faq" @click.prevent="scrollToSection('faq')">
                     <i class="fas fa-comments"></i> FAQ
@@ -791,64 +788,6 @@
               </div>
             </section>
 
-            <section class="content-section" id="best-practices">
-              <div class="section-header">
-                <h2>Best Practices</h2>
-                <div class="section-badge">Guide</div>
-              </div>
-              <div class="best-practices-card">
-                <div class="practice-category">
-                  <h4><i class="fas fa-chart-line"></i> Leveling System</h4>
-                  <ul class="practice-list">
-                    <li>Set reasonable XP rates (10-15 XP per message recommended)</li>
-                    <li>Use role rewards to create progression incentives</li>
-                    <li>Configure level-up notifications in a dedicated channel</li>
-                    <li>Consider restricting XP to active channels only</li>
-                  </ul>
-                </div>
-                
-                <div class="practice-category">
-                  <h4><i class="fas fa-coins"></i> Economy System</h4>
-                  <ul class="practice-list">
-                    <li>Balance starting currency with earning rates</li>
-                    <li>Monitor server economy to prevent inflation</li>
-                    <li>Use robbery and investment features to create currency sinks</li>
-                    <li>Set appropriate daily reward amounts for your server size</li>
-                  </ul>
-                </div>
-                
-                <div class="practice-category">
-                  <h4><i class="fas fa-circle"></i> Status Tracking</h4>
-                  <ul class="practice-list">
-                    <li>Use dedicated channels for status updates to avoid spam</li>
-                    <li>Set reasonable update delays (60+ seconds recommended)</li>
-                    <li>Only track important server members or staff</li>
-                    <li>Use embeds for cleaner status notifications</li>
-                  </ul>
-                </div>
-                
-                <div class="practice-category">
-                  <h4><i class="fas fa-door-open"></i> Welcome Messages</h4>
-                  <ul class="practice-list">
-                    <li>Keep welcome messages concise and friendly</li>
-                    <li>Include server rules or important channel links</li>
-                    <li>Use member count goals to encourage growth</li>
-                    <li>Test welcome messages before making them live</li>
-                  </ul>
-                </div>
-                
-                <div class="practice-category">
-                  <h4><i class="fas fa-shield-alt"></i> Server Management</h4>
-                  <ul class="practice-list">
-                    <li>Regularly backup your server configurations</li>
-                    <li>Monitor bot performance through the dashboard</li>
-                    <li>Keep your server's invite link updated</li>
-                    <li>Use the force-update feature sparingly</li>
-                  </ul>
-                </div>
-              </div>
-            </section>
-
             <section class="content-section" id="faq">
               <div class="section-header">
                 <h2>FAQ</h2>
@@ -955,6 +894,7 @@ onMounted(() => {
   background: linear-gradient(135deg, rgba(81, 112, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
   border: 1px solid rgba(81, 112, 255, 0.2);
   border-radius: 16px;
+  margin-top: 80px;
   margin-bottom: 60px;
   overflow: hidden;
 }
@@ -2285,15 +2225,6 @@ onMounted(() => {
   
   .docs-hero h1 {
     font-size: 36px;
-  }
-  
-  .best-practices-card {
-    gap: 20px;
-    padding: 15px;
-  }
-  
-  .practice-category {
-    padding: 15px;
   }
 }
 </style>
