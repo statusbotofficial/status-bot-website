@@ -4,8 +4,10 @@
       <!-- Hero Section -->
       <div class="docs-hero">
         <div class="hero-content">
-          <h1>Status Bot Documentation</h1>
-          <p>Everything you need to know to get the most out of Status Bot</p>
+          <div class="hero-main">
+            <h1>Status Bot Documentation</h1>
+            <p>Everything you need to know to get the most out of Status Bot</p>
+          </div>
           <div class="hero-stats">
             <div class="stat-item">
               <span class="stat-number">1000+</span>
@@ -82,11 +84,11 @@
               <div class="nav-section">
                 <div class="nav-title">Getting Started</div>
                 <ul class="nav-list">
-                  <li><a href="#getting-started" @click.prevent="scrollToSection('getting-started')">
-                    <i class="fas fa-play"></i> Setup & Installation
-                  </a></li>
                   <li><a href="#what-is" @click.prevent="scrollToSection('what-is')">
                     <i class="fas fa-question-circle"></i> What is Status Bot?
+                  </a></li>
+                  <li><a href="#getting-started" @click.prevent="scrollToSection('getting-started')">
+                    <i class="fas fa-play"></i> Setup & Installation
                   </a></li>
                 </ul>
               </div>
@@ -789,6 +791,64 @@
               </div>
             </section>
 
+            <section class="content-section" id="best-practices">
+              <div class="section-header">
+                <h2>Best Practices</h2>
+                <div class="section-badge">Guide</div>
+              </div>
+              <div class="best-practices-card">
+                <div class="practice-category">
+                  <h4><i class="fas fa-chart-line"></i> Leveling System</h4>
+                  <ul class="practice-list">
+                    <li>Set reasonable XP rates (10-15 XP per message recommended)</li>
+                    <li>Use role rewards to create progression incentives</li>
+                    <li>Configure level-up notifications in a dedicated channel</li>
+                    <li>Consider restricting XP to active channels only</li>
+                  </ul>
+                </div>
+                
+                <div class="practice-category">
+                  <h4><i class="fas fa-coins"></i> Economy System</h4>
+                  <ul class="practice-list">
+                    <li>Balance starting currency with earning rates</li>
+                    <li>Monitor server economy to prevent inflation</li>
+                    <li>Use robbery and investment features to create currency sinks</li>
+                    <li>Set appropriate daily reward amounts for your server size</li>
+                  </ul>
+                </div>
+                
+                <div class="practice-category">
+                  <h4><i class="fas fa-circle"></i> Status Tracking</h4>
+                  <ul class="practice-list">
+                    <li>Use dedicated channels for status updates to avoid spam</li>
+                    <li>Set reasonable update delays (60+ seconds recommended)</li>
+                    <li>Only track important server members or staff</li>
+                    <li>Use embeds for cleaner status notifications</li>
+                  </ul>
+                </div>
+                
+                <div class="practice-category">
+                  <h4><i class="fas fa-door-open"></i> Welcome Messages</h4>
+                  <ul class="practice-list">
+                    <li>Keep welcome messages concise and friendly</li>
+                    <li>Include server rules or important channel links</li>
+                    <li>Use member count goals to encourage growth</li>
+                    <li>Test welcome messages before making them live</li>
+                  </ul>
+                </div>
+                
+                <div class="practice-category">
+                  <h4><i class="fas fa-shield-alt"></i> Server Management</h4>
+                  <ul class="practice-list">
+                    <li>Regularly backup your server configurations</li>
+                    <li>Monitor bot performance through the dashboard</li>
+                    <li>Keep your server's invite link updated</li>
+                    <li>Use the force-update feature sparingly</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
             <section class="content-section" id="faq">
               <div class="section-header">
                 <h2>FAQ</h2>
@@ -892,10 +952,24 @@ onMounted(() => {
 
 /* Hero Section */
 .docs-hero {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.1) 0%, rgba(81, 112, 255, 0.05) 100%);
-  border-bottom: 1px solid rgba(81, 112, 255, 0.1);
-  padding: 80px 50px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border: 1px solid rgba(81, 112, 255, 0.2);
+  border-radius: 16px;
+  margin-bottom: 60px;
+  overflow: hidden;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  padding: 60px 40px;
+  gap: 40px;
+}
+
+.hero-main {
+  max-width: 600px;
 }
 
 .hero-content h1 {
@@ -908,7 +982,7 @@ onMounted(() => {
 .hero-content p {
   font-size: 18px;
   color: var(--text-secondary);
-  margin: 0 0 40px 0;
+  margin: 0;
 }
 
 .hero-stats {
@@ -2113,6 +2187,57 @@ onMounted(() => {
   font-size: 13px;
 }
 
+/* Best Practices Styles */
+.best-practices-card {
+  display: grid;
+  gap: 30px;
+  padding: 20px;
+}
+
+.practice-category {
+  background: rgba(81, 112, 255, 0.05);
+  border: 1px solid rgba(81, 112, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.practice-category h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.practice-category h4 i {
+  color: var(--primary-color);
+  font-size: 18px;
+}
+
+.practice-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.practice-list li {
+  position: relative;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 8px;
+  padding-left: 15px;
+}
+
+.practice-list li:before {
+  content: '✓';
+  position: absolute;
+  left: -5px;
+  color: #10b981;
+  font-weight: bold;
+}
+
 /* Responsive adjustments for new sections */
 @media (max-width: 768px) {
   .games-grid {
@@ -2151,6 +2276,24 @@ onMounted(() => {
     height: 40px;
     font-size: 18px;
     margin-bottom: 12px;
+  }
+  
+  .hero-content {
+    padding: 40px 20px;
+    gap: 30px;
+  }
+  
+  .docs-hero h1 {
+    font-size: 36px;
+  }
+  
+  .best-practices-card {
+    gap: 20px;
+    padding: 15px;
+  }
+  
+  .practice-category {
+    padding: 15px;
   }
 }
 </style>
