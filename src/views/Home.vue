@@ -3,12 +3,18 @@
     <div class="hero">
       <h1>Status Bot</h1>
       <p>A powerful Discord bot with User Status Tracking, XP Systems, an economy, welcome messages, and more!</p>
-      <a :href="discordServerUrl" class="discord-btn" target="_blank">
-        <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20.317 4.3671a19.8062 19.8062 0 00-4.885-1.515.0741.0741 0 00-.0785.0371c-.211.3671-.445.847-.608 1.23a18.822 18.822 0 00-5.487 0c-.163-.38-.398-.863-.609-1.23a.077.077 0 00-.079-.037 19.7355 19.7355 0 00-4.885 1.515.0699.0699 0 00-.032.0277C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.0577c2.227 1.649 4.395 2.647 6.54 3.31.05.021.1.0018.129-.039.287-.468.544-.96.758-1.469.021-.037-.002-.077-.041-.088a13.201 13.201 0 01-1.881-.892.083.083 0 01-.008-.138c.126-.094.252-.192.372-.291a.084.084 0 01.088-.01c3.928 1.793 8.18 1.793 12.062 0a.084.084 0 01.088.009c.12.099.246.198.373.292a.083.083 0 01-.006.137c-.6.35-1.243.645-1.881.893a.083.083 0 00-.041.088c.215.509.472 1.001.759 1.468a.084.084 0 00.129.039c2.146-.663 4.314-1.661 6.541-3.31a.083.083 0 00.032-.0576c.503-4.761-.838-8.886-3.549-12.548a.061.061 0 00-.031-.028zM8.02 15.278c-1.063 0-1.936-.973-1.936-2.166 0-1.194.862-2.167 1.936-2.167 1.08 0 1.95.973 1.936 2.167 0 1.194-.862 2.166-1.936 2.166zm7.975 0c-1.063 0-1.936-.973-1.936-2.166 0-1.194.862-2.167 1.936-2.167 1.08 0 1.95.973 1.936 2.167 0 1.194-.862 2.166-1.936 2.166z"/>
-        </svg>
-        Discord
-      </a>
+      <div class="hero-buttons">
+        <a :href="discordServerUrl" class="discord-btn" target="_blank">
+          <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.3671a19.8062 19.8062 0 00-4.885-1.515.0741.0741 0 00-.0785.0371c-.211.3671-.445.847-.608 1.23a18.822 18.822 0 00-5.487 0c-.163-.38-.398-.863-.609-1.23a.077.077 0 00-.079-.037 19.7355 19.7355 0 00-4.885 1.515.0699.0699 0 00-.032.0277C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.0577c2.227 1.649 4.395 2.647 6.54 3.31.05.021.1.0018.129-.039.287-.468.544-.96.758-1.469.021-.037-.002-.077-.041-.088a13.201 13.201 0 01-1.881-.892.083.083 0 01-.008-.138c.126-.094.252-.192.372-.291a.084.084 0 01.088-.01c3.928 1.793 8.18 1.793 12.062 0a.084.084 0 01.088.009c.12.099.246.198.373.292a.083.083 0 01-.006.137c-.6.35-1.243.645-1.881.893a.083.083 0 00-.041.088c.215.509.472 1.001.759 1.468a.084.084 0 00.129.039c2.146-.663 4.314-1.661 6.541-3.31a.083.083 0 00.032-.0576c.503-4.761-.838-8.886-3.549-12.548a.061.061 0 00-.031-.028zM8.02 15.278c-1.063 0-1.936-.973-1.936-2.166 0-1.194.862-2.167 1.936-2.167 1.08 0 1.95.973 1.936 2.167 0 1.194-.862 2.166-1.936 2.166zm7.975 0c-1.063 0-1.936-.973-1.936-2.166 0-1.194.862-2.167 1.936-2.167 1.08 0 1.95.973 1.936 2.167 0 1.194-.862 2.166-1.936 2.166z"/>
+          </svg>
+          Discord
+        </a>
+        <router-link to="/docs" class="docs-btn">
+          <i class="fas fa-book"></i>
+          Documentation
+        </router-link>
+      </div>
       <div class="stats-container">
         <div class="stats-divider"></div>
         <div class="stats">
@@ -92,24 +98,47 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
-.discord-btn {
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.discord-btn, .docs-btn {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
-  color: #fff;
   padding: 15px 30px;
   border-radius: 20px;
   font-weight: 600;
   transition: all 0.3s ease;
-  margin-bottom: 60px;
   text-decoration: none;
-  border: 2px solid rgba(81, 112, 255, 0.8);
+  border: 2px solid;
+}
+
+.discord-btn {
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
+  color: #fff;
+  border-color: rgba(81, 112, 255, 0.8);
+}
+
+.docs-btn {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 1) 0%, rgba(5, 150, 105, 0.5) 100%);
+  color: #fff;
+  border-color: rgba(16, 185, 129, 0.8);
 }
 
 .discord-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(81, 112, 255, 0.4);
+}
+
+.docs-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
 }
 
 .discord-icon {
