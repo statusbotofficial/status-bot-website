@@ -1512,7 +1512,7 @@ onMounted(() => {
 .title-name.newbie { background: rgba(115, 115, 115, 0.2); color: #737373; }
 .title-name.rookie { background: rgba(0, 191, 99, 0.2); color: #00bf63; }
 .title-name.hunter { background: rgba(255, 145, 77, 0.2); color: #ff914d; }
-.title-name.assassin { background: rgba(255, 255, 255, 0.2); color: #000000; border: 1px solid rgba(0, 0, 0, 0.1); }
+.title-name.assassin { background: rgba(255, 255, 255, 0.3); color: #000000; border: 1px solid rgba(0, 0, 0, 0.1); }
 .title-name.elite { background: rgba(0, 74, 173, 0.2); color: #004aad; }
 .title-name.apex { background: rgba(255, 0, 0, 0.2); color: #ff0000; }
 .title-name.emperor { 
