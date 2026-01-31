@@ -10,12 +10,12 @@
           </div>
           <div class="hero-stats">
             <div class="stat-item">
-              <span class="stat-number">1000+</span>
+              <span class="stat-number">16</span>
               <span class="stat-label">Servers</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-              <span class="stat-number">50k+</span>
+              <span class="stat-number">2k+</span>
               <span class="stat-label">Users</span>
             </div>
             <div class="stat-divider"></div>
@@ -96,11 +96,11 @@
               <div class="nav-section">
                 <div class="nav-title">Configuration</div>
                 <ul class="nav-list">
-                  <li><a href="#setup-monitoring" @click.prevent="scrollToSection('setup-monitoring')">
-                    <i class="fas fa-wrench"></i> Server Setup
-                  </a></li>
                   <li><a href="#command-reference" @click.prevent="scrollToSection('command-reference')">
                     <i class="fas fa-code"></i> Commands
+                  </a></li>
+                  <li><a href="#setup-monitoring" @click.prevent="scrollToSection('setup-monitoring')">
+                    <i class="fas fa-wrench"></i> Server Setup
                   </a></li>
                 </ul>
               </div>
@@ -879,7 +879,6 @@ onMounted(() => {
 .docs-wrapper {
   width: 100%;
   min-height: calc(100vh - 200px);
-  background: var(--bg-primary);
 }
 
 .docs-container {
