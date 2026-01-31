@@ -318,8 +318,9 @@ onMounted(() => {
 }
 
 .discord-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .social-proof {
@@ -1024,17 +1025,19 @@ onMounted(() => {
   }
 
   .stats {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: center;
     justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 350px;
+    margin: 0 auto;
   }
 
   .stat-divider {
     width: 1px;
-    height: 40px;
+    height: 30px;
     background: rgba(81, 112, 255, 0.2);
-    align-self: center;
   }
 
   .demo-preview {
