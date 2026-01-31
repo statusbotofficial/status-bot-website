@@ -282,7 +282,7 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
 import { DISCORD_INVITE_URL, DISCORD_SERVER_URL } from '../config'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
 const discordServerUrl = DISCORD_SERVER_URL
