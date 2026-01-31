@@ -14,7 +14,7 @@
 
 
       <div class="buttons">
-        <a href="#" class="btn btn-primary">
+        <a href="/servers" class="btn btn-primary">
           <span class="custom-grid-plus"></span>
           Dashboard
         </a>
