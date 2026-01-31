@@ -84,7 +84,6 @@
       </div>
       <div class="features-grid">
         <div class="feature-card featured">
-          <div class="feature-badge">Most Popular</div>
           <div class="feature-icon"><i class="fas fa-circle" style="color: #10b981;"></i></div>
           <h3>Status Tracking</h3>
           <ul class="feature-list">
@@ -138,40 +137,6 @@
             <li><i class="fas fa-star"></i> Advanced tracking</li>
             <li><i class="fas fa-star"></i> Priority support</li>
           </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Final CTA Section -->
-  <section class="final-cta">
-    <div class="container">
-      <div class="cta-content">
-        <h2>Ready to Transform Your Discord Server?</h2>
-        <p>Join thousands of communities already using Status Bot. Get started in under 2 minutes.</p>
-        <div class="cta-buttons">
-          <router-link to="/servers" class="cta-primary">
-            <i class="fas fa-rocket"></i>
-            Start Free Now
-          </router-link>
-          <router-link to="/docs" class="cta-secondary">
-            <i class="fas fa-book-open"></i>
-            View Documentation
-          </router-link>
-        </div>
-        <div class="cta-features">
-          <div class="cta-feature">
-            <i class="fas fa-check-circle"></i>
-            <span>Free Forever</span>
-          </div>
-          <div class="cta-feature">
-            <i class="fas fa-check-circle"></i>
-            <span>2 Minute Setup</span>
-          </div>
-          <div class="cta-feature">
-            <i class="fas fa-check-circle"></i>
-            <span>No Credit Card</span>
-          </div>
         </div>
       </div>
     </div>
