@@ -292,38 +292,46 @@ onMounted(() => {
   to { box-shadow: 0 0 20px rgba(81, 112, 255, 0.4); }
 }
 
+.discord-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.btn i,
+.btn svg,
+.btn span {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .custom-grid-plus {
   position: relative;
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  margin-right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
   vertical-align: middle;
-  top: 2px;
 }
 
 .custom-grid-plus::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   background: currentColor;
   border-radius: 1px;
   box-shadow: 
-    9px 0 0 currentColor,
-    0 9px 0 currentColor,
-    9px 9px 0 currentColor;
+    8px 0 0 currentColor,
+    0 8px 0 currentColor,
+    8px 8px 0 currentColor;
 }
-
-.discord-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
-.social-proof {
   margin-top: 40px;
 }
 
