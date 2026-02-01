@@ -81,29 +81,6 @@
           </div>
         </div>
 
-        <!-- Database Status -->
-        <div class="service-card operational">
-          <div class="service-header">
-            <div class="service-icon">
-              <i class="fas fa-database"></i>
-            </div>
-            <div class="service-info">
-              <h3>Database</h3>
-              <span class="service-status operational">Operational</span>
-            </div>
-          </div>
-          <div class="service-metrics">
-            <div class="metric">
-              <span class="metric-label">Status</span>
-              <span class="metric-value">Healthy</span>
-            </div>
-            <div class="metric">
-              <span class="metric-label">Performance</span>
-              <span class="metric-value">Optimal</span>
-            </div>
-          </div>
-        </div>
-
         <!-- Dashboard Status -->
         <div class="service-card operational">
           <div class="service-header">
