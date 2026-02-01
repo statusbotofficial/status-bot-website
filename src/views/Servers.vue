@@ -1754,7 +1754,7 @@ const openMemberSelector = async () => {
   if (selectedServer.value) {
     try {
       const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
-        headers: { Authorization: `Bearer ${authStore.token}` }
+        headers: { Authorization: 'Bearer status-bot-stats-secret-key' }
       })
       if (response.ok) {
         const data = await response.json()
