@@ -1,27 +1,39 @@
 <template>
   <div class="status-wrapper">
-    <div class="status-container">
+    <div class="container">
       <!-- Status Header -->
       <div class="status-header">
-        <div class="header-icon">
-          <i class="fas fa-heartbeat"></i>
-        </div>
         <h1>System Status</h1>
-        <p>Real-time monitoring of all Status Bot services and infrastructure</p>
+        
+        <!-- Status Color Legend -->
+        <div class="status-legend">
+          <div class="legend-item">
+            <span class="legend-dot operational"></span>
+            <span>Operational</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot outage"></span>
+            <span>Outage</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot offline"></span>
+            <span>Offline</span>
+          </div>
+        </div>
       </div>
 
       <!-- Overall Status Banner -->
       <div class="overall-status" :class="overallStatusClass">
-        <div class="status-icon">
+        <div class="status-indicator">
           <i :class="overallStatusIcon"></i>
+          <span class="status-text">{{ overallStatusText }}</span>
         </div>
-        <div class="status-info">
-          <h2>{{ overallStatusText }}</h2>
-          <p>{{ overallStatusDescription }}</p>
+        <div class="status-description">
+          {{ overallStatusDescription }}
         </div>
       </div>
 
-      <!-- Service Status Grid -->
+      <!-- Service Status Cards -->
       <div class="services-grid">
         <!-- Discord Bot Status -->
         <div class="service-card" :class="botStatusClass">
@@ -31,7 +43,7 @@
             </div>
             <div class="service-info">
               <h3>Discord Bot</h3>
-              <span class="service-status">{{ botStatusText }}</span>
+              <span class="service-status" :class="botStatusClass">{{ botStatusText }}</span>
             </div>
           </div>
           <div class="service-metrics">
@@ -54,7 +66,7 @@
             </div>
             <div class="service-info">
               <h3>Backend API</h3>
-              <span class="service-status">{{ apiStatusText }}</span>
+              <span class="service-status" :class="apiStatusClass">{{ apiStatusText }}</span>
             </div>
           </div>
           <div class="service-metrics">
@@ -77,7 +89,7 @@
             </div>
             <div class="service-info">
               <h3>Database</h3>
-              <span class="service-status">Operational</span>
+              <span class="service-status operational">Operational</span>
             </div>
           </div>
           <div class="service-metrics">
@@ -100,7 +112,7 @@
             </div>
             <div class="service-info">
               <h3>Web Dashboard</h3>
-              <span class="service-status">Operational</span>
+              <span class="service-status operational">Operational</span>
             </div>
           </div>
           <div class="service-metrics">
@@ -125,16 +137,16 @@
         
         <div class="incidents-list">
           <div v-if="incidents.length === 0" class="no-incidents">
-            <div class="no-incidents-icon">
+            <div class="no-incidents-content">
               <i class="fas fa-check-circle"></i>
+              <h3>All Systems Operational</h3>
+              <p>No incidents reported in the past 7 days. Status Bot is running smoothly!</p>
             </div>
-            <h3>All Systems Operational</h3>
-            <p>No incidents reported in the past 7 days. Status Bot is running smoothly!</p>
           </div>
           
           <div v-else class="incidents-items">
             <div v-for="incident in incidents" :key="incident.id" class="incident-item" :class="{ resolved: incident.resolved }">
-              <div class="incident-status-indicator">
+              <div class="incident-status-badge">
                 <i :class="incident.resolved ? 'fas fa-check-circle' : 'fas fa-exclamation-triangle'"></i>
               </div>
               <div class="incident-content">
@@ -201,33 +213,56 @@ const INCIDENT_EXPIRY_DAYS = 7
 
 // Computed properties for status display
 const overallStatusClass = computed(() => {
-  if (botStatus.value === 'offline' || apiStatus.value === 'offline') return 'degraded'
+  if (botStatus.value === 'offline' || apiStatus.value === 'offline') return 'offline'
+  if (botStatus.value === 'outage' || apiStatus.value === 'outage') return 'degraded'
   return 'operational'
 })
 
 const overallStatusIcon = computed(() => {
-  if (botStatus.value === 'offline' || apiStatus.value === 'offline') return 'fas fa-exclamation-triangle'
+  if (botStatus.value === 'offline' || apiStatus.value === 'offline') return 'fas fa-times-circle'
+  if (botStatus.value === 'outage' || apiStatus.value === 'outage') return 'fas fa-exclamation-triangle'
   return 'fas fa-check-circle'
 })
 
 const overallStatusText = computed(() => {
   if (botStatus.value === 'offline' && apiStatus.value === 'offline') return 'Major Outage'
-  if (botStatus.value === 'offline' || apiStatus.value === 'offline') return 'Degraded Performance'
+  if (botStatus.value === 'offline' || apiStatus.value === 'offline') return 'Service Offline'
+  if (botStatus.value === 'outage' || apiStatus.value === 'outage') return 'Service Outage'
   return 'All Systems Operational'
 })
 
 const overallStatusDescription = computed(() => {
-  if (botStatus.value === 'offline' && apiStatus.value === 'offline') return 'Multiple services are experiencing issues'
+  if (botStatus.value === 'offline' && apiStatus.value === 'offline') return 'Multiple services are currently offline'
   if (botStatus.value === 'offline') return 'Discord bot is currently offline'
-  if (apiStatus.value === 'offline') return 'Backend API is experiencing issues'
+  if (apiStatus.value === 'offline') return 'Backend API is currently offline'
+  if (botStatus.value === 'outage') return 'Discord bot is experiencing high latency (>300ms)'
+  if (apiStatus.value === 'outage') return 'Backend API is experiencing high latency (>300ms)'
   return 'All services are running normally'
 })
 
-const botStatusClass = computed(() => botStatus.value === 'online' ? 'operational' : 'degraded')
-const botStatusText = computed(() => botStatus.value === 'online' ? 'Operational' : 'Degraded')
+const botStatusClass = computed(() => {
+  if (botStatus.value === 'offline') return 'offline'
+  if (botStatus.value === 'outage') return 'degraded'
+  return 'operational'
+})
 
-const apiStatusClass = computed(() => apiStatus.value === 'online' ? 'operational' : 'degraded')
-const apiStatusText = computed(() => apiStatus.value === 'online' ? 'Operational' : 'Degraded')
+const botStatusText = computed(() => {
+  if (botStatus.value === 'offline') return 'Offline'
+  if (botStatus.value === 'outage') return 'Outage'
+  return 'Operational'
+})
+
+const apiStatusClass = computed(() => {
+  if (apiStatus.value === 'offline') return 'offline'
+  if (apiStatus.value === 'outage') return 'degraded'
+  return 'operational'
+})
+
+const apiStatusText = computed(() => {
+  if (apiStatus.value === 'offline') return 'Offline'
+  if (apiStatus.value === 'outage') return 'Outage'
+  return 'Operational'
+})
 
 // API Status checking
 const checkApiStatus = async () => {
@@ -238,7 +273,13 @@ const checkApiStatus = async () => {
     
     if (!response.ok) throw new Error('API returned error status')
     
-    apiStatus.value = 'online'
+    // Set status based on ping thresholds
+    if (responseTime > 300) {
+      apiStatus.value = 'outage'
+    } else {
+      apiStatus.value = 'online'
+    }
+    
     apiResponseTime.value = responseTime
     lastApiCheck.value = 'Just now'
   } catch (error) {
@@ -299,6 +340,13 @@ const fetchBotStats = async () => {
     ping.value = data.ping || 0
     servers.value = data.servers || 0
     
+    // Set bot status based on ping thresholds
+    if (data.ping && data.ping > 300) {
+      botStatus.value = 'outage'
+    } else if (data.ping && data.ping >= 0) {
+      botStatus.value = 'online'
+    }
+    
     if (data.uptime) {
       const uptimeMs = data.uptime * 1000
       const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24))
@@ -321,7 +369,7 @@ const fetchBotStats = async () => {
       const timeSinceUpdate = Date.now() - lastUpdateTime
       
       if (timeSinceUpdate > OFFLINE_THRESHOLD) {
-        if (botStatus.value === 'online') {
+        if (botStatus.value !== 'offline') {
           addIncident('Discord Bot Offline', Date.now())
         }
         botStatus.value = 'offline'
@@ -329,7 +377,10 @@ const fetchBotStats = async () => {
         if (botStatus.value === 'offline') {
           resolveLastIncident()
         }
-        botStatus.value = 'online'
+        // Don't override the ping-based status if we're not offline
+        if (botStatus.value === 'offline') {
+          botStatus.value = data.ping > 300 ? 'outage' : 'online'
+        }
       }
     }
   } catch (error) {
@@ -413,19 +464,22 @@ onUnmounted(() => {
 <style scoped>
 .status-wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-  padding: 40px 20px;
+  padding: 80px 0;
+  position: relative;
 }
 
-.status-container {
+.container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 50px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Header Styles */
+/* Header Styles - matching Home.vue */
 .status-header {
   text-align: center;
   display: flex;
@@ -434,121 +488,197 @@ onUnmounted(() => {
   gap: 20px;
 }
 
-.header-icon {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
-  display: flex;
+.hero-badge {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: 36px;
-  color: white;
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 0.2) 0%, rgba(81, 112, 255, 0.1) 100%);
+  border: 1px solid rgba(81, 112, 255, 0.3);
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+  backdrop-filter: blur(10px);
 }
 
 .status-header h1 {
   font-size: 48px;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
+  line-height: 1.2;
 }
 
 .status-header p {
   font-size: 18px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
   margin: 0;
   max-width: 600px;
+  line-height: 1.6;
+}
+
+/* Status Legend */
+.status-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+  padding: 15px 25px;
+  background: rgba(80, 80, 80, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot.operational {
+  background: #10b981;
+}
+
+.legend-dot.outage {
+  background: #f59e0b;
+}
+
+.legend-dot.offline {
+  background: #ef4444;
 }
 
 /* Overall Status Banner */
 .overall-status {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 25px;
+  gap: 15px;
   padding: 30px;
   border-radius: 20px;
   border: 2px solid;
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.15), rgba(80, 80, 80, 0.05));
   backdrop-filter: blur(10px);
-  margin: 0 auto;
-  max-width: 800px;
-  width: 100%;
+  transition: all var(--transition-duration) ease;
 }
 
 .overall-status.operational {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(21, 128, 61, 0.1) 100%);
-  border-color: #22c55e;
-  box-shadow: 0 10px 40px rgba(34, 197, 94, 0.2);
+  border-color: #10b981;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.1);
 }
 
 .overall-status.degraded {
-  background: linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
-  border-color: #fb923c;
-  box-shadow: 0 10px 40px rgba(251, 146, 60, 0.2);
+  border-color: #f59e0b;
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.1);
 }
 
-.status-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 15px;
+.overall-status.offline {
+  border-color: #ef4444;
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.1);
+}
+
+.status-indicator {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  color: white;
-}
-
-.overall-status.operational .status-icon {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-}
-
-.overall-status.degraded .status-icon {
-  background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
-}
-
-.status-info h2 {
-  margin: 0 0 8px 0;
+  gap: 12px;
   font-size: 24px;
   font-weight: 700;
-  color: white;
 }
 
-.status-info p {
-  margin: 0;
+.overall-status.operational .status-indicator {
+  color: #10b981;
+}
+
+.overall-status.degraded .status-indicator {
+  color: #f59e0b;
+}
+
+.overall-status.offline .status-indicator {
+  color: #ef4444;
+}
+
+.status-description {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
+  text-align: center;
 }
 
-/* Services Grid */
+/* Services Grid - matching feature cards style */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
 }
 
 .service-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 2px solid;
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
+  border: 2px solid var(--border-color);
   border-radius: 20px;
-  padding: 25px;
-  transition: all 0.3s ease;
+  padding: 30px;
+  transition: all var(--transition-duration) ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.service-card.operational {
-  border-color: rgba(34, 197, 94, 0.3);
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, var(--primary-color) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition-duration) ease;
 }
 
-.service-card.degraded {
-  border-color: rgba(251, 146, 60, 0.3);
+.service-card:hover::before {
+  opacity: 0;
 }
 
 .service-card:hover {
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.35));
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: var(--primary-color);
+}
+
+.service-card.operational:hover {
+  box-shadow: 0 10px 40px rgba(16, 185, 129, 0.25);
+  border-color: #10b981;
+}
+
+.service-card.degraded:hover {
+  box-shadow: 0 10px 40px rgba(245, 158, 11, 0.25);
+  border-color: #f59e0b;
+}
+
+.service-card.offline:hover {
+  box-shadow: 0 10px 40px rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+}
+
+.service-card.operational {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.service-card.degraded {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.service-card.offline {
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
 .service-header {
@@ -567,43 +697,43 @@ onUnmounted(() => {
   justify-content: center;
   font-size: 24px;
   color: white;
-}
-
-.service-card.operational .service-icon {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-}
-
-.service-card.degraded .service-icon {
-  background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
 }
 
 .service-info h3 {
   margin: 0 0 5px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .service-status {
   font-size: 14px;
   padding: 4px 12px;
   border-radius: 20px;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.service-card.operational .service-status {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
+.service-status.operational {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
 }
 
-.service-card.degraded .service-status {
-  background: rgba(251, 146, 60, 0.2);
-  color: #fb923c;
+.service-status.degraded {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.service-status.offline {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
 }
 
 .service-metrics {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
@@ -615,22 +745,23 @@ onUnmounted(() => {
 
 .metric-label {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .metric-value {
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 /* Incidents Section */
 .incidents-section {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 30px;
 }
 
 .section-header {
@@ -642,18 +773,19 @@ onUnmounted(() => {
 }
 
 .section-header h2 {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 36px;
+  font-weight: 800;
   margin: 0;
-  color: white;
+  color: var(--text-primary);
 }
 
 .incident-count {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  background: rgba(80, 80, 80, 0.3);
   padding: 8px 16px;
   border-radius: 20px;
+  border: 1px solid var(--border-color);
 }
 
 .incidents-list {
@@ -665,35 +797,35 @@ onUnmounted(() => {
 .no-incidents {
   text-align: center;
   padding: 60px 40px;
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(21, 128, 61, 0.1) 100%);
-  border: 2px solid rgba(34, 197, 94, 0.3);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+  border: 2px solid rgba(16, 185, 129, 0.2);
   border-radius: 20px;
 }
 
-.no-incidents-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 20px;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  border-radius: 20px;
+.no-incidents-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: 36px;
-  color: white;
+  gap: 15px;
+}
+
+.no-incidents-content i {
+  font-size: 48px;
+  color: #10b981;
 }
 
 .no-incidents h3 {
-  margin: 0 0 10px 0;
+  margin: 0;
   font-size: 24px;
-  font-weight: 600;
-  color: white;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .no-incidents p {
   margin: 0;
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
+  max-width: 400px;
 }
 
 .incidents-items {
@@ -707,22 +839,22 @@ onUnmounted(() => {
   align-items: flex-start;
   gap: 20px;
   padding: 25px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(251, 146, 60, 0.3);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
+  border: 2px solid rgba(245, 158, 11, 0.3);
   border-radius: 15px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-duration) ease;
 }
 
 .incident-item.resolved {
-  border-color: rgba(34, 197, 94, 0.3);
+  border-color: rgba(16, 185, 129, 0.3);
 }
 
 .incident-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.35));
+  transform: translateY(-2px);
 }
 
-.incident-status-indicator {
+.incident-status-badge {
   width: 40px;
   height: 40px;
   border-radius: 10px;
@@ -734,12 +866,12 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.incident-item:not(.resolved) .incident-status-indicator {
-  background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+.incident-item:not(.resolved) .incident-status-badge {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }
 
-.incident-item.resolved .incident-status-indicator {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+.incident-item.resolved .incident-status-badge {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
 .incident-content {
@@ -750,35 +882,39 @@ onUnmounted(() => {
 .incident-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 15px;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .incident-header h4 {
   margin: 0;
   font-size: 18px;
-  font-weight: 600;
-  color: white;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex: 1;
+  min-width: 200px;
 }
 
 .incident-badge {
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
 .incident-badge.active {
-  background: rgba(251, 146, 60, 0.2);
-  color: #fb923c;
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
 }
 
 .incident-badge.resolved {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
 }
 
 .incident-details {
@@ -793,36 +929,33 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
 }
 
 .incident-time i,
 .incident-duration i {
-  width: 16px;
+  width: 14px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--primary-color);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .status-wrapper {
-    padding: 30px 15px;
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 15px;
+    gap: 40px;
   }
 
   .status-header h1 {
     font-size: 36px;
   }
 
-  .header-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 28px;
-  }
-
-  .overall-status {
-    flex-direction: column;
-    text-align: center;
-    gap: 20px;
+  .status-header p {
+    font-size: 16px;
   }
 
   .services-grid {
@@ -830,19 +963,29 @@ onUnmounted(() => {
     gap: 20px;
   }
 
+  .service-card {
+    padding: 25px;
+  }
+
   .service-metrics {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 15px;
   }
 
   .section-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 10px;
+  }
+
+  .section-header h2 {
+    font-size: 28px;
   }
 
   .incident-item {
     flex-direction: column;
     gap: 15px;
+    padding: 20px;
   }
 
   .incident-header {
@@ -850,23 +993,27 @@ onUnmounted(() => {
     align-items: flex-start;
     gap: 10px;
   }
+
+  .incident-header h4 {
+    min-width: unset;
+  }
 }
 
 @media (max-width: 480px) {
   .status-wrapper {
-    padding: 20px 10px;
+    padding: 40px 0;
+  }
+
+  .container {
+    gap: 30px;
   }
 
   .status-header h1 {
     font-size: 28px;
   }
 
-  .status-header p {
-    font-size: 16px;
-  }
-
   .overall-status {
-    padding: 20px;
+    padding: 25px;
   }
 
   .service-card {
@@ -875,6 +1022,10 @@ onUnmounted(() => {
 
   .no-incidents {
     padding: 40px 20px;
+  }
+
+  .incident-item {
+    padding: 15px;
   }
 }
 </style>
