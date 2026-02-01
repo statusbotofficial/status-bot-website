@@ -133,14 +133,15 @@
         <div class="section-header">
           <h2>Recent Incidents</h2>
           <span class="incident-count">{{ incidents.length }} incidents in the last 7 days</span>
+          <button v-if="isDevUser" @click="addTestOutage" class="test-outage-btn">
+            <i class="fas fa-flask"></i> Add Test Outage
+          </button>
         </div>
         
         <div class="incidents-list">
           <div v-if="incidents.length === 0" class="no-incidents">
             <div class="no-incidents-content">
-              <i class="fas fa-check-circle"></i>
-              <h3>All Systems Operational</h3>
-              <p>No incidents reported in the past 7 days. Status Bot is running smoothly!</p>
+              <p class="main-message">No incidents reported in the past 7 days. Status Bot is running smoothly!</p>
             </div>
           </div>
           
@@ -186,9 +187,28 @@ const incidents = ref([])
 const apiStatus = ref('online')
 const apiResponseTime = ref(0)
 const lastApiCheck = ref('Never')
+const userDiscordId = ref('1362553254117904496') // This would come from auth in a real app
 
 let pollInterval = null
 let durationInterval = null
+
+// Dev user check
+const isDevUser = computed(() => {
+  return userDiscordId.value === '1362553254117904496'
+})
+
+// Test outage functionality
+const addTestOutage = () => {
+  const testIncident = {
+    id: 'test-' + Date.now(),
+    type: 'Test Service Outage',
+    startTime: Date.now(),
+    endTime: null,
+    resolved: false
+  }
+  incidents.value.unshift(testIncident)
+  saveIncidents()
+}
 
 onMounted(() => {
   document.title = 'System Status | Status Bot'
@@ -776,7 +796,7 @@ onUnmounted(() => {
   font-size: 36px;
   font-weight: 800;
   margin: 0;
-  color: var(--text-primary);
+  color: #9ca3af; /* Grey color instead of white */
 }
 
 .incident-count {
@@ -788,6 +808,26 @@ onUnmounted(() => {
   border: 1px solid var(--border-color);
 }
 
+.test-outage-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-duration) ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.test-outage-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(245, 158, 11, 0.3);
+}
+
 .incidents-list {
   display: flex;
   flex-direction: column;
@@ -797,8 +837,8 @@ onUnmounted(() => {
 .no-incidents {
   text-align: center;
   padding: 60px 40px;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
-  border: 2px solid rgba(16, 185, 129, 0.2);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
+  border: 2px solid var(--border-color);
   border-radius: 20px;
 }
 
@@ -809,23 +849,13 @@ onUnmounted(() => {
   gap: 15px;
 }
 
-.no-incidents-content i {
-  font-size: 48px;
-  color: #10b981;
-}
-
-.no-incidents h3 {
+.no-incidents .main-message {
   margin: 0;
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--text-primary);
-}
-
-.no-incidents p {
-  margin: 0;
-  font-size: 16px;
-  color: var(--text-secondary);
-  max-width: 400px;
+  max-width: 500px;
+  line-height: 1.4;
 }
 
 .incidents-items {
