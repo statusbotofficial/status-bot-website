@@ -1751,48 +1751,6 @@ const closeChannelModal = () => {
 
 const openMemberSelector = async () => {
   memberSearchQuery.value = ''
-  openMemberModal() // Use the new function that loads members on-demand
-}
-
-const selectMember = (member) => {
-  statusSettings.userToTrack = member.username
-  statusSettings.userToTrackId = member.id
-  closeMemberModal()
-}
-
-// On-demand member loading for "User to track" feature
-const loadMembersIfNeeded = async () => {
-  if (guildMembers.value.length === 0 && selectedServer.value) {
-    try {
-      console.log('Loading members on-demand for user selection...')
-      const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
-        headers: { Authorization: 'Bearer status-bot-stats-secret-key' }
-      })
-      if (response.ok) {
-        const data = await response.json()
-        if (data.members && data.members.length > 0) {
-          guildMembers.value = data.members.map(m => ({
-            id: m.id,
-            username: m.username,
-            avatar: m.avatar
-          }))
-          console.log(`✅ Loaded ${guildMembers.value.length} members for selection`)
-        } else if (data.memberCount) {
-          // If we got member counts but not the full list, inform user
-          console.log(`ℹ️ Member count: ${data.memberCount}, but full list not available`)
-        }
-      } else {
-        console.log('Member loading failed:', response.status)
-      }
-    } catch (error) {
-      console.log('Member loading error:', error.message)
-    }
-  }
-}
-
-const openMemberModal = () => {
-  // Load members when user opens the modal
-  loadMembersIfNeeded()
   showMemberModal.value = true
 }
 
