@@ -178,6 +178,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { useAuthStore } from '../stores/auth'
+
+const authStore = useAuthStore()
 
 const botStatus = ref('online')
 const uptime = ref('Unknown')
@@ -187,14 +190,15 @@ const incidents = ref([])
 const apiStatus = ref('online')
 const apiResponseTime = ref(0)
 const lastApiCheck = ref('Never')
-const userDiscordId = ref('1362553254117904496') // This would come from auth in a real app
+
+const AUTHORIZED_USER_ID = '1362553254117904496'
 
 let pollInterval = null
 let durationInterval = null
 
 // Dev user check
 const isDevUser = computed(() => {
-  return userDiscordId.value === '1362553254117904496'
+  return authStore.user?.id === AUTHORIZED_USER_ID
 })
 
 // Test outage functionality
