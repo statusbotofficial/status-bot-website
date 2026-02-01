@@ -968,28 +968,6 @@
       @confirm="handleMemberSelection"
     />
 
-    <!-- Fallback Manual User ID Modal -->
-    <div v-if="showManualUserModal" class="modal-overlay" @click="closeManualUserModal">
-      <div class="modal-content" @click.stop>
-        <h3>Enter User ID</h3>
-        <p>Members couldn't be loaded. Please enter the Discord user ID manually:</p>
-        <div class="manual-user-input">
-          <input
-            v-model="manualUserId"
-            type="text"
-            placeholder="e.g. 1234567890123456789"
-            class="input-field"
-            @keyup.enter="confirmManualUser"
-          />
-          <small class="input-hint">Right-click a user in Discord → Copy User ID (Developer Mode required)</small>
-        </div>
-        <div class="modal-buttons">
-          <button @click="confirmManualUser" :disabled="!manualUserId.trim()" class="confirm-btn">Confirm</button>
-          <button @click="closeManualUserModal" class="cancel-btn">Cancel</button>
-        </div>
-      </div>
-    </div>
-
     <div v-if="showResetModal" class="modal-overlay" @click="closeResetModal">
       <div class="modal-content" @click.stop>
         <h3>{{ resetModalTitle }}</h3>
@@ -1199,8 +1177,6 @@ const activityLogs = ref([])
 const logsLoading = ref(false)
 const showChannelModal = ref(false)
 const showMemberModal = ref(false)
-const showManualUserModal = ref(false)
-const manualUserId = ref('')
 const showResetModal = ref(false)
 const showLevelingFormulaModal = ref(false)
 const showPlaceholdersModal = ref(false)
@@ -1775,18 +1751,7 @@ const closeChannelModal = () => {
 
 const openMemberSelector = async () => {
   memberSearchQuery.value = ''
-  // Try to load members first
-  await loadMembersIfNeeded()
-  
-  // Check if we have members loaded
-  if (guildMembers.value.length > 0) {
-    // Members are available, show the normal selector
-    showMemberModal.value = true
-  } else {
-    // No members available, show the fallback manual input modal
-    manualUserId.value = statusSettings.userToTrackId || ''
-    showManualUserModal.value = true
-  }
+  openMemberModal() // Use the new function that loads members on-demand
 }
 
 const selectMember = (member) => {
@@ -1846,21 +1811,6 @@ const handleMemberSelection = (selectedIds) => {
 const closeMemberModal = () => {
   showMemberModal.value = false
   memberSearchQuery.value = ''
-}
-
-// Manual user ID modal functions
-const closeManualUserModal = () => {
-  showManualUserModal.value = false
-  manualUserId.value = ''
-}
-
-const confirmManualUser = () => {
-  const userId = manualUserId.value.trim()
-  if (userId) {
-    statusSettings.userToTrack = userId // We'll show the ID since we don't have the username
-    statusSettings.userToTrackId = userId
-  }
-  closeManualUserModal()
 }
 
 const openLevelingFormulaModal = () => {
@@ -4367,37 +4317,6 @@ const copyItemJson = (item) => {
 .modal-buttons {
   display: flex;
   gap: 12px;
-}
-
-/* Manual User ID Modal Styles */
-.manual-user-input {
-  margin: 20px 0;
-}
-
-.manual-user-input .input-field {
-  width: 100%;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-primary);
-  font-size: 14px;
-  margin-bottom: 8px;
-  transition: all 0.3s ease;
-}
-
-.manual-user-input .input-field:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(81, 112, 255, 0.2);
-}
-
-.input-hint {
-  color: var(--text-secondary);
-  font-size: 12px;
-  display: block;
-  margin-top: 4px;
-  font-style: italic;
 }
 
 .confirm-btn,
