@@ -133,9 +133,6 @@
         <div class="section-header">
           <h2>Recent Incidents</h2>
           <span class="incident-count">{{ incidents.length }} incidents in the last 7 days</span>
-          <button v-if="isDevUser" @click="addTestOutage" class="test-outage-btn">
-            <i class="fas fa-flask"></i> Add Test Outage
-          </button>
         </div>
         
         <div class="incidents-list">
@@ -178,9 +175,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { useAuthStore } from '../stores/auth'
-
-const authStore = useAuthStore()
 
 const botStatus = ref('online')
 const uptime = ref('Unknown')
@@ -191,28 +185,8 @@ const apiStatus = ref('online')
 const apiResponseTime = ref(0)
 const lastApiCheck = ref('Never')
 
-const AUTHORIZED_USER_ID = '1362553254117904496'
-
 let pollInterval = null
 let durationInterval = null
-
-// Dev user check
-const isDevUser = computed(() => {
-  return authStore.user?.id === AUTHORIZED_USER_ID
-})
-
-// Test outage functionality
-const addTestOutage = () => {
-  const testIncident = {
-    id: 'test-' + Date.now(),
-    type: 'Test Service Outage',
-    startTime: Date.now(),
-    endTime: null,
-    resolved: false
-  }
-  incidents.value.unshift(testIncident)
-  saveIncidents()
-}
 
 onMounted(() => {
   document.title = 'System Status | Status Bot'
@@ -796,14 +770,6 @@ onUnmounted(() => {
   gap: 15px;
 }
 
-.section-header .test-outage-btn {
-  order: 2;
-}
-
-.section-header .incident-count {
-  order: 3;
-}
-
 .section-header h2 {
   font-size: 36px;
   font-weight: 800;
@@ -818,26 +784,6 @@ onUnmounted(() => {
   padding: 8px 16px;
   border-radius: 20px;
   border: 1px solid var(--border-color);
-}
-
-.test-outage-btn {
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-duration) ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.test-outage-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(245, 158, 11, 0.3);
 }
 
 .incidents-list {
