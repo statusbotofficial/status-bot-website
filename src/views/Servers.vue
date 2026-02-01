@@ -1496,6 +1496,8 @@ const selectServer = async (server) => {
     username: u.username,
     avatar: u.avatar
   }))
+  console.log('📊 Leaderboard data:', leaderboardData.value.length, 'users')
+  console.log('👥 Guild members mapped:', guildMembers.value.length, 'members')
 }
 
 const loadOverviewData = async (guildId) => {
@@ -1751,6 +1753,8 @@ const closeChannelModal = () => {
 
 const openMemberSelector = async () => {
   memberSearchQuery.value = ''
+  console.log('🔍 Opening member selector, available members:', guildMembers.value.length)
+  console.log('👤 Member list:', guildMembers.value.map(m => m.username))
   showMemberModal.value = true
 }
 
