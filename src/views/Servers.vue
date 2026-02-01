@@ -1778,8 +1778,16 @@ const loadMembersIfNeeded = async () => {
           }))
           console.log(`✅ Loaded ${guildMembers.value.length} members for selection`)
         } else if (data.memberCount) {
-          // If we got member counts but not the full list, inform user
+          // If we got member counts but not the full list, show a placeholder
           console.log(`ℹ️ Member count: ${data.memberCount}, but full list not available`)
+          // Add a placeholder item explaining the issue
+          guildMembers.value = [{
+            id: 'no-members-available',
+            username: 'Member list unavailable',
+            description: 'Discord API permissions needed - please contact admin',
+            avatar: null,
+            disabled: true
+          }]
         }
       } else {
         console.log('Member loading failed:', response.status)
@@ -1798,6 +1806,11 @@ const openMemberModal = () => {
 
 const handleMemberSelection = (selectedIds) => {
   if (selectedIds && selectedIds.length > 0) {
+    // Ignore the placeholder item
+    if (selectedIds[0] === 'no-members-available') {
+      return
+    }
+    
     const member = guildMembers.value.find(m => m.id === selectedIds[0])
     
     if (member) {
