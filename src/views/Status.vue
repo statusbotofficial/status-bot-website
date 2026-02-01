@@ -85,7 +85,7 @@
         <div class="service-card operational">
           <div class="service-header">
             <div class="service-icon">
-              <i class="fas fa-tachometer-alt"></i>
+              <i class="fas fa-desktop"></i>
             </div>
             <div class="service-info">
               <h3>Web Dashboard</h3>
