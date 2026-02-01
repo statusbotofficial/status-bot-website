@@ -1491,13 +1491,8 @@ const selectServer = async (server) => {
     loadGuildChannels(server.id),
     fetchPremiumStatus(),
   ])
-  guildMembers.value = leaderboardData.value.map(u => ({
-    id: u.id,
-    username: u.username,
-    avatar: u.avatar
-  }))
-  console.log('📊 Leaderboard data:', leaderboardData.value.length, 'users')
-  console.log('👥 Guild members mapped:', guildMembers.value.length, 'members')
+  // Members will be loaded on-demand when user opens the selector
+  console.log('📊 Server data loaded for', server.name)
 }
 
 const loadOverviewData = async (guildId) => {
@@ -1753,10 +1748,34 @@ const closeChannelModal = () => {
 
 const openMemberSelector = async () => {
   memberSearchQuery.value = ''
-  console.log('🔍 Opening member selector, available members:', guildMembers.value.length)
-  console.log('👤 Member list:', guildMembers.value.map(m => m.username))
-  console.log('📊 Leaderboard data available:', leaderboardData.value.length, 'users')
-  console.log('🏁 Leaderboard sample:', leaderboardData.value.slice(0, 3))
+  console.log('🔍 Opening member selector, loading all guild members...')
+  
+  // Load all guild members, not just leaderboard users
+  if (selectedServer.value) {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
+        headers: { Authorization: `Bearer ${authStore.token}` }
+      })
+      if (response.ok) {
+        const data = await response.json()
+        if (data.members && data.members.length > 0) {
+          guildMembers.value = data.members.map(m => ({
+            id: m.id,
+            username: m.username || m.displayName || 'Unknown User',
+            avatar: m.avatar
+          }))
+          console.log('✅ Loaded', guildMembers.value.length, 'guild members')
+        } else {
+          console.log('⚠️ No members returned from API')
+        }
+      } else {
+        console.log('❌ Failed to load guild members:', response.status)
+      }
+    } catch (error) {
+      console.log('❌ Error loading guild members:', error.message)
+    }
+  }
+  
   showMemberModal.value = true
 }
 
