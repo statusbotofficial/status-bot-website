@@ -796,13 +796,12 @@ onUnmounted(() => {
   gap: 15px;
 }
 
-.section-header .incident-count {
+.section-header .test-outage-btn {
   order: 2;
 }
 
-.section-header .test-outage-btn {
+.section-header .incident-count {
   order: 3;
-  margin-left: auto;
 }
 
 .section-header h2 {
