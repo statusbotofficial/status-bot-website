@@ -1755,6 +1755,8 @@ const openMemberSelector = async () => {
   memberSearchQuery.value = ''
   console.log('🔍 Opening member selector, available members:', guildMembers.value.length)
   console.log('👤 Member list:', guildMembers.value.map(m => m.username))
+  console.log('📊 Leaderboard data available:', leaderboardData.value.length, 'users')
+  console.log('🏁 Leaderboard sample:', leaderboardData.value.slice(0, 3))
   showMemberModal.value = true
 }
 
