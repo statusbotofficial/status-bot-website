@@ -445,18 +445,20 @@ onMounted(() => {
 
 .demo-images {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .demo-image {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 400px;
+  max-width: 600px;
   flex: 1;
+  min-width: 400px;
 }
 
 .status-preview-image {
@@ -1099,11 +1101,12 @@ onMounted(() => {
 
   .demo-images {
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
   }
 
   .demo-image {
     max-width: 100%;
+    min-width: unset;
     margin: 0 auto;
   }
 
