@@ -259,9 +259,6 @@ const updateLastApiCheck = () => {
   }
 }
 
-const OFFLINE_THRESHOLD = 5 * 60 * 1000 // 5 minutes
-const INCIDENT_EXPIRY_DAYS = 7
-
 const loadIncidents = () => {
   try {
     const stored = localStorage.getItem('status_incidents')
