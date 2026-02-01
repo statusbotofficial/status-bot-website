@@ -1529,8 +1529,6 @@ const loadLeaderboardData = async (guildId) => {
         username: u.username,
         avatar: u.avatar
       }))
-      console.log('👥 Populated guildMembers from leaderboard:', guildMembers.value.length, 'users')
-      console.log('📊 Leaderboard data:', leaderboardData.value.length, 'users')
     }
   } catch (error) {
   } finally {
@@ -1757,13 +1755,9 @@ const closeChannelModal = () => {
 
 const openMemberSelector = async () => {
   memberSearchQuery.value = ''
-  console.log('🔍 Opening member selector...')
-  console.log('👥 Current guildMembers length:', guildMembers.value.length)
-  console.log('👥 First few members:', guildMembers.value.slice(0, 3))
   showMemberModal.value = true
 
   if (guildMembers.value.length === 0 && selectedServer.value) {
-    console.log('📡 No cached members, trying to load from API...')
     try {
       const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
         headers: { Authorization: 'Bearer status-bot-stats-secret-key' }
@@ -1775,15 +1769,10 @@ const openMemberSelector = async () => {
           username: m.username,
           avatar: m.avatar
         }))
-        console.log('✅ Loaded from API:', guildMembers.value.length, 'members')
-      } else {
-        console.log('❌ API request failed:', response.status)
       }
     } catch (err) {
       console.error('Error loading members:', err)
     }
-  } else {
-    console.log('✅ Using cached guild members')
   }
 }
 
