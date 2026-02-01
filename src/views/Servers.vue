@@ -1522,6 +1522,13 @@ const loadLeaderboardData = async (guildId) => {
       leaderboardData.value = data.leaderboard || data.allUsers || []
       totalGuildMembers.value = data.memberCount || leaderboardData.value.length
       await loadUserRankData(guildId)
+      
+      // Populate guildMembers from leaderboard data for member selector (same as working 738d3b5)
+      guildMembers.value = leaderboardData.value.map(u => ({
+        id: u.id,
+        username: u.username,
+        avatar: u.avatar
+      }))
     }
   } catch (error) {
   } finally {
@@ -1748,35 +1755,25 @@ const closeChannelModal = () => {
 
 const openMemberSelector = async () => {
   memberSearchQuery.value = ''
-  console.log('🔍 Opening member selector, loading all guild members...')
-  
-  // Load all guild members, not just leaderboard users
-  if (selectedServer.value) {
+  showMemberModal.value = true
+
+  if (guildMembers.value.length === 0 && selectedServer.value) {
     try {
       const response = await fetch(`${BACKEND_URL}/api/guild/${selectedServer.value.id}/members`, {
         headers: { Authorization: 'Bearer status-bot-stats-secret-key' }
       })
       if (response.ok) {
         const data = await response.json()
-        if (data.members && data.members.length > 0) {
-          guildMembers.value = data.members.map(m => ({
-            id: m.id,
-            username: m.username || m.displayName || 'Unknown User',
-            avatar: m.avatar
-          }))
-          console.log('✅ Loaded', guildMembers.value.length, 'guild members')
-        } else {
-          console.log('⚠️ No members returned from API')
-        }
-      } else {
-        console.log('❌ Failed to load guild members:', response.status)
+        guildMembers.value = (data.members || []).map(m => ({
+          id: m.id,
+          username: m.username,
+          avatar: m.avatar
+        }))
       }
-    } catch (error) {
-      console.log('❌ Error loading guild members:', error.message)
+    } catch (err) {
+      console.error('Error loading members:', err)
     }
   }
-  
-  showMemberModal.value = true
 }
 
 const handleMemberSelection = (selectedIds) => {
