@@ -75,9 +75,13 @@
         <aside class="config-sidebar" :class="{ 'mobile-open': isMobileNavOpen }">
           <nav class="config-nav">
             <template v-for="section in filteredSections" :key="section.id">
+              <!-- Section Headers -->
+              <div v-if="section.isHeader" class="nav-section-header">
+                {{ section.label }}
+              </div>
               <!-- Parent button -->
               <button
-                v-if="section.children"
+                v-else-if="section.children"
                 class="nav-btn parent-btn"
                 :class="{ active: expandedSections.includes(section.id) }"
                 @click="toggleExpandSection(section.id); isMobileNavOpen = false"
@@ -90,7 +94,7 @@
               </button>
               <!-- Non-expandable button -->
               <button
-                v-else
+                v-else-if="!section.isHeader"
                 class="nav-btn"
                 :class="{ active: activeSection === section.id }"
                 @click="setActiveSection(section.id); isMobileNavOpen = false"
@@ -1071,11 +1075,22 @@ const fetchPremiumStatus = async () => {
 const BACKEND_URL = 'https://backend-nwct.onrender.com'
 
 const sections = [
+  // Overview Section
+  { id: 'section-header-overview', label: 'Overview', isHeader: true },
   { id: 'overview', label: 'Overview', icon: '<i class="fas fa-chart-bar" style="color: var(--text-primary);"></i>' },
   { id: 'leaderboard', label: 'Leaderboard', icon: '<i class="fas fa-trophy" style="color: var(--text-primary);"></i>' },
+  
+  // Status Section
+  { id: 'section-header-status', label: 'Status', isHeader: true },
+  { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: var(--text-primary);"></i>' },
+  
+  // Engagement Section
+  { id: 'section-header-engagement', label: 'Engagement', isHeader: true },
   { id: 'leveling', label: 'Leveling', icon: '<i class="fas fa-arrow-up" style="color: var(--text-primary);"></i>' },
   { id: 'economy', label: 'Economy', icon: '<i class="fas fa-coins" style="color: var(--text-primary);"></i>' },
-  { id: 'status-tracking', label: 'Status Tracking', icon: '<i class="fas fa-circle" style="color: var(--text-primary);"></i>' },
+  
+  // Utility Section
+  { id: 'section-header-utility', label: 'Utility', isHeader: true },
   { 
     id: 'welcome-parent', 
     label: 'Welcome & Leave Messages', 
@@ -2839,6 +2854,21 @@ const copyItemJson = (item) => {
   color: #5170ff;
   border-left: 3px solid #5170ff;
   padding-left: 17px;
+}
+
+.nav-section-header {
+  padding: 20px 20px 8px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  margin-top: 8px;
+}
+
+.nav-section-header:first-child {
+  margin-top: 0;
 }
 
 .parent-btn {
