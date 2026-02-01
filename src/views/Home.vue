@@ -69,8 +69,13 @@
           </router-link>
         </div>
         <div class="demo-visual">
-          <div class="demo-image">
-            <img src="https://i.postimg.cc/3xhwZrRG/image-2026-01-31-153128490.png" alt="Status Bot Discord Preview" class="status-preview-image">
+          <div class="demo-images">
+            <div class="demo-image">
+              <img src="https://i.postimg.cc/NfnHrPZf/Screenshot-2026-02-01-091630.png" alt="Status Bot Discord Preview" class="status-preview-image">
+            </div>
+            <div class="demo-image">
+              <img src="https://i.postimg.cc/9fdRKX0n/Screenshot-2026-02-01-091000.png" alt="Status Bot Dashboard Preview" class="status-preview-image">
+            </div>
           </div>
         </div>
       </div>
@@ -438,11 +443,20 @@ onMounted(() => {
   transform: translateY(-2px);
 }
 
+.demo-images {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .demo-image {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 500px;
+  max-width: 400px;
+  flex: 1;
 }
 
 .status-preview-image {
@@ -1081,6 +1095,11 @@ onMounted(() => {
 
   .demo-text p {
     font-size: 1.1rem;
+  }
+
+  .demo-images {
+    flex-direction: column;
+    gap: 15px;
   }
 
   .demo-image {
