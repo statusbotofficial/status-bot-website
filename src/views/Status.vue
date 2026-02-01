@@ -207,7 +207,7 @@ onMounted(() => {
   
   pollInterval = setInterval(() => {
     fetchBotStats()
-  }, 30000)
+  }, 300000) // Changed from 30s to 5 minutes
   
   // Update incident durations in real-time every second
   durationInterval = setInterval(() => {

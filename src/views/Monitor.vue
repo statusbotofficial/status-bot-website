@@ -82,7 +82,7 @@
       <div class="auto-refresh">
         <label>
           <input type="checkbox" v-model="autoRefresh" />
-          Auto-refresh every 30 seconds
+          Auto-refresh every 2 minutes
         </label>
       </div>
     </div>
@@ -141,7 +141,7 @@ onMounted(() => {
     if (autoRefresh.value) {
       refreshHealth()
     }
-  }, 30000)
+  }, 120000) // Changed from 30s to 2 minutes
 })
 
 onUnmounted(() => {
