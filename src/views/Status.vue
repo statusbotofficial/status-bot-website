@@ -796,11 +796,20 @@ onUnmounted(() => {
   gap: 15px;
 }
 
+.section-header .incident-count {
+  order: 2;
+}
+
+.section-header .test-outage-btn {
+  order: 3;
+  margin-left: auto;
+}
+
 .section-header h2 {
   font-size: 36px;
   font-weight: 800;
   margin: 0;
-  color: #9ca3af; /* Grey color instead of white */
+  color: var(--text-primary); /* Back to white like other headers */
 }
 
 .incident-count {
@@ -857,7 +866,7 @@ onUnmounted(() => {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-secondary); /* Grey instead of white */
   max-width: 500px;
   line-height: 1.4;
 }
