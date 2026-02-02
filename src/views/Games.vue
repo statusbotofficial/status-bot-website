@@ -179,8 +179,8 @@ const featuredGames = ref([
   {
     id: 'slope-unblocked',
     name: 'Slope Unblocked',
-    thumbnail: 'https://slope-game.github.io/img/slope.png',
-    url: 'https://ubg100.github.io/games/slope/',
+    thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=315&h=250&fit=crop&auto=format',
+    url: 'https://openprocessing.org/sketch/444346/embed/',
     rating: 4.8,
     plays: 2500000,
     badge: { type: 'hot', text: 'HOT' },
@@ -213,38 +213,38 @@ const games = ref([
   // Action Games
   {
     id: 'slope-game',
-    name: 'Slope',
-    description: 'Control a ball rolling down a slope',
-    thumbnail: 'https://slope-game.github.io/img/slope.png',
-    url: 'https://ubg100.github.io/games/slope/',
+    name: 'Ball Game',
+    description: 'Control a ball and avoid obstacles',
+    thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=315&h=250&fit=crop&auto=format',
+    url: 'https://openprocessing.org/sketch/444346/embed/',
     category: 'action',
     rating: 4.8,
     plays: 2500000
   },
   {
     id: 'tunnel-rush',
-    name: 'Tunnel Rush',
-    description: 'Speed through colorful tunnels',
+    name: 'Tunnel Game',
+    description: 'Navigate through tunnels',
     thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/tunnel-rush/',
+    url: 'https://openprocessing.org/sketch/158493/embed/',
     category: 'action',
     rating: 4.6,
     plays: 1890000
   },
   {
     id: 'run3',
-    name: 'Run 3',
-    description: 'Run and jump through space tunnels',
+    name: 'Platformer',
+    description: 'Jump and run through platforms',
     thumbnail: 'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/run3/',
+    url: 'https://openprocessing.org/sketch/171111/embed/',
     category: 'action',
     rating: 4.5,
     plays: 1900000
   },
   {
     id: 'geometry-dash',
-    name: 'Geometry Dash',
-    description: 'Jump and fly through obstacles',
+    name: 'Geometry Game',
+    description: 'Navigate geometric obstacles',
     thumbnail: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=315&h=250&fit=crop&auto=format',
     url: 'https://scratch.mit.edu/projects/105500895/embed',
     category: 'action',
@@ -253,20 +253,20 @@ const games = ref([
   },
   {
     id: 'vex-5',
-    name: 'Vex 5',
-    description: 'Platform jumping adventure',
+    name: 'Stickman Adventure',
+    description: 'Stickman platformer game',
     thumbnail: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/vex5/',
+    url: 'https://scratch.mit.edu/projects/60917032/embed',
     category: 'action',
     rating: 4.4,
     plays: 950000
   },
   {
     id: 'stickman-hook',
-    name: 'Stickman Hook',
-    description: 'Swing like Spider-Man',
+    name: 'Swing Game',
+    description: 'Swing from point to point',
     thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/stickman-hook/',
+    url: 'https://openprocessing.org/sketch/432909/embed/',
     category: 'action',
     rating: 4.5,
     plays: 1200000
@@ -294,26 +294,26 @@ const games = ref([
     plays: 2100000
   },
   {
-    id: 'cut-the-rope',
-    name: 'Cut the Rope',
-    description: 'Cut ropes to feed Om Nom candy',
+    id: 'sudoku',
+    name: 'Sudoku',
+    description: 'Number puzzle game',
     thumbnail: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=315&h=250&fit=crop&auto=format',
-    url: 'https://www.cuttherope.net/embed',
+    url: 'https://nine.websudoku.com/',
     category: 'puzzle',
     rating: 4.3,
     plays: 750000
   },
   {
-    id: 'bloxorz',
-    name: 'Bloxorz',
-    description: 'Roll the block into the hole',
+    id: 'word-search',
+    name: 'Word Search',
+    description: 'Find hidden words in the grid',
     thumbnail: 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=315&h=250&fit=crop&auto=format',
-    url: 'https://www.albinoblacksheep.com/games/bloxorz',
+    url: 'https://thewordsearch.com/puzzle/708639/difficult/',
     category: 'puzzle',
     rating: 4.4,
     plays: 680000
   },
-  
+
   // Arcade Games
   {
     id: 'pacman',
@@ -346,59 +346,49 @@ const games = ref([
     plays: 1200000
   },
   {
-    id: 'dino-game',
-    name: 'Chrome Dino Game',
-    description: 'Jump over cacti in this endless runner',
-    thumbnail: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=315&h=250&fit=crop&auto=format',
-    url: 'https://chromedino.com/',
+    id: 'asteroids-game',
+    name: 'Asteroids',
+    description: 'Classic space shooter',
+    thumbnail: 'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=315&h=250&fit=crop&auto=format',
+    url: 'https://freeasteroids.org/',
     category: 'arcade',
     rating: 4.5,
     plays: 2800000
   },
-  
+
   // Racing Games
   {
-    id: 'drift-hunters',
-    name: 'Drift Hunters',
-    description: '3D car drifting simulation',
+    id: 'car-racing',
+    name: 'Car Racing',
+    description: 'Simple car racing game',
     thumbnail: 'https://images.unsplash.com/photo-1580414652986-2e5ef527f8d4?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/drift-hunters/',
+    url: 'https://openprocessing.org/sketch/159274/embed/',
     category: 'racing',
     rating: 4.8,
     plays: 1400000
   },
   {
-    id: 'moto-x3m',
-    name: 'Moto X3M',
-    description: 'Stunt bike racing game',
+    id: 'bike-race',
+    name: 'Bike Race',
+    description: 'Motorcycle racing game',
     thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/motox3m/',
+    url: 'https://openprocessing.org/sketch/161883/embed/',
     category: 'racing',
     rating: 4.6,
     plays: 1100000
   },
   {
-    id: 'subway-surfers',
-    name: 'Subway Surfers',
-    description: 'Endless running on subway tracks',
+    id: 'runner-game',
+    name: 'Endless Runner',
+    description: 'Run and jump endlessly',
     thumbnail: 'https://images.unsplash.com/photo-1544890225-2f3faec4cd60?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/subway-surfers/',
+    url: 'https://scratch.mit.edu/projects/118477143/embed',
     category: 'racing',
     rating: 4.7,
     plays: 3200000
   },
   
   // Strategy Games
-  {
-    id: 'tower-defense',
-    name: 'Bloons TD',
-    description: 'Pop balloons with monkey towers',
-    thumbnail: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/btd4/',
-    category: 'strategy',
-    rating: 4.9,
-    plays: 2300000
-  },
   {
     id: 'chess-online',
     name: 'Chess',
@@ -408,6 +398,16 @@ const games = ref([
     category: 'strategy',
     rating: 4.8,
     plays: 1850000
+  },
+  {
+    id: 'checkers',
+    name: 'Checkers',
+    description: 'Classic board game',
+    thumbnail: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=315&h=250&fit=crop&auto=format',
+    url: 'https://www.247checkers.com/',
+    category: 'strategy',
+    rating: 4.9,
+    plays: 2300000
   },
   
   // Multiplayer Games
@@ -444,21 +444,21 @@ const games = ref([
   
   // Sports Games
   {
-    id: 'basketball-legends',
-    name: 'Basketball Legends',
-    description: 'Play as famous basketball players',
+    id: 'basketball',
+    name: 'Basketball',
+    description: 'Shoot hoops and score points',
     thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/basketball-legends/',
+    url: 'https://scratch.mit.edu/projects/107355234/embed',
     category: 'sports',
     rating: 4.3,
     plays: 890000
   },
   {
-    id: 'football-legends',
-    name: 'Football Legends',
-    description: 'Score goals as football legends',
+    id: 'soccer',
+    name: 'Soccer',
+    description: 'Score goals and win matches',
     thumbnail: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/football-legends-2021/',
+    url: 'https://scratch.mit.edu/projects/145777448/embed',
     category: 'sports',
     rating: 4.4,
     plays: 720000
@@ -476,56 +476,24 @@ const games = ref([
     plays: 650000
   },
   {
-    id: 'asteroids',
-    name: 'Asteroids',
-    description: 'Blast asteroids in space',
+    id: 'pong',
+    name: 'Pong',
+    description: 'Classic paddle ball game',
     thumbnail: 'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=315&h=250&fit=crop&auto=format',
-    url: 'https://freeasteroids.org/',
+    url: 'https://ponggame.org/',
     category: 'classic',
     rating: 4.1,
     plays: 480000
   },
   {
-    id: 'frogger',
-    name: 'Frogger',
-    description: 'Help the frog cross safely',
+    id: 'breakout',
+    name: 'Breakout',
+    description: 'Break bricks with a ball',
     thumbnail: 'https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=315&h=250&fit=crop&auto=format',
-    url: 'https://freefrogger.org/',
+    url: 'https://elgoog.im/breakout/',
     category: 'classic',
     rating: 4.0,
     plays: 420000
-  },
-  
-  // More Popular Games
-  {
-    id: 'happy-wheels',
-    name: 'Happy Wheels',
-    description: 'Ragdoll physics obstacle course',
-    thumbnail: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/happy-wheels/',
-    category: 'action',
-    rating: 4.7,
-    plays: 4100000
-  },
-  {
-    id: 'tank-trouble',
-    name: 'Tank Trouble',
-    description: 'Battle tanks in a maze',
-    thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/tanktrouble/',
-    category: 'action',
-    rating: 4.3,
-    plays: 980000
-  },
-  {
-    id: 'fireboy-watergirl',
-    name: 'Fireboy and Watergirl',
-    description: 'Cooperative puzzle platformer',
-    thumbnail: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg100.github.io/games/fireboy-and-watergirl-forest-temple/',
-    category: 'puzzle',
-    rating: 4.5,
-    plays: 1500000
   }
 ])
 
