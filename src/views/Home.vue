@@ -87,61 +87,91 @@
       <div class="section-header">
         <h2>Status Bot Features</h2>
       </div>
-      <div class="features-grid">
-        <div class="feature-card featured">
-          <div class="feature-icon"><i class="fas fa-circle" style="color: #10b981;"></i></div>
-          <h3>Status Tracking</h3>
-          <ul class="feature-list">
-            <li><i class="fas fa-check"></i> Real-time status updates</li>
-            <li><i class="fas fa-check"></i> Custom notification messages</li>
-            <li><i class="fas fa-check"></i> Multi-user tracking</li>
-          </ul>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-chart-line" style="color: #5170ff;"></i></div>
-          <h3>XP & Leveling System</h3>
-          <ul class="feature-list">
-            <li><i class="fas fa-check"></i> Customizable XP rates</li>
-            <li><i class="fas fa-check"></i> 8 unique title ranks</li>
-            <li><i class="fas fa-check"></i> Leaderboards & rank cards</li>
-          </ul>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-coins" style="color: #fbbf24;"></i></div>
-          <h3>Economy System</h3>
-          <ul class="feature-list">
-            <li><i class="fas fa-check"></i> 20+ fun mini-games</li>
-            <li><i class="fas fa-check"></i> Daily rewards & streaks</li>
-            <li><i class="fas fa-check"></i> Investment system</li>
-          </ul>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-door-open" style="color: #8b5cf6;"></i></div>
-          <h3>Welcome System</h3>
-          <ul class="feature-list">
-            <li><i class="fas fa-check"></i> Custom welcome messages</li>
-            <li><i class="fas fa-check"></i> Member count tracking</li>
-            <li><i class="fas fa-check"></i> Member goal progression</li>
-          </ul>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fas fa-cogs" style="color: #6b7280;"></i></div>
-          <h3>Easy Dashboard</h3>
-          <ul class="feature-list">
-            <li><i class="fas fa-check"></i> Web-based configuration</li>
-            <li><i class="fas fa-check"></i> Real-time settings</li>
-            <li><i class="fas fa-check"></i> Easy navigation</li>
-          </ul>
-        </div>
-        <div class="feature-card premium">
-          <div class="feature-badge premium-badge">Premium</div>
-          <div class="feature-icon"><i class="fas fa-crown" style="color: #f59e0b;"></i></div>
-          <h3>Premium Features</h3>
-          <ul class="feature-list">
-            <li><i class="fas fa-star"></i> 2x XP & Currency</li>
-            <li><i class="fas fa-star"></i> Advanced tracking</li>
-            <li><i class="fas fa-star"></i> Priority support</li>
-          </ul>
+      <div class="features-carousel-wrapper">
+        <div class="features-carousel">
+          <div class="feature-card featured">
+            <div class="feature-icon"><i class="fas fa-circle" style="color: #10b981;"></i></div>
+            <h3>Status Tracking</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Real-time status updates</li>
+              <li><i class="fas fa-check"></i> Custom notification messages</li>
+              <li><i class="fas fa-check"></i> Multi-user tracking</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-chart-line" style="color: #5170ff;"></i></div>
+            <h3>XP & Leveling System</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Customizable XP rates</li>
+              <li><i class="fas fa-check"></i> 8 unique title ranks</li>
+              <li><i class="fas fa-check"></i> Leaderboards & rank cards</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-coins" style="color: #fbbf24;"></i></div>
+            <h3>Economy System</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> 20+ fun mini-games</li>
+              <li><i class="fas fa-check"></i> Daily rewards & streaks</li>
+              <li><i class="fas fa-check"></i> Investment system</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-door-open" style="color: #8b5cf6;"></i></div>
+            <h3>Welcome System</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Custom welcome messages</li>
+              <li><i class="fas fa-check"></i> Member count tracking</li>
+              <li><i class="fas fa-check"></i> Member goal progression</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-cogs" style="color: #6b7280;"></i></div>
+            <h3>Easy Dashboard</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Web-based configuration</li>
+              <li><i class="fas fa-check"></i> Real-time settings</li>
+              <li><i class="fas fa-check"></i> Easy navigation</li>
+            </ul>
+          </div>
+          <div class="feature-card premium">
+            <div class="feature-badge premium-badge">Premium</div>
+            <div class="feature-icon"><i class="fas fa-crown" style="color: #f59e0b;"></i></div>
+            <h3>Premium Features</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-star"></i> 2x XP & Currency</li>
+              <li><i class="fas fa-star"></i> Advanced tracking</li>
+              <li><i class="fas fa-star"></i> Priority support</li>
+            </ul>
+          </div>
+          <!-- Duplicate cards for seamless loop -->
+          <div class="feature-card featured">
+            <div class="feature-icon"><i class="fas fa-circle" style="color: #10b981;"></i></div>
+            <h3>Status Tracking</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Real-time status updates</li>
+              <li><i class="fas fa-check"></i> Custom notification messages</li>
+              <li><i class="fas fa-check"></i> Multi-user tracking</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-chart-line" style="color: #5170ff;"></i></div>
+            <h3>XP & Leveling System</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Customizable XP rates</li>
+              <li><i class="fas fa-check"></i> 8 unique title ranks</li>
+              <li><i class="fas fa-check"></i> Leaderboards & rank cards</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-coins" style="color: #fbbf24;"></i></div>
+            <h3>Economy System</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> 20+ fun mini-games</li>
+              <li><i class="fas fa-check"></i> Daily rewards & streaks</li>
+              <li><i class="fas fa-check"></i> Investment system</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -504,10 +534,40 @@ onMounted(() => {
   margin: 0 auto;
 }
 
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+.features-carousel-wrapper {
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.features-carousel {
+  display: flex;
+  width: fit-content;
+  animation: slide 30s linear infinite;
   gap: 30px;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-350px * 6 - 180px)); /* Move by width of 6 cards + gaps */
+  }
+}
+
+@media (max-width: 768px) {
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-280px * 6 - 180px)); /* Smaller cards on mobile */
+    }
+  }
+}
+
+.features-carousel:hover {
+  animation-play-state: paused;
 }
 
 .feature-card {
@@ -519,6 +579,8 @@ onMounted(() => {
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
+  min-width: 350px;
+  flex-shrink: 0;
 }
 
 .feature-card::before {
@@ -793,29 +855,6 @@ onMounted(() => {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 60px;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.feature-card {
-  background: linear-gradient(135deg, rgba(80, 80, 80, 0.4), rgba(80, 80, 80, 0.25));
-  border: 2px solid var(--primary-color);
-  padding: 30px;
-  border-radius: 16px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.feature-card:hover {
-  border-color: var(--primary-color);
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(81, 112, 255, 0.15);
 }
 
 .feature-icon {
@@ -1118,12 +1157,12 @@ onMounted(() => {
     font-size: 2.2rem;
   }
 
-  .features-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .features-carousel {
+    animation-duration: 25s; /* Slightly faster on mobile */
   }
 
   .feature-card {
+    min-width: 280px; /* Smaller cards on mobile */
     padding: 30px 20px;
   }
 
