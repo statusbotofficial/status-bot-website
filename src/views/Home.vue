@@ -270,7 +270,7 @@ onMounted(() => {
 .hero h1 {
   font-size: 4rem;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -312,7 +312,7 @@ onMounted(() => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   color: white;
   border: 2px solid rgba(81, 112, 255, 0.8);
 }
@@ -323,7 +323,7 @@ onMounted(() => {
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   color: white;
   border: 2px solid rgba(81, 112, 255, 0.8);
 }
@@ -438,7 +438,7 @@ onMounted(() => {
 .demo-text h2 {
   font-size: 3rem;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -484,7 +484,7 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   color: #fff;
   padding: 15px 30px;
   border: 2px solid rgba(81, 112, 255, 0.8);
@@ -547,7 +547,7 @@ onMounted(() => {
 .section-header h2 {
   font-size: 3rem;
   margin-bottom: 16px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -731,7 +731,7 @@ onMounted(() => {
 .cta-content h2 {
   font-size: 3.5rem;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 1) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -758,7 +758,7 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   color: #fff;
   padding: 20px 40px;
   border-radius: 50px;
@@ -838,13 +838,13 @@ onMounted(() => {
 }
 
 .discord-btn {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   color: #fff;
   border-color: rgba(81, 112, 255, 0.8);
 }
 
 .docs-btn {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(41, 52, 136, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   color: #fff;
   border-color: rgba(81, 112, 255, 0.8);
 }
