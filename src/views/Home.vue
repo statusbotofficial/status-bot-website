@@ -537,6 +537,30 @@ onMounted(() => {
 .features-carousel-wrapper {
   overflow: hidden;
   padding: 20px 0;
+  position: relative;
+  max-width: 1400px; /* Increased width to show more cards */
+  margin: 0 auto;
+}
+
+.features-carousel-wrapper::before,
+.features-carousel-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.features-carousel-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-primary) 0%, transparent 100%);
+}
+
+.features-carousel-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-primary) 0%, transparent 100%);
 }
 
 .features-carousel {
@@ -551,35 +575,20 @@ onMounted(() => {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-350px * 6 - 180px)); /* Move by width of 6 cards + gaps */
+    transform: translateX(calc(-300px * 6 - 180px)); /* Updated for new card width */
   }
-}
-
-@media (max-width: 768px) {
-  @keyframes slide {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(calc(-280px * 6 - 180px)); /* Smaller cards on mobile */
-    }
-  }
-}
-
-.features-carousel:hover {
-  animation-play-state: paused;
 }
 
 .feature-card {
   background: linear-gradient(135deg, rgba(81, 112, 255, 0.05), rgba(139, 92, 246, 0.02));
   border: 2px solid rgba(81, 112, 255, 0.1);
-  padding: 40px;
+  padding: 30px 25px; /* Reduced padding */
   border-radius: 20px;
   text-align: left;
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
-  min-width: 350px;
+  min-width: 300px; /* Reduced width to fit more cards */
   flex-shrink: 0;
 }
 
@@ -1157,13 +1166,32 @@ onMounted(() => {
     font-size: 2.2rem;
   }
 
+  .features-carousel-wrapper {
+    max-width: 100%;
+    padding: 20px;
+  }
+  
+  .features-carousel-wrapper::before,
+  .features-carousel-wrapper::after {
+    width: 60px; /* Smaller fade on mobile */
+  }
+
   .features-carousel {
-    animation-duration: 25s; /* Slightly faster on mobile */
+    animation-duration: 25s;
+  }
+
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-280px * 6 - 180px)); /* Mobile card width */
+    }
   }
 
   .feature-card {
-    min-width: 280px; /* Smaller cards on mobile */
-    padding: 30px 20px;
+    min-width: 280px;
+    padding: 25px 20px;
   }
 
   .testimonials {
