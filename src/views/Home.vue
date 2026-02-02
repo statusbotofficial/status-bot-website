@@ -98,7 +98,7 @@
               <li><i class="fas fa-check"></i> Multi-user tracking</li>
             </ul>
           </div>
-          <div class="feature-card">
+          <div class="feature-card xp-card">
             <div class="feature-icon"><i class="fas fa-chart-line" style="color: #5170ff;"></i></div>
             <h3>XP & Leveling System</h3>
             <ul class="feature-list">
@@ -107,7 +107,7 @@
               <li><i class="fas fa-check"></i> Leaderboards & rank cards</li>
             </ul>
           </div>
-          <div class="feature-card">
+          <div class="feature-card economy-card">
             <div class="feature-icon"><i class="fas fa-coins" style="color: #fbbf24;"></i></div>
             <h3>Economy System</h3>
             <ul class="feature-list">
@@ -116,7 +116,7 @@
               <li><i class="fas fa-check"></i> Investment system</li>
             </ul>
           </div>
-          <div class="feature-card">
+          <div class="feature-card welcome-card">
             <div class="feature-icon"><i class="fas fa-door-open" style="color: #8b5cf6;"></i></div>
             <h3>Welcome System</h3>
             <ul class="feature-list">
@@ -125,7 +125,7 @@
               <li><i class="fas fa-check"></i> Member goal progression</li>
             </ul>
           </div>
-          <div class="feature-card">
+          <div class="feature-card dashboard-card">
             <div class="feature-icon"><i class="fas fa-cogs" style="color: #6b7280;"></i></div>
             <h3>Easy Dashboard</h3>
             <ul class="feature-list">
@@ -135,7 +135,6 @@
             </ul>
           </div>
           <div class="feature-card premium">
-            <div class="feature-badge premium-badge">Premium</div>
             <div class="feature-icon"><i class="fas fa-crown" style="color: #f59e0b;"></i></div>
             <h3>Premium Features</h3>
             <ul class="feature-list">
@@ -154,7 +153,7 @@
               <li><i class="fas fa-check"></i> Multi-user tracking</li>
             </ul>
           </div>
-          <div class="feature-card">
+          <div class="feature-card xp-card">
             <div class="feature-icon"><i class="fas fa-chart-line" style="color: #5170ff;"></i></div>
             <h3>XP & Leveling System</h3>
             <ul class="feature-list">
@@ -163,7 +162,7 @@
               <li><i class="fas fa-check"></i> Leaderboards & rank cards</li>
             </ul>
           </div>
-          <div class="feature-card">
+          <div class="feature-card economy-card">
             <div class="feature-icon"><i class="fas fa-coins" style="color: #fbbf24;"></i></div>
             <h3>Economy System</h3>
             <ul class="feature-list">
@@ -172,7 +171,7 @@
               <li><i class="fas fa-check"></i> Investment system</li>
             </ul>
           </div>
-          <div class="feature-card">
+          <div class="feature-card welcome-card">
             <div class="feature-icon"><i class="fas fa-door-open" style="color: #8b5cf6;"></i></div>
             <h3>Welcome System</h3>
             <ul class="feature-list">
@@ -181,7 +180,7 @@
               <li><i class="fas fa-check"></i> Member goal progression</li>
             </ul>
           </div>
-          <div class="feature-card">
+          <div class="feature-card dashboard-card">
             <div class="feature-icon"><i class="fas fa-cogs" style="color: #6b7280;"></i></div>
             <h3>Easy Dashboard</h3>
             <ul class="feature-list">
@@ -191,7 +190,6 @@
             </ul>
           </div>
           <div class="feature-card premium">
-            <div class="feature-badge premium-badge">Premium</div>
             <div class="feature-icon"><i class="fas fa-crown" style="color: #f59e0b;"></i></div>
             <h3>Premium Features</h3>
             <ul class="feature-list">
@@ -598,8 +596,8 @@ onMounted(() => {
 }
 
 .feature-card {
-  background: linear-gradient(135deg, rgba(81, 112, 255, 0.05), rgba(139, 92, 246, 0.02));
-  border: 2px solid rgba(81, 112, 255, 0.1);
+  background: radial-gradient(circle at center, rgba(81, 112, 255, 0.08), rgba(139, 92, 246, 0.04), rgba(30, 32, 36, 0.02));
+  border: 2px solid rgba(81, 112, 255, 0.2);
   padding: 40px 35px;
   border-radius: 20px;
   text-align: left;
@@ -640,12 +638,32 @@ onMounted(() => {
 
 .feature-card.featured {
   border-color: #10b981;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(5, 150, 105, 0.02));
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05), rgba(30, 32, 36, 0.02));
+}
+
+.feature-card.xp-card {
+  border-color: #5170ff;
+  background: radial-gradient(circle at center, rgba(81, 112, 255, 0.1), rgba(65, 90, 204, 0.05), rgba(30, 32, 36, 0.02));
+}
+
+.feature-card.economy-card {
+  border-color: #fbbf24;
+  background: radial-gradient(circle at center, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05), rgba(30, 32, 36, 0.02));
+}
+
+.feature-card.welcome-card {
+  border-color: #8b5cf6;
+  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05), rgba(30, 32, 36, 0.02));
+}
+
+.feature-card.dashboard-card {
+  border-color: #6b7280;
+  background: radial-gradient(circle at center, rgba(107, 114, 128, 0.1), rgba(75, 85, 99, 0.05), rgba(30, 32, 36, 0.02));
 }
 
 .feature-card.premium {
   border-color: #f59e0b;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(217, 119, 6, 0.02));
+  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05), rgba(30, 32, 36, 0.02));
 }
 
 .feature-badge {
