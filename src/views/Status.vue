@@ -210,8 +210,8 @@ const overallStatusDescription = computed(() => {
   if (botStatus.value === 'offline' && apiStatus.value === 'offline') return 'Multiple services are currently offline'
   if (botStatus.value === 'offline') return 'Discord bot is currently offline'
   if (apiStatus.value === 'offline') return 'Backend API is currently offline'
-  if (botStatus.value === 'outage') return 'Discord bot is experiencing high latency (>300ms)'
-  if (apiStatus.value === 'outage') return 'Backend API is experiencing high latency (>300ms)'
+  if (botStatus.value === 'outage') return 'Discord bot is experiencing high latency (>500ms)'
+  if (apiStatus.value === 'outage') return 'Backend API is experiencing high latency (>500ms)'
   return 'All services are running normally'
 })
 
@@ -249,7 +249,7 @@ const checkApiStatus = async () => {
     if (!response.ok) throw new Error('API returned error status')
     
     // Set status based on ping thresholds
-    if (responseTime > 300) {
+    if (responseTime > 500) {
       apiStatus.value = 'outage'
     } else {
       apiStatus.value = 'online'
@@ -316,7 +316,7 @@ const fetchBotStats = async () => {
     servers.value = data.servers || 0
     
     // Set bot status based on ping thresholds
-    if (data.ping && data.ping > 300) {
+    if (data.ping && data.ping > 500) {
       botStatus.value = 'outage'
     } else if (data.ping && data.ping >= 0) {
       botStatus.value = 'online'
@@ -354,7 +354,7 @@ const fetchBotStats = async () => {
         }
         // Don't override the ping-based status if we're not offline
         if (botStatus.value === 'offline') {
-          botStatus.value = data.ping > 300 ? 'outage' : 'online'
+          botStatus.value = data.ping > 500 ? 'outage' : 'online'
         }
       }
     }
