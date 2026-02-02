@@ -438,10 +438,7 @@ onMounted(() => {
 .demo-text h2 {
   font-size: 3rem;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .demo-text p {
@@ -545,12 +542,9 @@ onMounted(() => {
 }
 
 .section-header h2 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: 16px;
-  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .section-header p {

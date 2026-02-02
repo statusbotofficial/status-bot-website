@@ -2,7 +2,7 @@
   <div class="settings-wrapper">
     <div class="settings-container">
       <div class="settings-header">
-        <h1>Settings</h1>
+        <h1 style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Settings</h1>
         <p>Manage your account, preferences, and Status Bot experience</p>
         <hr>
       </div>
@@ -84,10 +84,6 @@
                 <div class="info-item">
                   <label>Account Created</label>
                   <div class="info-value">{{ accountCreatedDate }}</div>
-                </div>
-                <div class="info-item">
-                  <label>Email</label>
-                  <div class="info-value">{{ discordUser?.email || 'Not provided' }}</div>
                 </div>
               </div>
             </div>

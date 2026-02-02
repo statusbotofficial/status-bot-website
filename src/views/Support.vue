@@ -4,7 +4,7 @@
     <div class="support-section-old">
       <div class="support-container">
         <div class="support-header">
-          <h1>Status Bot Support</h1>
+          <h1 style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Status Bot Support</h1>
           <p>Ask our AI support for help, or get help from a staff member in the <a href="https://discord.gg/Kd2MckVxED" style="color: var(--primary-color); text-decoration: none; border-bottom: 1px solid var(--primary-color);">Status Bot Support Server</a></p>
         </div>
       </div>

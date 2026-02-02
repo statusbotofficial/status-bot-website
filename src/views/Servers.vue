@@ -8,12 +8,13 @@
 
     <!-- Servers List View -->
     <div v-else-if="!selectedServer" class="servers-list-view">
-      <h1 class="page-title">Select a Server</h1>
+      <h1 class="page-title" style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center;">Select a Server</h1>
       <input
         v-model="searchQuery"
         type="text"
         class="search-box"
         placeholder="Search servers..."
+        style="display: block; margin: 0 auto;"
       />
       <div v-if="loading" class="loading-container">Loading servers...</div>
       <div v-else-if="servers.length === 0" class="empty-state">No servers found.</div>

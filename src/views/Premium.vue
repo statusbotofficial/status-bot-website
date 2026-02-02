@@ -3,10 +3,9 @@
     <div class="premium-header">
       <h1 class="premium-title">
         Elevate your
-        <span class="premium-title-highlight">Discord Experience</span>
+        <span class="premium-title-highlight" style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Discord Experience</span>
       </h1>
-      <h2 class="premium-subtitle">Choose your plan</h2>
-      <p class="premium-description">Pick from one of our premium purchase plans for Status Bot.</p>
+      <p class="premium-description">Purchase or cancel our premium plan for Status Bot.</p>
     </div>
 
     <!-- Premium Info Section -->
@@ -16,11 +15,11 @@
         <span class="info-text">Instant activation</span>
       </div>
       <div class="info-item">
-        <span class="info-check"><i class="fas fa-redo" style="color: #5170ff;"></i></span>
+        <span class="info-check"><i class="fas fa-times" style="color: #5170ff;"></i></span>
         <span class="info-text">Cancel anytime</span>
       </div>
       <div class="info-item">
-        <span class="info-check"><i class="fas fa-coins" style="color: #fbbf24;"></i></span>
+        <span class="info-check"><i class="fas fa-redo" style="color: #fbbf24;"></i></span>
         <span class="info-text">7-day refund</span>
       </div>
     </div>

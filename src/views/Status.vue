@@ -3,7 +3,7 @@
     <div class="container">
       <!-- Status Header -->
       <div class="status-header">
-        <h1>System Status</h1>
+        <h1 style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">System Status</h1>
         
         <!-- Status Color Legend -->
         <div class="status-legend">
