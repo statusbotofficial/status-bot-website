@@ -554,7 +554,7 @@ onMounted(() => {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-400px * 6 - 240px));
+    transform: translateX(calc(-440px * 6));
   }
 }
 
@@ -1153,13 +1153,9 @@ onMounted(() => {
   }
 
   .features-carousel-wrapper {
-    max-width: 100%;
-    padding: 20px;
-  }
-  
-  .features-carousel-wrapper::before,
-  .features-carousel-wrapper::after {
-    width: 60px; /* Smaller fade on mobile */
+    width: 100%;
+    margin: 0;
+    padding: 20px 0;
   }
 
   .features-carousel {
@@ -1171,7 +1167,7 @@ onMounted(() => {
       transform: translateX(0);
     }
     100% {
-      transform: translateX(calc(-280px * 6 - 180px)); /* Mobile card width */
+      transform: translateX(calc(-320px * 6));
     }
   }
 
