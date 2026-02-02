@@ -582,7 +582,7 @@ onMounted(() => {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-440px * 6));
+    transform: translateX(calc(-450px * 6));
   }
 }
 
@@ -1180,28 +1180,8 @@ onMounted(() => {
     font-size: 2.2rem;
   }
 
-  .features-carousel-wrapper {
-    width: 100%;
-    margin: 0;
-    padding: 20px 0;
-  }
-
-  .features-carousel {
-    animation-duration: 25s;
-  }
-
-  @keyframes slide {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(calc(-320px * 6));
-    }
-  }
-
-  .feature-card {
-    min-width: 280px;
-    padding: 25px 20px;
+  .features {
+    display: none; /* Hide entire carousel section on mobile */
   }
 
   .testimonials {
