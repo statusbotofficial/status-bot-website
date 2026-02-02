@@ -14,7 +14,6 @@
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/commands">Commands</router-link></li>
           <li><router-link to="/premium">Premium</router-link></li>
-          <li><router-link to="/games">Games</router-link></li>
           <li><router-link to="/support">Support</router-link></li>
           <li><a :href="DISCORD_INVITE_URL" target="_blank">Invite</a></li>
           <li><router-link to="/status">Status</router-link></li>
