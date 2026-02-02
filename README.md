@@ -1,92 +1,72 @@
 # Status Bot Website & Discord Bot
 
-A comprehensive Discord bot with a modern website dashboard built with Vue 3 and Vite. Status Bot provides leveling, economy, status tracking, and more for your Discord server.
+My comprehensive Discord bot with a modern web dashboard for status tracking, leveling, economy systems, and server management.
 
-## Features
+## About This Project
 
-### Website Features
-- Modern, responsive design with dark/light theme switching
+I've built Status Bot as a full-stack solution combining:
+- **Discord Bot**: Python-based bot with leveling, economy, status tracking, and welcome systems
+- **Web Dashboard**: Vue.js frontend with Express.js backend for server management and user authentication
+
+## What It Does
+
+### The Discord Bot
+- Real-time status tracking and monitoring
+- XP and leveling system with voice chat integration  
+- Comprehensive economy system with 15+ mini-games
+- Customizable welcome/leave messages
+- Premium membership system with multipliers
+- Server leaderboards and user profiles
+
+### The Web Dashboard
 - Discord OAuth2 authentication
-- Intuitive server management dashboard
-- Command documentation and reference
-- Premium pricing and subscription management
-- Real-time server status monitoring
-- User profile cards and rank tracking
-- Full mobile responsiveness
-
-### Discord Bot Features
-- **Leveling System** - XP tracking through messages and voice chat with automatic rank progression
-- **Economy System** - Custom currency with mini-games (Slots, Blackjack, Coinflip, Lootbox, Clicker)
-- **Daily Rewards** - Streak-based currency rewards with bonus multipliers
-- **Status Tracking** - Monitor user online/idle/DND/offline status changes in real-time
-- **User Profiles** - Comprehensive profile cards with global stats and achievements
-- **Leaderboards** - Server-wide ranking systems for levels and wealth
-- **Premium System** - Enhanced features via premium membership or server boosting
-- **Moderation** - Message management and server administration tools
-- **Welcome Messages** - Customizable embeds for new member introductions
+- Real-time server management interface
+- Bot configuration and settings
+- User profiles and statistics
+- Premium subscription management
+- Mobile-responsive design with dark/light themes
 
 ## Project Structure
 
 ```
-src/
-├── components/        # Shared Vue components
-├── views/            # Page views (Home, Premium, Commands, Docs, etc.)
-├── stores/           # Pinia state management (auth, theme)
-├── styles/          # Global CSS styles
-├── config.js        # Frontend configuration
-├── router.js        # Vue Router setup
-└── main.js          # Application entry point
-
-public/              # Static assets
-dist/               # Build output
-backend.js          # Express.js backend API server
-config.py           # Bot configuration
-main.py             # Discord bot entry point
-leveling.py         # Leveling system
-economy.py          # Economy and mini-games
-status.py           # Status tracking
-premium.py          # Premium features
+├── src/                    # Frontend Vue.js application
+│   ├── components/         # Reusable Vue components
+│   ├── views/             # Page components
+│   ├── stores/            # State management
+│   └── styles/            # Global CSS
+├── public/                # Static assets
+├── *.py                   # Discord bot Python modules
+├── backend.js             # Express.js API server
+├── package.json           # Node.js dependencies
+├── requirements.txt       # Python dependencies
+└── vite.config.js         # Build configuration
 ```
 
-## Bot Commands
+## Getting Started
 
-### Leveling
-- `/rank` - View your current level and XP progress
-- `/leaderboard` - See top leveled members
+If you want to run this project locally or contribute, here's how to set everything up:
 
-### Economy
-- `/balance` - Check your currency balance
-- `/pay` - Send currency to another member
-- `/daily` - Claim daily currency reward
-- `/slots` - Play slots for currency
-- `/blackjack` - Play blackjack against the dealer
-- `/coinflip` - Flip a coin for currency
-- `/clicker` - Click-based earning game
-- `/lootbox` - Open mystery lootbox for rewards
+### What You'll Need
+- Node.js (v16 or higher)
+- Python 3.8+
+- Discord application with bot token
 
-### Utility
-- `/profile` - View your server profile with stats
-- `/help` - Display all available commands
-- `/invite` - Get bot invite link
-- `/about` - Learn about Status Bot
+### Setting Up The Frontend
 
-## Setup
-
-### Website Setup
-
-1. Install dependencies:
+1. Clone and install dependencies:
 ```bash
 npm install
 ```
 
-2. Create a `.env` file with your configuration:
-```env
+2. Set up your environment variables:
+```bash
+# Create .env file with your configuration
 VITE_API_BASE_URL=your_backend_url
-VITE_WEBSITE_URL=your_website_url
 VITE_DISCORD_CLIENT_ID=your_discord_client_id
+VITE_WEBSITE_URL=your_website_url
 ```
 
-3. Start development server:
+3. Run the development server:
 ```bash
 npm run dev
 ```
@@ -96,56 +76,93 @@ npm run dev
 npm run build
 ```
 
-### Bot Setup
+### Setting Up The Bot
 
-1. Install Python dependencies:
+1. Install Python requirements:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Create a `config.py` with your Discord bot token and configuration
+2. Configure your bot settings in `config.py`
 
-3. Run the bot:
+3. Start the bot:
 ```bash
 python main.py
 ```
 
-## Deployment
-
-### Website - Netlify
-
-1. Connect your GitHub repository to Netlify
-2. Set environment variables in Netlify dashboard
-3. Build command: `npm run build`
-4. Publish directory: `dist`
-
-### Bot - Discloud
-
-The bot is configured for Discloud hosting with the included `discloud.config` file.
-
-## Technologies
-
-### Frontend
-- Vue 3 - Progressive JavaScript framework
-- Vite - Fast build tool
-- Vue Router - Client-side routing
-- Pinia - State management
-- CSS3 - Responsive styling
-
-### Backend
-- Express.js - API server
-- Discord.py - Discord bot library
-- Pillow - Image generation for profile cards
-- aiohttp - Async HTTP requests
-
 ## Configuration
 
-All configuration is managed through environment variables. Key configurations:
-- Database and file paths for user data
-- Discord bot token and client ID
-- API endpoints and URLs
-- Premium features and pricing
+### Environment Variables You'll Need
+- `DISCORD_BOT_TOKEN` - Your Discord bot token
+- `DISCORD_CLIENT_ID` - Your Discord application client ID
+- `DISCORD_CLIENT_SECRET` - Your Discord OAuth2 secret
+- `DATABASE_URL` - Database connection string
+- `JWT_SECRET` - JWT signing secret
+
+### How The Bot Configuration Works
+I've organized the bot settings through:
+- `config.py` - Core bot configuration
+- JSON data files for user data and settings
+- Web dashboard for runtime configuration
+
+## How To Use It
+
+### Web Dashboard
+1. Visit the website and authenticate with Discord
+2. Select a server to manage
+3. Configure bot features through the interface
+4. Monitor server statistics and user activity
+
+### Discord Commands
+Users interact with the bot through slash commands:
+- `/rank` - View level progress
+- `/balance` - Check economy balance
+- `/daily` - Claim daily rewards
+- `/help` - View all commands
+
+## Development
+
+### Frontend Development Commands
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+```
+
+### How I Organized The Bot
+I've structured the bot with separate modules for each feature:
+- `leveling.py` - XP and level management
+- `economy.py` - Currency and mini-games
+- `status.py` - Status tracking functionality
+- `welcome.py` - Welcome/leave messages
+
+## Deployment
+
+### Frontend (I use Netlify)
+1. Connect repository to Netlify
+2. Set build command: `npm run build`
+3. Set publish directory: `dist`
+4. Configure environment variables
+
+### Bot Hosting
+The bot can be deployed on any Python hosting platform. I've included configuration for Discloud hosting.
+
+## Contributing
+
+If you'd like to contribute to this project:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This is my proprietary software. All rights reserved.
 
 ## Support
 
-For issues, questions, or feature requests, join our Discord community or create an issue on GitHub.
+If you have questions about this project:
+- Open an issue on GitHub
+- Join my Discord support server
+- Contact through the website support system
