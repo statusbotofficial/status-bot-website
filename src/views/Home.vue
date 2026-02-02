@@ -582,7 +582,7 @@ onMounted(() => {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-(400px + 40px) * 6));
+    transform: translateX(-2640px);
   }
 }
 
