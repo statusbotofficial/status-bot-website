@@ -582,7 +582,18 @@ onMounted(() => {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-2640px);
+    transform: translateX(-2640px); /* 440px per card * 6 cards */
+  }
+}
+
+@media (min-width: 1200px) {
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-2940px); /* 490px per card * 6 cards */
+    }
   }
 }
 
