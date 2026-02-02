@@ -180,7 +180,7 @@ const featuredGames = ref([
     id: 'slope-unblocked',
     name: 'Slope Unblocked',
     thumbnail: 'https://slope-game.github.io/img/slope.png',
-    url: 'https://slope-unblocked-game.github.io/slope/',
+    url: 'https://ubg100.github.io/games/slope/',
     rating: 4.8,
     plays: 2500000,
     badge: { type: 'hot', text: 'HOT' },
@@ -216,7 +216,7 @@ const games = ref([
     name: 'Slope',
     description: 'Control a ball rolling down a slope',
     thumbnail: 'https://slope-game.github.io/img/slope.png',
-    url: 'https://slope-unblocked-game.github.io/slope/',
+    url: 'https://ubg100.github.io/games/slope/',
     category: 'action',
     rating: 4.8,
     plays: 2500000
@@ -226,7 +226,7 @@ const games = ref([
     name: 'Tunnel Rush',
     description: 'Speed through colorful tunnels',
     thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=315&h=250&fit=crop&auto=format',
-    url: 'https://tunnel-rush.github.io/',
+    url: 'https://ubg100.github.io/games/tunnel-rush/',
     category: 'action',
     rating: 4.6,
     plays: 1890000
@@ -236,7 +236,7 @@ const games = ref([
     name: 'Run 3',
     description: 'Run and jump through space tunnels',
     thumbnail: 'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=315&h=250&fit=crop&auto=format',
-    url: 'https://run3-unblocked-game.github.io/run3/',
+    url: 'https://ubg100.github.io/games/run3/',
     category: 'action',
     rating: 4.5,
     plays: 1900000
@@ -256,7 +256,7 @@ const games = ref([
     name: 'Vex 5',
     description: 'Platform jumping adventure',
     thumbnail: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=315&h=250&fit=crop&auto=format',
-    url: 'https://vex5.org/',
+    url: 'https://ubg100.github.io/games/vex5/',
     category: 'action',
     rating: 4.4,
     plays: 950000
@@ -266,7 +266,7 @@ const games = ref([
     name: 'Stickman Hook',
     description: 'Swing like Spider-Man',
     thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=315&h=250&fit=crop&auto=format',
-    url: 'https://stickman-hook.github.io/',
+    url: 'https://ubg100.github.io/games/stickman-hook/',
     category: 'action',
     rating: 4.5,
     plays: 1200000
@@ -362,7 +362,7 @@ const games = ref([
     name: 'Drift Hunters',
     description: '3D car drifting simulation',
     thumbnail: 'https://images.unsplash.com/photo-1580414652986-2e5ef527f8d4?w=315&h=250&fit=crop&auto=format',
-    url: 'https://drift-hunters.github.io/',
+    url: 'https://ubg100.github.io/games/drift-hunters/',
     category: 'racing',
     rating: 4.8,
     plays: 1400000
@@ -372,7 +372,7 @@ const games = ref([
     name: 'Moto X3M',
     description: 'Stunt bike racing game',
     thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=315&h=250&fit=crop&auto=format',
-    url: 'https://moto-x3m.github.io/',
+    url: 'https://ubg100.github.io/games/motox3m/',
     category: 'racing',
     rating: 4.6,
     plays: 1100000
@@ -382,7 +382,7 @@ const games = ref([
     name: 'Subway Surfers',
     description: 'Endless running on subway tracks',
     thumbnail: 'https://images.unsplash.com/photo-1544890225-2f3faec4cd60?w=315&h=250&fit=crop&auto=format',
-    url: 'https://subwaysurfers-online.github.io/',
+    url: 'https://ubg100.github.io/games/subway-surfers/',
     category: 'racing',
     rating: 4.7,
     plays: 3200000
@@ -394,7 +394,7 @@ const games = ref([
     name: 'Bloons TD',
     description: 'Pop balloons with monkey towers',
     thumbnail: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=315&h=250&fit=crop&auto=format',
-    url: 'https://bloons-td.github.io/',
+    url: 'https://ubg100.github.io/games/btd4/',
     category: 'strategy',
     rating: 4.9,
     plays: 2300000
@@ -448,7 +448,7 @@ const games = ref([
     name: 'Basketball Legends',
     description: 'Play as famous basketball players',
     thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=315&h=250&fit=crop&auto=format',
-    url: 'https://basketball-legends-unblocked.github.io/',
+    url: 'https://ubg100.github.io/games/basketball-legends/',
     category: 'sports',
     rating: 4.3,
     plays: 890000
@@ -458,7 +458,7 @@ const games = ref([
     name: 'Football Legends',
     description: 'Score goals as football legends',
     thumbnail: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=315&h=250&fit=crop&auto=format',
-    url: 'https://football-legends-unblocked.github.io/',
+    url: 'https://ubg100.github.io/games/football-legends-2021/',
     category: 'sports',
     rating: 4.4,
     plays: 720000
@@ -502,7 +502,7 @@ const games = ref([
     name: 'Happy Wheels',
     description: 'Ragdoll physics obstacle course',
     thumbnail: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=315&h=250&fit=crop&auto=format',
-    url: 'https://www.totaljerkface.com/happy_wheels.tjf',
+    url: 'https://ubg100.github.io/games/happy-wheels/',
     category: 'action',
     rating: 4.7,
     plays: 4100000
@@ -512,7 +512,7 @@ const games = ref([
     name: 'Tank Trouble',
     description: 'Battle tanks in a maze',
     thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=315&h=250&fit=crop&auto=format',
-    url: 'https://tank-trouble.github.io/',
+    url: 'https://ubg100.github.io/games/tanktrouble/',
     category: 'action',
     rating: 4.3,
     plays: 980000
@@ -522,7 +522,7 @@ const games = ref([
     name: 'Fireboy and Watergirl',
     description: 'Cooperative puzzle platformer',
     thumbnail: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=315&h=250&fit=crop&auto=format',
-    url: 'https://fireboy-watergirl.github.io/',
+    url: 'https://ubg100.github.io/games/fireboy-and-watergirl-forest-temple/',
     category: 'puzzle',
     rating: 4.5,
     plays: 1500000
