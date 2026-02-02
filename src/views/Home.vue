@@ -596,7 +596,7 @@ onMounted(() => {
 }
 
 .feature-card {
-  background: radial-gradient(circle at center, rgba(81, 112, 255, 0.08), rgba(139, 92, 246, 0.04), rgba(30, 32, 36, 0.02));
+  background: radial-gradient(circle at center, rgba(81, 112, 255, 0.15), rgba(139, 92, 246, 0.1), rgba(30, 32, 36, 0.8));
   border: 2px solid rgba(81, 112, 255, 0.2);
   padding: 40px 35px;
   border-radius: 20px;
@@ -638,32 +638,32 @@ onMounted(() => {
 
 .feature-card.featured {
   border-color: #10b981;
-  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05), rgba(30, 32, 36, 0.02));
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.15), rgba(30, 32, 36, 0.8));
 }
 
 .feature-card.xp-card {
   border-color: #5170ff;
-  background: radial-gradient(circle at center, rgba(81, 112, 255, 0.1), rgba(65, 90, 204, 0.05), rgba(30, 32, 36, 0.02));
+  background: radial-gradient(circle at center, rgba(81, 112, 255, 0.2), rgba(65, 90, 204, 0.15), rgba(30, 32, 36, 0.8));
 }
 
 .feature-card.economy-card {
   border-color: #fbbf24;
-  background: radial-gradient(circle at center, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05), rgba(30, 32, 36, 0.02));
+  background: radial-gradient(circle at center, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.15), rgba(30, 32, 36, 0.8));
 }
 
 .feature-card.welcome-card {
   border-color: #8b5cf6;
-  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05), rgba(30, 32, 36, 0.02));
+  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.15), rgba(30, 32, 36, 0.8));
 }
 
 .feature-card.dashboard-card {
   border-color: #6b7280;
-  background: radial-gradient(circle at center, rgba(107, 114, 128, 0.1), rgba(75, 85, 99, 0.05), rgba(30, 32, 36, 0.02));
+  background: radial-gradient(circle at center, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.15), rgba(30, 32, 36, 0.8));
 }
 
 .feature-card.premium {
   border-color: #f59e0b;
-  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05), rgba(30, 32, 36, 0.02));
+  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.15), rgba(30, 32, 36, 0.8));
 }
 
 .feature-badge {
