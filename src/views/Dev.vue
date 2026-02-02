@@ -468,7 +468,11 @@ const fetchPremiumUsers = async () => {
               expiryText = 'Expired'
             } else {
               const daysLeft = Math.ceil((expiryTimestamp - Date.now()) / (1000 * 60 * 60 * 24))
-              expiryText = daysLeft === 0 ? 'N/A' : `${daysLeft}d (${expiryDate.toLocaleDateString()})`
+              if (daysLeft <= 0) {
+                expiryText = 'N/A'
+              } else {
+                expiryText = `${daysLeft}d (${expiryDate.toLocaleDateString()})`
+              }
             }
           }
           

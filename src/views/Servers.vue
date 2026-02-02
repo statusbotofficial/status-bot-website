@@ -14,7 +14,6 @@
         type="text"
         class="search-box"
         placeholder="Search servers..."
-        style="display: block; margin: 0 auto;"
       />
       <div v-if="loading" class="loading-container">Loading servers...</div>
       <div v-else-if="servers.length === 0" class="empty-state">No servers found.</div>
@@ -2638,7 +2637,8 @@ const copyItemJson = (item) => {
   border: 2px solid #5170ff;
   border-radius: 8px;
   color: var(--text-primary);
-  margin-bottom: 30px;
+  margin: 0 auto 30px auto;
+  display: block;
 }
 
 .search-box:focus {

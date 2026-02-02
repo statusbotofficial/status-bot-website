@@ -1,6 +1,6 @@
 <template>
   <div class="commands-container">
-    <div class="commands-header">
+    <div class="commands-header" style="text-align: center;">
       <h1 style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Bot Commands</h1>
       <p style="text-align: center;">View all of Status Bot's available commands.</p>
     </div>

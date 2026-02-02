@@ -11,7 +11,7 @@
     <!-- Premium Info Section -->
     <div class="premium-info-section">
       <div class="info-item">
-        <span class="info-check"><i class="fas fa-bolt" style="color: #fbbf24;"></i></span>
+        <span class="info-check"><i class="fas fa-bolt" style="color: #5170ff;"></i></span>
         <span class="info-text">Instant activation</span>
       </div>
       <div class="info-item">
@@ -19,7 +19,7 @@
         <span class="info-text">Cancel anytime</span>
       </div>
       <div class="info-item">
-        <span class="info-check"><i class="fas fa-redo" style="color: #fbbf24;"></i></span>
+        <span class="info-check"><i class="fas fa-redo" style="color: #5170ff;"></i></span>
         <span class="info-text">7-day refund</span>
       </div>
     </div>
