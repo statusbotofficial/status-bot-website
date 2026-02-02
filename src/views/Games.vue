@@ -180,7 +180,7 @@ const featuredGames = ref([
     id: 'slope-unblocked',
     name: 'Slope Unblocked',
     thumbnail: 'https://slope-game.github.io/img/slope.png',
-    url: 'https://slope-game.github.io/slope-ball/',
+    url: 'https://html5games.com/Game/Slope/dcde3859-3fad-4b38-8c9b-1a2c45c4d5e6',
     rating: 4.8,
     plays: 2500000,
     badge: { type: 'hot', text: 'HOT' },
@@ -190,7 +190,7 @@ const featuredGames = ref([
     id: 'tetris-unblocked',
     name: 'Tetris Unblocked',
     thumbnail: 'https://chvin.github.io/react-tetris/icon.png',
-    url: 'https://tetris.com/games-content/play-tetris-content/index.html',
+    url: 'https://chvin.github.io/react-tetris/?lan=en',
     rating: 4.7,
     plays: 1800000,
     badge: { type: 'trending', text: 'TRENDING' },
@@ -216,7 +216,7 @@ const games = ref([
     name: 'Slope',
     description: 'Control a ball rolling down a slope',
     thumbnail: 'https://slope-game.github.io/img/slope.png',
-    url: 'https://slope-game.github.io/slope-ball/',
+    url: 'https://html5games.com/Game/Slope/dcde3859-3fad-4b38-8c9b-1a2c45c4d5e6',
     category: 'action',
     rating: 4.8,
     plays: 2500000
@@ -226,7 +226,7 @@ const games = ref([
     name: 'Tunnel Rush',
     description: 'Speed through colorful tunnels',
     thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=315&h=250&fit=crop&auto=format',
-    url: 'https://funhtml5games.com?embed=tunnelrush',
+    url: 'https://www.crazygames.com/embed/tunnel-rush',
     category: 'action',
     rating: 4.6,
     plays: 1890000
@@ -236,7 +236,7 @@ const games = ref([
     name: 'Run 3',
     description: 'Run and jump through space tunnels',
     thumbnail: 'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=315&h=250&fit=crop&auto=format',
-    url: 'https://www.mathplayground.com/run3/run3.html',
+    url: 'https://www.crazygames.com/embed/run-3',
     category: 'action',
     rating: 4.5,
     plays: 1900000
@@ -246,7 +246,7 @@ const games = ref([
     name: 'Geometry Dash',
     description: 'Jump and fly through obstacles',
     thumbnail: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=315&h=250&fit=crop&auto=format',
-    url: 'https://ubg98.github.io/GeometryDash/',
+    url: 'https://scratch.mit.edu/projects/105500895/embed',
     category: 'action',
     rating: 4.7,
     plays: 1650000
@@ -256,7 +256,7 @@ const games = ref([
     name: 'Vex 5',
     description: 'Platform jumping adventure',
     thumbnail: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=315&h=250&fit=crop&auto=format',
-    url: 'https://advanced-channeler.02.gz-associates.com/?t=tmm_vex5',
+    url: 'https://www.crazygames.com/embed/vex-5',
     category: 'action',
     rating: 4.4,
     plays: 950000
@@ -266,7 +266,7 @@ const games = ref([
     name: 'Stickman Hook',
     description: 'Swing like Spider-Man',
     thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=315&h=250&fit=crop&auto=format',
-    url: 'https://html5games.com/Game/Stickman-Hook/e4f53c26-4e1c-4020-8b86-4f5b1c3e4a4e',
+    url: 'https://www.crazygames.com/embed/stickman-hook',
     category: 'action',
     rating: 4.5,
     plays: 1200000
@@ -330,7 +330,7 @@ const games = ref([
     name: 'Snake',
     description: 'Grow your snake by eating apples',
     thumbnail: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=315&h=250&fit=crop&auto=format',
-    url: 'https://playsnake.org/',
+    url: 'https://www.crazygames.com/embed/snake-io',
     category: 'arcade',
     rating: 4.4,
     plays: 950000
@@ -340,7 +340,7 @@ const games = ref([
     name: 'Flappy Bird',
     description: 'Navigate through pipes without crashing',
     thumbnail: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=315&h=250&fit=crop&auto=format',
-    url: 'https://flappybird.io/',
+    url: 'https://scratch.mit.edu/projects/47341342/embed',
     category: 'arcade',
     rating: 4.3,
     plays: 1200000
@@ -362,7 +362,7 @@ const games = ref([
     name: 'Drift Hunters',
     description: '3D car drifting simulation',
     thumbnail: 'https://images.unsplash.com/photo-1580414652986-2e5ef527f8d4?w=315&h=250&fit=crop&auto=format',
-    url: 'https://www.drifthunters.io/',
+    url: 'https://www.crazygames.com/embed/drift-hunters',
     category: 'racing',
     rating: 4.8,
     plays: 1400000
@@ -372,7 +372,7 @@ const games = ref([
     name: 'Moto X3M',
     description: 'Stunt bike racing game',
     thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=315&h=250&fit=crop&auto=format',
-    url: 'https://html5games.com/Game/Moto-X3M/bfc1ecaf-1df1-4f05-b39e-f4b8b4e9a4c0',
+    url: 'https://www.crazygames.com/embed/moto-x3m',
     category: 'racing',
     rating: 4.6,
     plays: 1100000
@@ -382,7 +382,7 @@ const games = ref([
     name: 'Subway Surfers',
     description: 'Endless running on subway tracks',
     thumbnail: 'https://images.unsplash.com/photo-1544890225-2f3faec4cd60?w=315&h=250&fit=crop&auto=format',
-    url: 'https://subwaysurfers.github.io/',
+    url: 'https://poki.com/en/g/subway-surfers',
     category: 'racing',
     rating: 4.7,
     plays: 3200000
@@ -394,7 +394,7 @@ const games = ref([
     name: 'Bloons TD',
     description: 'Pop balloons with monkey towers',
     thumbnail: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=315&h=250&fit=crop&auto=format',
-    url: 'https://btd4.ninja-kiwi.com/html5/',
+    url: 'https://www.crazygames.com/embed/bloons-tower-defense-4',
     category: 'strategy',
     rating: 4.9,
     plays: 2300000
@@ -448,7 +448,7 @@ const games = ref([
     name: 'Basketball Legends',
     description: 'Play as famous basketball players',
     thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=315&h=250&fit=crop&auto=format',
-    url: 'https://basketball-legends.github.io/',
+    url: 'https://www.crazygames.com/embed/basketball-legends-2020',
     category: 'sports',
     rating: 4.3,
     plays: 890000
@@ -458,7 +458,7 @@ const games = ref([
     name: 'Football Legends',
     description: 'Score goals as football legends',
     thumbnail: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=315&h=250&fit=crop&auto=format',
-    url: 'https://football-legends.github.io/',
+    url: 'https://www.crazygames.com/embed/football-legends-2021',
     category: 'sports',
     rating: 4.4,
     plays: 720000
@@ -512,7 +512,7 @@ const games = ref([
     name: 'Tank Trouble',
     description: 'Battle tanks in a maze',
     thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=315&h=250&fit=crop&auto=format',
-    url: 'https://tanktrouble.github.io/',
+    url: 'https://www.crazygames.com/embed/tank-trouble-2',
     category: 'action',
     rating: 4.3,
     plays: 980000
@@ -522,7 +522,7 @@ const games = ref([
     name: 'Fireboy and Watergirl',
     description: 'Cooperative puzzle platformer',
     thumbnail: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=315&h=250&fit=crop&auto=format',
-    url: 'https://fireboyandwatergirl.github.io/1/',
+    url: 'https://www.crazygames.com/embed/fireboy-and-watergirl-the-forest-temple',
     category: 'puzzle',
     rating: 4.5,
     plays: 1500000
