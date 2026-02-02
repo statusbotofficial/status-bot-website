@@ -548,19 +548,20 @@ onMounted(() => {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100px;
   z-index: 10;
   pointer-events: none;
 }
 
 .features-carousel-wrapper::before {
   left: 0;
-  background: linear-gradient(to right, var(--bg-primary) 0%, transparent 100%);
+  width: 80px;
+  background: linear-gradient(to right, #0a0a0a 0%, rgba(10, 10, 10, 0.8) 60%, transparent 100%);
 }
 
 .features-carousel-wrapper::after {
   right: 0;
-  background: linear-gradient(to left, var(--bg-primary) 0%, transparent 100%);
+  width: 150px; /* Wider on the right to hide background orbs */
+  background: linear-gradient(to left, #0a0a0a 0%, rgba(10, 10, 10, 0.95) 40%, rgba(10, 10, 10, 0.7) 70%, transparent 100%);
 }
 
 .features-carousel {
@@ -1173,7 +1174,15 @@ onMounted(() => {
   
   .features-carousel-wrapper::before,
   .features-carousel-wrapper::after {
-    width: 60px; /* Smaller fade on mobile */
+    /* Different sizes for mobile */
+  }
+  
+  .features-carousel-wrapper::before {
+    width: 50px;
+  }
+  
+  .features-carousel-wrapper::after {
+    width: 100px; /* Still wider on right for mobile */
   }
 
   .features-carousel {
