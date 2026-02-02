@@ -707,6 +707,7 @@ onUnmounted(() => {
   font-weight: 800;
   margin-bottom: 16px;
   background: linear-gradient(135deg, #5170ff, #7c9dff);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
