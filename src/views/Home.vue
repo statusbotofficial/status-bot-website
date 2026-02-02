@@ -548,19 +548,19 @@ onMounted(() => {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100px;
+  width: 150px;
   z-index: 10;
   pointer-events: none;
 }
 
 .features-carousel-wrapper::before {
   left: 0;
-  background: linear-gradient(to right, rgba(30, 32, 36, 0.7) 0%, transparent 60%);
+  background: linear-gradient(to right, rgba(30, 32, 36, 0.9) 0%, rgba(30, 32, 36, 0.6) 40%, rgba(30, 32, 36, 0.2) 70%, transparent 100%);
 }
 
 .features-carousel-wrapper::after {
   right: 0;
-  background: linear-gradient(to left, rgba(30, 32, 36, 0.4) 0%, transparent 60%);
+  background: linear-gradient(to left, rgba(30, 32, 36, 0.9) 0%, rgba(30, 32, 36, 0.6) 40%, rgba(30, 32, 36, 0.2) 70%, transparent 100%);
 }
 
 .features-carousel {
