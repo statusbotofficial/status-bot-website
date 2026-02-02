@@ -1200,14 +1200,34 @@ onMounted(() => {
     margin: 0 calc(50% - 50vw);
     padding: 20px 0;
     overflow: hidden;
+    /* Force hardware acceleration and prevent reflow issues */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   .features-carousel {
     animation-duration: 25s;
     gap: 30px;
-    /* Force hardware acceleration to prevent glitches */
+    /* Enhanced hardware acceleration for mobile */
     transform: translateZ(0);
+    -webkit-transform: translateZ(0);
     will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+  }
+
+  .feature-card {
+    min-width: 280px;
+    padding: 25px 20px;
+    /* Hardware acceleration for each card */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   @keyframes slide {
