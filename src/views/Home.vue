@@ -144,7 +144,7 @@
               <li><i class="fas fa-star"></i> Priority support</li>
             </ul>
           </div>
-          <!-- Duplicate cards for seamless loop -->
+          <!-- Duplicate ALL cards for seamless infinite loop -->
           <div class="feature-card featured">
             <div class="feature-icon"><i class="fas fa-circle" style="color: #10b981;"></i></div>
             <h3>Status Tracking</h3>
@@ -170,6 +170,34 @@
               <li><i class="fas fa-check"></i> 20+ fun mini-games</li>
               <li><i class="fas fa-check"></i> Daily rewards & streaks</li>
               <li><i class="fas fa-check"></i> Investment system</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-door-open" style="color: #8b5cf6;"></i></div>
+            <h3>Welcome System</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Custom welcome messages</li>
+              <li><i class="fas fa-check"></i> Member count tracking</li>
+              <li><i class="fas fa-check"></i> Member goal progression</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-cogs" style="color: #6b7280;"></i></div>
+            <h3>Easy Dashboard</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i> Web-based configuration</li>
+              <li><i class="fas fa-check"></i> Real-time settings</li>
+              <li><i class="fas fa-check"></i> Easy navigation</li>
+            </ul>
+          </div>
+          <div class="feature-card premium">
+            <div class="feature-badge premium-badge">Premium</div>
+            <div class="feature-icon"><i class="fas fa-crown" style="color: #f59e0b;"></i></div>
+            <h3>Premium Features</h3>
+            <ul class="feature-list">
+              <li><i class="fas fa-star"></i> 2x XP & Currency</li>
+              <li><i class="fas fa-star"></i> Advanced tracking</li>
+              <li><i class="fas fa-star"></i> Priority support</li>
             </ul>
           </div>
         </div>
