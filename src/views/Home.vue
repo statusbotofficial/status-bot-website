@@ -1192,18 +1192,22 @@ onMounted(() => {
   }
 
   .features {
-    padding: 60px 20px;
+    padding: 60px 0px; /* Remove horizontal padding */
   }
 
   .features-carousel-wrapper {
-    width: 100%;
-    margin: 0;
+    width: 100vw;
+    margin: 0 calc(50% - 50vw);
     padding: 20px 0;
+    overflow: hidden;
   }
 
   .features-carousel {
     animation-duration: 25s;
     gap: 30px;
+    /* Force hardware acceleration to prevent glitches */
+    transform: translateZ(0);
+    will-change: transform;
   }
 
   @keyframes slide {
