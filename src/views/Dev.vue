@@ -1,10 +1,10 @@
 <template>
   <div v-if="isAuthorized" class="dev-wrapper">
     <div class="dev-container">
-      <div class="dev-header">
-        <h1>User Management</h1>
-        <p>Send trials and notifications to users</p>
-        <hr>
+      <div class="page-header">
+        <h1 class="page-title">User Management</h1>
+        <p class="page-description">Send trials and notifications to users</p>
+        <hr class="header-divider">
       </div>
 
       <div class="dev-panels">
@@ -688,34 +688,41 @@ onMounted(async () => {
 }
 
 /* Header section */
-.dev-header {
+.page-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   text-align: center;
   margin-bottom: 60px;
+  padding: 60px 0;
 }
 
-.dev-header h1 {
-  font-size: 56px;
-  font-weight: 900;
+.page-title {
+  font-size: 3.5rem;
+  font-weight: 700;
   margin: 0;
-  color: #fff;
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
 }
 
-.dev-header p {
-  font-size: 14px;
+.page-description {
+  font-size: 1.2rem;
   color: var(--text-secondary);
   margin: 0;
+  max-width: 600px;
+  text-align: center;
 }
 
-.dev-header hr {
+.header-divider {
   width: 100px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%);
   border: none;
-  margin-top: 20px;
+  margin: 0;
 }
 
 .dev-panels {
@@ -1058,8 +1065,8 @@ onMounted(async () => {
     grid-template-columns: 1fr;
   }
 
-  .dev-header h1 {
-    font-size: 40px;
+  .page-title {
+    font-size: 2.8rem;
   }
 }
 
@@ -1068,8 +1075,8 @@ onMounted(async () => {
     padding: 30px 20px;
   }
 
-  .dev-header h1 {
-    font-size: 32px;
+  .page-title {
+    font-size: 2.2rem;
   }
 
   .dev-sub-panel {

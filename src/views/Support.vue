@@ -3,19 +3,10 @@
     <!-- Original Support Section -->
     <div class="support-section-old">
       <div class="support-container">
-        <div class="support-header">
-          <h1 style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Status Bot Support</h1>
-          <p>Ask our AI support for help, or get help from a staff member in the <a href="https://discord.gg/Kd2MckVxED" style="color: var(--primary-color); text-decoration: none; border-bottom: 1px solid var(--primary-color);">Status Bot Support Server</a></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- AI Chat Section -->
-    <div class="support-section-chat">
-      <div class="support-container">
-        <div class="chat-header">
-          <h2>AI Support Chat</h2>
-          <p v-if="!isLoggedIn" class="login-required">Please log in to use the support chat</p>
+        <div class="page-header">
+          <h1 class="page-title">Status Bot Support</h1>
+          <p class="page-description">Ask our AI support for help, or get help from a staff member in the <a href="https://discord.gg/Kd2MckVxED" style="color: var(--primary-color); text-decoration: none; border-bottom: 1px solid var(--primary-color);">Status Bot Support Server</a></p>
+          <hr class="header-divider">
         </div>
 
         <div class="support-chat-box">

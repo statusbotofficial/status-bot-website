@@ -1,10 +1,10 @@
 <template>
   <div class="terms-wrapper">
     <div class="terms-container">
-      <div class="terms-header">
-        <h1>Terms of Service</h1>
-        <p>Last updated: 11/30/2025</p>
-        <hr>
+      <div class="page-header">
+        <h1 class="page-title">Terms of Service</h1>
+        <p class="page-description">Last updated: 11/30/2025</p>
+        <hr class="header-divider">
       </div>
 
       <div class="terms-section">

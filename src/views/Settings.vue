@@ -1,10 +1,10 @@
 <template>
   <div class="settings-wrapper">
     <div class="settings-container">
-      <div class="settings-header">
-        <h1 style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Settings</h1>
-        <p>Manage your account, preferences, and Status Bot experience</p>
-        <hr>
+      <div class="page-header">
+        <h1 class="page-title">Settings</h1>
+        <p class="page-description">Manage your account, preferences, and Status Bot experience</p>
+        <hr class="header-divider">
       </div>
 
       <div class="settings-main">
@@ -128,7 +128,7 @@
               <div class="panel-header">Premium Features</div>
               <div class="features-grid">
                 <div class="feature-card" :class="{ 'unlocked': hasPremium }">
-                  <div class="feature-icon"><span style="font-weight: bold; font-size: 32px; color: #d946ef;">2x</span></div>
+                  <div class="feature-icon"><span style="font-weight: bold; font-size: 32px;" :style="{ color: hasPremium ? '#d946ef' : '#aaa' }">2x</span></div>
                   <div class="feature-name">2x XP Multiplier</div>
                   <div class="feature-desc">Earn double XP on messages and voice chat</div>
                 </div>

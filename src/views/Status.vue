@@ -2,23 +2,25 @@
   <div class="status-wrapper">
     <div class="container">
       <!-- Status Header -->
-      <div class="status-header">
-        <h1 style="background: linear-gradient(135deg, rgba(81, 112, 255, 1) 0%, rgba(81, 112, 255, 0.15) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">System Status</h1>
-        
-        <!-- Status Color Legend -->
-        <div class="status-legend">
-          <div class="legend-item">
-            <span class="legend-dot operational"></span>
-            <span>Operational</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot outage"></span>
-            <span>Outage</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot offline"></span>
-            <span>Offline</span>
-          </div>
+      <div class="page-header" style="margin-bottom: 20px; padding: 40px 0;">
+        <h1 class="page-title">System Status</h1>
+        <p class="page-description">Real-time monitoring of Status Bot services and infrastructure</p>
+        <hr class="header-divider">
+      </div>
+      
+      <!-- Status Color Legend -->
+      <div class="status-legend">
+        <div class="legend-item">
+          <span class="legend-dot operational"></span>
+          <span>Operational</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot outage"></span>
+          <span>Outage</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot offline"></span>
+          <span>Offline</span>
         </div>
       </div>
 
@@ -498,13 +500,15 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  margin-top: 20px;
-  padding: 15px 25px;
+  gap: 20px;
+  margin: 20px auto 0;
+  padding: 12px 20px;
   background: rgba(80, 80, 80, 0.2);
   border: 1px solid var(--border-color);
   border-radius: 50px;
   backdrop-filter: blur(10px);
+  width: fit-content;
+  max-width: 400px;
 }
 
 .legend-item {

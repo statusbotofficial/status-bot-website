@@ -1,10 +1,10 @@
 <template>
   <div class="privacy-wrapper">
     <div class="privacy-container">
-      <div class="privacy-header">
-        <h1>Privacy Policy</h1>
-        <p>Last updated: 11/30/2025</p>
-        <hr>
+      <div class="page-header">
+        <h1 class="page-title">Privacy Policy</h1>
+        <p class="page-description">Last updated: 11/30/2025</p>
+        <hr class="header-divider">
       </div>
 
       <div class="privacy-section">
