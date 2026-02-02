@@ -538,36 +538,15 @@ onMounted(() => {
   overflow: hidden;
   padding: 20px 0;
   position: relative;
-  max-width: 1400px; /* Increased width to show more cards */
-  margin: 0 auto;
-}
-
-.features-carousel-wrapper::before,
-.features-carousel-wrapper::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 150px;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.features-carousel-wrapper::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(30, 32, 36, 0.9) 0%, rgba(30, 32, 36, 0.6) 40%, rgba(30, 32, 36, 0.2) 70%, transparent 100%);
-}
-
-.features-carousel-wrapper::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(30, 32, 36, 0.9) 0%, rgba(30, 32, 36, 0.6) 40%, rgba(30, 32, 36, 0.2) 70%, transparent 100%);
+  width: 100vw;
+  margin: 0 calc(50% - 50vw);
 }
 
 .features-carousel {
   display: flex;
   width: fit-content;
-  animation: slide 30s linear infinite;
-  gap: 30px;
+  animation: slide 35s linear infinite;
+  gap: 40px;
 }
 
 @keyframes slide {
@@ -575,21 +554,28 @@ onMounted(() => {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(-300px * 6 - 180px)); /* Updated for new card width */
+    transform: translateX(calc(-400px * 6 - 240px));
   }
 }
 
 .feature-card {
   background: linear-gradient(135deg, rgba(81, 112, 255, 0.05), rgba(139, 92, 246, 0.02));
   border: 2px solid rgba(81, 112, 255, 0.1);
-  padding: 30px 25px; /* Reduced padding */
+  padding: 40px 35px;
   border-radius: 20px;
   text-align: left;
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
-  min-width: 300px; /* Reduced width to fit more cards */
+  min-width: 400px;
   flex-shrink: 0;
+}
+
+@media (min-width: 1200px) {
+  .feature-card {
+    min-width: 450px;
+    padding: 45px 40px;
+  }
 }
 
 .feature-card::before {
