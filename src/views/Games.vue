@@ -177,9 +177,9 @@ const categories = ref([
 // Featured games for the banner
 const featuredGames = ref([
   {
-    id: 'slope',
-    name: 'Slope',
-    thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
+    id: 'slope-unblocked',
+    name: 'Slope Unblocked',
+    thumbnail: 'https://slope-game.github.io/img/slope.png',
     url: 'https://slope-game.github.io/',
     rating: 4.8,
     plays: 2500000,
@@ -187,24 +187,24 @@ const featuredGames = ref([
     category: 'arcade'
   },
   {
-    id: 'among-us',
-    name: 'Among Us Online',
-    thumbnail: 'https://images.unsplash.com/photo-1612404730960-5c71577fca11?w=400&h=300&fit=crop',
-    url: 'https://amongusonline.io/',
+    id: 'run3-unblocked',
+    name: 'Run 3 Unblocked',
+    thumbnail: 'https://images.crazygames.com/run-3/20191216052311/run-3-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.coolmathgames.com/0-run-3/play',
     rating: 4.7,
     plays: 1800000,
     badge: { type: 'trending', text: 'TRENDING' },
-    category: 'multiplayer'
+    category: 'action'
   },
   {
-    id: 'krunker',
-    name: 'Krunker.io',
-    thumbnail: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=400&h=300&fit=crop',
-    url: 'https://krunker.io/',
+    id: 'tetris-unblocked',
+    name: 'Tetris Unblocked',
+    thumbnail: 'https://images.crazygames.com/tetris/20200929101036/tetris-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://tetris.com/games-content/play-tetris-content/index.html',
     rating: 4.9,
     plays: 5200000,
     badge: { type: 'popular', text: 'POPULAR' },
-    category: 'action'
+    category: 'puzzle'
   }
 ])
 
@@ -212,150 +212,210 @@ const featuredGames = ref([
 const games = ref([
   // Action Games
   {
-    id: '2048',
+    id: 'slope-game',
+    name: 'Slope',
+    description: 'Control a ball rolling down a slope',
+    thumbnail: 'https://slope-game.github.io/img/slope.png',
+    url: 'https://slope-game.github.io/',
+    category: 'action',
+    rating: 4.8,
+    plays: 2500000
+  },
+  {
+    id: 'tunnel-rush',
+    name: 'Tunnel Rush',
+    description: 'Speed through colorful tunnels',
+    thumbnail: 'https://images.crazygames.com/tunnel-rush/20210929132536/tunnel-rush-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/tunnel-rush',
+    category: 'action',
+    rating: 4.6,
+    plays: 1890000
+  },
+  {
+    id: 'run3',
+    name: 'Run 3',
+    description: 'Run and jump through space tunnels',
+    thumbnail: 'https://images.crazygames.com/run-3/20191216052311/run-3-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.coolmathgames.com/0-run-3/play',
+    category: 'action',
+    rating: 4.5,
+    plays: 1900000
+  },
+  {
+    id: 'geometry-dash',
+    name: 'Geometry Dash',
+    description: 'Jump and fly through obstacles',
+    thumbnail: 'https://images.crazygames.com/geometry-dash-lite/20200318133351/geometry-dash-lite-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://scratch.mit.edu/projects/105500895/fullscreen/',
+    category: 'action',
+    rating: 4.7,
+    plays: 1650000
+  },
+  {
+    id: 'vex-5',
+    name: 'Vex 5',
+    description: 'Platform jumping adventure',
+    thumbnail: 'https://images.crazygames.com/vex-5/20200421152038/vex-5-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/vex-5',
+    category: 'action',
+    rating: 4.4,
+    plays: 950000
+  },
+  {
+    id: 'stickman-hook',
+    name: 'Stickman Hook',
+    description: 'Swing like Spider-Man',
+    thumbnail: 'https://images.crazygames.com/stickman-hook/20191219045324/stickman-hook-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/stickman-hook',
+    category: 'action',
+    rating: 4.5,
+    plays: 1200000
+  },
+  
+  // Puzzle Games
+  {
+    id: '2048-game',
     name: '2048',
     description: 'Combine tiles to reach 2048',
-    thumbnail: 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=300&h=200&fit=crop',
+    thumbnail: 'https://images.crazygames.com/2048-1/20200320133018/2048-1-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
     url: 'https://2048game.com/',
     category: 'puzzle',
     rating: 4.6,
     plays: 890000
   },
   {
-    id: 'flappy-bird',
-    name: 'Flappy Bird',
-    description: 'Navigate through pipes',
-    thumbnail: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=300&h=200&fit=crop',
-    url: 'https://flappybird.io/',
-    category: 'arcade',
-    rating: 4.3,
-    plays: 1200000
-  },
-  {
     id: 'tetris',
     name: 'Tetris',
-    description: 'Classic falling blocks game',
-    thumbnail: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=300&h=200&fit=crop',
-    url: 'https://tetris.com/play-tetris',
+    description: 'Classic falling blocks puzzle',
+    thumbnail: 'https://images.crazygames.com/tetris/20200929101036/tetris-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://tetris.com/games-content/play-tetris-content/index.html',
     category: 'puzzle',
     rating: 4.8,
     plays: 2100000
   },
   {
+    id: 'cut-the-rope',
+    name: 'Cut the Rope',
+    description: 'Cut ropes to feed Om Nom candy',
+    thumbnail: 'https://images.crazygames.com/cut-the-rope/20200318135946/cut-the-rope-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/cut-the-rope',
+    category: 'puzzle',
+    rating: 4.3,
+    plays: 750000
+  },
+  {
+    id: 'bloxorz',
+    name: 'Bloxorz',
+    description: 'Roll the block into the hole',
+    thumbnail: 'https://images.crazygames.com/bloxorz/20210624131939/bloxorz-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.coolmathgames.com/0-bloxorz/play',
+    category: 'puzzle',
+    rating: 4.4,
+    plays: 680000
+  },
+  
+  // Arcade Games
+  {
     id: 'pacman',
     name: 'Pac-Man',
-    description: 'Eat dots and avoid ghosts',
-    thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=200&fit=crop',
-    url: 'https://pacman.com/play.html',
+    description: 'Classic arcade maze game',
+    thumbnail: 'https://images.crazygames.com/pac-man/20211119085756/pac-man-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.google.com/logos/2010/pacman10-i.html',
     category: 'arcade',
     rating: 4.7,
     plays: 1850000
   },
   {
-    id: 'snake',
-    name: 'Snake Game',
-    description: 'Grow your snake by eating food',
-    thumbnail: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=300&h=200&fit=crop',
+    id: 'snake-game',
+    name: 'Snake',
+    description: 'Grow your snake by eating apples',
+    thumbnail: 'https://images.crazygames.com/snake-io/20191216052315/snake-io-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
     url: 'https://playsnake.org/',
     category: 'arcade',
     rating: 4.4,
     plays: 950000
   },
   {
-    id: 'geometry-dash',
-    name: 'Geometry Dash',
-    description: 'Jump and fly your way through obstacles',
-    thumbnail: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=300&h=200&fit=crop',
-    url: 'https://scratch.mit.edu/projects/105500895/',
-    category: 'action',
+    id: 'flappy-bird',
+    name: 'Flappy Bird',
+    description: 'Navigate through pipes without crashing',
+    thumbnail: 'https://images.crazygames.com/flappy-bird/20200318133349/flappy-bird-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://flappybird.io/',
+    category: 'arcade',
+    rating: 4.3,
+    plays: 1200000
+  },
+  {
+    id: 'dino-game',
+    name: 'Chrome Dino Game',
+    description: 'Jump over cacti in this endless runner',
+    thumbnail: 'https://images.crazygames.com/t-rex-runner/20200318134722/t-rex-runner-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://chromedino.com/',
+    category: 'arcade',
     rating: 4.5,
-    plays: 1650000
-  },
-  {
-    id: 'subway-surfers',
-    name: 'Subway Surfers',
-    description: 'Run and surf through subway tracks',
-    thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=200&fit=crop',
-    url: 'https://poki.com/en/g/subway-surfers',
-    category: 'action',
-    rating: 4.6,
-    plays: 3200000
-  },
-  {
-    id: 'temple-run',
-    name: 'Temple Run 2',
-    description: 'Endless running adventure',
-    thumbnail: 'https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=300&h=200&fit=crop',
-    url: 'https://poki.com/en/g/temple-run-2',
-    category: 'action',
-    rating: 4.4,
     plays: 2800000
   },
-  {
-    id: 'happy-wheels',
-    name: 'Happy Wheels',
-    description: 'Ragdoll physics obstacle course',
-    thumbnail: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=300&h=200&fit=crop',
-    url: 'https://www.totaljerkface.com/happy_wheels.tjf',
-    category: 'action',
-    rating: 4.7,
-    plays: 4100000
-  },
-  {
-    id: 'run-3',
-    name: 'Run 3',
-    description: 'Run through space tunnels',
-    thumbnail: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=300&h=200&fit=crop',
-    url: 'https://www.coolmathgames.com/0-run-3',
-    category: 'action',
-    rating: 4.5,
-    plays: 1900000
-  },
+  
+  // Racing Games
   {
     id: 'drift-hunters',
     name: 'Drift Hunters',
-    description: 'Drift racing game with customizable cars',
-    thumbnail: 'https://images.unsplash.com/photo-1580414652986-2e5ef527f8d4?w=300&h=200&fit=crop',
+    description: '3D car drifting simulation',
+    thumbnail: 'https://images.crazygames.com/drift-hunters/20191219045313/drift-hunters-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
     url: 'https://drifthunters.io/',
     category: 'racing',
     rating: 4.8,
     plays: 1400000
   },
   {
-    id: 'basketball-stars',
-    name: 'Basketball Stars',
-    description: 'Multiplayer basketball game',
-    thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=300&h=200&fit=crop',
-    url: 'https://poki.com/en/g/basketball-stars',
-    category: 'sports',
-    rating: 4.3,
-    plays: 890000
+    id: 'moto-x3m',
+    name: 'Moto X3M',
+    description: 'Stunt bike racing game',
+    thumbnail: 'https://images.crazygames.com/moto-x3m/20191219045317/moto-x3m-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/moto-x3m',
+    category: 'racing',
+    rating: 4.6,
+    plays: 1100000
   },
   {
-    id: 'chess',
-    name: 'Chess.com',
-    description: 'Play chess online',
-    thumbnail: 'https://images.unsplash.com/photo-1528819622765-d6bcf132ac11?w=300&h=200&fit=crop',
-    url: 'https://www.chess.com/play',
+    id: 'subway-surfers',
+    name: 'Subway Surfers',
+    description: 'Endless running on subway tracks',
+    thumbnail: 'https://images.crazygames.com/subway-surfers/20220301113748/subway-surfers-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/subway-surfers',
+    category: 'racing',
+    rating: 4.7,
+    plays: 3200000
+  },
+  
+  // Strategy Games
+  {
+    id: 'tower-defense',
+    name: 'Bloons TD 6',
+    description: 'Pop balloons with monkey towers',
+    thumbnail: 'https://images.crazygames.com/bloons-td-6/20220519144023/bloons-td-6-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://btd6.io/',
     category: 'strategy',
     rating: 4.9,
     plays: 2300000
   },
   {
-    id: 'wordle',
-    name: 'Wordle',
-    description: 'Guess the 5-letter word',
-    thumbnail: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=300&h=200&fit=crop',
-    url: 'https://www.nytimes.com/games/wordle/',
-    category: 'puzzle',
-    rating: 4.6,
-    plays: 3500000
+    id: 'chess-online',
+    name: 'Chess',
+    description: 'Play chess against the computer',
+    thumbnail: 'https://images.crazygames.com/chess/20200318134718/chess-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.chess.com/play/computer',
+    category: 'strategy',
+    rating: 4.8,
+    plays: 1850000
   },
+  
+  // Multiplayer Games
   {
     id: 'slither-io',
     name: 'Slither.io',
-    description: 'Grow your snake in this multiplayer game',
-    thumbnail: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=300&h=200&fit=crop',
+    description: 'Grow your snake in multiplayer',
+    thumbnail: 'https://images.crazygames.com/slither-io/20191216052312/slither-io-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
     url: 'https://slither.io/',
     category: 'multiplayer',
     rating: 4.4,
@@ -364,12 +424,108 @@ const games = ref([
   {
     id: 'agar-io',
     name: 'Agar.io',
-    description: 'Grow your cell and eat others',
-    thumbnail: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=200&fit=crop',
+    description: 'Grow your cell and absorb others',
+    thumbnail: 'https://images.crazygames.com/agar-io/20191216052308/agar-io-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
     url: 'https://agar.io/',
     category: 'multiplayer',
     rating: 4.5,
     plays: 5800000
+  },
+  {
+    id: 'krunker-io',
+    name: 'Krunker.io',
+    description: 'Fast-paced multiplayer FPS',
+    thumbnail: 'https://images.crazygames.com/krunker-io/20191216052316/krunker-io-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://krunker.io/',
+    category: 'multiplayer',
+    rating: 4.6,
+    plays: 4100000
+  },
+  
+  // Sports Games
+  {
+    id: 'basketball-legends',
+    name: 'Basketball Legends',
+    description: 'Play as famous basketball players',
+    thumbnail: 'https://images.crazygames.com/basketball-legends-2020/20200427104449/basketball-legends-2020-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/basketball-legends',
+    category: 'sports',
+    rating: 4.3,
+    plays: 890000
+  },
+  {
+    id: 'football-legends',
+    name: 'Football Legends',
+    description: 'Score goals as football legends',
+    thumbnail: 'https://images.crazygames.com/football-legends-2021/20210325134251/football-legends-2021-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/football-legends-2021',
+    category: 'sports',
+    rating: 4.4,
+    plays: 720000
+  },
+  
+  // Classic Games
+  {
+    id: 'space-invaders',
+    name: 'Space Invaders',
+    description: 'Defend Earth from alien invasion',
+    thumbnail: 'https://images.crazygames.com/space-invaders/20200318134720/space-invaders-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.coolmathgames.com/0-space-invaders/play',
+    category: 'classic',
+    rating: 4.2,
+    plays: 650000
+  },
+  {
+    id: 'asteroids',
+    name: 'Asteroids',
+    description: 'Blast asteroids in space',
+    thumbnail: 'https://images.crazygames.com/asteroids/20200318134717/asteroids-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.coolmathgames.com/0-asteroids/play',
+    category: 'classic',
+    rating: 4.1,
+    plays: 480000
+  },
+  {
+    id: 'frogger',
+    name: 'Frogger',
+    description: 'Help the frog cross safely',
+    thumbnail: 'https://images.crazygames.com/frogger/20200318134719/frogger-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.coolmathgames.com/0-frogger/play',
+    category: 'classic',
+    rating: 4.0,
+    plays: 420000
+  },
+  
+  // More Popular Games
+  {
+    id: 'happy-wheels',
+    name: 'Happy Wheels',
+    description: 'Ragdoll physics obstacle course',
+    thumbnail: 'https://images.crazygames.com/happy-wheels/20191216052314/happy-wheels-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.totaljerkface.com/happy_wheels.tjf',
+    category: 'action',
+    rating: 4.7,
+    plays: 4100000
+  },
+  {
+    id: 'tank-trouble',
+    name: 'Tank Trouble',
+    description: 'Battle tanks in a maze',
+    thumbnail: 'https://images.crazygames.com/tank-trouble/20200318135948/tank-trouble-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://poki.com/en/g/tank-trouble',
+    category: 'action',
+    rating: 4.3,
+    plays: 980000
+  },
+  {
+    id: 'fireboy-watergirl',
+    name: 'Fireboy and Watergirl',
+    description: 'Cooperative puzzle platformer',
+    thumbnail: 'https://images.crazygames.com/fireboy-and-watergirl-the-forest-temple/20200318133350/fireboy-and-watergirl-the-forest-temple-cover?auto=format%2Ccompress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop',
+    url: 'https://www.coolmathgames.com/0-fireboy-and-watergirl-forest-temple/play',
+    category: 'puzzle',
+    rating: 4.5,
+    plays: 1500000
   }
 ])
 
