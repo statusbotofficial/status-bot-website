@@ -1192,9 +1192,62 @@ onMounted(() => {
   }
 
   .features {
-    display: none; /* Hide entire carousel section on mobile */
+    padding: 60px 20px;
   }
 
+  .features-carousel-wrapper {
+    width: 100%;
+    margin: 0;
+    padding: 20px 0;
+  }
+
+  .features-carousel {
+    animation-duration: 25s;
+    gap: 30px;
+  }
+
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-1860px); /* 310px per card * 6 cards */
+    }
+  }
+
+  .feature-card {
+    min-width: 280px;
+    padding: 25px 20px;
+  }
+
+  .testimonials {
+    padding: 60px 20px;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1199px) {
+  .features-carousel {
+    gap: 35px;
+    animation-duration: 30s;
+  }
+
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-2010px); /* 335px per card * 6 cards */
+    }
+  }
+
+  .feature-card {
+    min-width: 300px;
+    padding: 30px 25px;
+  }
+}
+
+@media (max-width: 768px) {
   .testimonials {
     padding: 60px 20px;
   }
