@@ -111,25 +111,55 @@ const faqs = ref([
   {
     id: 1,
     question: 'How do I invite Status Bot to my server?',
-    answer: 'Click the "Invite" button on the navigation menu. You\'ll be taken to Discord\'s authorization page where you can select which server to add the bot to.',
+    answer: 'Click the "Invite" button in the navigation menu. You\'ll need "Manage Server" permissions. The bot requires administrator permissions to function properly with all features.',
     open: false
   },
   {
     id: 2,
-    question: 'Is Status Bot free?',
-    answer: 'Yes! Status Bot has a free tier with core features including status tracking, leveling system, and economy commands. We also offer a Premium plan for additional features and perks.',
+    question: 'How do I configure Status Bot for my server?',
+    answer: 'After inviting the bot, go to the Dashboard. Log in with Discord, select your server, and configure all features (status tracking, leveling, economy, welcome messages).',
     open: false
   },
   {
     id: 3,
-    question: 'How do I report a bug?',
-    answer: 'Please report bugs in our Discord server or via the support chat. Include as much detail as possible about what happened and how to reproduce the issue.',
+    question: 'What slash commands are available?',
+    answer: 'Use /help to see all commands, or go to the commands page in the navbar.',
     open: false
   },
   {
     id: 4,
-    question: 'How do I get help with a command?',
-    answer: 'You can use the /help command in your Discord server to view all available commands. You can also check our documentation or ask in the support chat.',
+    question: 'How do I set up status tracking?',
+    answer: 'Go to the Dashboard → select your server → Status Tracking section. Choose a user to track, set the notification channel, adjust the delay, and choose between simple messages or embeds. All done through the web dashboard!',
+    open: false
+  },
+  {
+    id: 5,
+    question: 'How does the leveling system work?',
+    answer: 'Members automatically earn XP from sending messages and participating in voice chat. Configure XP rates per message through the Dashboard. Use /rank to check progress. There are 8 unique title ranks to unlock.',
+    open: false
+  },
+  {
+    id: 6,
+    question: 'What economy features are available?',
+    answer: 'Status Bot has 20+ mini-games including slots, blackjack, coinflip, and more. Members earn currency through daily rewards (/daily), games, and activity. Configure starting amounts and currency symbols in the Dashboard.',
+    open: false
+  },
+  {
+    id: 7,
+    question: 'How do I set up welcome messages?',
+    answer: 'In the Dashboard → Welcome Messages section, enable the system, choose a channel, and customize your message. You can use simple text or rich embeds with images, colors, and member placeholders like {user} and {server_name}.',
+    open: false
+  },
+  {
+    id: 8,
+    question: 'What are the premium features?',
+    answer: 'Premium ($3.99/month) includes 2x XP multiplier, 2x currency earnings, exclusive items in the economy, and priority support. You can also boost our Discord server for an easier premium access option.',
+    open: false
+  },
+  {
+    id: 9,
+    question: 'How do I report bugs or get support?',
+    answer: 'Join our Discord support server using the link on this page, use the AI support chat above (requires login), or email us at statusbotofficial@gmail.com. Please include details about the issue for faster help.',
     open: false
   }
 ])
