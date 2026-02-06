@@ -1,0 +1,27 @@
+# Netlify Configuration for Status Bot Website
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Set CORS headers for static assets to allow iframe embeds
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, HEAD, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+    Access-Control-Max-Age = "86400"
+
+# Allow iframes from any origin
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "ALLOWALL"
+    Access-Control-Allow-Origin = "*"
+
+# Redirects for Vue Router SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
