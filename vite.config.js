@@ -9,6 +9,12 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    open: true
+    open: true,
+    cors: {
+      origin: '*',
+      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true
+    }
   }
 })
